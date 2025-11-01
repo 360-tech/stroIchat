@@ -15,7 +15,6 @@ import {openModal} from 'actions/views/modals';
 import withGetCloudSubscription from 'components/common/hocs/cloud/with_get_cloud_subscription';
 
 import {LicenseSkus} from 'utils/constants';
-import {isCloudLicense} from 'utils/license_utils';
 
 import type {GlobalState} from 'types/store';
 
@@ -24,9 +23,9 @@ import FeatureDiscovery from './feature_discovery';
 function mapStateToProps(state: GlobalState) {
     const subscription = state.entities.cloud.subscription;
     const license = getLicense(state);
-    const isCloud = isCloudLicense(license);
+    const isCloud = false;
     const hasPriorTrial = checkHadPriorTrial(state);
-    const isCloudTrial = subscription?.is_free_trial === 'true';
+    const isCloudTrial = false;
     const customer = getCloudCustomer(state);
     const config = getConfig(state);
     const isEnterpriseReady = config?.BuildEnterpriseReady === 'true';

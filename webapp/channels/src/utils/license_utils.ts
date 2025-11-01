@@ -13,7 +13,7 @@ const LICENSE_GRACE_PERIOD = 1000 * 60 * 60 * 24 * 10; // 10 days
 
 export function isLicenseExpiring(license: ClientLicense) {
     // Skip license expiration checks for cloud licenses
-    if (license.IsLicensed !== 'true' || isCloudLicense(license)) {
+    if (license.IsLicensed !== 'true') {
         return false;
     }
 
@@ -26,7 +26,7 @@ export function isLicenseExpiring(license: ClientLicense) {
 }
 
 export function daysToLicenseExpire(license: ClientLicense) {
-    if (license.IsLicensed !== 'true' || isCloudLicense(license)) {
+    if (license.IsLicensed !== 'true') {
         return undefined;
     }
 
@@ -35,7 +35,7 @@ export function daysToLicenseExpire(license: ClientLicense) {
 }
 
 export function isLicenseExpired(license: ClientLicense) {
-    if (license.IsLicensed !== 'true' || isCloudLicense(license)) {
+    if (license.IsLicensed !== 'true') {
         return false;
     }
 
@@ -45,7 +45,7 @@ export function isLicenseExpired(license: ClientLicense) {
 }
 
 export function isLicensePastGracePeriod(license: ClientLicense) {
-    if (license.IsLicensed !== 'true' || isCloudLicense(license)) {
+    if (license.IsLicensed !== 'true') {
         return false;
     }
 
@@ -70,10 +70,6 @@ export function isTrialLicense(license: ClientLicense) {
     const trialLicenseDuration = (1000 * 60 * 60 * 24 * 30) + (1000 * 60 * 60 * 8);
 
     return timeDiff === trialLicenseDuration;
-}
-
-export function isCloudLicense(license: ClientLicense) {
-    return license?.Cloud === 'true';
 }
 
 export function getIsStarterLicense(license: ClientLicense) {
@@ -102,17 +98,6 @@ export const licenseSKUWithFirstLetterCapitalized = (license: ClientLicense) => 
     const sku = license.SkuShortName;
     return sku.charAt(0).toUpperCase() + sku.slice(1);
 };
-
-export function isEnterpriseOrCloudOrSKUStarterFree(license: ClientLicense, subscriptionProduct: Product | undefined, isEnterpriseReady: boolean) {
-    const isCloud = license?.Cloud === 'true';
-    const isCloudStarterFree = isCloud && subscriptionProduct?.sku === CloudProducts.STARTER;
-
-    const isSelfHostedStarter = isEnterpriseReady && (license.IsLicensed === 'false');
-
-    const isStarterSKULicense = license.IsLicensed === 'true' && license.SelfHostedProducts === SelfHostedProducts.STARTER;
-
-    return isCloudStarterFree || isSelfHostedStarter || isStarterSKULicense;
-}
 
 export function isMinimumProfessionalLicense(license: ClientLicense): boolean {
     if (!license) {

@@ -27,6 +27,8 @@ const ContactSalesCard = (props: Props) => {
     let title;
     let description;
 
+    console.log({subscriptionPlan, isFreeTrial, contactSalesLink})
+
     const pricingLink = (
         <ExternalLink
             location='contact_sales_card'

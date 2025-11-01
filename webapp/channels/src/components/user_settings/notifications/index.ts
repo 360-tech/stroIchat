@@ -13,8 +13,6 @@ import {
 
 import {isCallsEnabled, isCallsRingingEnabledOnServer} from 'selectors/calls';
 
-import {isEnterpriseOrCloudOrSKUStarterFree} from 'utils/license_utils';
-
 import type {GlobalState} from 'types/store';
 
 import type {OwnProps} from './user_settings_notifications';
@@ -27,9 +25,6 @@ const mapStateToProps = (state: GlobalState, props: OwnProps) => {
     const sendPushNotifications = config.SendPushNotifications === 'true';
     const enableAutoResponder = config.ExperimentalEnableAutomaticReplies === 'true';
 
-    const license = getLicense(state);
-    const subscriptionProduct = getSubscriptionProduct(state);
-
     const isEnterpriseReady = config.BuildEnterpriseReady === 'true';
 
     return {
@@ -37,7 +32,7 @@ const mapStateToProps = (state: GlobalState, props: OwnProps) => {
         enableAutoResponder,
         isCollapsedThreadsEnabled: props.adminMode && props.userPreferences ? isCollapsedThreadsEnabledForUser(state, props.userPreferences) : isCollapsedThreadsEnabled(state),
         isCallsRingingEnabled: isCallsEnabled(state, '0.17.0') && isCallsRingingEnabledOnServer(state),
-        isEnterpriseOrCloudOrSKUStarterFree: isEnterpriseOrCloudOrSKUStarterFree(license, subscriptionProduct, isEnterpriseReady),
+        isEnterpriseOrCloudOrSKUStarterFree: false,
         isEnterpriseReady,
     };
 };

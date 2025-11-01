@@ -1091,8 +1091,8 @@ export const DraggingStateTypes = {
 };
 
 export const AboutLinks = {
-    TERMS_OF_SERVICE: 'https://mattermost.com/pl/terms-of-use/',
-    PRIVACY_POLICY: 'https://mattermost.com/pl/privacy-policy/',
+    TERMS_OF_SERVICE: 'https://360tech.pro',
+    PRIVACY_POLICY: 'https://360tech.pro',
 };
 
 export const CloudLinks = {

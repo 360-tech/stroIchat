@@ -5,25 +5,13 @@ import React from 'react';
 
 import type {ClientConfig, ClientLicense} from '@mattermost/types/config';
 
-import {Client4} from 'mattermost-redux/client';
-
 import AboutBuildModal from 'components/about_build_modal/about_build_modal';
 
-import {renderWithContext, screen, userEvent, waitFor} from 'tests/react_testing_utils';
+import {renderWithContext, screen, userEvent} from 'tests/react_testing_utils';
 import {AboutLinks} from 'utils/constants';
-
-import AboutBuildModalCloud from './about_build_modal_cloud/about_build_modal_cloud';
 
 describe('components/AboutBuildModal', () => {
     const RealDate: DateConstructor = Date;
-
-    function mockDate(date: Date) {
-        function mock() {
-            return new RealDate(date);
-        }
-        mock.now = () => date.getTime();
-        global.Date = mock as any;
-    }
 
     let config: Partial<ClientConfig> = {};
     let license: ClientLicense = {};
@@ -41,35 +29,6 @@ describe('components/AboutBuildModal', () => {
             serverHostname: '',
         };
         jest.restoreAllMocks();
-    });
-
-    beforeEach(() => {
-        mockDate(new Date(2017, 6, 1));
-
-        // Mock the license load metric API call for all tests to prevent errors
-        jest.spyOn(Client4, 'getLicenseLoadMetric').mockResolvedValue({load: 0});
-
-        config = {
-            BuildEnterpriseReady: 'true',
-            Version: '3.6.0',
-            SchemaVersion: '77',
-            BuildNumber: '123456',
-            SQLDriverName: 'Postgres',
-            BuildHash: 'abcdef1234567890',
-            BuildHashEnterprise: '0123456789abcdef',
-            BuildDate: '21 January 2017',
-            TermsOfServiceLink: AboutLinks.TERMS_OF_SERVICE,
-            PrivacyPolicyLink: AboutLinks.PRIVACY_POLICY,
-        };
-        license = {
-            IsLicensed: 'true',
-            Company: 'Mattermost Inc',
-            SkuShortName: 'entry',
-        };
-        socketStatus = {
-            connected: true,
-            serverHostname: 'mock.localhost',
-        };
     });
 
     test('should match snapshot for enterprise edition', () => {
@@ -105,30 +64,6 @@ describe('components/AboutBuildModal', () => {
         expect(screen.queryByText('EE Build Hash: 0123456789abcdef')).not.toBeInTheDocument();
         expect(screen.queryByText('Hostname: disconnected', {exact: false})).toBeInTheDocument();
 
-        expect(screen.getByRole('link', {name: 'server'})).toHaveAttribute('href', 'https://github.com/mattermost/mattermost-server/blob/master/NOTICE.txt');
-        expect(screen.getByRole('link', {name: 'desktop'})).toHaveAttribute('href', 'https://github.com/mattermost/desktop/blob/master/NOTICE.txt');
-        expect(screen.getByRole('link', {name: 'mobile'})).toHaveAttribute('href', 'https://github.com/mattermost/mattermost-mobile/blob/master/NOTICE.txt');
-    });
-
-    test('should match snapshot for cloud edition', () => {
-        if (license !== null) {
-            license.Cloud = 'true';
-        }
-
-        renderWithContext(
-            <AboutBuildModalCloud
-                config={config}
-                license={license}
-                show={true}
-                onExited={jest.fn()}
-                doHide={jest.fn()}
-            />,
-        );
-
-        expect(screen.getByText('Mattermost Cloud')).toBeInTheDocument();
-        expect(screen.getByText('High trust messaging for the enterprise')).toBeInTheDocument();
-        expect(screen.getByTestId('aboutModalVersion')).toHaveTextContent('Mattermost Version: 3.6.0');
-        expect(screen.getByText('0123456789abcdef', {exact: false})).toBeInTheDocument();
         expect(screen.getByRole('link', {name: 'server'})).toHaveAttribute('href', 'https://github.com/mattermost/mattermost-server/blob/master/NOTICE.txt');
         expect(screen.getByRole('link', {name: 'desktop'})).toHaveAttribute('href', 'https://github.com/mattermost/desktop/blob/master/NOTICE.txt');
         expect(screen.getByRole('link', {name: 'mobile'})).toHaveAttribute('href', 'https://github.com/mattermost/mattermost-mobile/blob/master/NOTICE.txt');
@@ -220,54 +155,6 @@ describe('components/AboutBuildModal', () => {
 
         expect(screen.getByRole('link', {name: 'Terms of Use'})).not.toHaveAttribute('href', config?.TermsOfServiceLink);
         expect(screen.getByRole('link', {name: 'Privacy Policy'})).not.toHaveAttribute('href', config?.PrivacyPolicyLink);
-    });
-
-    test('should show load metric when license is loaded and API returns data', async () => {
-        // Override the global mock for this specific test
-        jest.spyOn(Client4, 'getLicenseLoadMetric').mockResolvedValue({load: 75});
-
-        renderAboutBuildModal({
-            license: {
-                IsLicensed: 'true',
-                Company: 'Mattermost Inc',
-            },
-        });
-
-        await waitFor(() => {
-            expect(screen.getByTestId('aboutModalVersionInfo')).toBeInTheDocument();
-            expect(screen.getByTestId('aboutModalVersionInfo')).toHaveTextContent('Load Metric: 75');
-        });
-    });
-
-    test('should not show load metric when API returns zero', async () => {
-        // This uses the mock set in beforeEach that returns load: 0
-        renderAboutBuildModal();
-
-        // Wait for any async operations to complete
-        await waitFor(() => {
-            expect(Client4.getLicenseLoadMetric).toHaveBeenCalled();
-        });
-
-        expect(screen.getByTestId('aboutModalVersionInfo')).not.toHaveTextContent('Load Metric:');
-    });
-
-    test('should handle API errors gracefully', async () => {
-        // Temporarily suppress console.error for this test
-        console.error = jest.fn();
-
-        // Mock the API call to throw an error
-        jest.spyOn(Client4, 'getLicenseLoadMetric').mockRejectedValue(new Error('API error'));
-
-        renderAboutBuildModal();
-
-        // Wait for the API call to be made
-        await waitFor(() => {
-            expect(Client4.getLicenseLoadMetric).toHaveBeenCalled();
-        });
-
-        // The error should be logged but not cause the component to crash
-        expect(console.error).toHaveBeenCalled();
-        expect(screen.getByTestId('aboutModalVersionInfo')).not.toHaveTextContent('Load Metric:');
     });
 
     function renderAboutBuildModal(props = {}) {

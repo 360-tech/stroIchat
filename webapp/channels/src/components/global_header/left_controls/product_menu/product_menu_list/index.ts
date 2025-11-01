@@ -7,7 +7,6 @@ import type {Dispatch} from 'redux';
 
 import {getPrevTrialLicense} from 'mattermost-redux/actions/admin';
 import {Permissions} from 'mattermost-redux/constants';
-import {getCloudSubscription, getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud';
 import {
     getConfig,
     getFirstAdminVisitMarketplaceStatus,
@@ -27,9 +26,6 @@ import {getIsMobileView} from 'selectors/views/browser';
 
 import {OnboardingTaskCategory, OnboardingTasksName, TaskNameMapToSteps} from 'components/onboarding_tasks';
 
-import {CloudProducts} from 'utils/constants';
-import {isCloudLicense} from 'utils/license_utils';
-
 import type {GlobalState} from 'types/store';
 
 import ProductMenuList from './product_menu_list';
@@ -41,7 +37,7 @@ function mapStateToProps(state: GlobalState) {
 
     const appDownloadLink = config.AppDownloadLink || '';
     const enableCommands = config.EnableCommands === 'true';
-    const siteName = config.SiteName || 'Mattermost';
+    const siteName = config.SiteName || 'Stroichat';
     const enableIncomingWebhooks = config.EnableIncomingWebhooks === 'true';
     const enableOAuthServiceProvider = config.EnableOAuthServiceProvider === 'true';
     const enableOutgoingWebhooks = config.EnableOutgoingWebhooks === 'true';
@@ -53,14 +49,10 @@ function mapStateToProps(state: GlobalState) {
     const showVisitSystemConsoleTour = step === TaskNameMapToSteps[OnboardingTasksName.VISIT_SYSTEM_CONSOLE].STARTED;
     const enableCustomUserGroups = isCustomGroupsEnabled(state);
     const isMobile = getIsMobileView(state);
-
-    const subscription = getCloudSubscription(state);
     const license = getLicense(state);
-    const subscriptionProduct = getSubscriptionProduct(state);
 
-    const isCloud = isCloudLicense(license);
-    const isCloudStarterFree = isCloud && subscriptionProduct?.sku === CloudProducts.STARTER;
-    const isCloudFreeTrial = isCloud && subscription?.is_free_trial === 'true';
+    const isCloudStarterFree = false;
+    const isCloudFreeTrial = false;
 
     const isEnterpriseReady = config.BuildEnterpriseReady === 'true';
     const isSelfHostedStarter = isEnterpriseReady && (license.IsLicensed === 'false');

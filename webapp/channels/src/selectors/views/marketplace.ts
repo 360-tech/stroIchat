@@ -18,11 +18,13 @@ export const getListing = createSelector(
     getPlugins,
     getApps,
     (plugins, apps) => {
-        if (plugins) {
-            return (plugins as Array<MarketplacePlugin | MarketplaceApp>).concat(apps);
-        }
+        // if (plugins) {
+        //     return (plugins as Array<MarketplacePlugin | MarketplaceApp>).concat(apps);
+        // }
 
-        return apps;
+        // return apps;
+
+        return [];
     },
 );
 

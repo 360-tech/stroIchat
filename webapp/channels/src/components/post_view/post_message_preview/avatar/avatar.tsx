@@ -8,12 +8,12 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import {ensureString} from 'mattermost-redux/utils/post_utils';
 
-import MattermostLogo from 'components/widgets/icons/mattermost_logo';
 import Avatar from 'components/widgets/users/avatar';
 
 import {Constants} from 'utils/constants';
 import * as PostUtils from 'utils/post_utils';
 import {imageURLForUser} from 'utils/utils';
+import { Logo } from 'components/widgets/icons/logo';
 
 type Props = {
     post?: Post;
@@ -51,7 +51,7 @@ export default function PreviewPostAvatar({post, user, enablePostIconOverride, h
         />
     );
     if (isSystemMessage && !fromWebhook && !isBot) {
-        avatar = (<MattermostLogo className='icon'/>);
+        avatar = (<Logo className='icon'/>);
     } else if (user?.id) {
         avatar = (
             <Avatar

@@ -41,7 +41,6 @@ import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_i
 
 import {FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS} from 'utils/cloud_utils';
 import {LicenseSkus, ModalIdentifiers, MattermostFeatures, CloudProducts} from 'utils/constants';
-import {isCloudLicense} from 'utils/license_utils';
 
 import type {GlobalState} from 'types/store';
 
@@ -53,11 +52,12 @@ export default function SidebarTeamMenu(props: Props) {
     const license = useSelector(getLicense);
     const config = useSelector(getConfig);
 
+    
     const havePermissionToCreateTeam = useSelector((state: GlobalState) => haveISystemPermission(state, {permission: Permissions.CREATE_TEAM}));
     const havePermissionToManageTeam = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.MANAGE_TEAM));
     const havePermissionToAddUserToTeam = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.ADD_USER_TO_TEAM));
     const havePermissionToInviteGuest = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.INVITE_GUEST));
-    const isCloud = isCloudLicense(license);
+    const isCloud = false;
     const isGuestAccessEnabled = config?.EnableGuestAccounts === 'true';
     const isTeamGroupConstrained = Boolean(props.currentTeam?.group_constrained);
     const isLicensedForLDAPGroups = license?.LDAPGroups === 'true';
