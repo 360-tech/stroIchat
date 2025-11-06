@@ -56,7 +56,7 @@ const MenuStartTrial = (props: Props): JSX.Element | null => {
             role='menuitem'
             id={props.id}
         >
-            <FreeVersionBadge>{badgeText}</FreeVersionBadge>
+            <FreeVersionBadge>{badgeText} {6}</FreeVersionBadge>
             <div className='editionText'>
                 {isEntryLicense ? (
                     formatMessage({

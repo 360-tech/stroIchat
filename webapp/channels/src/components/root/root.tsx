@@ -56,7 +56,6 @@ const Signup = makeAsyncComponent('SignupController', lazy(() => import('compone
 const ShouldVerifyEmail = makeAsyncComponent('ShouldVerifyEmail', lazy(() => import('components/should_verify_email/should_verify_email')));
 const DoVerifyEmail = makeAsyncComponent('DoVerifyEmail', lazy(() => import('components/do_verify_email/do_verify_email')));
 const ClaimController = makeAsyncComponent('ClaimController', lazy(() => import('components/claim')));
-const TermsOfService = makeAsyncComponent('TermsOfService', lazy(() => import('components/terms_of_service')));
 const LinkingLandingPage = makeAsyncComponent('LinkingLandingPage', lazy(() => import('components/linking_landing_page')));
 const AdminConsole = makeAsyncComponent('AdminConsole', lazy(() => import('components/admin_console')));
 const SelectTeam = makeAsyncComponent('SelectTeam', lazy(() => import('components/select_team')));
@@ -68,7 +67,6 @@ const LaunchingWorkspace = makeAsyncComponent('LaunchingWorkspace', lazy(() => i
 const TeamController = makeAsyncComponent('TeamController', lazy(() => import('components/team_controller')));
 const AnnouncementBarController = makeAsyncComponent('AnnouncementBarController', lazy(() => import('components/announcement_bar')));
 const SystemNotice = makeAsyncComponent('SystemNotice', lazy(() => import('components/system_notice')));
-const CloudEffects = makeAsyncComponent('CloudEffects', lazy(() => import('components/cloud_effects')));
 const TeamSidebar = makeAsyncComponent('TeamSidebar', lazy(() => import('components/team_sidebar')));
 const SidebarRight = makeAsyncComponent('SidebarRight', lazy(() => import('components/sidebar_right')));
 const ModalController = makeAsyncComponent('ModalController', lazy(() => import('components/modal_controller')));
@@ -356,10 +354,6 @@ export default class Root extends React.PureComponent<Props, State> {
                         path={'/claim'}
                         component={ClaimController}
                     />
-                    <LoggedInRoute
-                        path={'/terms_of_service'}
-                        component={TermsOfService}
-                    />
                     <Route
                         path={'/landing'}
                         component={LinkingLandingPage}
@@ -428,7 +422,6 @@ export default class Root extends React.PureComponent<Props, State> {
                         <AnnouncementBarController/>
                         <SystemNotice/>
                         <GlobalHeader/>
-                        <CloudEffects/>
                         <TeamSidebar/>
                         <div className='main-wrapper'>
                             <Switch>

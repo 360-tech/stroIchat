@@ -5,10 +5,10 @@ const config = {
     presets: [
         ['@babel/preset-env', {
             targets: {
-                chrome: 66,
-                firefox: 60,
-                edge: 42,
-                safari: 12,
+                chrome: 100,
+                firefox: 100,
+                edge: 100,
+                safari: 14,
             },
             corejs: 3,
             useBuiltIns: 'usage',

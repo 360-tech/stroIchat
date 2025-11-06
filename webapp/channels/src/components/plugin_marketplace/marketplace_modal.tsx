@@ -16,7 +16,7 @@ import {FooterPagination, GenericModal} from '@mattermost/components';
 
 import {getPluginStatuses} from 'mattermost-redux/actions/admin';
 import {setFirstAdminVisitMarketplaceStatus} from 'mattermost-redux/actions/general';
-import {getFirstAdminVisitMarketplaceStatus, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {getFirstAdminVisitMarketplaceStatus} from 'mattermost-redux/selectors/entities/general';
 import {streamlinedMarketplaceEnabled} from 'mattermost-redux/selectors/entities/preferences';
 
 import {fetchListing, filterListing} from 'actions/marketplace';
@@ -28,7 +28,6 @@ import LoadingScreen from 'components/loading_screen';
 import Input, {SIZE} from 'components/widgets/inputs/input/input';
 
 import {ModalIdentifiers} from 'utils/constants';
-import {isCloudLicense} from 'utils/license_utils';
 
 import type {GlobalState} from 'types/store';
 
@@ -61,8 +60,9 @@ const MarketplaceModal = () => {
     const pluginStatuses = useSelector((state: GlobalState) => state.entities.admin.pluginStatuses);
     const hasFirstAdminVisitedMarketplace = useSelector(getFirstAdminVisitMarketplaceStatus);
     const isStreamlinedMarketplaceEnabled = useSelector(streamlinedMarketplaceEnabled);
-    const license = useSelector(getLicense);
-    const isCloud = isCloudLicense(license);
+
+    // const isStreamlinedMarketplaceEnabled = false;
+    const isCloud = false;
 
     const [tabKey, setTabKey] = useState(MarketplaceTabs.ALL_LISTING);
     const [filter, setFilter] = useState('');

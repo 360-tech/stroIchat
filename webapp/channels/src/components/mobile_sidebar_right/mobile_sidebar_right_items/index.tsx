@@ -9,7 +9,6 @@ import type {Dispatch} from 'redux';
 import {getCloudSubscription as selectCloudSubscription, getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud';
 import {
     getConfig,
-    getLicense,
 } from 'mattermost-redux/selectors/entities/general';
 import {getReportAProblemLink} from 'mattermost-redux/selectors/entities/report_a_problem';
 import {
@@ -21,7 +20,6 @@ import {showMentions, showFlaggedPosts, closeRightHandSide, closeMenu as closeRh
 import {getRhsState} from 'selectors/rhs';
 
 import {RHSStates, CloudProducts} from 'utils/constants';
-import {isCloudLicense} from 'utils/license_utils';
 
 import type {GlobalState} from 'types/store';
 
@@ -42,10 +40,9 @@ function mapStateToProps(state: GlobalState) {
     const rhsState = getRhsState(state);
 
     const subscription = selectCloudSubscription(state);
-    const license = getLicense(state);
     const subscriptionProduct = getSubscriptionProduct(state);
 
-    const isCloud = isCloudLicense(license);
+    const isCloud = false;
     const isStarterFree = isCloud && subscriptionProduct?.sku === CloudProducts.STARTER;
     const isFreeTrial = isCloud && subscription?.is_free_trial === 'true';
 

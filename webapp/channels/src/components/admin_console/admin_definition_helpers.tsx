@@ -9,11 +9,11 @@ import type {AdminConfig, ClientLicense} from '@mattermost/types/config';
 
 import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_indicator';
 
-import {CloudProducts, getLicenseTier, LicenseSkus} from 'utils/constants';
-import {isCloudLicense} from 'utils/license_utils';
+import {getLicenseTier, LicenseSkus} from 'utils/constants';
 
 import type {Check, ConsoleAccess} from './types';
 import ValidationResult from './validation';
+import { fabClasses } from '@mui/material';
 
 export const it = {
     not: (func: Check) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean, consoleAccess?: ConsoleAccess, cloud?: CloudState, isSystemAdmin?: boolean) => {
@@ -44,11 +44,11 @@ export const it = {
     configContains: (group: keyof Partial<AdminConfig>, setting: string, word: string) => (config: Partial<AdminConfig>) => Boolean((config[group] as any)?.[setting]?.includes(word)),
     enterpriseReady: (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean) => Boolean(enterpriseReady),
     licensed: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => license?.IsLicensed === 'true',
-    cloudLicensed: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && isCloudLicense(license)),
+    cloudLicensed: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && fabClasses),
     licensedForFeature: (feature: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && license[feature] === 'true'),
     licensedForSku: (skuName: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && license.SkuShortName === skuName),
     minLicenseTier: (skuName: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && getLicenseTier(license.SkuShortName) >= getLicenseTier(skuName)),
-    licensedForCloudStarter: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && isCloudLicense(license) && license.SkuShortName === LicenseSkus.Starter),
+    licensedForCloudStarter: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && false && license.SkuShortName === LicenseSkus.Starter),
     hidePaymentInfo: (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean, consoleAccess?: ConsoleAccess, cloud?: CloudState) => {
         if (!cloud) {
             return true;
@@ -113,5 +113,5 @@ export const getRestrictedIndicator = (displayBlocked = false, minimumPlanRequir
             })}
         />
     ),
-    shouldDisplay: (license: ClientLicense, subscriptionProduct: Product | undefined) => displayBlocked || (isCloudLicense(license) && subscriptionProduct?.sku === CloudProducts.STARTER),
+    shouldDisplay: (license: ClientLicense, subscriptionProduct: Product | undefined) => displayBlocked,
 });

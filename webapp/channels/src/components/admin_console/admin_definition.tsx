@@ -5,9 +5,8 @@
 
 import React from 'react';
 import {FormattedMessage, defineMessage, defineMessages} from 'react-intl';
-import {Link} from 'react-router-dom';
 
-import {AccountMultipleOutlineIcon, ChartBarIcon, CogOutlineIcon, CreditCardOutlineIcon, FlaskOutlineIcon, FormatListBulletedIcon, InformationOutlineIcon, PowerPlugOutlineIcon, ServerVariantIcon, ShieldOutlineIcon, SitemapIcon, TableLargeIcon} from '@mattermost/compass-icons/components';
+import {AccountMultipleOutlineIcon, ChartBarIcon, CogOutlineIcon, FlaskOutlineIcon, FormatListBulletedIcon, InformationOutlineIcon, PowerPlugOutlineIcon, ServerVariantIcon, ShieldOutlineIcon, SitemapIcon, TableLargeIcon} from '@mattermost/compass-icons/components';
 
 import {RESOURCE_KEYS} from 'mattermost-redux/constants/permissions_sysconsole';
 
@@ -257,66 +256,67 @@ const AdminDefinition: AdminDefinitionType = {
             },
         },
     },
-    billing: {
-        icon: (
-            <CreditCardOutlineIcon
-                size={16}
-                color={'currentColor'}
-            />
-        ),
-        sectionTitle: defineMessage({id: 'admin.sidebar.billing', defaultMessage: 'Billing & Account'}),
-        isHidden: it.not(it.licensedForFeature('Cloud')),
-        subsections: {
-            subscription: {
-                url: 'billing/subscription',
-                title: defineMessage({id: 'admin.sidebar.subscription', defaultMessage: 'Subscription'}),
-                searchableStrings: billingSubscriptionSearchableStrings,
-                schema: {
-                    id: 'BillingSubscriptions',
-                    component: BillingSubscriptions,
-                },
 
-                // cloud only view
-                isHidden: it.not(it.licensedForFeature('Cloud')),
-                isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
-            },
-            billing_history: {
-                url: 'billing/billing_history',
-                title: defineMessage({id: 'admin.sidebar.billing_history', defaultMessage: 'Billing History'}),
-                searchableStrings: billingHistorySearchableStrings,
-                schema: {
-                    id: 'BillingHistory',
-                    component: BillingHistory,
-                },
-                isHidden: it.not(it.licensedForFeature('Cloud')),
-                isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
-            },
-            company_info: {
-                url: 'billing/company_info',
-                title: defineMessage({id: 'admin.sidebar.company_info', defaultMessage: 'Company Information'}),
-                searchableStrings: billingCompanyInfoSearchableStrings,
-                schema: {
-                    id: 'CompanyInfo',
-                    component: CompanyInfo,
-                },
+    // billing: {
+    //     icon: (
+    //         <CreditCardOutlineIcon
+    //             size={16}
+    //             color={'currentColor'}
+    //         />
+    //     ),
+    //     sectionTitle: defineMessage({id: 'admin.sidebar.billing', defaultMessage: 'Billing & Account'}),
+    //     isHidden: it.not(it.licensedForFeature('Cloud')),
+    //     subsections: {
+    //         subscription: {
+    //             url: 'billing/subscription',
+    //             title: defineMessage({id: 'admin.sidebar.subscription', defaultMessage: 'Subscription'}),
+    //             searchableStrings: billingSubscriptionSearchableStrings,
+    //             schema: {
+    //                 id: 'BillingSubscriptions',
+    //                 component: BillingSubscriptions,
+    //             },
 
-                // cloud only view
-                isHidden: it.not(it.licensedForFeature('Cloud')),
-                isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
-            },
-            company_info_edit: {
-                url: 'billing/company_info_edit',
-                schema: {
-                    id: 'CompanyInfoEdit',
-                    component: CompanyInfoEdit,
-                },
+    //             // cloud only view
+    //             isHidden: it.not(it.licensedForFeature('Cloud')),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
+    //         },
+    //         billing_history: {
+    //             url: 'billing/billing_history',
+    //             title: defineMessage({id: 'admin.sidebar.billing_history', defaultMessage: 'Billing History'}),
+    //             searchableStrings: billingHistorySearchableStrings,
+    //             schema: {
+    //                 id: 'BillingHistory',
+    //                 component: BillingHistory,
+    //             },
+    //             isHidden: it.not(it.licensedForFeature('Cloud')),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
+    //         },
+    //         company_info: {
+    //             url: 'billing/company_info',
+    //             title: defineMessage({id: 'admin.sidebar.company_info', defaultMessage: 'Company Information'}),
+    //             searchableStrings: billingCompanyInfoSearchableStrings,
+    //             schema: {
+    //                 id: 'CompanyInfo',
+    //                 component: CompanyInfo,
+    //             },
 
-                // cloud only view
-                isHidden: it.not(it.licensedForFeature('Cloud')),
-                isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
-            },
-        },
-    },
+    //             // cloud only view
+    //             isHidden: it.not(it.licensedForFeature('Cloud')),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
+    //         },
+    //         company_info_edit: {
+    //             url: 'billing/company_info_edit',
+    //             schema: {
+    //                 id: 'CompanyInfoEdit',
+    //                 component: CompanyInfoEdit,
+    //             },
+
+    //             // cloud only view
+    //             isHidden: it.not(it.licensedForFeature('Cloud')),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
+    //         },
+    //     },
+    // },
     reporting: {
         icon: (
             <ChartBarIcon
@@ -5346,384 +5346,385 @@ const AdminDefinition: AdminDefinitionType = {
 
         },
     },
-    compliance: {
-        icon: (
-            <FormatListBulletedIcon
-                size={16}
-                color={'currentColor'}
-            />
-        ),
-        sectionTitle: defineMessage({id: 'admin.sidebar.compliance', defaultMessage: 'Compliance'}),
-        isHidden: it.not(it.userHasReadPermissionOnSomeResources(RESOURCE_KEYS.COMPLIANCE)),
-        subsections: {
-            custom_policy_form_edit: {
-                url: `compliance/data_retention_settings/custom_policy/:policy_id(${ID_PATH_PATTERN})`,
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('DataRetention')),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
-                schema: {
-                    id: 'CustomDataRetentionForm',
-                    component: CustomDataRetentionForm,
-                },
 
-            },
-            custom_policy_form: {
-                url: 'compliance/data_retention_settings/custom_policy',
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('DataRetention')),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
-                schema: {
-                    id: 'CustomDataRetentionForm',
-                    component: CustomDataRetentionForm,
-                },
+    // compliance: {
+    //     icon: (
+    //         <FormatListBulletedIcon
+    //             size={16}
+    //             color={'currentColor'}
+    //         />
+    //     ),
+    //     sectionTitle: defineMessage({id: 'admin.sidebar.compliance', defaultMessage: 'Compliance'}),
+    //     isHidden: it.not(it.userHasReadPermissionOnSomeResources(RESOURCE_KEYS.COMPLIANCE)),
+    //     subsections: {
+    //         custom_policy_form_edit: {
+    //             url: `compliance/data_retention_settings/custom_policy/:policy_id(${ID_PATH_PATTERN})`,
+    //             isHidden: it.any(
+    //                 it.not(it.licensedForFeature('DataRetention')),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
+    //             schema: {
+    //                 id: 'CustomDataRetentionForm',
+    //                 component: CustomDataRetentionForm,
+    //             },
 
-            },
-            global_policy_form: {
-                url: 'compliance/data_retention_settings/global_policy',
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('DataRetention')),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
-                schema: {
-                    id: 'GlobalDataRetentionForm',
-                    component: GlobalDataRetentionForm,
-                },
-            },
-            data_retention: {
-                url: 'compliance/data_retention_settings',
-                title: defineMessage({id: 'admin.sidebar.dataRetentionSettingsPolicies', defaultMessage: 'Data Retention Policies'}),
-                searchableStrings: [
-                    adminDefinitionMessages.data_retention_title,
-                    ...dataRetentionSearchableStrings,
-                ],
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('DataRetention')),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
-                schema: {
-                    id: 'DataRetentionSettings',
-                    component: DataRetentionSettings,
-                },
-                restrictedIndicator: getRestrictedIndicator(),
-            },
-            data_retention_feature_discovery: {
-                url: 'compliance/data_retention',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.dataRetentionPolicy', defaultMessage: 'Data Retention Policy'}),
-                isHidden: it.any(
-                    it.licensedForFeature('DataRetention'),
-                ),
-                schema: {
-                    id: 'DataRetentionSettings',
-                    name: adminDefinitionMessages.data_retention_title,
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: DataRetentionFeatureDiscovery,
-                            key: 'DataRetentionFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.Enterprise),
-            },
-            message_export: {
-                url: 'compliance/export',
-                title: defineMessage({id: 'admin.sidebar.complianceExport', defaultMessage: 'Compliance Export'}),
-                searchableStrings: messageExportSearchableStrings,
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('MessageExport')),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_EXPORT)),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_EXPORT)),
-                schema: {
-                    id: 'MessageExportSettings',
-                    component: MessageExportSettings,
-                },
-                restrictedIndicator: getRestrictedIndicator(),
-            },
-            compliance_export_feature_discovery: {
-                isDiscovery: true,
-                url: 'compliance/export',
-                title: defineMessage({id: 'admin.sidebar.complianceExport', defaultMessage: 'Compliance Export'}),
-                isHidden: it.any(
-                    it.licensedForFeature('MessageExport'),
-                ),
-                schema: {
-                    id: 'MessageExportSettings',
-                    name: defineMessage({id: 'admin.complianceExport.title', defaultMessage: 'Compliance Export'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: ComplianceExportFeatureDiscovery,
-                            key: 'ComplianceExportFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.Enterprise),
-            },
-            audits: {
-                url: 'compliance/monitoring',
-                title: defineMessage({id: 'admin.sidebar.complianceMonitoring', defaultMessage: 'Compliance Monitoring'}),
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('Compliance')),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
-                searchableStrings: auditSearchableStrings,
-                schema: {
-                    id: 'Audits',
-                    name: defineMessage({id: 'admin.compliance.complianceMonitoring', defaultMessage: 'Compliance Monitoring'}),
-                    component: Audits,
-                    isHidden: it.not(it.licensedForFeature('Compliance')),
-                    settings: [
-                        {
-                            type: 'banner',
-                            label: defineMessage({id: 'admin.compliance.newComplianceExportBanner', defaultMessage: 'This feature is replaced by a new <link>Compliance Export</link> feature, and will be removed in a future release. We recommend migrating to the new system.'}),
-                            label_values: {
-                                link: (msg: string) => (
-                                    <Link to='/admin_console/compliance/export'>
-                                        {msg}
-                                    </Link>
-                                ),
-                            },
-                            banner_type: 'info',
-                            isHidden: it.not(it.licensedForFeature('Compliance')),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'ComplianceSettings.Enable',
-                            label: defineMessage({id: 'admin.compliance.enableTitle', defaultMessage: 'Enable Compliance Reporting:'}),
-                            help_text: defineMessage({id: 'admin.compliance.enableDesc', defaultMessage: 'When true, Mattermost allows compliance reporting from the <strong>Compliance and Auditing</strong> tab. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.COMPILANCE_MONITORING}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                                strong: (msg: string) => <strong>{msg}</strong>,
-                            },
-                            help_text_markdown: false,
-                            isHidden: it.not(it.licensedForFeature('Compliance')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'ComplianceSettings.Directory',
-                            label: defineMessage({id: 'admin.compliance.directoryTitle', defaultMessage: 'Compliance Report Directory:'}),
-                            help_text: defineMessage({id: 'admin.compliance.directoryDescription', defaultMessage: 'Directory to which compliance reports are written. If blank, will be set to ./data/.'}),
-                            placeholder: defineMessage({id: 'admin.compliance.directoryExample', defaultMessage: 'E.g.: "./data/"'}),
-                            isHidden: it.not(it.licensedForFeature('Compliance')),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
-                                it.stateIsFalse('ComplianceSettings.Enable'),
-                            ),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'ComplianceSettings.EnableDaily',
-                            label: defineMessage({id: 'admin.compliance.enableDailyTitle', defaultMessage: 'Enable Daily Report:'}),
-                            help_text: defineMessage({id: 'admin.compliance.enableDailyDesc', defaultMessage: 'When true, Mattermost will generate a daily compliance report.'}),
-                            isHidden: it.not(it.licensedForFeature('Compliance')),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
-                                it.stateIsFalse('ComplianceSettings.Enable'),
-                            ),
-                        },
-                    ],
-                },
-            },
-            audit_logging: {
-                url: 'compliance/audit_logging',
-                title: defineMessage({id: 'admin.sidebar.audit_logging_experimental', defaultMessage: 'Audit Logging'}),
-                isHidden: it.any(
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                    it.configIsFalse('FeatureFlags', 'ExperimentalAuditSettingsSystemConsoleUI'),
-                    it.not(it.minLicenseTier(LicenseSkus.Enterprise)),
-                ),
-                schema: {
-                    id: 'ExperimentalAuditSettings',
-                    name: 'Audit logging (Beta)',
-                    settings: [
-                        {
-                            type: 'banner',
-                            label: defineMessage({id: 'admin.rate.noteDescription', defaultMessage: 'Changing properties in this section will require a server restart before taking effect.'}),
-                            banner_type: 'info',
-                        },
-                        {
-                            type: 'bool',
-                            key: 'ExperimentalAuditSettings.FileEnabled',
-                            label: defineMessage({id: 'admin.audit_logging_experimental.file_enabled.title', defaultMessage: 'File Enabled'}),
-                            help_text: defineMessage({id: 'admin.audit_logging_experimental.file_enabled.help_text', defaultMessage: 'Choose whether audit logs are written locally to a file or not.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                            isHidden: it.licensedForFeature('Cloud'),
-                        },
-                        {
-                            type: 'text',
-                            key: 'ExperimentalAuditSettings.FileName',
-                            label: defineMessage({id: 'admin.audit_logging_experimental.file_name.title', defaultMessage: 'File Name'}),
-                            help_text: defineMessage({id: 'admin.audit_logging_experimental.file_name.help_text', defaultMessage: 'The name of the file to write to.'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                                it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
-                            ),
-                            isHidden: it.licensedForFeature('Cloud'),
-                        },
-                        {
-                            type: 'number',
-                            key: 'ExperimentalAuditSettings.FileMaxSizeMB',
-                            label: defineMessage({id: 'admin.audit_logging_experimental.file_max_size.title', defaultMessage: 'Max File Size (MB)'}),
-                            help_text: defineMessage({id: 'admin.audit_logging_experimental.file_max_size.help_text', defaultMessage: 'Maximum size, in megabytes (MB), the log file can grow before it gets rotated.'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                                it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
-                            ),
-                            isHidden: it.licensedForFeature('Cloud'),
-                        },
-                        {
-                            type: 'number',
-                            key: 'ExperimentalAuditSettings.FileMaxAgeDays',
-                            label: defineMessage({id: 'admin.audit_logging_experimental.file_max_age.title', defaultMessage: 'Max File Age (Days)'}),
-                            help_text: defineMessage({id: 'admin.audit_logging_experimental.file_max_age.help_text', defaultMessage: 'Maximum number of days to retain old log files. 0 disables the removal of old log files.'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                                it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
-                            ),
-                            isHidden: it.licensedForFeature('Cloud'),
-                        },
-                        {
-                            type: 'number',
-                            key: 'ExperimentalAuditSettings.FileMaxBackups',
-                            label: defineMessage({id: 'admin.audit_logging_experimental.file_max_backups.title', defaultMessage: 'Maximum File Backups'}),
-                            help_text: defineMessage({id: 'admin.audit_logging_experimental.file_max_backups.help_text', defaultMessage: 'Maximum number of old log files to retain. 0 retains all old log files. Note: Configuring Max File Age can result in old log files being deleted regardless of this configuration value.'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                                it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
-                            ),
-                            isHidden: it.licensedForFeature('Cloud'),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'ExperimentalAuditSettings.FileCompress',
-                            label: defineMessage({id: 'admin.audit_logging_experimental.file_compress.title', defaultMessage: 'File Compression'}),
-                            help_text: defineMessage({id: 'admin.audit_logging_experimental.file_compress.help_text', defaultMessage: 'Choose whether enable or disable file compression.'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                                it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
-                            ),
-                            isHidden: it.licensedForFeature('Cloud'),
-                        },
-                        {
-                            type: 'number',
-                            key: 'ExperimentalAuditSettings.FileMaxQueueSize',
-                            label: defineMessage({id: 'admin.audit_logging_experimental.file_max_queue_size.title', defaultMessage: 'Maximum File Queue'}),
-                            help_text: defineMessage({id: 'admin.audit_logging_experimental.file_max_queue_size.help_text', defaultMessage: 'The maximum number of files to be retained in the queue.'}),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                                it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
-                            ),
-                            isHidden: it.licensedForFeature('Cloud'),
-                        },
-                        {
-                            type: 'longtext',
-                            key: 'ExperimentalAuditSettings.AdvancedLoggingJSON',
-                            label: defineMessage({id: 'admin.log.AdvancedLoggingJSONTitle', defaultMessage: 'Advanced Logging:'}),
-                            help_text: defineMessage({id: 'admin.log.AdvancedLoggingJSONDescription', defaultMessage: 'The JSON configuration for Advanced Audit Logging. Please see <link>documentation</link> to learn more about Advanced Logging and the JSON format it uses.'}),
-                            help_text_markdown: false,
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console.experimental_audit_settings'
-                                        href={DocLinks.ADVANCED_LOGGING}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
-                            placeholder: defineMessage({id: 'admin.log.AdvancedLoggingJSONPlaceholder', defaultMessage: 'Enter your JSON configuration'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                            validate: (value) => {
-                                const valid = new ValidationResult(true, '');
-                                if (!value) {
-                                    return valid;
-                                }
-                                try {
-                                    JSON.parse(value);
-                                    return valid;
-                                } catch (error) {
-                                    return new ValidationResult(false, error.message);
-                                }
-                            },
-                            onConfigLoad: (configVal) => JSON.stringify(configVal, null, '  '),
-                            onConfigSave: (displayVal) => {
-                                // Handle case where field is empty
-                                if (!displayVal) {
-                                    return {undefined};
-                                }
+    //         },
+    //         custom_policy_form: {
+    //             url: 'compliance/data_retention_settings/custom_policy',
+    //             isHidden: it.any(
+    //                 it.not(it.licensedForFeature('DataRetention')),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
+    //             schema: {
+    //                 id: 'CustomDataRetentionForm',
+    //                 component: CustomDataRetentionForm,
+    //             },
 
-                                return JSON.parse(displayVal);
-                            },
-                        },
-                        {
-                            type: 'custom',
-                            component: AuditLoggingCertificateUploadSetting,
-                            label: defineMessage({id: 'admin.audit_logging_experimental.certificate.title', defaultMessage: 'Certificate'}),
-                            key: 'ExperimentalAuditSettings.Certificate',
-                            help_text: defineMessage({id: 'admin.audit_logging_experimental.certificate.help_text', defaultMessage: 'The certificate file used for audit logging encryption.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                            isHidden: it.not(it.licensedForFeature('Cloud')),
-                        },
-                    ],
-                },
-            },
-            custom_terms_of_service: {
-                url: 'compliance/custom_terms_of_service',
-                title: defineMessage({id: 'admin.sidebar.customTermsOfService', defaultMessage: 'Custom Terms of Service'}),
-                searchableStrings: customTermsOfServiceSearchableStrings,
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('CustomTermsOfService')),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.CUSTOM_TERMS_OF_SERVICE)),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.CUSTOM_TERMS_OF_SERVICE)),
-                schema: {
-                    id: 'TermsOfServiceSettings',
-                    component: CustomTermsOfServiceSettings,
-                },
-                restrictedIndicator: getRestrictedIndicator(),
-            },
-            custom_terms_of_service_feature_discovery: {
-                url: 'compliance/custom_terms_of_service',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.customTermsOfService', defaultMessage: 'Custom Terms of Service'}),
-                isHidden: it.any(
-                    it.licensedForFeature('CustomTermsOfService'),
-                ),
-                schema: {
-                    id: 'TermsOfServiceSettings',
-                    name: customTermsOfServiceMessages.termsOfServiceTitle,
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: CustomTermsOfServiceFeatureDiscovery,
-                            key: 'CustomTermsOfServiceFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.Enterprise),
-            },
-        },
-    },
+    //         },
+    //         global_policy_form: {
+    //             url: 'compliance/data_retention_settings/global_policy',
+    //             isHidden: it.any(
+    //                 it.not(it.licensedForFeature('DataRetention')),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
+    //             schema: {
+    //                 id: 'GlobalDataRetentionForm',
+    //                 component: GlobalDataRetentionForm,
+    //             },
+    //         },
+    //         data_retention: {
+    //             url: 'compliance/data_retention_settings',
+    //             title: defineMessage({id: 'admin.sidebar.dataRetentionSettingsPolicies', defaultMessage: 'Data Retention Policies'}),
+    //             searchableStrings: [
+    //                 adminDefinitionMessages.data_retention_title,
+    //                 ...dataRetentionSearchableStrings,
+    //             ],
+    //             isHidden: it.any(
+    //                 it.not(it.licensedForFeature('DataRetention')),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.DATA_RETENTION_POLICY)),
+    //             schema: {
+    //                 id: 'DataRetentionSettings',
+    //                 component: DataRetentionSettings,
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(),
+    //         },
+    //         data_retention_feature_discovery: {
+    //             url: 'compliance/data_retention',
+    //             isDiscovery: true,
+    //             title: defineMessage({id: 'admin.sidebar.dataRetentionPolicy', defaultMessage: 'Data Retention Policy'}),
+    //             isHidden: it.any(
+    //                 it.licensedForFeature('DataRetention'),
+    //             ),
+    //             schema: {
+    //                 id: 'DataRetentionSettings',
+    //                 name: adminDefinitionMessages.data_retention_title,
+    //                 settings: [
+    //                     {
+    //                         type: 'custom',
+    //                         component: DataRetentionFeatureDiscovery,
+    //                         key: 'DataRetentionFeatureDiscovery',
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
+    //                     },
+    //                 ],
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.Enterprise),
+    //         },
+    //         message_export: {
+    //             url: 'compliance/export',
+    //             title: defineMessage({id: 'admin.sidebar.complianceExport', defaultMessage: 'Compliance Export'}),
+    //             searchableStrings: messageExportSearchableStrings,
+    //             isHidden: it.any(
+    //                 it.not(it.licensedForFeature('MessageExport')),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_EXPORT)),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_EXPORT)),
+    //             schema: {
+    //                 id: 'MessageExportSettings',
+    //                 component: MessageExportSettings,
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(),
+    //         },
+    //         compliance_export_feature_discovery: {
+    //             isDiscovery: true,
+    //             url: 'compliance/export',
+    //             title: defineMessage({id: 'admin.sidebar.complianceExport', defaultMessage: 'Compliance Export'}),
+    //             isHidden: it.any(
+    //                 it.licensedForFeature('MessageExport'),
+    //             ),
+    //             schema: {
+    //                 id: 'MessageExportSettings',
+    //                 name: defineMessage({id: 'admin.complianceExport.title', defaultMessage: 'Compliance Export'}),
+    //                 settings: [
+    //                     {
+    //                         type: 'custom',
+    //                         component: ComplianceExportFeatureDiscovery,
+    //                         key: 'ComplianceExportFeatureDiscovery',
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
+    //                     },
+    //                 ],
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.Enterprise),
+    //         },
+    //         audits: {
+    //             url: 'compliance/monitoring',
+    //             title: defineMessage({id: 'admin.sidebar.complianceMonitoring', defaultMessage: 'Compliance Monitoring'}),
+    //             isHidden: it.any(
+    //                 it.not(it.licensedForFeature('Compliance')),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
+    //             searchableStrings: auditSearchableStrings,
+    //             schema: {
+    //                 id: 'Audits',
+    //                 name: defineMessage({id: 'admin.compliance.complianceMonitoring', defaultMessage: 'Compliance Monitoring'}),
+    //                 component: Audits,
+    //                 isHidden: it.not(it.licensedForFeature('Compliance')),
+    //                 settings: [
+    //                     {
+    //                         type: 'banner',
+    //                         label: defineMessage({id: 'admin.compliance.newComplianceExportBanner', defaultMessage: 'This feature is replaced by a new <link>Compliance Export</link> feature, and will be removed in a future release. We recommend migrating to the new system.'}),
+    //                         label_values: {
+    //                             link: (msg: string) => (
+    //                                 <Link to='/admin_console/compliance/export'>
+    //                                     {msg}
+    //                                 </Link>
+    //                             ),
+    //                         },
+    //                         banner_type: 'info',
+    //                         isHidden: it.not(it.licensedForFeature('Compliance')),
+    //                     },
+    //                     {
+    //                         type: 'bool',
+    //                         key: 'ComplianceSettings.Enable',
+    //                         label: defineMessage({id: 'admin.compliance.enableTitle', defaultMessage: 'Enable Compliance Reporting:'}),
+    //                         help_text: defineMessage({id: 'admin.compliance.enableDesc', defaultMessage: 'When true, Mattermost allows compliance reporting from the <strong>Compliance and Auditing</strong> tab. See <link>documentation</link> to learn more.'}),
+    //                         help_text_values: {
+    //                             link: (msg: string) => (
+    //                                 <ExternalLink
+    //                                     location='admin_console'
+    //                                     href={DocLinks.COMPILANCE_MONITORING}
+    //                                 >
+    //                                     {msg}
+    //                                 </ExternalLink>
+    //                             ),
+    //                             strong: (msg: string) => <strong>{msg}</strong>,
+    //                         },
+    //                         help_text_markdown: false,
+    //                         isHidden: it.not(it.licensedForFeature('Compliance')),
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
+    //                     },
+    //                     {
+    //                         type: 'text',
+    //                         key: 'ComplianceSettings.Directory',
+    //                         label: defineMessage({id: 'admin.compliance.directoryTitle', defaultMessage: 'Compliance Report Directory:'}),
+    //                         help_text: defineMessage({id: 'admin.compliance.directoryDescription', defaultMessage: 'Directory to which compliance reports are written. If blank, will be set to ./data/.'}),
+    //                         placeholder: defineMessage({id: 'admin.compliance.directoryExample', defaultMessage: 'E.g.: "./data/"'}),
+    //                         isHidden: it.not(it.licensedForFeature('Compliance')),
+    //                         isDisabled: it.any(
+    //                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
+    //                             it.stateIsFalse('ComplianceSettings.Enable'),
+    //                         ),
+    //                     },
+    //                     {
+    //                         type: 'bool',
+    //                         key: 'ComplianceSettings.EnableDaily',
+    //                         label: defineMessage({id: 'admin.compliance.enableDailyTitle', defaultMessage: 'Enable Daily Report:'}),
+    //                         help_text: defineMessage({id: 'admin.compliance.enableDailyDesc', defaultMessage: 'When true, Mattermost will generate a daily compliance report.'}),
+    //                         isHidden: it.not(it.licensedForFeature('Compliance')),
+    //                         isDisabled: it.any(
+    //                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.COMPLIANCE_MONITORING)),
+    //                             it.stateIsFalse('ComplianceSettings.Enable'),
+    //                         ),
+    //                     },
+    //                 ],
+    //             },
+    //         },
+    //         audit_logging: {
+    //             url: 'compliance/audit_logging',
+    //             title: defineMessage({id: 'admin.sidebar.audit_logging_experimental', defaultMessage: 'Audit Logging'}),
+    //             isHidden: it.any(
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                 it.configIsFalse('FeatureFlags', 'ExperimentalAuditSettingsSystemConsoleUI'),
+    //                 it.not(it.minLicenseTier(LicenseSkus.Enterprise)),
+    //             ),
+    //             schema: {
+    //                 id: 'ExperimentalAuditSettings',
+    //                 name: 'Audit logging (Beta)',
+    //                 settings: [
+    //                     {
+    //                         type: 'banner',
+    //                         label: defineMessage({id: 'admin.rate.noteDescription', defaultMessage: 'Changing properties in this section will require a server restart before taking effect.'}),
+    //                         banner_type: 'info',
+    //                     },
+    //                     {
+    //                         type: 'bool',
+    //                         key: 'ExperimentalAuditSettings.FileEnabled',
+    //                         label: defineMessage({id: 'admin.audit_logging_experimental.file_enabled.title', defaultMessage: 'File Enabled'}),
+    //                         help_text: defineMessage({id: 'admin.audit_logging_experimental.file_enabled.help_text', defaultMessage: 'Choose whether audit logs are written locally to a file or not.'}),
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                         isHidden: it.licensedForFeature('Cloud'),
+    //                     },
+    //                     {
+    //                         type: 'text',
+    //                         key: 'ExperimentalAuditSettings.FileName',
+    //                         label: defineMessage({id: 'admin.audit_logging_experimental.file_name.title', defaultMessage: 'File Name'}),
+    //                         help_text: defineMessage({id: 'admin.audit_logging_experimental.file_name.help_text', defaultMessage: 'The name of the file to write to.'}),
+    //                         isDisabled: it.any(
+    //                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                             it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
+    //                         ),
+    //                         isHidden: it.licensedForFeature('Cloud'),
+    //                     },
+    //                     {
+    //                         type: 'number',
+    //                         key: 'ExperimentalAuditSettings.FileMaxSizeMB',
+    //                         label: defineMessage({id: 'admin.audit_logging_experimental.file_max_size.title', defaultMessage: 'Max File Size (MB)'}),
+    //                         help_text: defineMessage({id: 'admin.audit_logging_experimental.file_max_size.help_text', defaultMessage: 'Maximum size, in megabytes (MB), the log file can grow before it gets rotated.'}),
+    //                         isDisabled: it.any(
+    //                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                             it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
+    //                         ),
+    //                         isHidden: it.licensedForFeature('Cloud'),
+    //                     },
+    //                     {
+    //                         type: 'number',
+    //                         key: 'ExperimentalAuditSettings.FileMaxAgeDays',
+    //                         label: defineMessage({id: 'admin.audit_logging_experimental.file_max_age.title', defaultMessage: 'Max File Age (Days)'}),
+    //                         help_text: defineMessage({id: 'admin.audit_logging_experimental.file_max_age.help_text', defaultMessage: 'Maximum number of days to retain old log files. 0 disables the removal of old log files.'}),
+    //                         isDisabled: it.any(
+    //                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                             it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
+    //                         ),
+    //                         isHidden: it.licensedForFeature('Cloud'),
+    //                     },
+    //                     {
+    //                         type: 'number',
+    //                         key: 'ExperimentalAuditSettings.FileMaxBackups',
+    //                         label: defineMessage({id: 'admin.audit_logging_experimental.file_max_backups.title', defaultMessage: 'Maximum File Backups'}),
+    //                         help_text: defineMessage({id: 'admin.audit_logging_experimental.file_max_backups.help_text', defaultMessage: 'Maximum number of old log files to retain. 0 retains all old log files. Note: Configuring Max File Age can result in old log files being deleted regardless of this configuration value.'}),
+    //                         isDisabled: it.any(
+    //                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                             it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
+    //                         ),
+    //                         isHidden: it.licensedForFeature('Cloud'),
+    //                     },
+    //                     {
+    //                         type: 'bool',
+    //                         key: 'ExperimentalAuditSettings.FileCompress',
+    //                         label: defineMessage({id: 'admin.audit_logging_experimental.file_compress.title', defaultMessage: 'File Compression'}),
+    //                         help_text: defineMessage({id: 'admin.audit_logging_experimental.file_compress.help_text', defaultMessage: 'Choose whether enable or disable file compression.'}),
+    //                         isDisabled: it.any(
+    //                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                             it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
+    //                         ),
+    //                         isHidden: it.licensedForFeature('Cloud'),
+    //                     },
+    //                     {
+    //                         type: 'number',
+    //                         key: 'ExperimentalAuditSettings.FileMaxQueueSize',
+    //                         label: defineMessage({id: 'admin.audit_logging_experimental.file_max_queue_size.title', defaultMessage: 'Maximum File Queue'}),
+    //                         help_text: defineMessage({id: 'admin.audit_logging_experimental.file_max_queue_size.help_text', defaultMessage: 'The maximum number of files to be retained in the queue.'}),
+    //                         isDisabled: it.any(
+    //                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                             it.stateIsFalse('ExperimentalAuditSettings.FileEnabled'),
+    //                         ),
+    //                         isHidden: it.licensedForFeature('Cloud'),
+    //                     },
+    //                     {
+    //                         type: 'longtext',
+    //                         key: 'ExperimentalAuditSettings.AdvancedLoggingJSON',
+    //                         label: defineMessage({id: 'admin.log.AdvancedLoggingJSONTitle', defaultMessage: 'Advanced Logging:'}),
+    //                         help_text: defineMessage({id: 'admin.log.AdvancedLoggingJSONDescription', defaultMessage: 'The JSON configuration for Advanced Audit Logging. Please see <link>documentation</link> to learn more about Advanced Logging and the JSON format it uses.'}),
+    //                         help_text_markdown: false,
+    //                         help_text_values: {
+    //                             link: (msg: string) => (
+    //                                 <ExternalLink
+    //                                     location='admin_console.experimental_audit_settings'
+    //                                     href={DocLinks.ADVANCED_LOGGING}
+    //                                 >
+    //                                     {msg}
+    //                                 </ExternalLink>
+    //                             ),
+    //                         },
+    //                         placeholder: defineMessage({id: 'admin.log.AdvancedLoggingJSONPlaceholder', defaultMessage: 'Enter your JSON configuration'}),
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                         validate: (value) => {
+    //                             const valid = new ValidationResult(true, '');
+    //                             if (!value) {
+    //                                 return valid;
+    //                             }
+    //                             try {
+    //                                 JSON.parse(value);
+    //                                 return valid;
+    //                             } catch (error) {
+    //                                 return new ValidationResult(false, error.message);
+    //                             }
+    //                         },
+    //                         onConfigLoad: (configVal) => JSON.stringify(configVal, null, '  '),
+    //                         onConfigSave: (displayVal) => {
+    //                             // Handle case where field is empty
+    //                             if (!displayVal) {
+    //                                 return {undefined};
+    //                             }
+
+    //                             return JSON.parse(displayVal);
+    //                         },
+    //                     },
+    //                     {
+    //                         type: 'custom',
+    //                         component: AuditLoggingCertificateUploadSetting,
+    //                         label: defineMessage({id: 'admin.audit_logging_experimental.certificate.title', defaultMessage: 'Certificate'}),
+    //                         key: 'ExperimentalAuditSettings.Certificate',
+    //                         help_text: defineMessage({id: 'admin.audit_logging_experimental.certificate.help_text', defaultMessage: 'The certificate file used for audit logging encryption.'}),
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
+    //                         isHidden: it.not(it.licensedForFeature('Cloud')),
+    //                     },
+    //                 ],
+    //             },
+    //         },
+    //         custom_terms_of_service: {
+    //             url: 'compliance/custom_terms_of_service',
+    //             title: defineMessage({id: 'admin.sidebar.customTermsOfService', defaultMessage: 'Custom Terms of Service'}),
+    //             searchableStrings: customTermsOfServiceSearchableStrings,
+    //             isHidden: it.any(
+    //                 it.not(it.licensedForFeature('CustomTermsOfService')),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.COMPLIANCE.CUSTOM_TERMS_OF_SERVICE)),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.COMPLIANCE.CUSTOM_TERMS_OF_SERVICE)),
+    //             schema: {
+    //                 id: 'TermsOfServiceSettings',
+    //                 component: CustomTermsOfServiceSettings,
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(),
+    //         },
+    //         custom_terms_of_service_feature_discovery: {
+    //             url: 'compliance/custom_terms_of_service',
+    //             isDiscovery: true,
+    //             title: defineMessage({id: 'admin.sidebar.customTermsOfService', defaultMessage: 'Custom Terms of Service'}),
+    //             isHidden: it.any(
+    //                 it.licensedForFeature('CustomTermsOfService'),
+    //             ),
+    //             schema: {
+    //                 id: 'TermsOfServiceSettings',
+    //                 name: customTermsOfServiceMessages.termsOfServiceTitle,
+    //                 settings: [
+    //                     {
+    //                         type: 'custom',
+    //                         component: CustomTermsOfServiceFeatureDiscovery,
+    //                         key: 'CustomTermsOfServiceFeatureDiscovery',
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
+    //                     },
+    //                 ],
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.Enterprise),
+    //         },
+    //     },
+    // },
     experimental: {
         icon: (
             <FlaskOutlineIcon
