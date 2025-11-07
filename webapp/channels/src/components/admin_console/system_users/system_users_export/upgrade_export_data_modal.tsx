@@ -4,7 +4,6 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import useOpenPricingModal from 'components/common/hooks/useOpenPricingModal';
 import SetupSystemSvg from 'components/common/svg_images_components/setup_system';
 import ConfirmModalRedux from 'components/confirm_modal_redux';
 
@@ -15,12 +14,6 @@ type Props = {
 }
 
 export function UpgradeExportDataModal({onExited}: Props) {
-    const {openPricingModal, isAirGapped} = useOpenPricingModal();
-
-    const confirm = () => {
-        openPricingModal();
-    };
-
     const title = (
         <FormattedMessage
             id='upgrade_export_data_modal.title'
@@ -55,9 +48,9 @@ export function UpgradeExportDataModal({onExited}: Props) {
             title={title}
             message={message}
             confirmButtonText={viewPlansButton}
-            onConfirm={confirm}
+            onConfirm={() => console.log('UpgradeExportDataModal confirm, not plan modal')}
             onExited={onExited}
-            hideConfirm={isAirGapped}
+            hideConfirm={false}
         />
     );
 }

@@ -13,7 +13,6 @@ import {getLicense} from 'mattermost-redux/selectors/entities/general';
 
 import useGetUsage from 'components/common/hooks/useGetUsage';
 import useGetUsageDeltas from 'components/common/hooks/useGetUsageDeltas';
-import useOpenPricingModal from 'components/common/hooks/useOpenPricingModal';
 import AdminPanel from 'components/widgets/admin_console/admin_panel';
 import TeamIcon from 'components/widgets/team_icon/team_icon';
 import WithTooltip from 'components/with_tooltip';
@@ -36,7 +35,6 @@ export function TeamProfile({team, isArchived, onToggleArchive, isDisabled, save
     const usage = useGetUsage();
     const license = useSelector(getLicense);
     const intl = useIntl();
-    const {openPricingModal, isAirGapped} = useOpenPricingModal();
 
     const [overrideRestoreDisabled, setOverrideRestoreDisabled] = useState(false);
     const [restoreDisabled, setRestoreDisabled] = useState(usageDeltas.teams.teamsLoaded && usageDeltas.teams.active >= 0 && isArchived);
@@ -167,23 +165,6 @@ export function TeamProfile({team, isArchived, onToggleArchive, isDisabled, save
                     </div>
                     <div className='AdminChannelDetails_archiveContainer'>
                         {button()}
-                        {restoreDisabled && !isAirGapped &&
-                            <button
-                                onClick={openPricingModal}
-                                type='button'
-                                className={
-                                    classNames(
-                                        'btn',
-                                        'btn-secondary',
-                                        'upgrade-options-button',
-                                    )
-                                }
-                            >
-                                <FormattedMessage
-                                    id={'workspace_limits.teams_limit_reached.view_upgrade_options'}
-                                    defaultMessage={'View upgrade options'}
-                                />
-                            </button>}
                     </div>
                 </div>
             </div>

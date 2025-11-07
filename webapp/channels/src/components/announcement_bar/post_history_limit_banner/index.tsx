@@ -12,7 +12,6 @@ import {getCurrentUser, isCurrentUserSystemAdmin} from 'mattermost-redux/selecto
 
 import AnnouncementBar from 'components/announcement_bar/default_announcement_bar';
 import useGetServerLimits from 'components/common/hooks/useGetServerLimits';
-import useOpenPricingModal from 'components/common/hooks/useOpenPricingModal';
 
 import {Preferences, AnnouncementBarTypes} from 'utils/constants';
 
@@ -21,7 +20,6 @@ import './post_history_limit_banner.scss';
 const ONE_DAY_MS = 1000 * 60 * 60 * 24;
 
 const PostHistoryLimitBanner = () => {
-    const {openPricingModal} = useOpenPricingModal();
     const dispatch = useDispatch();
 
     const currentUser = useSelector(getCurrentUser);
@@ -47,7 +45,7 @@ const PostHistoryLimitBanner = () => {
 
     const handleUpgradeClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        openPricingModal();
+        console.log('PostHistoryLimitBanner handleUpgradeClick, not plan modal');
     }, []);
 
     const showBanner = useMemo(() => {

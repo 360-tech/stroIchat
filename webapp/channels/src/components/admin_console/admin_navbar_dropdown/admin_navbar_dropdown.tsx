@@ -10,7 +10,6 @@ import type {Team} from '@mattermost/types/teams';
 import * as GlobalActions from 'actions/global_actions';
 
 import AboutBuildModal from 'components/about_build_modal';
-import CommercialSupportModal from 'components/commercial_support_modal';
 import Menu from 'components/widgets/menu/menu';
 
 import {ModalIdentifiers} from 'utils/constants';
@@ -27,8 +26,6 @@ type Props = {
     actions: {
         deferNavigation: (onNavigationConfirmed: any) => any;
     };
-    isLicensed: boolean;
-    isCloud: boolean;
 };
 
 class AdminNavbarDropdown extends React.PureComponent<Props> {
@@ -42,7 +39,7 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
     };
 
     render(): JSX.Element {
-        const {locale, teams, siteName, isLicensed, isCloud} = this.props;
+        const {locale, teams, siteName} = this.props;
         const {formatMessage} = this.props.intl;
         const teamToRender = []; // Array of team components
         let switchTeams;
@@ -76,27 +73,7 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
             );
         }
 
-        let commercialSupport = (
-            <Menu.ItemExternalLink
-                url='https://mattermost.com/support/'
-                text={formatMessage({id: 'admin.nav.commercialSupport', defaultMessage: 'Commercial Support'})}
-            />
-        );
-
-        if (isLicensed) {
-            commercialSupport = (
-                <Menu.ItemToggleModalRedux
-                    modalId={ModalIdentifiers.COMMERCIAL_SUPPORT}
-                    dialogType={CommercialSupportModal}
-                    text={formatMessage({id: 'admin.nav.commercialSupport', defaultMessage: 'Commercial Support'})}
-                />
-            );
-        }
-
-        let adminGuideLink = 'https://docs.mattermost.com/guides/administration.html';
-        if (isCloud) {
-            adminGuideLink = 'https://docs.mattermost.com/guides/administration.html#cloud-workspace-management';
-        }
+        const adminGuideLink = 'https://docs.mattermost.com/guides/administration.html';
 
         return (
             <Menu ariaLabel={formatMessage({id: 'admin.nav.menuAriaLabel', defaultMessage: 'Admin Console Menu'})}>
@@ -109,11 +86,6 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
                         url={adminGuideLink}
                         text={formatMessage({id: 'admin.nav.administratorsGuide', defaultMessage: 'Administrator Guide'})}
                     />
-                    <Menu.ItemExternalLink
-                        url={'https://forum.mattermost.com/t/how-to-use-the-troubleshooting-forum/150'}
-                        text={formatMessage({id: 'admin.nav.troubleshootingForum', defaultMessage: 'Troubleshooting Forum'})}
-                    />
-                    {commercialSupport}
                     <Menu.ItemToggleModalRedux
                         modalId={ModalIdentifiers.ABOUT}
                         dialogType={AboutBuildModal}

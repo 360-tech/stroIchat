@@ -11,7 +11,6 @@ import ChannelInviteModal from 'components/channel_invite_modal';
 import ChannelMembersModal from 'components/channel_members_modal';
 import {useNotifyAdmin} from 'components/notify_admin_cta/notify_admin_cta';
 import PostMessagePreview from 'components/post_view/post_message_preview';
-import StartTrialFormModal from 'components/start_trial_form_modal';
 import ThreadViewer from 'components/threading/thread_viewer';
 import Timestamp from 'components/timestamp';
 import UserSettingsModal from 'components/user_settings/modal';
@@ -74,7 +73,6 @@ interface WindowWithLibraries {
         Avatar: typeof Avatar;
         imageURLForUser: typeof imageURLForUser;
         BotBadge: typeof BotTag;
-        StartTrialFormModal: typeof StartTrialFormModal;
         ThreadViewer: typeof ThreadViewer;
         PostMessagePreview: typeof PostMessagePreview;
         AdvancedTextEditor: typeof AdvancedTextEditor;
@@ -151,7 +149,6 @@ window.Components = {
     Avatar,
     imageURLForUser,
     BotBadge: BotTag,
-    StartTrialFormModal,
     ThreadViewer,
     PostMessagePreview,
     AdvancedTextEditor,

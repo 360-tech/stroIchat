@@ -410,7 +410,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 emailInvitationsEnabled={this.props.emailInvitationsEnabled}
                 onChangeUsersEmails={this.onChangeUsersEmails}
                 onUsersInputChange={this.onUsersInputChange}
-                isCloud={this.props.isCloud}
+                isCloud={false}
                 canAddUsers={this.props.canAddUsers}
                 canInviteGuests={this.props.canInviteGuests}
                 headerClass='InvitationModal__header'

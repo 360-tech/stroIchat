@@ -16,7 +16,6 @@ import RadioGroup from 'components/common/radio_group';
 import InvitationModal from 'components/invitation_modal';
 import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_indicator';
 
-import {FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS} from 'utils/cloud_utils';
 import {CloudProducts, LicenseSkus, ModalIdentifiers, MattermostFeatures} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
@@ -98,7 +97,7 @@ export default function InviteAs(props: Props) {
                     id: 'invite_modal.restricted_invite_guest.pre_trial_description',
                     defaultMessage: 'Collaborate with users outside of your organization while tightly controlling their access to channels and team members. Get the full experience of Enterprise when you start a free, {trialLength} day trial.',
                 },
-                {trialLength: FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS},
+                {trialLength: 99999},
                 )}
                 titleAdminPostTrial={formatMessage({
                     id: 'invite_modal.restricted_invite_guest.post_trial_title',

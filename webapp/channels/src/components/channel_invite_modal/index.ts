@@ -81,9 +81,8 @@ function makeMapStateToProps(initialState: GlobalState, initialProps: OwnProps) 
 
         const guestAccountsEnabled = config.EnableGuestAccounts === 'true';
         const emailInvitationsEnabled = config.EnableEmailInvitations === 'true';
-        const isLicensed = license && license.IsLicensed === 'true';
         const isGroupConstrained = Boolean(currentTeam?.group_constrained);
-        const canInviteGuests = !isGroupConstrained && isLicensed && guestAccountsEnabled && haveICurrentTeamPermission(state, Permissions.INVITE_GUEST);
+        const canInviteGuests = !isGroupConstrained && guestAccountsEnabled && haveICurrentTeamPermission(state, Permissions.INVITE_GUEST);
         const enableCustomUserGroups = isCustomGroupsEnabled(state);
 
         const isGroupsEnabled = enableCustomUserGroups || (license?.IsLicensed === 'true' && license?.LDAPGroups === 'true');

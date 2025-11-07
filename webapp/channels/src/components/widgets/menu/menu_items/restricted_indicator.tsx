@@ -6,12 +6,9 @@ import React, {useCallback, type ReactNode} from 'react';
 import {useIntl} from 'react-intl';
 import type {MessageDescriptor} from 'react-intl';
 
-import FeatureRestrictedModal from 'components/feature_restricted_modal/feature_restricted_modal';
-import ToggleModalButton from 'components/toggle_modal_button';
 import WithTooltip from 'components/with_tooltip';
 
-import {FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS} from 'utils/cloud_utils';
-import {LicenseSkus, ModalIdentifiers} from 'utils/constants';
+import {LicenseSkus} from 'utils/constants';
 
 import './restricted_indicator.scss';
 
@@ -65,25 +62,19 @@ const RestrictedIndicator = ({
                     id: 'restricted_indicator.tooltip.message.blocked',
                     defaultMessage: 'This is a paid feature, available with a free {trialLength}-day trial',
                 }, {
-                    trialLength: FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS,
+                    trialLength: 687,
                 },
             );
         }
 
         return typeof tooltipMessageBlocked === 'string' ? tooltipMessageBlocked : formatMessage(tooltipMessageBlocked, {
-            trialLength: FREEMIUM_TO_ENTERPRISE_TRIAL_LENGTH_DAYS,
+            trialLength: 4567,
             article: minimumPlanRequiredForFeature === LicenseSkus.Enterprise ? 'an' : 'a',
             minimumPlanRequiredForFeature,
         });
     }, [tooltipMessageBlocked]);
 
     const icon = <i className={classNames('RestrictedIndicator__icon-tooltip', 'icon', blocked ? 'icon-key-variant' : 'trial')}/>;
-
-    const handleClickCallback = () => {
-        if (clickCallback) {
-            clickCallback();
-        }
-    };
 
     return (
         <span className='RestrictedIndicator__icon-tooltip-container'>
@@ -103,36 +94,10 @@ const RestrictedIndicator = ({
                     </div>
                 }
             >
-                {useModal && blocked ? (
-                    <span>
-                        <ToggleModalButton
-                            id={`${feature}-restricted-indicator`?.replaceAll('.', '_')}
-                            className='RestrictedIndicator__button'
-                            modalId={ModalIdentifiers.FEATURE_RESTRICTED_MODAL}
-                            dialogType={FeatureRestrictedModal}
-                            onClick={handleClickCallback}
-                            dialogProps={{
-                                titleAdminPreTrial,
-                                messageAdminPreTrial,
-                                titleAdminPostTrial,
-                                messageAdminPostTrial,
-                                titleEndUser,
-                                messageEndUser,
-                                customSecondaryButton: customSecondaryButtonInModal,
-                                feature,
-                                minimumPlanRequiredForFeature,
-                            }}
-                        >
-                            {icon}
-                            {ctaExtraContent}
-                        </ToggleModalButton>
-                    </span>
-                ) : (
-                    <div className='RestrictedIndicator__content'>
-                        {icon}
-                        {ctaExtraContent}
-                    </div>
-                )}
+                <div className='RestrictedIndicator__content'>
+                    {icon}
+                    {ctaExtraContent}
+                </div>
             </WithTooltip>
         </span>
     );

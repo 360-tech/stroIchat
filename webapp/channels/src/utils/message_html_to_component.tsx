@@ -34,7 +34,6 @@ export type Options = Partial<{
     emoji: boolean;
     messageMetadata: any;
     images: boolean;
-    atPlanMentions: boolean;
     channelId: string;
     channelIsShared: boolean;
 
@@ -160,22 +159,6 @@ export default function messageHtmlToComponent(html: string, options: Options = 
                         userIds={options.userIds || []}
                         messageMetadata={options.messageMetadata}
                         text={mentionName}
-                    />);
-                return sumOfMembersMention;
-            },
-        });
-    }
-
-    if (options.atPlanMentions) {
-        const mentionAttrib = 'data-plan-mention';
-        processingInstructions.push({
-            replaceChildren: true,
-            shouldProcessNode: (node: any) => node.attribs && node.attribs[mentionAttrib],
-            processNode: (node: any) => {
-                const mentionName = node.attribs[mentionAttrib];
-                const sumOfMembersMention = (
-                    <AtPlanMention
-                        plan={mentionName}
                     />);
                 return sumOfMembersMention;
             },

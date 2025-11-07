@@ -689,7 +689,7 @@ const ChannelInviteModalComponent = (props: Props) => {
                         teamId={channel.team_id}
                         users={usersNotInTeam}
                     />
-                    {(props.emailInvitationsEnabled && props.canInviteGuests && !channel.policy_enforced) && inviteGuestLink}
+                    {(props.emailInvitationsEnabled && !channel.policy_enforced) && inviteGuestLink}
                 </div>
             </div>
         </GenericModal>

@@ -18,8 +18,6 @@ import type {GlobalState} from '@mattermost/types/store';
 
 import {getLicense, getServerVersion} from 'mattermost-redux/selectors/entities/general';
 
-import useOpenSalesLink from 'components/common/hooks/useOpenSalesLink';
-
 import {ConsolePages} from 'utils/constants';
 
 import {ItemStatus} from './dashboard.type';
@@ -31,7 +29,7 @@ import {runEaseOfUseChecks} from './dashboard_checks/easy_management';
 import {runPerformanceChecks} from './dashboard_checks/performance';
 import {runUpdateChecks} from './dashboard_checks/updates';
 
-import {daysToLicenseExpire, getIsStarterLicense, isEnterpriseLicense} from '../../../utils/license_utils';
+import {daysToLicenseExpire} from '../../../utils/license_utils';
 
 export const impactModifiers: Record<ItemStatus, number> = {
     [ItemStatus.NONE]: 1,
@@ -231,16 +229,14 @@ const useMetricsData = (
 
     const isLicensed = license?.IsLicensed === 'true' && daysUntilExpiration >= 0;
 
-    const isCloud = license?.Cloud === 'true';
-    const isEnterprise = isEnterpriseLicense(license);
-    const isStarterLicense = getIsStarterLicense(license);
-
-    const [, contactSalesLink] = useOpenSalesLink();
+    const isCloud = false;
+    const isEnterprise = false;
+    const isStarterLicense = false;
 
     const trialOrEnterpriseCtaConfig = useMemo(() => ({
-        configUrl: canStartTrial ? ConsolePages.LICENSE : contactSalesLink,
+        configUrl: canStartTrial ? ConsolePages.LICENSE : 'contactSalesLink',
         configText: canStartTrial ? formatMessage({id: 'admin.reporting.workspace_optimization.cta.startTrial', defaultMessage: 'Start trial'}) : formatMessage({id: 'admin.reporting.workspace_optimization.cta.upgradeLicense', defaultMessage: 'Contact sales'}),
-    }), [canStartTrial, contactSalesLink, formatMessage]);
+    }), [canStartTrial, formatMessage]);
 
     const options: Options = useMemo(() => ({
         isLicensed,

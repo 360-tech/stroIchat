@@ -4,7 +4,6 @@
 import React, {memo} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
-import ContactUsButton from 'components/announcement_bar/contact_sales/contact_us';
 import SetupSystemSvg from 'components/common/svg_images_components/setup_system';
 
 const StarterRightPanel = () => {
@@ -66,12 +65,6 @@ const StarterRightPanel = () => {
                         </div>
                     );
                 })}
-            </div>
-            <div className='purchase_buttons'>
-                <ContactUsButton
-                    eventID='post_trial_contact_sales'
-                    customClass='btn-tertiary btn-full'
-                />
             </div>
         </div>
     );

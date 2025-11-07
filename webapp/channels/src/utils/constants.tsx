@@ -448,8 +448,6 @@ export const ModalIdentifiers = {
     CONFIRM_SWITCH_TO_YEARLY: 'confirm_switch_to_yearly',
     EXPANSION_IN_PROGRESS: 'expansion_in_progress',
     SELF_HOSTED_EXPANSION: 'self_hosted_expansion',
-    START_TRIAL_FORM_MODAL: 'start_trial_form_modal',
-    START_TRIAL_FORM_MODAL_RESULT: 'start_trial_form_modal_result',
     MOVE_THREAD_MODAL: 'move_thread_modal',
     CONVERT_GM_TO_CHANNEL: 'convert_gm_to_channel',
     IP_FILTERING_ADD_EDIT_MODAL: 'ip_filtering_add_edit_modal',
@@ -713,12 +711,8 @@ export const TutorialSteps = {
     MENU_POPOVER: 3,
     PRODUCT_SWITCHER: 4,
     SETTINGS: 5,
-    START_TRIAL: 6,
     FINISHED: 999,
 };
-
-// note: add steps in same order as the keys in TutorialSteps above
-export const AdminTutorialSteps = ['START_TRIAL'];
 
 export const CrtTutorialSteps = {
     WELCOME_POPOVER: 0,
@@ -1496,7 +1490,6 @@ export const Constants = {
     ActionTypes,
     UserStatuses,
     TutorialSteps,
-    AdminTutorialSteps,
     CrtTutorialSteps,
     CrtTutorialTriggerSteps,
     CrtThreadPaneSteps,

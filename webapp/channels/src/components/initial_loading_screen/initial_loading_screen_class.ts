@@ -2,9 +2,8 @@
 // See LICENSE.txt for license information.
 
 import {Measure, measureAndReport} from 'utils/performance_telemetry';
-import {isDesktopApp} from 'utils/user_agent';
 
-const ANIMATION_CLASS_FOR_MATTERMOST_LOGO_HIDE = 'LoadingAnimation__compass-shrink';
+const ANIMATION_CLASS_FOR_LOGO_HIDE = 'LoadingAnimation__compass-shrink';
 const ANIMATION_CLASS_FOR_COMPLETE_LOADER_HIDE = 'LoadingAnimation__shrink';
 
 const LOADING_CLASS_FOR_SCREEN = 'LoadingScreen LoadingScreen--darkMode';
@@ -35,12 +34,6 @@ export class InitialLoadingScreenClass {
     }
 
     private init() {
-        if (isDesktopApp()) {
-            // Let Mattermost desktop handle the loading screen
-            this.destroy();
-            return;
-        }
-
         this.addAnimationEndListener();
 
         // Starting automatically in the constructor instead of waiting for call from the code base
@@ -53,7 +46,7 @@ export class InitialLoadingScreenClass {
             return;
         }
 
-        if (event.animationName === ANIMATION_CLASS_FOR_MATTERMOST_LOGO_HIDE || event.animationName === ANIMATION_CLASS_FOR_COMPLETE_LOADER_HIDE) {
+        if (event.animationName === ANIMATION_CLASS_FOR_LOGO_HIDE || event.animationName === ANIMATION_CLASS_FOR_COMPLETE_LOADER_HIDE) {
             if (!this.isLoading) {
                 this.loadingAnimationElement.className = STATIC_CLASS_FOR_ANIMATION;
 

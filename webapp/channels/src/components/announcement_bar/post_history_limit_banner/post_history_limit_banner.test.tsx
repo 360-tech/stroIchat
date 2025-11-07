@@ -31,13 +31,7 @@ jest.mock('components/common/hooks/useGetServerLimits', () => ({
     default: jest.fn(),
 }));
 
-jest.mock('components/common/hooks/useOpenPricingModal', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}));
-
 const mockUseGetServerLimits = require('components/common/hooks/useGetServerLimits').default;
-const mockUseOpenPricingModal = require('components/common/hooks/useOpenPricingModal').default;
 const mockSavePreferences = savePreferences as jest.MockedFunction<typeof savePreferences>;
 
 const email = 'test@mattermost.com';
@@ -57,7 +51,6 @@ describe('components/announcement_bar/PostHistoryLimitBanner', () => {
         jest.clearAllMocks();
 
         mockOpenPricingModal = jest.fn();
-        mockUseOpenPricingModal.mockReturnValue({openPricingModal: mockOpenPricingModal});
 
         mockDispatch = jest.fn();
         require('react-redux').useDispatch.mockReturnValue(mockDispatch);

@@ -15,7 +15,6 @@ import {getCurrentUser, isCurrentUserSystemAdmin} from 'mattermost-redux/selecto
 
 import AnnouncementBar from 'components/announcement_bar/default_announcement_bar';
 import {useExpandOverageUsersCheck} from 'components/common/hooks/useExpandOverageUsersCheck';
-import useOpenSalesLink from 'components/common/hooks/useOpenSalesLink';
 
 import {StatTypes, Preferences, AnnouncementBarTypes} from 'utils/constants';
 import {calculateOverageUserActivated} from 'utils/overage_team';
@@ -34,7 +33,6 @@ const adminHasDismissed = ({preferenceName, overagePreferences}: AdminHasDismiss
 };
 
 const OverageUsersBanner = () => {
-    const [openContactSales] = useOpenSalesLink();
     const dispatch = useDispatch();
     const stats = useSelector((state: GlobalState) => state.entities.admin.analytics) || {};
     const isAdmin = useSelector(isCurrentUserSystemAdmin);
@@ -72,13 +70,6 @@ const OverageUsersBanner = () => {
         }]));
     };
 
-    const handleContactSalesClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-
-        openContactSales();
-    };
-
-    const handleClick = handleContactSalesClick;
 
     if (!hasPermission || adminHasDismissed({overagePreferences, preferenceName})) {
         return null;
@@ -97,7 +88,7 @@ const OverageUsersBanner = () => {
         <AnnouncementBar
             type={isBetween5PercerntAnd10PercentPurchasedSeats ? AnnouncementBarTypes.ADVISOR : AnnouncementBarTypes.CRITICAL}
             showCloseButton={true}
-            onButtonClick={handleClick}
+            onButtonClick={() => console.log('AnnouncementBar handleClick, not sales link')}
             modalButtonText={cta}
             message={message}
             showLinkAsButton={true}

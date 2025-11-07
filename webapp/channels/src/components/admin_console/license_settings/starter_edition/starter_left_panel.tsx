@@ -3,9 +3,7 @@
 
 import React from 'react';
 import type {RefObject} from 'react';
-import {FormattedMessage, defineMessages, useIntl} from 'react-intl';
-
-import useOpenPricingModal from 'components/common/hooks/useOpenPricingModal';
+import {FormattedMessage, defineMessages} from 'react-intl';
 
 import {FileTypes} from 'utils/constants';
 
@@ -29,25 +27,8 @@ const StarterLeftPanel: React.FC<StarterEditionProps> = ({
     fileInputRef,
     handleChange,
 }: StarterEditionProps) => {
-    const {openPricingModal, isAirGapped} = useOpenPricingModal();
-    const intl = useIntl();
-
-    const viewPlansButton = isAirGapped ? null : (
-        <button
-            id='starter_edition_view_plans'
-            onClick={openPricingModal}
-            className='btn btn-tertiary btn-sm PlanDetails__viewPlansButton'
-        >
-            {intl.formatMessage({
-                id: 'workspace_limits.menu_limit.view_plans',
-                defaultMessage: 'View plans',
-            })}
-        </button>
-    );
-
     return (
         <div className='StarterLeftPanel'>
-            {viewPlansButton}
             <div className='title'>
                 <FormattedMessage
                     id='admin.license.freeEdition.title'

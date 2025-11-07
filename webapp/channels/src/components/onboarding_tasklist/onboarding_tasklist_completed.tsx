@@ -3,20 +3,15 @@
 
 import React, {useEffect} from 'react';
 import {FormattedMessage} from 'react-intl';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {CSSTransition} from 'react-transition-group';
 import styled from 'styled-components';
 
-import type {GlobalState} from '@mattermost/types/store';
-
 import {getPrevTrialLicense} from 'mattermost-redux/actions/admin';
-import {getLicense} from 'mattermost-redux/selectors/entities/general';
 
 import ExternalLink from 'components/external_link';
-import StartTrialBtn from 'components/learn_more_trial_modal/start_trial_btn';
 
 import completedImg from 'images/completed.svg';
-import {AboutLinks, LicenseLinks} from 'utils/constants';
 
 const CompletedWrapper = styled.div`
     display: flex;
@@ -134,22 +129,6 @@ const Completed = (props: Props): JSX.Element => {
         dispatch(getPrevTrialLicense());
     }, []);
 
-    const prevTrialLicense = useSelector((state: GlobalState) => state.entities.admin.prevTrialLicense);
-    const license = useSelector(getLicense);
-    const isPrevLicensed = prevTrialLicense?.IsLicensed;
-    const isCurrentLicensed = license?.IsLicensed;
-
-    // Cloud conditions
-    const isCloud = license?.Cloud === 'true';
-
-    // Show this CTA if the instance is currently not licensed and has never had a trial license loaded before
-    // also check that the user is a system admin (this after the onboarding task list is shown to all users)
-    const selfHostedTrialCondition = (isCurrentLicensed === 'false' && isPrevLicensed === 'false') &&
-        (props.isCurrentUserSystemAdmin || props.isFirstAdmin);
-
-    // if Cloud, don't show
-    const showStartTrialBtn = selfHostedTrialCondition && !isCloud;
-
     return (
         <>
             <CSSTransition
@@ -175,43 +154,15 @@ const Completed = (props: Props): JSX.Element => {
                         />
                     </span>
 
-                    {showStartTrialBtn ? (
-                        <>
-                            <span className='start-trial-text'>
-                                <FormattedMessage
-                                    id='onboardingTask.checklist.higher_security_features'
-                                    defaultMessage='Interested in our higher-security features?'
-                                /> <br/>
-                                <FormattedMessage
-                                    id='onboardingTask.checklist.start_enterprise_now'
-                                    defaultMessage='Start your free Enterprise trial now!'
-                                />
-                            </span>
-                            <StartTrialBtn
-                                onClick={dismissAction}
-                            />
-                            <button
-                                onClick={dismissAction}
-                                className={'no-thanks-link style-link'}
-                            >
-                                <FormattedMessage
-                                    id={'onboardingTask.checklist.no_thanks'}
-                                    defaultMessage='No, thanks'
-                                />
-                            </button>
-                        </>
-
-                    ) : (
-                        <button
-                            onClick={dismissAction}
-                            className='got-it-button'
-                        >
-                            <FormattedMessage
-                                id={'collapsed_reply_threads_modal.confirm'}
-                                defaultMessage='Got it'
-                            />
-                        </button>
-                    )}
+                    <button
+                        onClick={dismissAction}
+                        className='got-it-button'
+                    >
+                        <FormattedMessage
+                            id={'collapsed_reply_threads_modal.confirm'}
+                            defaultMessage='Got it'
+                        />
+                    </button>
                     <div className='download-apps'>
                         <span>
                             <FormattedMessage
@@ -230,32 +181,6 @@ const Completed = (props: Props): JSX.Element => {
                             />
                         </span>
                     </div>
-                    {showStartTrialBtn && <div className='disclaimer'>
-                        <span>
-                            <FormattedMessage
-                                id='onboardingTask.checklist.disclaimer'
-                                defaultMessage='By clicking “Start trial”, I agree to the <linkEvaluation>Mattermost Software and Services License Agreement</linkEvaluation>, <linkPrivacy>privacy policy</linkPrivacy> and receiving product emails.'
-                                values={{
-                                    linkEvaluation: (msg: React.ReactNode) => (
-                                        <ExternalLink
-                                            href={LicenseLinks.SOFTWARE_SERVICES_LICENSE_AGREEMENT}
-                                            location='onboarding_tasklist_completed'
-                                        >
-                                            {msg}
-                                        </ExternalLink>
-                                    ),
-                                    linkPrivacy: (msg: React.ReactNode) => (
-                                        <ExternalLink
-                                            href={AboutLinks.PRIVACY_POLICY}
-                                            location='onboarding_tasklist_completed'
-                                        >
-                                            {msg}
-                                        </ExternalLink>
-                                    ),
-                                }}
-                            />
-                        </span>
-                    </div>}
                 </CompletedWrapper>
             </CSSTransition>
         </>

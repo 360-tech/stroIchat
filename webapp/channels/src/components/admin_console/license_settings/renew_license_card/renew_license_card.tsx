@@ -8,7 +8,6 @@ import {FormattedMessage} from 'react-intl';
 import type {ClientLicense} from '@mattermost/types/config';
 
 import AlertBanner from 'components/alert_banner';
-import ContactUsButton from 'components/announcement_bar/contact_sales/contact_us';
 
 import {getSkuDisplayName} from 'utils/subscription';
 import {getRemainingDaysFromFutureTimestamp} from 'utils/utils';
@@ -25,14 +24,6 @@ const RenewLicenseCard: React.FC<RenewLicenseCardProps> = ({license, totalUsers,
     let bannerType: 'info' | 'warning' | 'danger' = 'info';
     const endOfLicense = moment.utc(new Date(parseInt(license?.ExpiresAt, 10)));
     const daysToEndLicense = getRemainingDaysFromFutureTimestamp(parseInt(license?.ExpiresAt, 10));
-    const contactSalesBtn = (
-        <div className='purchase-card'>
-            <ContactUsButton
-                eventID='post_trial_contact_sales'
-                customClass='btn-primary'
-            />
-        </div>
-    );
 
     let cardTitle = (
         <FormattedMessage
@@ -90,9 +81,6 @@ const RenewLicenseCard: React.FC<RenewLicenseCardProps> = ({license, totalUsers,
                     />
                 </strong>
                 {totalUsers}
-            </div>
-            <div className='RenewLicenseCard__buttons'>
-                {contactSalesBtn}
             </div>
         </div>
     );

@@ -12,18 +12,15 @@ import type {PreferenceType} from '@mattermost/types/preferences';
 
 import type {ActionResult} from 'mattermost-redux/types/actions';
 
-import PurchaseLink from 'components/announcement_bar/purchase_link/purchase_link';
 import ExternalLink from 'components/external_link';
 
 import alertIcon from 'images/icons/round-white-info-icon.svg';
 import warningIcon from 'images/icons/warning-icon.svg';
-import {AnnouncementBarTypes, AnnouncementBarMessages, Preferences, ConfigurationBanners, Constants} from 'utils/constants';
-import {daysToLicenseExpire, isLicenseExpired, isLicenseExpiring, isLicensePastGracePeriod, isTrialLicense} from 'utils/license_utils';
+import {AnnouncementBarTypes, AnnouncementBarMessages, Preferences, ConfigurationBanners} from 'utils/constants';
+import {isLicenseExpired, isLicenseExpiring, isLicensePastGracePeriod, isTrialLicense} from 'utils/license_utils';
 import {getSkuDisplayName} from 'utils/subscription';
-import {getViewportSize} from 'utils/utils';
 
 import AnnouncementBar from '../default_announcement_bar';
-import RenewalLink from '../renewal_link/';
 import TextDismissableBar from '../text_dismissable_bar';
 
 type Props = {
@@ -63,12 +60,6 @@ const ConfigurationAnnouncementBar = (props: Props) => {
         }]);
     };
 
-    const dismissExpiringTrialLicense = () => {
-        props.actions.dismissNotice(AnnouncementBarMessages.TRIAL_LICENSE_EXPIRING);
-    };
-
-    const renewLinkTelemetry = {success: 'renew_license_banner_success', error: 'renew_license_banner_fail'};
-
     // System administrators
     if (props.canViewSystemErrors) {
         if ((isLicensePastGracePeriod(props.license) || isLicenseExpired(props.license)) && !props.dismissedExpiredLicense) {
@@ -91,85 +82,11 @@ const ConfigurationAnnouncementBar = (props: Props) => {
                     message={
                         <div className='announcement-bar__configuration'>
                             {message}
-                            <RenewalLink
-                                className='btn btn-tertiary btn-xs btn-inverted annnouncementBar__renewLicense'
-                                telemetryInfo={renewLinkTelemetry}
-                            />
                         </div>
                     }
                     tooltipMsg={message}
                     handleClose={dismissExpiredLicense}
                     showCloseButton={true}
-                />
-            );
-        }
-
-        const daysUntilLicenseExpires = daysToLicenseExpire(props.license);
-        if (isTrialLicense(props.license) && typeof daysUntilLicenseExpires !== 'undefined' && daysUntilLicenseExpires <= 14 && !props.dismissedExpiringTrialLicense) {
-            const purchaseLicense = (
-                <PurchaseLink
-                    className='btn btn-tertiary btn-xs btn-inverted annnouncementBar__purchaseNow'
-                    buttonTextElement={
-                        <FormattedMessage
-                            id='announcement_bar.error.purchase_a_license_now'
-                            defaultMessage='Purchase a License Now'
-                        />
-                    }
-                />
-            );
-
-            let message = (
-                <>
-                    <img
-                        className='advisor-icon'
-                        src={alertIcon}
-                    />
-                    <FormattedMessage
-                        id='announcement_bar.error.trial_license_expiring'
-                        defaultMessage='There are {days} days left on your free trial.'
-                        tagName='strong'
-                        values={{
-                            days: daysUntilLicenseExpires,
-                        }}
-                    />
-                </>
-            );
-
-            let announcementBarType = AnnouncementBarTypes.ANNOUNCEMENT;
-
-            const {w: width} = getViewportSize();
-            if (daysUntilLicenseExpires < 1) {
-                const viewportBasedMessage = width < Constants.MOBILE_SCREEN_WIDTH ? formatMessage({
-                    id: 'announcement_bar.error.trial_license_expiring_last_day.short',
-                    defaultMessage: 'This is the last day of your free trial.'},
-                ) : formatMessage({
-                    id: 'announcement_bar.error.trial_license_expiring_last_day',
-                    defaultMessage: 'This is the last day of your free trial. Purchase a license now to continue using Mattermost Professional and Enterprise features.',
-                });
-                message = (
-                    <>
-                        <img
-                            className='advisor-icon'
-                            src={warningIcon}
-                        />
-                        {viewportBasedMessage}
-                    </>
-                );
-                announcementBarType = AnnouncementBarTypes.CRITICAL;
-            }
-
-            return (
-                <AnnouncementBar
-                    showCloseButton={true}
-                    handleClose={dismissExpiringTrialLicense}
-                    type={announcementBarType}
-                    message={
-                        <div className='announcement-bar__configuration'>
-                            {message}
-                            {purchaseLicense}
-                        </div>
-                    }
-                    tooltipMsg={message}
                 />
             );
         }
@@ -197,10 +114,6 @@ const ConfigurationAnnouncementBar = (props: Props) => {
                     message={
                         <div className='announcement-bar__configuration'>
                             {message}
-                            <RenewalLink
-                                className='btn btn-tertiary btn-xs btn-inverted annnouncementBar__renewLicense'
-                                telemetryInfo={renewLinkTelemetry}
-                            />
                         </div>
                     }
                     tooltipMsg={message}

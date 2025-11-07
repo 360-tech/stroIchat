@@ -14,7 +14,7 @@ const GuestAccessFeatureDiscovery: React.FC = () => {
     return (
         <FeatureDiscovery
             featureName='guest_access'
-            minimumSKURequiredForFeature={LicenseSkus.Professional}
+            minimumSKURequiredForFeature={LicenseSkus.Starter}
             title={defineMessage({
                 id: 'admin.guest_access_feature_discovery.title',
                 defaultMessage: 'Enable guest accounts with Mattermost Professional',

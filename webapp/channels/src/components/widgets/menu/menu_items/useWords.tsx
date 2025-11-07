@@ -6,7 +6,6 @@ import type {ReactNode} from 'react';
 import {defineMessage, useIntl} from 'react-intl';
 
 import type {LimitSummary} from 'components/common/hooks/useGetHighestThresholdCloudLimit';
-import useOpenPricingModal from 'components/common/hooks/useOpenPricingModal';
 import NotifyAdminCTA from 'components/notify_admin_cta/notify_admin_cta';
 
 import {MattermostFeatures, LicenseSkus} from 'utils/constants';
@@ -20,7 +19,6 @@ interface Words {
 
 export default function useWords(highestLimit: LimitSummary | false, isAdminUser: boolean): Words | false {
     const intl = useIntl();
-    const {openPricingModal, isAirGapped} = useOpenPricingModal();
     if (!highestLimit) {
         return false;
     }
@@ -41,14 +39,10 @@ export default function useWords(highestLimit: LimitSummary | false, isAdminUser
     const values = {
         callToAction,
         a: (chunks: React.ReactNode | React.ReactNodeArray) => {
-            if (isAirGapped) {
-                // Return plain text if air-gapped
-                return <>{chunks}</>;
-            }
             return (
                 <a
                     id='view_plans_cta'
-                    onClick={openPricingModal}
+                    onClick={() => console.log('useWords handleClick, not plan modal')}
                 >
                     {chunks}
                 </a>

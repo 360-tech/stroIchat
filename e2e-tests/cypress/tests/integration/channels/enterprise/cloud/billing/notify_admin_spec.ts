@@ -255,17 +255,6 @@ function assertUpgradeMessageButton(onlyProfessionalFeatures?: boolean) {
     }
 }
 
-function assertTrialMessageButton() {
-    cy.get('#learn_more_about_trial').contains('Learn more about trial');
-    cy.get('#learn_more_about_trial').click();
-    cy.get('.LearnMoreTrialModal').should('exist').then(() => {
-        cy.get('.close').click();
-    });
-
-    cy.findByText('View upgrade options').click();
-    cy.get('#pricingModal').should('exist');
-}
-
 function testTrialNotifications(subscription, limits) {
     let myTeam;
     let myChannel;
@@ -312,12 +301,6 @@ function testTrialNotifications(subscription, limits) {
     cy.then(() => {
         // # Manually trigger saved notifications
         triggerNotifications(myUrl, true);
-    });
-
-    cy.then(() => {
-        assertNotification('mattermost.feature.all_professional', 'Professional plan', TOTAL, ALL_PROFESSIONAL_FEATURES_REQUESTS, myTeam.name, true);
-        assertNotification('mattermost.feature.all_enterprise', 'Enterprise plan', TOTAL, ALL_ENTERPRISE_FEATURES_REQUESTS, myTeam.name, true);
-        assertTrialMessageButton();
     });
 
     deletePost();

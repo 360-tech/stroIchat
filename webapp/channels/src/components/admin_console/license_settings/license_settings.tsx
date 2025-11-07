@@ -21,8 +21,6 @@ import {isLicenseExpired, isLicenseExpiring, isTrialLicense, licenseSKUWithFirst
 
 import type {ModalData} from 'types/actions';
 
-import EnterpriseEditionLeftPanel, {messages as enterpriseEditionLeftPanelMessages} from './enterprise_edition/enterprise_edition_left_panel';
-import EnterpriseEditionRightPanel from './enterprise_edition/enterprise_edition_right_panel';
 import ConfirmLicenseRemovalModal from './modals/confirm_license_removal_modal';
 import EELicenseModal from './modals/ee_license_modal';
 import UploadLicenseModal from './modals/upload_license_modal';
@@ -31,7 +29,6 @@ import StarterLeftPanel, {messages as licenseSettingsStarterEditionMessages} fro
 import StarterRightPanel from './starter_edition/starter_right_panel';
 import TeamEditionLeftPanel from './team_edition/team_edition_left_panel';
 import TeamEditionRightPanel from './team_edition/team_edition_right_panel';
-import TrialBanner from './trial_banner/trial_banner';
 import TrialLicenseCard from './trial_license_card/trial_license_card';
 import UserSeatAlertBanner from './user_seat_alert_banner';
 
@@ -71,7 +68,6 @@ const messages = defineMessages({
 
 export const searchableStrings = [
     licenseSettingsStarterEditionMessages.key,
-    enterpriseEditionLeftPanelMessages.keyRemove,
     messages.title,
 ];
 
@@ -282,7 +278,7 @@ export default class LicenseSettings extends React.PureComponent<Props, State> {
     ));
 
     render() {
-        const {license, upgradedFromTE, isDisabled} = this.props;
+        const {license} = this.props;
 
         let leftPanel = null;
         let rightPanel = null;
@@ -310,28 +306,9 @@ export default class LicenseSettings extends React.PureComponent<Props, State> {
             );
         } else if (license.IsLicensed === 'true') {
             // Note: DO NOT LOCALISE THESE STRINGS. Legally we can not since the license is in English.
-            leftPanel = (
-                <EnterpriseEditionLeftPanel
-                    openEELicenseModal={this.openEELicenseModal}
-                    upgradedFromTE={upgradedFromTE}
-                    license={license}
-                    isTrialLicense={isTrialLicense(license)}
-                    handleRemove={this.confirmLicenseRemoval}
-                    isDisabled={isDisabled}
-                    removing={this.state.removing}
-                    fileInputRef={this.fileInputRef}
-                    handleChange={this.handleChange}
-                    statsActiveUsers={this.props.totalUsers || 0}
-                    isLicenseSetByEnvVar={Boolean(this.props.environmentConfig?.ServiceSettings?.LicenseFileLocation)}
-                />
-            );
+            leftPanel = null;
 
-            rightPanel = (
-                <EnterpriseEditionRightPanel
-                    isTrialLicense={isTrialLicense(license)}
-                    license={license}
-                />
-            );
+            rightPanel = null;
         } else {
             // Note: DO NOT LOCALISE THESE STRINGS. Legally we can not since the license is in English.
             // This is Mattermost Starter (Already downloaded the binary but no license has been set, or ended the trial period)
@@ -363,24 +340,6 @@ export default class LicenseSettings extends React.PureComponent<Props, State> {
                                 totalUsers={this.props.totalUsers}
                                 location='license_settings'
                             />
-                            {!this.state.clickNormalUpgradeBtn && (license.IsLicensed !== 'true') &&
-                                this.props.prevTrialLicense?.IsLicensed !== 'true' &&
-                                <TrialBanner
-                                    isDisabled={isDisabled}
-                                    gettingTrialResponseCode={this.state.gettingTrialResponseCode}
-                                    gettingTrialError={this.state.gettingTrialError}
-                                    gettingTrial={this.state.gettingTrial}
-                                    enterpriseReady={this.props.enterpriseReady}
-                                    upgradingPercentage={this.state.upgradingPercentage}
-                                    handleUpgrade={this.handleUpgrade}
-                                    upgradeError={this.state.upgradeError}
-                                    restartError={this.state.restartError}
-                                    handleRestart={this.handleRestart}
-                                    restarting={this.state.restarting}
-                                    openEEModal={this.openEELicenseModal}
-                                    upgradeDisabled={this.state.upgradeDisabled}
-                                />
-                            }
                             {this.renewLicenseCard()}
                         </div>
                         <div className='top-wrapper'>

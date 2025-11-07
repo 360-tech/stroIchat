@@ -11,8 +11,7 @@ import {CloseIcon, PlaylistCheckIcon} from '@mattermost/compass-icons/components
 
 import {getPrevTrialLicense} from 'mattermost-redux/actions/admin';
 import {getMyPreferences, savePreferences} from 'mattermost-redux/actions/preferences';
-import {getCloudSubscription} from 'mattermost-redux/selectors/entities/cloud';
-import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {
     getBool,
     getMyPreferences as getMyPreferencesSelector,
@@ -124,14 +123,12 @@ const Button = styled.button<{open: boolean}>(({open}) => {
     `;
 });
 
+const isCloud = false;
+const isCloudPreview = false;
 const OnBoardingTaskList = (): JSX.Element | null => {
     const {formatMessage} = useIntl();
     const location = useLocation();
     const hasPreferences = useSelector((state: GlobalState) => Object.keys(getMyPreferencesSelector(state)).length !== 0);
-    const subscription = useSelector(getCloudSubscription);
-    const license = useSelector(getLicense);
-    const isCloud = license?.Cloud === 'true';
-    const isCloudPreview = subscription?.is_cloud_preview === true;
 
     useEffect(() => {
         dispatch(getPrevTrialLicense());

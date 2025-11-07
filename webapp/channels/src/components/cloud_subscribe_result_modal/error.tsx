@@ -10,7 +10,6 @@ import {getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud'
 import {closeModal} from 'actions/views/modals';
 import {isModalOpen} from 'selectors/views/modals';
 
-import {useOpenCloudZendeskSupportForm} from 'components/common/hooks/useOpenZendeskForm';
 import PaymentFailedSvg from 'components/common/svg_images_components/payment_failed_svg';
 import IconMessage from 'components/purchase_modal/icon_message';
 import FullScreenModal from 'components/widgets/modals/full_screen_modal';
@@ -29,8 +28,6 @@ type Props = {
 function ErrorModal(props: Props) {
     const dispatch = useDispatch();
     const subscriptionProduct = useSelector(getSubscriptionProduct);
-
-    const [openContactSupport] = useOpenCloudZendeskSupportForm('Cloud Subscription', '');
 
     const isSuccessModalOpen = useSelector((state: GlobalState) =>
         isModalOpen(state, ModalIdentifiers.ERROR_MODAL),
@@ -96,7 +93,7 @@ function ErrorModal(props: Props) {
                             }
                         />
                     }
-                    tertiaryButtonHandler={openContactSupport}
+                    tertiaryButtonHandler={() => {}}
                     buttonHandler={onBackButtonPress}
                     className={'success'}
                 />

@@ -59,16 +59,16 @@ export function makeGetCategory(selectorName: string, category: string): (state:
         selectorName,
         getMyPreferences,
         (preferences) => {
-            const prefix = category + '--';
-            const prefsInCategory: PreferenceType[] = [];
+            // const prefix = category + '--';
+            // const prefsInCategory: PreferenceType[] = [];
 
-            for (const key in preferences) {
-                if (key.startsWith(prefix)) {
-                    prefsInCategory.push(preferences[key]);
-                }
-            }
+            // for (const key in preferences) {
+            //     if (key.startsWith(prefix)) {
+            //         prefsInCategory.push(preferences[key]);
+            //     }
+            // }
 
-            return prefsInCategory;
+            return [];
         },
     );
 }
