@@ -1,0 +1,244 @@
+stages:
+  - build-backend
+  - build-frontend
+#  - build-docker
+#  - push-images
+
+variables:
+  GO_VERSION: "1.24.6"
+  OPENSEARCH_VERSION: "2.7.0"
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+.on-commit-to-master: &on-commit-to-master
+  if: '$CI_COMMIT_BRANCH == "master"'
+
+.on-commit-to-stage: &on-commit-to-stage
+  if: '$CI_COMMIT_BRANCH == "stage"'
+
+# Build backend (Go server)
+build-backend:
+  stage: build-backend
+  image: mattermost/mattermost-build-server:${GO_VERSION}
+  rules:
+    - *on-commit-to-master
+    - *on-commit-to-stage
+  variables:
+    GOFLAGS: -buildvcs=false
+    BUILD_NUMBER: "${CI_COMMIT_REF_NAME}-${CI_PIPELINE_ID}"
+  before_script:
+    - cd server
+    - make setup-go-work
+  script:
+    - make config-reset
+    - make build-cmd
+    - make package
+  artifacts:
+    paths:
+      - server/dist/
+      - server/build/
+    expire_in: 2 days
+    when: always
+
+# Build frontend (webapp)
+build-frontend:
+  stage: build-frontend
+  image: node:lts-alpine
+  rules:
+    - *on-commit-to-master
+    - *on-commit-to-stage
+  before_script:
+    - cd webapp
+    - npm ci --include=dev
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - webapp/channels/dist/
+    expire_in: 2 days
+    when: always
+  dependencies:
+    - build-backend
+
+# Build Docker image
+#build-docker:
+#  stage: build-docker
+#  image: docker:24
+#  services:
+#    - name: docker:24-dind
+#      alias: docker
+#      entrypoint: ["dockerd-entrypoint.sh"]
+#      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+#  variables:
+#    DOCKER_HOST: tcp://docker:2375
+#    DOCKER_TLS_CERTDIR: ""
+#    DOCKER_TLS_VERIFY: ""
+#    DOCKER_CERT_PATH: ""
+#    DOCKER_DRIVER: overlay2
+#  rules:
+#    - *on-commit-to-master
+#    - *on-commit-to-stage
+#  dependencies:
+#    - build-backend
+#    - build-frontend
+#  before_script:
+#    - |
+#      export DOCKER_HOST=tcp://docker:2375
+#      echo "Waiting for Docker daemon..."
+#      timeout=60
+#      elapsed=0
+#      until docker info >/dev/null 2>&1; do
+#        if [ $elapsed -ge $timeout ]; then
+#          echo "ERROR: Docker daemon did not become ready within ${timeout}s"
+#          exit 1
+#        fi
+#        echo "Docker daemon not ready, waiting... (${elapsed}s/${timeout}s)"
+#        sleep 2
+#        elapsed=$((elapsed + 2))
+#      done
+#    - docker buildx version || docker buildx install
+#    - docker buildx create --use --name builder --driver docker-container || true
+#    - |
+#      if [ -n "${REGISTRY_HOST}" ] && [ -n "${REGISTRY_USERNAME}" ] && [ -n "${REGISTRY_PASSWORD}" ]; then
+#        echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin "${REGISTRY_HOST}"
+#      else
+#        echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+#      fi
+#  script:
+#    - |
+#      # Find the built package
+#      PACKAGE_FILE=$(find server/dist -name "mattermost-*-linux-amd64.tar.gz" | head -n 1)
+#      if [ -z "$PACKAGE_FILE" ]; then
+#        echo "ERROR: Package file not found in server/dist/"
+#        ls -la server/dist/ || true
+#        exit 1
+#      fi
+#
+#      # Copy package to build context for Dockerfile
+#      mkdir -p server/build/package
+#      cp "$PACKAGE_FILE" server/build/package/
+#      PACKAGE_NAME=$(basename "$PACKAGE_FILE")
+#
+#      # Create a simple HTTP server to serve the package (as original Dockerfile expects URL)
+#      # Or use the original Dockerfile with local file modification
+#      # Actually, let's use the original Dockerfile approach but serve package via HTTP
+#      cd server/build/package
+#      python3 -m http.server 8000 > /tmp/http-server.log 2>&1 &
+#      HTTP_SERVER_PID=$!
+#      sleep 2
+#
+#      # Get absolute path for the package URL
+#      # Use localhost since we're in the same container
+#      MM_PACKAGE="http://localhost:8000/${PACKAGE_NAME}"
+#
+#      # Set image tags
+#      if [ -n "${REGISTRY_HOST}" ]; then
+#        tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_SHORT_SHA}"
+#        branch_tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_BRANCH}"
+#      else
+#        tag="${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_SHORT_SHA}"
+#        branch_tag="${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_BRANCH}"
+#      fi
+#
+#      # Build using original Dockerfile with MM_PACKAGE pointing to local HTTP server
+#      cd ..
+#      docker buildx build \
+#        --pull \
+#        --push \
+#        --platform linux/amd64 \
+#        --build-arg MM_PACKAGE="${MM_PACKAGE}" \
+#        -t "${tag}" \
+#        -t "${branch_tag}" \
+#        -f Dockerfile \
+#        .
+#
+#      # Stop HTTP server
+#      kill $HTTP_SERVER_PID || true
+#
+## Build OpenSearch Docker image
+#build-opensearch:
+#  stage: build-docker
+#  image: docker:24
+#  services:
+#    - name: docker:24-dind
+#      alias: docker
+#      entrypoint: ["dockerd-entrypoint.sh"]
+#      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+#  variables:
+#    DOCKER_HOST: tcp://docker:2375
+#    DOCKER_TLS_CERTDIR: ""
+#    DOCKER_TLS_VERIFY: ""
+#    DOCKER_CERT_PATH: ""
+#    DOCKER_DRIVER: overlay2
+#  rules:
+#    - *on-commit-to-master
+#    - *on-commit-to-stage
+#  before_script:
+#    - |
+#      export DOCKER_HOST=tcp://docker:2375
+#      echo "Waiting for Docker daemon..."
+#      timeout=60
+#      elapsed=0
+#      until docker info >/dev/null 2>&1; do
+#        if [ $elapsed -ge $timeout ]; then
+#          echo "ERROR: Docker daemon did not become ready within ${timeout}s"
+#          exit 1
+#        fi
+#        echo "Docker daemon not ready, waiting... (${elapsed}s/${timeout}s)"
+#        sleep 2
+#        elapsed=$((elapsed + 2))
+#      done
+#    - docker buildx version || docker buildx install
+#    - docker buildx create --use --name builder --driver docker-container || true
+#    - |
+#      if [ -n "${REGISTRY_HOST}" ] && [ -n "${REGISTRY_USERNAME}" ] && [ -n "${REGISTRY_PASSWORD}" ]; then
+#        echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin "${REGISTRY_HOST}"
+#      else
+#        echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+#      fi
+#  script:
+#    - |
+#      # Set image tags
+#      if [ -n "${REGISTRY_HOST}" ]; then
+#        tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/opensearch:${OPENSEARCH_VERSION}"
+#        tag_latest="${REGISTRY_HOST}/${CI_PROJECT_PATH}/opensearch:latest"
+#      else
+#        tag="${CI_REGISTRY_IMAGE}/opensearch:${OPENSEARCH_VERSION}"
+#        tag_latest="${CI_REGISTRY_IMAGE}/opensearch:latest"
+#      fi
+#
+#      # Build and push the OpenSearch image
+#      cd server/build
+#      docker buildx build \
+#        --pull \
+#        --push \
+#        --platform linux/amd64 \
+#        --build-arg OPENSEARCH_VERSION=${OPENSEARCH_VERSION} \
+#        -t "${tag}" \
+#        -t "${tag_latest}" \
+#        -f Dockerfile.opensearch \
+#        .
+#
+## Push images (already done in build-docker, but kept for clarity)
+#push-images:
+#  stage: push-images
+#  image: alpine:latest
+#  rules:
+#    - *on-commit-to-master
+#    - *on-commit-to-stage
+#  dependencies:
+#    - build-docker
+#    - build-opensearch
+#  script:
+#    - echo "Images pushed in build-docker stage"
+#    - |
+#      if [ -n "${REGISTRY_HOST}" ]; then
+#        echo "Server Image: ${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_SHORT_SHA}"
+#        echo "Server Branch tag: ${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_BRANCH}"
+#        echo "OpenSearch Image: ${REGISTRY_HOST}/${CI_PROJECT_PATH}/opensearch:${OPENSEARCH_VERSION}"
+#      else
+#        echo "Server Image: ${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_SHORT_SHA}"
+#        echo "Server Branch tag: ${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_BRANCH}"
+#        echo "OpenSearch Image: ${CI_REGISTRY_IMAGE}/opensearch:${OPENSEARCH_VERSION}"
+#      fi
+#
