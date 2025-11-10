@@ -47,7 +47,7 @@ build-backend:
 # Build frontend (webapp)
 build-frontend:
   stage: build-server
-  image: node:lts-alpine
+  image: mattermost/mattermost-build-server:${GO_VERSION}
   rules:
     - <<: *on-commit-to-master
       changes:
