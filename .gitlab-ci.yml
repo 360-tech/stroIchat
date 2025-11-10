@@ -1,6 +1,6 @@
 stages:
-  - build-backend
-  - build-frontend
+  - build-server
+#  - build
 #  - build-docker
 #  - push-images
 
@@ -18,11 +18,15 @@ variables:
 
 # Build backend (Go server)
 build-backend:
-  stage: build-backend
+  stage: build-server
   image: mattermost/mattermost-build-server:${GO_VERSION}
   rules:
-    - *on-commit-to-master
-    - *on-commit-to-stage
+    - <<: *on-commit-to-master
+      changes:
+        - server/**/*
+    - <<: *on-commit-to-stage
+      changes:
+        - server/**/*
   variables:
     GOFLAGS: -buildvcs=false
     BUILD_NUMBER: "${CI_COMMIT_REF_NAME}-${CI_PIPELINE_ID}"
@@ -42,11 +46,15 @@ build-backend:
 
 # Build frontend (webapp)
 build-frontend:
-  stage: build-frontend
+  stage: build-server
   image: node:lts-alpine
   rules:
-    - *on-commit-to-master
-    - *on-commit-to-stage
+    - <<: *on-commit-to-master
+      changes:
+        - webapp/**/*
+    - <<: *on-commit-to-stage
+      changes:
+        - webapp/**/*
   before_script:
     - cd webapp
     - npm ci --include=dev
@@ -57,8 +65,6 @@ build-frontend:
       - webapp/channels/dist/
     expire_in: 2 days
     when: always
-  dependencies:
-    - build-backend
 
 # Build Docker image
 #build-docker:
