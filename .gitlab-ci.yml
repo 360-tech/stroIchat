@@ -431,10 +431,9 @@ build-docker:
       fi
 
       # Build using Dockerfile with MM_PACKAGE pointing to HTTP server
-      # Use --network host for buildx to access the HTTP server
+      # The builder was already created with network=host option
       cd ../..
       docker buildx build \
-        --driver-opt network=host \
         --pull \
         --push \
         --platform linux/amd64 \
