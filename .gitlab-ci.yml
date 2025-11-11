@@ -30,37 +30,76 @@ variables:
       echo "Looking for artifacts from job: ${ARTIFACT_JOB_NAME}"
 
       # Get the last successful pipeline for this branch
-      PIPELINES=$(curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+      PIPELINES_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
         "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines?ref=${CI_COMMIT_REF_NAME}&status=success&per_page=5")
+      
+      HTTP_CODE=$(echo "$PIPELINES_RESPONSE" | tail -n 1)
+      PIPELINES=$(echo "$PIPELINES_RESPONSE" | head -n -1)
+      
+      if [ "$HTTP_CODE" != "200" ]; then
+        echo "ERROR: Failed to fetch pipelines. HTTP code: $HTTP_CODE"
+        echo "Response: $PIPELINES"
+        exit 1
+      fi
+      
+      # Check if response is valid JSON array
+      if ! echo "$PIPELINES" | jq -e '. | type == "array"' >/dev/null 2>&1; then
+        echo "ERROR: Invalid JSON response from API"
+        echo "Response: $PIPELINES"
+        exit 1
+      fi
+      
+      PIPELINE_COUNT=$(echo "$PIPELINES" | jq '. | length')
+      echo "Found $PIPELINE_COUNT successful pipeline(s) to check"
 
       ARTIFACTS_FOUND=false
 
       # Try to find pipeline with artifacts
-      for pipeline_id in $(echo "$PIPELINES" | jq -r '.[].id'); do
+      for pipeline_id in $(echo "$PIPELINES" | jq -r '.[].id' 2>/dev/null); do
+        if [ -z "$pipeline_id" ] || [ "$pipeline_id" = "null" ]; then
+          continue
+        fi
+        
         echo "Checking pipeline ${pipeline_id}..."
 
         # Get jobs from this pipeline
-        JOBS=$(curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+        JOBS_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines/${pipeline_id}/jobs")
+        
+        JOBS_HTTP_CODE=$(echo "$JOBS_RESPONSE" | tail -n 1)
+        JOBS=$(echo "$JOBS_RESPONSE" | head -n -1)
+        
+        if [ "$JOBS_HTTP_CODE" != "200" ]; then
+          echo "WARNING: Failed to fetch jobs for pipeline ${pipeline_id}. HTTP code: $JOBS_HTTP_CODE"
+          continue
+        fi
+        
+        # Check if jobs response is valid JSON
+        if ! echo "$JOBS" | jq -e '. | type == "array"' >/dev/null 2>&1; then
+          echo "WARNING: Invalid JSON response for jobs in pipeline ${pipeline_id}"
+          continue
+        fi
 
         # Find the job with artifacts
-        JOB_ID=$(echo "$JOBS" | jq -r ".[] | select(.name==\"${ARTIFACT_JOB_NAME}\" and .artifacts_file!=null) | .id" | head -n 1)
+        JOB_ID=$(echo "$JOBS" | jq -r ".[] | select(.name==\"${ARTIFACT_JOB_NAME}\" and .artifacts_file!=null) | .id" 2>/dev/null | head -n 1)
 
-        if [ -n "$JOB_ID" ] && [ "$JOB_ID" != "null" ]; then
+        if [ -n "$JOB_ID" ] && [ "$JOB_ID" != "null" ] && [ "$JOB_ID" != "" ]; then
           echo "Found artifacts in job ${JOB_ID} from pipeline ${pipeline_id}"
 
           # Download artifacts
-          curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
-            --output artifacts.zip \
-            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/${JOB_ID}/artifacts"
+          ARTIFACT_HTTP_CODE=$(curl -s -w "%{http_code}" -o artifacts.zip --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/${JOB_ID}/artifacts")
 
-          if [ -f artifacts.zip ] && [ -s artifacts.zip ]; then
+          if [ "$ARTIFACT_HTTP_CODE" = "200" ] && [ -f artifacts.zip ] && [ -s artifacts.zip ]; then
             unzip -q artifacts.zip
             ARTIFACTS_FOUND=true
             echo "Artifacts downloaded successfully from pipeline ${pipeline_id}"
             echo "Artifacts contents:"
             ls -la || true
             break
+          else
+            echo "WARNING: Failed to download artifacts from job ${JOB_ID}. HTTP code: $ARTIFACT_HTTP_CODE"
+            rm -f artifacts.zip
           fi
         fi
       done
@@ -71,6 +110,7 @@ variables:
         echo "  1. This is the first pipeline for this branch"
         echo "  2. All previous pipelines failed"
         echo "  3. Artifacts expired (current expire_in: 2 days)"
+        echo "  4. The job '${ARTIFACT_JOB_NAME}' never ran successfully in previous pipelines"
         echo "Please ensure at least one successful pipeline exists with artifacts."
         exit 1
       fi
