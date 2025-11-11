@@ -1,8 +1,8 @@
 stages:
   - build-frontend-stage
   - build-server
-#  - build
-#  - build-docker
+  - build-docker
+  #  - build
 #  - push-images
 
 variables:
@@ -26,32 +26,32 @@ variables:
     - |
       echo "Searching for artifacts from previous successful pipeline..."
       echo "Looking for artifacts from job: ${ARTIFACT_JOB_NAME}"
-      
+
       # Get the last successful pipeline for this branch
       PIPELINES=$(curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
         "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines?ref=${CI_COMMIT_REF_NAME}&status=success&per_page=5")
-      
+
       ARTIFACTS_FOUND=false
-      
+
       # Try to find pipeline with artifacts
       for pipeline_id in $(echo "$PIPELINES" | jq -r '.[].id'); do
         echo "Checking pipeline ${pipeline_id}..."
-        
+
         # Get jobs from this pipeline
         JOBS=$(curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines/${pipeline_id}/jobs")
-        
+
         # Find the job with artifacts
         JOB_ID=$(echo "$JOBS" | jq -r ".[] | select(.name==\"${ARTIFACT_JOB_NAME}\" and .artifacts_file!=null) | .id" | head -n 1)
-        
+
         if [ -n "$JOB_ID" ] && [ "$JOB_ID" != "null" ]; then
           echo "Found artifacts in job ${JOB_ID} from pipeline ${pipeline_id}"
-          
+
           # Download artifacts
           curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
             --output artifacts.zip \
             "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/${JOB_ID}/artifacts"
-          
+
           if [ -f artifacts.zip ] && [ -s artifacts.zip ]; then
             unzip -q artifacts.zip
             ARTIFACTS_FOUND=true
@@ -62,7 +62,7 @@ variables:
           fi
         fi
       done
-      
+
       if [ "$ARTIFACTS_FOUND" = false ]; then
         echo "ERROR: No artifacts found in previous successful pipelines."
         echo "This might happen if:"
@@ -226,106 +226,106 @@ download-frontend-artifacts:
     when: always
 
 # Build Docker image
-#build-docker:
-#  stage: build-docker
-#  image: docker:24
-#  services:
-#    - name: docker:24-dind
-#      alias: docker
-#      entrypoint: ["dockerd-entrypoint.sh"]
-#      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
-#  variables:
-#    DOCKER_HOST: tcp://docker:2375
-#    DOCKER_TLS_CERTDIR: ""
-#    DOCKER_TLS_VERIFY: ""
-#    DOCKER_CERT_PATH: ""
-#    DOCKER_DRIVER: overlay2
-#  rules:
-#    - *on-commit-to-master
-#    - *on-commit-to-stage
-#  dependencies:
-#    # Use artifacts from either build jobs or download jobs
-#    # GitLab CI will use artifacts from whichever jobs ran
-#    - build-backend
-#    - download-backend-artifacts
-#    - build-frontend
-#    - download-frontend-artifacts
-#  before_script:
-#    - |
-#      export DOCKER_HOST=tcp://docker:2375
-#      echo "Waiting for Docker daemon..."
-#      timeout=60
-#      elapsed=0
-#      until docker info >/dev/null 2>&1; do
-#        if [ $elapsed -ge $timeout ]; then
-#          echo "ERROR: Docker daemon did not become ready within ${timeout}s"
-#          exit 1
-#        fi
-#        echo "Docker daemon not ready, waiting... (${elapsed}s/${timeout}s)"
-#        sleep 2
-#        elapsed=$((elapsed + 2))
-#      done
-#    - docker buildx version || docker buildx install
-#    - docker buildx create --use --name builder --driver docker-container || true
-#    - |
-#      if [ -n "${REGISTRY_HOST}" ] && [ -n "${REGISTRY_USERNAME}" ] && [ -n "${REGISTRY_PASSWORD}" ]; then
-#        echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin "${REGISTRY_HOST}"
-#      else
-#        echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
-#      fi
-#  script:
-#    - |
-#      # Note: The package file (tar.gz) already contains the frontend inside it.
-#      # During build-backend, make package copies webapp/channels/dist/* into server/dist/mattermost/client/
-#      # So the Docker image will have both backend and frontend from this single package file.
-#      # Find the built package
-#      PACKAGE_FILE=$(find server/dist -name "mattermost-*-linux-amd64.tar.gz" | head -n 1)
-#      if [ -z "$PACKAGE_FILE" ]; then
-#        echo "ERROR: Package file not found in server/dist/"
-#        ls -la server/dist/ || true
-#        exit 1
-#      fi
-#
-#      # Copy package to build context for Dockerfile
-#      mkdir -p server/build/package
-#      cp "$PACKAGE_FILE" server/build/package/
-#      PACKAGE_NAME=$(basename "$PACKAGE_FILE")
-#
-#      # Create a simple HTTP server to serve the package (as original Dockerfile expects URL)
-#      # Or use the original Dockerfile with local file modification
-#      # Actually, let's use the original Dockerfile approach but serve package via HTTP
-#      cd server/build/package
-#      python3 -m http.server 8000 > /tmp/http-server.log 2>&1 &
-#      HTTP_SERVER_PID=$!
-#      sleep 2
-#
-#      # Get absolute path for the package URL
-#      # Use localhost since we're in the same container
-#      MM_PACKAGE="http://localhost:8000/${PACKAGE_NAME}"
-#
-#      # Set image tags
-#      if [ -n "${REGISTRY_HOST}" ]; then
-#        tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_SHORT_SHA}"
-#        branch_tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_BRANCH}"
-#      else
-#        tag="${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_SHORT_SHA}"
-#        branch_tag="${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_BRANCH}"
-#      fi
-#
-#      # Build using original Dockerfile with MM_PACKAGE pointing to local HTTP server
-#      cd ..
-#      docker buildx build \
-#        --pull \
-#        --push \
-#        --platform linux/amd64 \
-#        --build-arg MM_PACKAGE="${MM_PACKAGE}" \
-#        -t "${tag}" \
-#        -t "${branch_tag}" \
-#        -f Dockerfile \
-#        .
-#
-#      # Stop HTTP server
-#      kill $HTTP_SERVER_PID || true
+build-docker:
+  stage: build-docker
+  image: docker:24
+  services:
+    - name: docker:24-dind
+      alias: docker
+      entrypoint: ["dockerd-entrypoint.sh"]
+      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_VERIFY: ""
+    DOCKER_CERT_PATH: ""
+    DOCKER_DRIVER: overlay2
+  rules:
+    - *on-commit-to-master
+    - *on-commit-to-stage
+  dependencies:
+    # Use artifacts from either build jobs or download jobs
+    # GitLab CI will use artifacts from whichever jobs ran
+    - build-backend
+    - download-backend-artifacts
+    - build-frontend
+    - download-frontend-artifacts
+  before_script:
+    - |
+      export DOCKER_HOST=tcp://docker:2375
+      echo "Waiting for Docker daemon..."
+      timeout=60
+      elapsed=0
+      until docker info >/dev/null 2>&1; do
+        if [ $elapsed -ge $timeout ]; then
+          echo "ERROR: Docker daemon did not become ready within ${timeout}s"
+          exit 1
+        fi
+        echo "Docker daemon not ready, waiting... (${elapsed}s/${timeout}s)"
+        sleep 2
+        elapsed=$((elapsed + 2))
+      done
+    - docker buildx version || docker buildx install
+    - docker buildx create --use --name builder --driver docker-container || true
+    - |
+      if [ -n "${REGISTRY_HOST}" ] && [ -n "${REGISTRY_USERNAME}" ] && [ -n "${REGISTRY_PASSWORD}" ]; then
+        echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin "${REGISTRY_HOST}"
+      else
+        echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+      fi
+  script:
+    - |
+      # Note: The package file (tar.gz) already contains the frontend inside it.
+      # During build-backend, make package copies webapp/channels/dist/* into server/dist/mattermost/client/
+      # So the Docker image will have both backend and frontend from this single package file.
+      # Find the built package
+      PACKAGE_FILE=$(find server/dist -name "mattermost-*-linux-amd64.tar.gz" | head -n 1)
+      if [ -z "$PACKAGE_FILE" ]; then
+        echo "ERROR: Package file not found in server/dist/"
+        ls -la server/dist/ || true
+        exit 1
+      fi
+
+      # Copy package to build context for Dockerfile
+      mkdir -p server/build/package
+      cp "$PACKAGE_FILE" server/build/package/
+      PACKAGE_NAME=$(basename "$PACKAGE_FILE")
+
+      # Create a simple HTTP server to serve the package (as original Dockerfile expects URL)
+      # Or use the original Dockerfile with local file modification
+      # Actually, let's use the original Dockerfile approach but serve package via HTTP
+      cd server/build/package
+      python3 -m http.server 8000 > /tmp/http-server.log 2>&1 &
+      HTTP_SERVER_PID=$!
+      sleep 2
+
+      # Get absolute path for the package URL
+      # Use localhost since we're in the same container
+      MM_PACKAGE="http://localhost:8000/${PACKAGE_NAME}"
+
+      # Set image tags
+      if [ -n "${REGISTRY_HOST}" ]; then
+        tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_SHORT_SHA}"
+        branch_tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_BRANCH}"
+      else
+        tag="${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_SHORT_SHA}"
+        branch_tag="${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_BRANCH}"
+      fi
+
+      # Build using original Dockerfile with MM_PACKAGE pointing to local HTTP server
+      cd ..
+      docker buildx build \
+        --pull \
+        --push \
+        --platform linux/amd64 \
+        --build-arg MM_PACKAGE="${MM_PACKAGE}" \
+        -t "${tag}" \
+        -t "${branch_tag}" \
+        -f Dockerfile \
+        .
+
+      # Stop HTTP server
+      kill $HTTP_SERVER_PID || true
 #
 ## Build OpenSearch Docker image
 #build-opensearch:
