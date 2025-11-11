@@ -28,10 +28,22 @@ variables:
     - |
       echo "Searching for artifacts from previous successful pipeline..."
       echo "Looking for artifacts from job: ${ARTIFACT_JOB_NAME}"
+      echo "Project ID: ${CI_PROJECT_ID}"
+      echo "Project Path: ${CI_PROJECT_PATH}"
+      echo "API URL: ${CI_API_V4_URL}"
+      echo "Branch: ${CI_COMMIT_REF_NAME}"
+
+      # Use project path encoded in URL format if project ID doesn't work
+      # GitLab API accepts both numeric ID and URL-encoded path (e.g., group%2Fproject)
+      PROJECT_ID_OR_PATH="${CI_PROJECT_ID}"
+      if [ -z "$PROJECT_ID_OR_PATH" ] || [ "$PROJECT_ID_OR_PATH" = "null" ]; then
+        # Fallback to URL-encoded project path
+        PROJECT_ID_OR_PATH=$(echo "${CI_PROJECT_PATH}" | sed 's/\//%2F/g')
+      fi
 
       # Get the last successful pipeline for this branch
       PIPELINES_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
-        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines?ref=${CI_COMMIT_REF_NAME}&status=success&per_page=5")
+        "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/pipelines?ref=${CI_COMMIT_REF_NAME}&status=success&per_page=5")
       
       HTTP_CODE=$(echo "$PIPELINES_RESPONSE" | tail -n 1)
       PIPELINES=$(echo "$PIPELINES_RESPONSE" | head -n -1)
@@ -64,7 +76,7 @@ variables:
 
         # Get jobs from this pipeline
         JOBS_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
-          "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines/${pipeline_id}/jobs")
+          "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/pipelines/${pipeline_id}/jobs")
         
         JOBS_HTTP_CODE=$(echo "$JOBS_RESPONSE" | tail -n 1)
         JOBS=$(echo "$JOBS_RESPONSE" | head -n -1)
@@ -88,7 +100,7 @@ variables:
 
           # Download artifacts
           ARTIFACT_HTTP_CODE=$(curl -s -w "%{http_code}" -o artifacts.zip --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
-            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/${JOB_ID}/artifacts")
+            "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/jobs/${JOB_ID}/artifacts")
 
           if [ "$ARTIFACT_HTTP_CODE" = "200" ] && [ -f artifacts.zip ] && [ -s artifacts.zip ]; then
             unzip -q artifacts.zip
