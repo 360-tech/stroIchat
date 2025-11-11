@@ -18,8 +18,10 @@ variables:
   if: '$CI_COMMIT_BRANCH == "stage"'
 
 # Helper function to download artifacts from previous pipeline
+# Using docker:24 image which has curl, and we'll install jq and unzip
+# This image runs as root by default, so package installation should work
 .download-artifacts-template: &download-artifacts-template
-  image: curlimages/curl:latest
+  image: docker:24
   before_script:
     - apk add --no-cache jq unzip
   script:
