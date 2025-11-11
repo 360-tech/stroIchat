@@ -33,14 +33,57 @@ variables:
       echo "API URL: ${CI_API_V4_URL}"
       echo "Branch: ${CI_COMMIT_REF_NAME}"
 
-      # Use URL-encoded project path for API calls
-      # GitLab API accepts URL-encoded path (e.g., group%2Fproject)
-      # This is more reliable than numeric ID in some GitLab configurations
-      PROJECT_ID_OR_PATH=$(echo "${CI_PROJECT_PATH}" | sed 's/\//%2F/g')
+      # Use GITLAB_API_TOKEN if available, otherwise fallback to CI_JOB_TOKEN
+      # GITLAB_API_TOKEN should be a Project Access Token with 'read_api' scope
+      if [ -n "${GITLAB_API_TOKEN}" ]; then
+        API_TOKEN="${GITLAB_API_TOKEN}"
+        echo "Using GITLAB_API_TOKEN for API access"
+      else
+        API_TOKEN="${CI_JOB_TOKEN}"
+        echo "Using CI_JOB_TOKEN for API access (may have limited permissions)"
+      fi
+
+      # Try using numeric project ID first, then fallback to URL-encoded path
+      # Some GitLab instances work better with numeric ID
+      PROJECT_ID_OR_PATH="${CI_PROJECT_ID}"
+      if [ -z "$PROJECT_ID_OR_PATH" ] || [ "$PROJECT_ID_OR_PATH" = "null" ] || [ "$PROJECT_ID_OR_PATH" = "" ]; then
+        PROJECT_ID_OR_PATH=$(echo "${CI_PROJECT_PATH}" | sed 's/\//%2F/g')
+      fi
       echo "Using project identifier: ${PROJECT_ID_OR_PATH}"
 
+      # First, test if we can access the project API
+      TEST_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${API_TOKEN}" \
+        "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}")
+      TEST_HTTP_CODE=$(echo "$TEST_RESPONSE" | tail -n 1)
+      TEST_BODY=$(echo "$TEST_RESPONSE" | head -n -1)
+      
+      if [ "$TEST_HTTP_CODE" != "200" ]; then
+        echo "WARNING: Cannot access project API. HTTP code: $TEST_HTTP_CODE"
+        echo "Response: $TEST_BODY"
+        echo "This might indicate insufficient permissions for CI_JOB_TOKEN"
+        echo "Trying alternative: using project path..."
+        
+        # Try with URL-encoded path if ID didn't work
+        if [ "$PROJECT_ID_OR_PATH" = "${CI_PROJECT_ID}" ]; then
+          PROJECT_ID_OR_PATH=$(echo "${CI_PROJECT_PATH}" | sed 's/\//%2F/g')
+          echo "Retrying with project path: ${PROJECT_ID_OR_PATH}"
+          TEST_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${API_TOKEN}" \
+            "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}")
+          TEST_HTTP_CODE=$(echo "$TEST_RESPONSE" | tail -n 1)
+          if [ "$TEST_HTTP_CODE" != "200" ]; then
+            echo "ERROR: Cannot access project with either ID or path"
+            echo "CI_JOB_TOKEN may not have sufficient permissions"
+            echo "Consider using a project access token with 'read_api' scope"
+            exit 1
+          fi
+        else
+          echo "ERROR: Cannot access project API"
+          exit 1
+        fi
+      fi
+
       # Get the last successful pipeline for this branch
-      PIPELINES_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+      PIPELINES_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${API_TOKEN}" \
         "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/pipelines?ref=${CI_COMMIT_REF_NAME}&status=success&per_page=5")
       
       HTTP_CODE=$(echo "$PIPELINES_RESPONSE" | tail -n 1)
@@ -73,7 +116,7 @@ variables:
         echo "Checking pipeline ${pipeline_id}..."
 
         # Get jobs from this pipeline
-        JOBS_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+        JOBS_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${API_TOKEN}" \
           "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/pipelines/${pipeline_id}/jobs")
         
         JOBS_HTTP_CODE=$(echo "$JOBS_RESPONSE" | tail -n 1)
@@ -97,7 +140,7 @@ variables:
           echo "Found artifacts in job ${JOB_ID} from pipeline ${pipeline_id}"
 
           # Download artifacts
-          ARTIFACT_HTTP_CODE=$(curl -s -w "%{http_code}" -o artifacts.zip --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+          ARTIFACT_HTTP_CODE=$(curl -s -w "%{http_code}" -o artifacts.zip --header "PRIVATE-TOKEN: ${API_TOKEN}" \
             "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/jobs/${JOB_ID}/artifacts")
 
           if [ "$ARTIFACT_HTTP_CODE" = "200" ] && [ -f artifacts.zip ] && [ -s artifacts.zip ]; then
