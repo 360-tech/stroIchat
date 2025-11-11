@@ -12,7 +12,6 @@ import type {Post} from '@mattermost/types/posts';
 import {Posts} from 'mattermost-redux/constants/index';
 import {isPostEphemeral} from 'mattermost-redux/utils/post_utils';
 
-import ActionsMenu from 'components/actions_menu';
 import CommentIcon from 'components/common/comment_icon';
 import {usePluginVisibilityInSharedChannel} from 'components/common/hooks/usePluginVisibilityInSharedChannel';
 import DotMenu from 'components/dot_menu';
@@ -63,7 +62,6 @@ type Props = {
 const PostOptions = (props: Props): JSX.Element => {
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [showDotMenu, setShowDotMenu] = useState(false);
-    const [showActionsMenu, setShowActionsMenu] = useState(false);
 
     const toggleEmojiPicker = useCallback((show: boolean) => {
         setShowEmojiPicker(show);
@@ -113,13 +111,8 @@ const PostOptions = (props: Props): JSX.Element => {
         props.handleDropdownOpened!(open);
     };
 
-    const handleActionsMenuOpened = (open: boolean) => {
-        setShowActionsMenu(open);
-        props.handleDropdownOpened!(open);
-    };
-
     const isPostDeleted = post && post.state === Posts.POST_DELETED;
-    const hoverLocal = props.hover || showEmojiPicker || showDotMenu || showActionsMenu;
+    const hoverLocal = props.hover || showEmojiPicker || showDotMenu;
     const showCommentIcon = isFromAutoResponder || (!systemMessage && (isMobileView ||
             hoverLocal || (!post.root_id && Boolean(props.hasReplies)) ||
             props.isFirstReply) && props.location === Locations.CENTER);
@@ -187,19 +180,6 @@ const PostOptions = (props: Props): JSX.Element => {
             </li>
         );
     }
-
-    // Action menus
-    const showActionsMenuIcon = props.shouldShowActionsMenu && (isMobileView || hoverLocal);
-    const actionsMenu = showActionsMenuIcon && (
-        <li>
-            <ActionsMenu
-                post={post}
-                location={props.location}
-                handleDropdownOpened={handleActionsMenuOpened}
-                isMenuOpen={showActionsMenu}
-            />
-        </li>
-    );
 
     let pluginItems: ReactNode = null;
     const pluginItemsVisible = usePluginVisibilityInSharedChannel(post.channel_id);
@@ -295,7 +275,6 @@ const PostOptions = (props: Props): JSX.Element => {
                 {postReaction}
                 {flagIcon}
                 {pluginItems}
-                {actionsMenu}
                 {commentIcon}
                 {(collapsedThreadsEnabled || showRecentlyUsedReactions) && dotMenu}
             </ul>

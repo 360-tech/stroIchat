@@ -53,11 +53,8 @@ export default function useEmojiPicker({
     showEmojiPicker,
     setShowEmojiPicker,
 
-    enableGifPicker,
     onAddCustomEmojiClick,
     onEmojiClick,
-    onGifClick,
-
     overrideMiddleware,
 }: UseEmojiPickerOptions): UseEmojiPickerReturn {
     const isMobileView = useSelector(getIsMobileView);
@@ -101,11 +98,9 @@ export default function useEmojiPicker({
 
     let emojiPicker = (
         <EmojiPickerTabs
-            enableGifPicker={enableGifPicker}
             onAddCustomEmojiClick={onAddCustomEmojiClick}
             onEmojiClose={hideEmojiPicker}
             onEmojiClick={onEmojiClick}
-            onGifClick={onGifClick}
         />
     );
 

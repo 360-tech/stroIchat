@@ -39,7 +39,6 @@ const useEditorEmojiPicker = (
     const intl = useIntl();
 
     const enableEmojiPicker = useSelector((state: GlobalState) => getConfig(state).EnableEmojiPicker === 'true');
-    const enableGifPicker = useSelector((state: GlobalState) => getConfig(state).EnableGifPicker === 'true');
 
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [emojiSelected, setEmojiSelected] = useState(false);
@@ -83,25 +82,6 @@ const useEditorEmojiPicker = (
         setShowEmojiPicker(false);
     }, [draft, caretPosition, handleDraftChange, setCaretPosition]);
 
-    const handleGifClick = useCallback((gif: string) => {
-        let newMessage: string;
-        if (draft.message === '') {
-            newMessage = gif;
-        } else if ((/\s+$/).test(draft.message)) {
-            // Check whether there is already a blank at the end of the current message
-            newMessage = `${draft.message}${gif} `;
-        } else {
-            newMessage = `${draft.message} ${gif} `;
-        }
-
-        handleDraftChange({
-            ...draft,
-            message: newMessage,
-        });
-
-        setShowEmojiPicker(false);
-    }, [draft, handleDraftChange]);
-
     // Focus textbox when the emoji picker closes
     useDidUpdate(() => {
         if (!showEmojiPicker && emojiSelected) {
@@ -122,8 +102,6 @@ const useEditorEmojiPicker = (
         showEmojiPicker,
         setShowEmojiPicker,
 
-        enableGifPicker,
-        onGifClick: handleGifClick,
         onEmojiClick: handleEmojiClick,
 
         overrideMiddleware: [

@@ -536,23 +536,6 @@ const EditPost = ({editingPost, actions, canEditPost, config, channelId, draft, 
         textboxRef.current?.focus();
     };
 
-    const handleGifClick = (gif: string) => {
-        let newMessage = gif;
-
-        if (editText.length > 0) {
-            newMessage = (/\s+$/).test(editText) ? `${editText}${gif}` : `${editText} ${gif}`;
-        }
-
-        draftRef.current = {
-            ...draftRef.current,
-            message: newMessage,
-        };
-
-        setEditText(newMessage);
-        setShowEmojiPicker(false);
-        textboxRef.current?.focus();
-    };
-
     const toggleEmojiPicker = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         e?.stopPropagation();
         setShowEmojiPicker(!showEmojiPicker);
@@ -569,8 +552,6 @@ const EditPost = ({editingPost, actions, canEditPost, config, channelId, draft, 
         showEmojiPicker,
         setShowEmojiPicker,
 
-        enableGifPicker: config.EnableGifPicker === 'true',
-        onGifClick: handleGifClick,
         onEmojiClick: handleEmojiClick,
     });
 
