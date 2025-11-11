@@ -407,9 +407,9 @@ build-docker:
       fi
 
       # Copy package to build context directory
-      # The Dockerfile expects to download from URL, so we'll serve it via HTTP
-      mkdir -p server/build/package
-      cp "$PACKAGE_FILE" server/build/package/
+      # We'll modify the Dockerfile approach to use COPY instead of curl
+      # This is more reliable than HTTP server in buildx environment
+      cp "$PACKAGE_FILE" server/build/package.tar.gz
 
       # Set image tags
       if [ -n "${REGISTRY_HOST}" ]; then
@@ -420,52 +420,110 @@ build-docker:
         branch_tag="${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_BRANCH}"
       fi
 
-      # Start HTTP server to serve the package (Dockerfile expects URL)
-      # Buildx runs in a separate container, so we need to make the server accessible
-      cd server/build/package
-      python3 -m http.server 8000 --bind 0.0.0.0 > /tmp/http-server.log 2>&1 &
-      HTTP_SERVER_PID=$!
-      sleep 3
+      # Create a temporary Dockerfile that uses COPY instead of curl
+      # This avoids network issues with HTTP server in buildx
+      cat > server/build/Dockerfile.tmp << 'EOF'
+# First stage - Ubuntu with document processing dependencies and curl for downloading
+FROM ubuntu:noble-20250415.1@sha256:dc17125eaac86538c57da886e494a34489122fb6a3ebb6411153d742594c2ddc AS builder
+# Setting bash as our shell, and enabling pipefail option
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-      # Get the host IP that buildx container can access
-      # In GitLab CI with docker-in-docker, we can use the host network
-      # Try to detect the correct IP or use host.docker.internal
-      HOST_IP=$(ip route | grep default | awk '{print $3}' || echo "172.17.0.1")
-      MM_PACKAGE="http://${HOST_IP}:8000/${PACKAGE_NAME}"
-      
-      echo "Serving package at: ${MM_PACKAGE}"
-      echo "HTTP server PID: ${HTTP_SERVER_PID}"
-      echo "Current directory: $(pwd)"
+# Build Arguments
+ARG PUID=2000
+ARG PGID=2000
 
-      # Verify HTTP server is accessible locally
-      if ! curl -f -s "http://localhost:8000/${PACKAGE_NAME}" > /dev/null; then
-        echo "ERROR: HTTP server is not accessible"
-        cat /tmp/http-server.log || true
-        exit 1
-      fi
+# Install needed packages and indirect dependencies
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+  ca-certificates \
+  curl \
+  media-types \
+  mailcap \
+  unrtf \
+  wv \
+  poppler-utils \
+  tidy \
+  tzdata \
+  && rm -rf /var/lib/apt/lists/*
 
-      # Build using Dockerfile with MM_PACKAGE pointing to HTTP server
-      # The builder was already created with network=host option
-      # We're currently in server/build/package, so go back to project root
-      cd ../../..
-      echo "Build context directory: $(pwd)"
-      echo "Checking if server/build exists:"
-      ls -la server/build/ || true
-      
+# Set mattermost group/user and extract Mattermost package
+RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
+  && groupadd --gid ${PGID} mattermost \
+  && useradd --uid ${PUID} --gid ${PGID} --comment "" --home-dir /mattermost mattermost
+
+# Copy and extract the package (instead of downloading from URL)
+COPY package.tar.gz /tmp/package.tar.gz
+RUN tar -xzf /tmp/package.tar.gz -C / && rm /tmp/package.tar.gz \
+  && chown -R mattermost:mattermost /mattermost /mattermost/data /mattermost/plugins /mattermost/client/plugins
+
+# Create PostgreSQL client SSL directory structure for ssl_mode=require
+RUN mkdir -p /mattermost/.postgresql \
+  && chmod 700 /mattermost/.postgresql
+
+# Final stage using distroless for minimal attack surface
+FROM gcr.io/distroless/base-debian12
+
+# Some ENV variables
+ENV PATH="/mattermost/bin:${PATH}"
+ENV MM_SERVICESETTINGS_ENABLELOCALMODE="true"
+
+# Copy over metadata files needed by runtime
+COPY --from=builder /etc/mime.types /etc
+
+# Copy CA certificates for SSL/TLS validation with proper ownership
+COPY --from=builder --chown=2000:2000 /etc/ssl/certs /etc/ssl/certs
+
+# Copy document processing utilities and necessary support files
+COPY --from=builder /usr/bin/pdftotext /usr/bin/pdftotext
+COPY --from=builder /usr/bin/wvText /usr/bin/wvText
+COPY --from=builder /usr/bin/wvWare /usr/bin/wvWare
+COPY --from=builder /usr/bin/unrtf /usr/bin/unrtf
+COPY --from=builder /usr/bin/tidy /usr/bin/tidy
+COPY --from=builder /usr/share/wv /usr/share/wv
+
+# Copy necessary libraries for document processing utilities
+COPY --from=builder /usr/lib/libpoppler.so* /usr/lib/
+COPY --from=builder /usr/lib/libfreetype.so* /usr/lib/
+COPY --from=builder /usr/lib/libpng.so* /usr/lib/
+COPY --from=builder /usr/lib/libwv.so* /usr/lib/
+COPY --from=builder /usr/lib/libtidy.so* /usr/lib/
+COPY --from=builder /usr/lib/libfontconfig.so* /usr/lib/
+
+# Copy mattermost from builder stage
+COPY --from=builder --chown=2000:2000 /mattermost /mattermost
+
+# Copy passwd including mattermost user
+COPY  passwd /etc/passwd
+
+# We should refrain from running as privileged user
+USER mattermost
+
+# Healthcheck to make sure container is ready - using mmctl instead of curl for distroless compatibility
+HEALTHCHECK --interval=30s --timeout=10s \
+  CMD ["/mattermost/bin/mmctl", "system", "status", "--local"]
+
+# Configure entrypoint and command with proper permissions
+WORKDIR /mattermost
+CMD ["/mattermost/bin/mattermost"]
+
+EXPOSE 8065 8067 8074 8075
+
+# Declare volumes for mount point directories
+VOLUME ["/mattermost/data", "/mattermost/logs", "/mattermost/config", "/mattermost/plugins", "/mattermost/client/plugins"]
+EOF
+
+      # Build using temporary Dockerfile with COPY instead of curl
       docker buildx build \
         --pull \
         --push \
         --platform linux/amd64 \
-        --build-arg MM_PACKAGE="${MM_PACKAGE}" \
         -t "${tag}" \
         -t "${branch_tag}" \
-        -f server/build/Dockerfile \
+        -f server/build/Dockerfile.tmp \
         server/build
 
-      # Stop HTTP server
-      if [ -n "$HTTP_SERVER_PID" ]; then
-        kill $HTTP_SERVER_PID 2>/dev/null || true
-      fi
+      # Clean up temporary Dockerfile
+      rm -f server/build/Dockerfile.tmp server/build/package.tar.gz
 #
 ## Build OpenSearch Docker image
 #build-opensearch:
