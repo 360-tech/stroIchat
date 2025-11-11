@@ -1,5 +1,5 @@
 {
-  "name": "@mattermost/webapp",
+  "name": "@360tech/stroichat-webapp",
   "private": true,
   "engines": {
     "node": ">=18.10.0",

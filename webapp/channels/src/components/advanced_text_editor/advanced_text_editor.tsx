@@ -87,8 +87,6 @@ import useUploadFiles from './use_upload_files';
 
 import './advanced_text_editor.scss';
 
-const FileLimitStickyBanner = makeAsyncComponent('FileLimitStickyBanner', lazy(() => import('components/file_limit_sticky_banner')));
-
 export type Props = {
 
     /**
@@ -731,9 +729,6 @@ const AdvancedTextEditor = ({
             className={(!rootId && !fullWidthTextBox) ? 'center' : undefined}
             onSubmit={handleSubmitWithEvent}
         >
-            {canPost && (draft.fileInfos.length > 0 || draft.uploadsInProgress.length > 0) && (
-                <FileLimitStickyBanner/>
-            )}
             {showDndWarning && <DoNotDisturbWarning displayName={teammateDisplayName}/>}
             {!isInEditMode && (
                 <PostBoxIndicator

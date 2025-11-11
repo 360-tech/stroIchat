@@ -60,6 +60,7 @@ function mapStateToProps(state: GlobalState) {
 
     const isStarterFree = isCloudStarterFree || isSelfHostedStarter;
     const isFreeTrial = isCloudFreeTrial || isSelfHostedFreeTrial;
+    console.log({isSelfHostedStarter, isEnterpriseReady, isCloudStarterFree, isSelfHostedFreeTrial, isCloudFreeTrial});
 
     return {
         isMobile,
