@@ -1,4 +1,5 @@
 stages:
+  - build-frontend-stage
   - build-server
 #  - build
 #  - build-docker
@@ -16,7 +17,71 @@ variables:
 .on-commit-to-stage: &on-commit-to-stage
   if: '$CI_COMMIT_BRANCH == "stage"'
 
+# Helper function to download artifacts from previous pipeline
+.download-artifacts-template: &download-artifacts-template
+  image: curlimages/curl:latest
+  before_script:
+    - apk add --no-cache jq unzip
+  script:
+    - |
+      echo "Searching for artifacts from previous successful pipeline..."
+      echo "Looking for artifacts from job: ${ARTIFACT_JOB_NAME}"
+      
+      # Get the last successful pipeline for this branch
+      PIPELINES=$(curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines?ref=${CI_COMMIT_REF_NAME}&status=success&per_page=5")
+      
+      ARTIFACTS_FOUND=false
+      
+      # Try to find pipeline with artifacts
+      for pipeline_id in $(echo "$PIPELINES" | jq -r '.[].id'); do
+        echo "Checking pipeline ${pipeline_id}..."
+        
+        # Get jobs from this pipeline
+        JOBS=$(curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+          "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/pipelines/${pipeline_id}/jobs")
+        
+        # Find the job with artifacts
+        JOB_ID=$(echo "$JOBS" | jq -r ".[] | select(.name==\"${ARTIFACT_JOB_NAME}\" and .artifacts_file!=null) | .id" | head -n 1)
+        
+        if [ -n "$JOB_ID" ] && [ "$JOB_ID" != "null" ]; then
+          echo "Found artifacts in job ${JOB_ID} from pipeline ${pipeline_id}"
+          
+          # Download artifacts
+          curl -s --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+            --output artifacts.zip \
+            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/${JOB_ID}/artifacts"
+          
+          if [ -f artifacts.zip ] && [ -s artifacts.zip ]; then
+            unzip -q artifacts.zip
+            ARTIFACTS_FOUND=true
+            echo "Artifacts downloaded successfully from pipeline ${pipeline_id}"
+            echo "Artifacts contents:"
+            ls -la || true
+            break
+          fi
+        fi
+      done
+      
+      if [ "$ARTIFACTS_FOUND" = false ]; then
+        echo "ERROR: No artifacts found in previous successful pipelines."
+        echo "This might happen if:"
+        echo "  1. This is the first pipeline for this branch"
+        echo "  2. All previous pipelines failed"
+        echo "  3. Artifacts expired (current expire_in: 2 days)"
+        echo "Please ensure at least one successful pipeline exists with artifacts."
+        exit 1
+      fi
+  artifacts:
+    expire_in: 2 days
+    when: always
+
 # Build backend (Go server)
+# Note: make package requires frontend to be built in webapp/channels/dist/
+# This job runs AFTER frontend stage and uses frontend artifacts from either:
+# - build-frontend (if frontend was changed) or
+# - download-frontend-artifacts (if frontend wasn't changed)
+# Backend is rebuilt when either backend or frontend changes, because backend package includes frontend
 build-backend:
   stage: build-server
   image: mattermost/mattermost-build-server:${GO_VERSION}
@@ -24,15 +89,38 @@ build-backend:
     - <<: *on-commit-to-master
       changes:
         - server/**/*
+        - webapp/**/*
     - <<: *on-commit-to-stage
       changes:
         - server/**/*
+        - webapp/**/*
   variables:
     GOFLAGS: -buildvcs=false
     BUILD_NUMBER: "${CI_COMMIT_REF_NAME}-${CI_PIPELINE_ID}"
+  needs:
+    # Wait for frontend to be built or downloaded before building backend
+    # GitLab CI will use artifacts from whichever job completed (build-frontend or download-frontend-artifacts)
+    # Using optional: true allows the job to proceed even if one of the frontend jobs didn't run
+    - job: build-frontend
+      optional: true
+    - job: download-frontend-artifacts
+      optional: true
+  dependencies:
+    # Download artifacts from frontend jobs (whichever ran)
+    - build-frontend
+    - download-frontend-artifacts
   before_script:
     - cd server
     - make setup-go-work
+    # Verify that frontend is available (either from build or download)
+    - |
+      if [ ! -d "../webapp/channels/dist" ] || [ -z "$(ls -A ../webapp/channels/dist 2>/dev/null)" ]; then
+        echo "ERROR: Frontend dist directory is missing or empty!"
+        echo "Frontend must be built or downloaded before building backend package."
+        echo "The package-prep step requires webapp/channels/dist/* to be present."
+        exit 1
+      fi
+      echo "Frontend dist found, proceeding with backend package build..."
   script:
     - make config-reset
     - make build-cmd
@@ -44,9 +132,47 @@ build-backend:
     expire_in: 2 days
     when: always
 
-# Build frontend (webapp)
-build-frontend:
+# Download backend artifacts from previous pipeline if no changes
+# Note: Backend artifacts are downloaded only if there are NO changes in both server and webapp
+# If either server or webapp changed, build-backend will run instead
+download-backend-artifacts:
   stage: build-server
+  <<: *download-artifacts-template
+  variables:
+    ARTIFACT_JOB_NAME: "build-backend"
+  rules:
+    # Run only if on master/stage branch and server directory exists, but no changes in server or webapp
+    - <<: *on-commit-to-master
+      exists:
+        - server/**/*
+      changes:
+        - server/**/*
+        - webapp/**/*
+      when: never
+    - <<: *on-commit-to-master
+      exists:
+        - server/**/*
+    - <<: *on-commit-to-stage
+      exists:
+        - server/**/*
+      changes:
+        - server/**/*
+        - webapp/**/*
+      when: never
+    - <<: *on-commit-to-stage
+      exists:
+        - server/**/*
+  artifacts:
+    paths:
+      - server/dist/
+      - server/build/
+    expire_in: 2 days
+    when: always
+
+# Build frontend (webapp)
+# This runs first, before backend build
+build-frontend:
+  stage: build-frontend-stage
   image: mattermost/mattermost-build-server:${GO_VERSION}
   rules:
     - <<: *on-commit-to-master
@@ -60,6 +186,39 @@ build-frontend:
     - npm ci --include=dev
   script:
     - npm run build
+  artifacts:
+    paths:
+      - webapp/channels/dist/
+    expire_in: 2 days
+    when: always
+
+# Download frontend artifacts from previous pipeline if no changes
+# This runs first, before backend build
+download-frontend-artifacts:
+  stage: build-frontend-stage
+  <<: *download-artifacts-template
+  variables:
+    ARTIFACT_JOB_NAME: "build-frontend"
+  rules:
+    # Run only if on master/stage branch and webapp directory exists, but no changes in webapp
+    - <<: *on-commit-to-master
+      exists:
+        - webapp/**/*
+      changes:
+        - webapp/**/*
+      when: never
+    - <<: *on-commit-to-master
+      exists:
+        - webapp/**/*
+    - <<: *on-commit-to-stage
+      exists:
+        - webapp/**/*
+      changes:
+        - webapp/**/*
+      when: never
+    - <<: *on-commit-to-stage
+      exists:
+        - webapp/**/*
   artifacts:
     paths:
       - webapp/channels/dist/
@@ -85,8 +244,12 @@ build-frontend:
 #    - *on-commit-to-master
 #    - *on-commit-to-stage
 #  dependencies:
+#    # Use artifacts from either build jobs or download jobs
+#    # GitLab CI will use artifacts from whichever jobs ran
 #    - build-backend
+#    - download-backend-artifacts
 #    - build-frontend
+#    - download-frontend-artifacts
 #  before_script:
 #    - |
 #      export DOCKER_HOST=tcp://docker:2375
@@ -112,6 +275,9 @@ build-frontend:
 #      fi
 #  script:
 #    - |
+#      # Note: The package file (tar.gz) already contains the frontend inside it.
+#      # During build-backend, make package copies webapp/channels/dist/* into server/dist/mattermost/client/
+#      # So the Docker image will have both backend and frontend from this single package file.
 #      # Find the built package
 #      PACKAGE_FILE=$(find server/dist -name "mattermost-*-linux-amd64.tar.gz" | head -n 1)
 #      if [ -z "$PACKAGE_FILE" ]; then
