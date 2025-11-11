@@ -422,15 +422,37 @@ build-docker:
 
       # Create temporary Dockerfile by modifying the original
       # Replace curl download with COPY command
-      # Remove MM_PACKAGE arg line and replace curl with COPY
+      # The original RUN command spans multiple lines:
+      # RUN mkdir ... \
+      #   && groupadd ... \
+      #   && useradd ... \
+      #   && curl -L $MM_PACKAGE | tar -xvz \
+      #   && chown ...
+      # We need to split it: close RUN after useradd, add COPY, then new RUN for tar+chown
       awk '
+        BEGIN { prev_line = "" }
         /^ARG MM_PACKAGE=/ { next }
         /curl -L \$MM_PACKAGE \| tar -xvz/ {
+          # Remove the backslash from previous line to close the RUN
+          if (prev_line ~ / \\$/) {
+            sub(/ \\$/, "", prev_line)
+            print prev_line
+          }
+          # Add COPY and new RUN
           print "COPY package.tar.gz /tmp/package.tar.gz"
+          # Get the next line (chown) and include it in new RUN
+          getline next_line
+          gsub(/^[[:space:]]*&&[[:space:]]*/, "", next_line)
           print "RUN tar -xzf /tmp/package.tar.gz -C / && rm /tmp/package.tar.gz \\"
+          print "  && " next_line
+          prev_line = ""
           next
         }
-        { print }
+        { 
+          if (prev_line != "") print prev_line
+          prev_line = $0
+        }
+        END { if (prev_line != "") print prev_line }
       ' server/build/Dockerfile > server/build/Dockerfile.tmp
 
       # Build using temporary Dockerfile with COPY instead of curl
