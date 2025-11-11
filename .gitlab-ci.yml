@@ -367,8 +367,9 @@ build-docker:
         sleep 2
         elapsed=$((elapsed + 2))
       done
+    - apk add --no-cache python3 curl
     - docker buildx version || docker buildx install
-    - docker buildx create --use --name builder --driver docker-container || true
+    - docker buildx create --use --name builder --driver docker-container --driver-opt network=host || true
     - |
       if [ -n "${REGISTRY_HOST}" ] && [ -n "${REGISTRY_USERNAME}" ] && [ -n "${REGISTRY_PASSWORD}" ]; then
         echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin "${REGISTRY_HOST}"
@@ -388,22 +389,14 @@ build-docker:
         exit 1
       fi
 
-      # Copy package to build context for Dockerfile
-      mkdir -p server/build/package
-      cp "$PACKAGE_FILE" server/build/package/
+      echo "Found package: $PACKAGE_FILE"
       PACKAGE_NAME=$(basename "$PACKAGE_FILE")
 
-      # Create a simple HTTP server to serve the package (as original Dockerfile expects URL)
-      # Or use the original Dockerfile with local file modification
-      # Actually, let's use the original Dockerfile approach but serve package via HTTP
-      cd server/build/package
-      python3 -m http.server 8000 > /tmp/http-server.log 2>&1 &
-      HTTP_SERVER_PID=$!
-      sleep 2
-
-      # Get absolute path for the package URL
-      # Use localhost since we're in the same container
-      MM_PACKAGE="http://localhost:8000/${PACKAGE_NAME}"
+      # Copy package to build context directory
+      # The Dockerfile expects to download from URL, so we'll serve it via HTTP
+      # But first, let's copy it to the build context
+      mkdir -p server/build/package
+      cp "$PACKAGE_FILE" server/build/package/
 
       # Set image tags
       if [ -n "${REGISTRY_HOST}" ]; then
@@ -414,20 +407,47 @@ build-docker:
         branch_tag="${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_BRANCH}"
       fi
 
-      # Build using original Dockerfile with MM_PACKAGE pointing to local HTTP server
-      cd ..
+      # Start HTTP server to serve the package (Dockerfile expects URL)
+      # Buildx runs in a separate container, so we need to make the server accessible
+      cd server/build/package
+      python3 -m http.server 8000 --bind 0.0.0.0 > /tmp/http-server.log 2>&1 &
+      HTTP_SERVER_PID=$!
+      sleep 3
+
+      # Get the host IP that buildx container can access
+      # In GitLab CI with docker-in-docker, we can use the host network
+      # Try to detect the correct IP or use host.docker.internal
+      HOST_IP=$(ip route | grep default | awk '{print $3}' || echo "172.17.0.1")
+      MM_PACKAGE="http://${HOST_IP}:8000/${PACKAGE_NAME}"
+      
+      echo "Serving package at: ${MM_PACKAGE}"
+      echo "HTTP server PID: ${HTTP_SERVER_PID}"
+
+      # Verify HTTP server is accessible locally
+      if ! curl -f -s "http://localhost:8000/${PACKAGE_NAME}" > /dev/null; then
+        echo "ERROR: HTTP server is not accessible"
+        cat /tmp/http-server.log || true
+        exit 1
+      fi
+
+      # Build using Dockerfile with MM_PACKAGE pointing to HTTP server
+      # Use --network host for buildx to access the HTTP server
+      cd ../..
       docker buildx build \
+        --driver-opt network=host \
         --pull \
         --push \
         --platform linux/amd64 \
         --build-arg MM_PACKAGE="${MM_PACKAGE}" \
         -t "${tag}" \
         -t "${branch_tag}" \
-        -f Dockerfile \
-        .
+        -f server/build/Dockerfile \
+        server/build
 
       # Stop HTTP server
-      kill $HTTP_SERVER_PID || true
+      if [ -n "$HTTP_SERVER_PID" ]; then
+        kill $HTTP_SERVER_PID 2>/dev/null || true
+      fi
 #
 ## Build OpenSearch Docker image
 #build-opensearch:
