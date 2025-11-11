@@ -432,7 +432,8 @@ build-docker:
 
       # Build using Dockerfile with MM_PACKAGE pointing to HTTP server
       # The builder was already created with network=host option
-      cd ../..
+      # We're currently in server/build/package, so go back to project root
+      cd ../../..
       docker buildx build \
         --pull \
         --push \
