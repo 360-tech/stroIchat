@@ -381,6 +381,12 @@ build-docker:
       # Note: The package file (tar.gz) already contains the frontend inside it.
       # During build-backend, make package copies webapp/channels/dist/* into server/dist/mattermost/client/
       # So the Docker image will have both backend and frontend from this single package file.
+      
+      # Show current directory and structure
+      echo "Current directory: $(pwd)"
+      echo "Directory structure:"
+      ls -la || true
+      
       # Find the built package
       PACKAGE_FILE=$(find server/dist -name "mattermost-*-linux-amd64.tar.gz" | head -n 1)
       if [ -z "$PACKAGE_FILE" ]; then
@@ -392,9 +398,16 @@ build-docker:
       echo "Found package: $PACKAGE_FILE"
       PACKAGE_NAME=$(basename "$PACKAGE_FILE")
 
+      # Ensure server/build directory exists (it should be in the repo)
+      if [ ! -d "server/build" ]; then
+        echo "ERROR: server/build directory not found"
+        echo "Available directories:"
+        ls -la server/ || true
+        exit 1
+      fi
+
       # Copy package to build context directory
       # The Dockerfile expects to download from URL, so we'll serve it via HTTP
-      # But first, let's copy it to the build context
       mkdir -p server/build/package
       cp "$PACKAGE_FILE" server/build/package/
 
@@ -422,6 +435,7 @@ build-docker:
       
       echo "Serving package at: ${MM_PACKAGE}"
       echo "HTTP server PID: ${HTTP_SERVER_PID}"
+      echo "Current directory: $(pwd)"
 
       # Verify HTTP server is accessible locally
       if ! curl -f -s "http://localhost:8000/${PACKAGE_NAME}" > /dev/null; then
@@ -434,6 +448,10 @@ build-docker:
       # The builder was already created with network=host option
       # We're currently in server/build/package, so go back to project root
       cd ../../..
+      echo "Build context directory: $(pwd)"
+      echo "Checking if server/build exists:"
+      ls -la server/build/ || true
+      
       docker buildx build \
         --pull \
         --push \
