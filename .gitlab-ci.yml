@@ -33,13 +33,11 @@ variables:
       echo "API URL: ${CI_API_V4_URL}"
       echo "Branch: ${CI_COMMIT_REF_NAME}"
 
-      # Use project path encoded in URL format if project ID doesn't work
-      # GitLab API accepts both numeric ID and URL-encoded path (e.g., group%2Fproject)
-      PROJECT_ID_OR_PATH="${CI_PROJECT_ID}"
-      if [ -z "$PROJECT_ID_OR_PATH" ] || [ "$PROJECT_ID_OR_PATH" = "null" ]; then
-        # Fallback to URL-encoded project path
-        PROJECT_ID_OR_PATH=$(echo "${CI_PROJECT_PATH}" | sed 's/\//%2F/g')
-      fi
+      # Use URL-encoded project path for API calls
+      # GitLab API accepts URL-encoded path (e.g., group%2Fproject)
+      # This is more reliable than numeric ID in some GitLab configurations
+      PROJECT_ID_OR_PATH=$(echo "${CI_PROJECT_PATH}" | sed 's/\//%2F/g')
+      echo "Using project identifier: ${PROJECT_ID_OR_PATH}"
 
       # Get the last successful pipeline for this branch
       PIPELINES_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
