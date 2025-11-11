@@ -72,8 +72,14 @@ variables:
           TEST_HTTP_CODE=$(echo "$TEST_RESPONSE" | tail -n 1)
           if [ "$TEST_HTTP_CODE" != "200" ]; then
             echo "ERROR: Cannot access project with either ID or path"
-            echo "CI_JOB_TOKEN may not have sufficient permissions"
-            echo "Consider using a project access token with 'read_api' scope"
+            echo ""
+            echo "SOLUTION: Create a Project Access Token and add it as CI/CD variable:"
+            echo "1. Go to Settings → Access Tokens"
+            echo "2. Create token with 'read_api' and 'read_repository' scopes"
+            echo "3. Add it as CI/CD variable 'GITLAB_API_TOKEN'"
+            echo ""
+            echo "Alternatively, if this is the first pipeline, artifacts will be created"
+            echo "in the next pipeline run. For now, this job will fail gracefully."
             exit 1
           fi
         else
@@ -144,7 +150,8 @@ variables:
             "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/jobs/${JOB_ID}/artifacts")
 
           if [ "$ARTIFACT_HTTP_CODE" = "200" ] && [ -f artifacts.zip ] && [ -s artifacts.zip ]; then
-            unzip -q artifacts.zip
+            # Use -o flag to overwrite files without prompting
+            unzip -o -q artifacts.zip
             ARTIFACTS_FOUND=true
             echo "Artifacts downloaded successfully from pipeline ${pipeline_id}"
             echo "Artifacts contents:"
