@@ -456,10 +456,14 @@ build-docker:
       ' server/build/Dockerfile > server/build/Dockerfile.tmp
 
       # Build using temporary Dockerfile with COPY instead of curl
+      # Use cache from registry to speed up builds and reduce push time
       docker buildx build \
         --pull \
         --push \
         --platform linux/amd64 \
+        --cache-from type=registry,ref="${branch_tag}" \
+        --cache-to type=inline \
+        --compress \
         -t "${tag}" \
         -t "${branch_tag}" \
         -f server/build/Dockerfile.tmp \
@@ -527,12 +531,16 @@ build-opensearch:
       fi
 
       # Build and push the OpenSearch image
+      # Use cache from registry to speed up builds and reduce push time
       cd server/build
       docker buildx build \
         --pull \
         --push \
         --platform linux/amd64 \
         --build-arg OPENSEARCH_VERSION=${OPENSEARCH_VERSION} \
+        --cache-from type=registry,ref="${tag_latest}" \
+        --cache-to type=inline \
+        --compress \
         -t "${tag}" \
         -t "${tag_latest}" \
         -f Dockerfile.opensearch \
