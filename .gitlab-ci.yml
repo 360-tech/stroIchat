@@ -56,13 +56,13 @@ variables:
         "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}")
       TEST_HTTP_CODE=$(echo "$TEST_RESPONSE" | tail -n 1)
       TEST_BODY=$(echo "$TEST_RESPONSE" | head -n -1)
-      
+
       if [ "$TEST_HTTP_CODE" != "200" ]; then
         echo "WARNING: Cannot access project API. HTTP code: $TEST_HTTP_CODE"
         echo "Response: $TEST_BODY"
         echo "This might indicate insufficient permissions for CI_JOB_TOKEN"
         echo "Trying alternative: using project path..."
-        
+
         # Try with URL-encoded path if ID didn't work
         if [ "$PROJECT_ID_OR_PATH" = "${CI_PROJECT_ID}" ]; then
           PROJECT_ID_OR_PATH=$(echo "${CI_PROJECT_PATH}" | sed 's/\//%2F/g')
@@ -91,23 +91,23 @@ variables:
       # Get the last successful pipeline for this branch
       PIPELINES_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${API_TOKEN}" \
         "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/pipelines?ref=${CI_COMMIT_REF_NAME}&status=success&per_page=5")
-      
+
       HTTP_CODE=$(echo "$PIPELINES_RESPONSE" | tail -n 1)
       PIPELINES=$(echo "$PIPELINES_RESPONSE" | head -n -1)
-      
+
       if [ "$HTTP_CODE" != "200" ]; then
         echo "ERROR: Failed to fetch pipelines. HTTP code: $HTTP_CODE"
         echo "Response: $PIPELINES"
         exit 1
       fi
-      
+
       # Check if response is valid JSON array
       if ! echo "$PIPELINES" | jq -e '. | type == "array"' >/dev/null 2>&1; then
         echo "ERROR: Invalid JSON response from API"
         echo "Response: $PIPELINES"
         exit 1
       fi
-      
+
       PIPELINE_COUNT=$(echo "$PIPELINES" | jq '. | length')
       echo "Found $PIPELINE_COUNT successful pipeline(s) to check"
 
@@ -118,21 +118,21 @@ variables:
         if [ -z "$pipeline_id" ] || [ "$pipeline_id" = "null" ]; then
           continue
         fi
-        
+
         echo "Checking pipeline ${pipeline_id}..."
 
         # Get jobs from this pipeline
         JOBS_RESPONSE=$(curl -s -w "\n%{http_code}" --header "PRIVATE-TOKEN: ${API_TOKEN}" \
           "${CI_API_V4_URL}/projects/${PROJECT_ID_OR_PATH}/pipelines/${pipeline_id}/jobs")
-        
+
         JOBS_HTTP_CODE=$(echo "$JOBS_RESPONSE" | tail -n 1)
         JOBS=$(echo "$JOBS_RESPONSE" | head -n -1)
-        
+
         if [ "$JOBS_HTTP_CODE" != "200" ]; then
           echo "WARNING: Failed to fetch jobs for pipeline ${pipeline_id}. HTTP code: $JOBS_HTTP_CODE"
           continue
         fi
-        
+
         # Check if jobs response is valid JSON
         if ! echo "$JOBS" | jq -e '. | type == "array"' >/dev/null 2>&1; then
           echo "WARNING: Invalid JSON response for jobs in pipeline ${pipeline_id}"
@@ -175,7 +175,7 @@ variables:
         exit 1
       fi
   artifacts:
-    expire_in: 2 days
+    expire_in: 60 days
     when: always
 
 # Build backend (Go server)
@@ -231,7 +231,7 @@ build-backend:
     paths:
       - server/dist/
       - server/build/
-    expire_in: 2 days
+    expire_in: 60 days
     when: always
 
 # Download backend artifacts from previous pipeline if no changes
@@ -268,7 +268,7 @@ download-backend-artifacts:
     paths:
       - server/dist/
       - server/build/
-    expire_in: 2 days
+    expire_in: 60 days
     when: always
 
 # Build frontend (webapp)
@@ -291,7 +291,7 @@ build-frontend:
   artifacts:
     paths:
       - webapp/channels/dist/
-    expire_in: 2 days
+    expire_in: 60 days
     when: always
 
 # Download frontend artifacts from previous pipeline if no changes
@@ -324,7 +324,7 @@ download-frontend-artifacts:
   artifacts:
     paths:
       - webapp/channels/dist/
-    expire_in: 2 days
+    expire_in: 60 days
     when: always
 
 # Build Docker image
@@ -381,12 +381,12 @@ build-docker:
       # Note: The package file (tar.gz) already contains the frontend inside it.
       # During build-backend, make package copies webapp/channels/dist/* into server/dist/mattermost/client/
       # So the Docker image will have both backend and frontend from this single package file.
-      
+
       # Show current directory and structure
       echo "Current directory: $(pwd)"
       echo "Directory structure:"
       ls -la || true
-      
+
       # Find the built package
       PACKAGE_FILE=$(find server/dist -name "mattermost-*-linux-amd64.tar.gz" | head -n 1)
       if [ -z "$PACKAGE_FILE" ]; then
@@ -448,7 +448,7 @@ build-docker:
           prev_line = ""
           next
         }
-        { 
+        {
           if (prev_line != "") print prev_line
           prev_line = $0
         }
