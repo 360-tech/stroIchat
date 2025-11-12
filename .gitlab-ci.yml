@@ -467,91 +467,73 @@ build-docker:
 
       # Clean up temporary files
       rm -f server/build/Dockerfile.tmp server/build/package.tar.gz
-#
-## Build OpenSearch Docker image
-#build-opensearch:
-#  stage: build-docker
-#  image: docker:24
-#  services:
-#    - name: docker:24-dind
-#      alias: docker
-#      entrypoint: ["dockerd-entrypoint.sh"]
-#      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
-#  variables:
-#    DOCKER_HOST: tcp://docker:2375
-#    DOCKER_TLS_CERTDIR: ""
-#    DOCKER_TLS_VERIFY: ""
-#    DOCKER_CERT_PATH: ""
-#    DOCKER_DRIVER: overlay2
-#  rules:
-#    - *on-commit-to-master
-#    - *on-commit-to-stage
-#  before_script:
-#    - |
-#      export DOCKER_HOST=tcp://docker:2375
-#      echo "Waiting for Docker daemon..."
-#      timeout=60
-#      elapsed=0
-#      until docker info >/dev/null 2>&1; do
-#        if [ $elapsed -ge $timeout ]; then
-#          echo "ERROR: Docker daemon did not become ready within ${timeout}s"
-#          exit 1
-#        fi
-#        echo "Docker daemon not ready, waiting... (${elapsed}s/${timeout}s)"
-#        sleep 2
-#        elapsed=$((elapsed + 2))
-#      done
-#    - docker buildx version || docker buildx install
-#    - docker buildx create --use --name builder --driver docker-container || true
-#    - |
-#      if [ -n "${REGISTRY_HOST}" ] && [ -n "${REGISTRY_USERNAME}" ] && [ -n "${REGISTRY_PASSWORD}" ]; then
-#        echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin "${REGISTRY_HOST}"
-#      else
-#        echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
-#      fi
-#  script:
-#    - |
-#      # Set image tags
-#      if [ -n "${REGISTRY_HOST}" ]; then
-#        tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/opensearch:${OPENSEARCH_VERSION}"
-#        tag_latest="${REGISTRY_HOST}/${CI_PROJECT_PATH}/opensearch:latest"
-#      else
-#        tag="${CI_REGISTRY_IMAGE}/opensearch:${OPENSEARCH_VERSION}"
-#        tag_latest="${CI_REGISTRY_IMAGE}/opensearch:latest"
-#      fi
-#
-#      # Build and push the OpenSearch image
-#      cd server/build
-#      docker buildx build \
-#        --pull \
-#        --push \
-#        --platform linux/amd64 \
-#        --build-arg OPENSEARCH_VERSION=${OPENSEARCH_VERSION} \
-#        -t "${tag}" \
-#        -t "${tag_latest}" \
-#        -f Dockerfile.opensearch \
-#        .
-#
-## Push images (already done in build-docker, but kept for clarity)
-#push-images:
-#  stage: push-images
-#  image: alpine:latest
-#  rules:
-#    - *on-commit-to-master
-#    - *on-commit-to-stage
-#  dependencies:
-#    - build-docker
-#    - build-opensearch
-#  script:
-#    - echo "Images pushed in build-docker stage"
-#    - |
-#      if [ -n "${REGISTRY_HOST}" ]; then
-#        echo "Server Image: ${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_SHORT_SHA}"
-#        echo "Server Branch tag: ${REGISTRY_HOST}/${CI_PROJECT_PATH}/server:${CI_COMMIT_BRANCH}"
-#        echo "OpenSearch Image: ${REGISTRY_HOST}/${CI_PROJECT_PATH}/opensearch:${OPENSEARCH_VERSION}"
-#      else
-#        echo "Server Image: ${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_SHORT_SHA}"
-#        echo "Server Branch tag: ${CI_REGISTRY_IMAGE}/server:${CI_COMMIT_BRANCH}"
-#        echo "OpenSearch Image: ${CI_REGISTRY_IMAGE}/opensearch:${OPENSEARCH_VERSION}"
-#      fi
-#
+
+# Build OpenSearch Docker image
+# This job runs only when Dockerfile.opensearch is changed
+build-opensearch:
+  stage: build-docker
+  image: docker:24
+  services:
+    - name: docker:24-dind
+      alias: docker
+      entrypoint: ["dockerd-entrypoint.sh"]
+      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_VERIFY: ""
+    DOCKER_CERT_PATH: ""
+    DOCKER_DRIVER: overlay2
+  rules:
+    - <<: *on-commit-to-master
+      changes:
+        - server/build/Dockerfile.opensearch
+    - <<: *on-commit-to-stage
+      changes:
+        - server/build/Dockerfile.opensearch
+  before_script:
+    - |
+      export DOCKER_HOST=tcp://docker:2375
+      echo "Waiting for Docker daemon..."
+      timeout=60
+      elapsed=0
+      until docker info >/dev/null 2>&1; do
+        if [ $elapsed -ge $timeout ]; then
+          echo "ERROR: Docker daemon did not become ready within ${timeout}s"
+          exit 1
+        fi
+        echo "Docker daemon not ready, waiting... (${elapsed}s/${timeout}s)"
+        sleep 2
+        elapsed=$((elapsed + 2))
+      done
+    - apk add --no-cache python3 curl
+    - docker buildx version || docker buildx install
+    - docker buildx create --use --name builder --driver docker-container --driver-opt network=host || true
+    - |
+      if [ -n "${REGISTRY_HOST}" ] && [ -n "${REGISTRY_USERNAME}" ] && [ -n "${REGISTRY_PASSWORD}" ]; then
+        echo "${REGISTRY_PASSWORD}" | docker login -u "${REGISTRY_USERNAME}" --password-stdin "${REGISTRY_HOST}"
+      else
+        echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+      fi
+  script:
+    - |
+      # Set image tags
+      if [ -n "${REGISTRY_HOST}" ]; then
+        tag="${REGISTRY_HOST}/${CI_PROJECT_PATH}/opensearch:${OPENSEARCH_VERSION}"
+        tag_latest="${REGISTRY_HOST}/${CI_PROJECT_PATH}/opensearch:latest"
+      else
+        tag="${CI_REGISTRY_IMAGE}/opensearch:${OPENSEARCH_VERSION}"
+        tag_latest="${CI_REGISTRY_IMAGE}/opensearch:latest"
+      fi
+
+      # Build and push the OpenSearch image
+      cd server/build
+      docker buildx build \
+        --pull \
+        --push \
+        --platform linux/amd64 \
+        --build-arg OPENSEARCH_VERSION=${OPENSEARCH_VERSION} \
+        -t "${tag}" \
+        -t "${tag_latest}" \
+        -f Dockerfile.opensearch \
+        .
