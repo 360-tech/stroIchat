@@ -116,6 +116,7 @@ export default class Root extends React.PureComponent<Props, State> {
     };
 
     private showLandingPageIfNecessary = () => {
+        return;
         // Only show Landing Page if enabled
         if (!this.props.enableDesktopLandingPage) {
             return;

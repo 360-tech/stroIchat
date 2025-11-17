@@ -77,18 +77,6 @@
             @include mixins.link;
         }
     }
-
-    &.has-custom-site-name {
-        .header-logo-link ~ .header-logo-link {
-            margin-top: 12px;
-        }
-    }
-
-    &.has-free-banner.has-custom-site-name {
-        .header-back-button {
-            bottom: -20px;
-        }
-    }
 }
 
 @media screen and (max-width: 699px) {

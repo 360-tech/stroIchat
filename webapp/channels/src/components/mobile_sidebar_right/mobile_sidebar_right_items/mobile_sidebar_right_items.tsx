@@ -253,13 +253,6 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
                 </Menu.Group>
                 <Menu.Group>
                     <Menu.ItemExternalLink
-                        id='helpLink'
-                        show={Boolean(this.props.helpLink)}
-                        url={this.props.helpLink}
-                        text={formatMessage({id: 'navbar_dropdown.help', defaultMessage: 'Help'})}
-                        icon={<i className='fa fa-question'/>}
-                    />
-                    <Menu.ItemExternalLink
                         id='reportLink'
                         show={Boolean(this.props.reportAProblemLink)}
                         url={this.props.reportAProblemLink}

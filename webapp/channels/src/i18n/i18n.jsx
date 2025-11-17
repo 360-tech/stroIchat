@@ -7,7 +7,7 @@
 
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
-import {langFiles, langIDs, langLabels} from './imports';
+import {langFiles} from './imports';
 
 // should match the values in server/public/shared/i18n/i18n.go
 export const languages = {
@@ -145,22 +145,7 @@ export const languages = {
     },
 };
 
-export function getAllLanguages(includeExperimental) {
-    if (includeExperimental) {
-        let order = Object.keys(languages).length;
-        return {
-            ...langIDs.reduce((out, id) => {
-                out[id] = {
-                    value: id,
-                    name: langLabels[id] + ' (Experimental)',
-                    url: langFiles[id],
-                    order: order++,
-                };
-                return out;
-            }, {}),
-            ...languages,
-        };
-    }
+export function getAllLanguages() {
     return languages;
 }
 
@@ -171,7 +156,7 @@ export function getAllLanguages(includeExperimental) {
 export function getLanguages(state) {
     const config = getConfig(state);
     if (!config.AvailableLocales) {
-        return getAllLanguages(config.EnableExperimentalLocales === 'true');
+        return getAllLanguages();
     }
     return config.AvailableLocales.split(',').reduce((result, l) => {
         if (languages[l]) {
@@ -182,7 +167,7 @@ export function getLanguages(state) {
 }
 
 export function getLanguageInfo(locale) {
-    return getAllLanguages(true)[locale];
+    return getAllLanguages()[locale];
 }
 
 /**

@@ -161,88 +161,88 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         }
     };
 
-    const getExternalSignupOptions = () => {
-        const externalLoginOptions: ExternalLoginButtonType[] = [];
+    // const getExternalSignupOptions = () => {
+    //     const externalLoginOptions: ExternalLoginButtonType[] = [];
 
-        if (!enableExternalSignup) {
-            return externalLoginOptions;
-        }
+    //     if (!enableExternalSignup) {
+    //         return externalLoginOptions;
+    //     }
 
-        if (enableSignUpWithGitLab) {
-            const url = `${Client4.getOAuthRoute()}/gitlab/signup${search}`;
-            externalLoginOptions.push({
-                id: 'gitlab',
-                url,
-                icon: <LoginGitlabIcon/>,
-                label: GitLabButtonText || formatMessage({id: 'login.gitlab', defaultMessage: 'GitLab'}),
-                style: {color: GitLabButtonColor, borderColor: GitLabButtonColor},
-                onClick: desktopExternalAuth(url),
-            });
-        }
+        // if (enableSignUpWithGitLab) {
+        //     const url = `${Client4.getOAuthRoute()}/gitlab/signup${search}`;
+        //     externalLoginOptions.push({
+        //         id: 'gitlab',
+        //         url,
+        //         icon: <LoginGitlabIcon/>,
+        //         label: GitLabButtonText || formatMessage({id: 'login.gitlab', defaultMessage: 'GitLab'}),
+        //         style: {color: GitLabButtonColor, borderColor: GitLabButtonColor},
+        //         onClick: desktopExternalAuth(url),
+        //     });
+        // }
 
-        if (isLicensed && enableSignUpWithGoogle) {
-            const url = `${Client4.getOAuthRoute()}/google/signup${search}`;
-            externalLoginOptions.push({
-                id: 'google',
-                url,
-                icon: <LoginGoogleIcon/>,
-                label: formatMessage({id: 'login.google', defaultMessage: 'Google'}),
-                onClick: desktopExternalAuth(url),
-            });
-        }
+        // if (isLicensed && enableSignUpWithGoogle) {
+        //     const url = `${Client4.getOAuthRoute()}/google/signup${search}`;
+        //     externalLoginOptions.push({
+        //         id: 'google',
+        //         url,
+        //         icon: <LoginGoogleIcon/>,
+        //         label: formatMessage({id: 'login.google', defaultMessage: 'Google'}),
+        //         onClick: desktopExternalAuth(url),
+        //     });
+        // }
 
-        if (isLicensed && enableSignUpWithOffice365) {
-            const url = `${Client4.getOAuthRoute()}/office365/signup${search}`;
-            externalLoginOptions.push({
-                id: 'office365',
-                url,
-                icon: <EntraIdIcon/>,
-                label: formatMessage({id: 'login.office365', defaultMessage: 'Entra ID'}),
-                onClick: desktopExternalAuth(url),
-            });
-        }
+        // if (isLicensed && enableSignUpWithOffice365) {
+        //     const url = `${Client4.getOAuthRoute()}/office365/signup${search}`;
+        //     externalLoginOptions.push({
+        //         id: 'office365',
+        //         url,
+        //         icon: <EntraIdIcon/>,
+        //         label: formatMessage({id: 'login.office365', defaultMessage: 'Entra ID'}),
+        //         onClick: desktopExternalAuth(url),
+        //     });
+        // }
 
-        if (isLicensed && enableSignUpWithOpenId) {
-            const url = `${Client4.getOAuthRoute()}/openid/signup${search}`;
-            externalLoginOptions.push({
-                id: 'openid',
-                url,
-                icon: <LoginOpenIDIcon/>,
-                label: OpenIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Open ID'}),
-                style: {color: OpenIdButtonColor, borderColor: OpenIdButtonColor},
-                onClick: desktopExternalAuth(url),
-            });
-        }
+        // if (isLicensed && enableSignUpWithOpenId) {
+        //     const url = `${Client4.getOAuthRoute()}/openid/signup${search}`;
+        //     externalLoginOptions.push({
+        //         id: 'openid',
+        //         url,
+        //         icon: <LoginOpenIDIcon/>,
+        //         label: OpenIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Open ID'}),
+        //         style: {color: OpenIdButtonColor, borderColor: OpenIdButtonColor},
+        //         onClick: desktopExternalAuth(url),
+        //     });
+        // }
 
-        if (isLicensed && enableLDAP) {
-            const newSearchParam = new URLSearchParams(search);
-            newSearchParam.set('extra', Constants.CREATE_LDAP);
+        // if (isLicensed && enableLDAP) {
+        //     const newSearchParam = new URLSearchParams(search);
+        //     newSearchParam.set('extra', Constants.CREATE_LDAP);
 
-            externalLoginOptions.push({
-                id: 'ldap',
-                url: `${Client4.getUrl()}/login?${newSearchParam.toString()}`,
-                icon: <LockIcon/>,
-                label: LdapLoginFieldName || formatMessage({id: 'signup.ldap', defaultMessage: 'AD/LDAP Credentials'}),
-                onClick: () => {},
-            });
-        }
+        //     externalLoginOptions.push({
+        //         id: 'ldap',
+        //         url: `${Client4.getUrl()}/login?${newSearchParam.toString()}`,
+        //         icon: <LockIcon/>,
+        //         label: LdapLoginFieldName || formatMessage({id: 'signup.ldap', defaultMessage: 'AD/LDAP Credentials'}),
+        //         onClick: () => {},
+        //     });
+        // }
 
-        if (isLicensed && enableSAML) {
-            const newSearchParam = new URLSearchParams(search);
-            newSearchParam.set('action', 'signup');
+        // if (isLicensed && enableSAML) {
+        //     const newSearchParam = new URLSearchParams(search);
+        //     newSearchParam.set('action', 'signup');
 
-            const url = `${Client4.getUrl()}/login/sso/saml?${newSearchParam.toString()}`;
-            externalLoginOptions.push({
-                id: 'saml',
-                url,
-                icon: <LockIcon/>,
-                label: SamlLoginButtonText || formatMessage({id: 'login.saml', defaultMessage: 'SAML'}),
-                onClick: desktopExternalAuth(url),
-            });
-        }
+        //     const url = `${Client4.getUrl()}/login/sso/saml?${newSearchParam.toString()}`;
+        //     externalLoginOptions.push({
+        //         id: 'saml',
+        //         url,
+        //         icon: <LockIcon/>,
+        //         label: SamlLoginButtonText || formatMessage({id: 'login.saml', defaultMessage: 'SAML'}),
+        //         onClick: desktopExternalAuth(url),
+        //     });
+        // }
 
-        return externalLoginOptions;
-    };
+    //     return externalLoginOptions;
+    // };
 
     const handleHeaderBackButtonOnClick = useCallback(() => {
         history.goBack();
@@ -306,16 +306,16 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         setIsMobileView(window.innerWidth < MOBILE_SCREEN_WIDTH);
     }, 100);
 
-    const desktopExternalAuth = (href: string) => {
-        return (event: React.MouseEvent) => {
-            if (isDesktopApp()) {
-                event.preventDefault();
+    // const desktopExternalAuth = (href: string) => {
+    //     return (event: React.MouseEvent) => {
+    //         if (isDesktopApp()) {
+    //             event.preventDefault();
 
-                setDesktopLoginLink(href);
-                history.push(`/signup_user_complete/desktop${search}`);
-            }
-        };
-    };
+    //             setDesktopLoginLink(href);
+    //             history.push(`/signup_user_complete/desktop${search}`);
+    //         }
+    //     };
+    // };
 
     useEffect(() => {
         dispatch(removeGlobalItem('team'));
@@ -605,68 +605,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
 
     const handleReturnButtonOnClick = () => history.replace('/');
 
-    const getNewsletterCheck = () => {
-        if (cwsAvailability === CSWAvailabilityCheckTypes.Available) {
-            return (
-                <CheckInput
-                    id='signup-body-card-form-check-newsletter'
-                    ariaLabel={formatMessage({id: 'newsletter_optin.checkmark.box', defaultMessage: 'newsletter checkbox'})}
-                    name='newsletter'
-                    onChange={() => setSubscribeToSecurityNewsletter(!subscribeToSecurityNewsletter)}
-                    text={
-                        formatMessage(
-                            {id: 'newsletter_optin.checkmark.text', defaultMessage: '<span>I would like to receive Mattermost security updates via newsletter.</span> By subscribing, I consent to receive emails from Mattermost with product updates, promotions, and company news. I have read the <a>Privacy Policy</a> and understand that I can <aa>unsubscribe</aa> at any time'},
-                            {
-                                a: (chunks: React.ReactNode | React.ReactNodeArray) => (
-                                    <ExternalLink
-                                        location='signup-newsletter-checkmark'
-                                        href={HostedCustomerLinks.PRIVACY}
-                                    >
-                                        {chunks}
-                                    </ExternalLink>
-                                ),
-                                aa: (chunks: React.ReactNode | React.ReactNodeArray) => (
-                                    <ExternalLink
-                                        location='signup-newsletter-checkmark'
-                                        href={HostedCustomerLinks.NEWSLETTER_UNSUBSCRIBE_LINK}
-                                    >
-                                        {chunks}
-                                    </ExternalLink>
-                                ),
-                                span: (chunks: React.ReactNode | React.ReactNodeArray) => (
-                                    <span className='header'>{chunks}</span>
-                                ),
-                            },
-                        )}
-                    checked={subscribeToSecurityNewsletter}
-                />
-            );
-        }
-        return (
-            <div className='newsletter'>
-                <span className='interested'>
-                    {formatMessage({id: 'newsletter_optin.title', defaultMessage: 'Interested in receiving Mattermost security, product, promotions, and company updates updates via newsletter?'})}
-                </span>
-                <span className='link'>
-                    {formatMessage(
-                        {id: 'newsletter_optin.desc', defaultMessage: 'Sign up at <a>{link}</a>.'},
-                        {
-                            link: HostedCustomerLinks.SECURITY_UPDATES,
-                            a: (chunks: React.ReactNode | React.ReactNodeArray) => (
-                                <ExternalLink
-                                    location='signup'
-                                    href={HostedCustomerLinks.SECURITY_UPDATES}
-                                >
-                                    {chunks}
-                                </ExternalLink>
-                            ),
-                        },
-                    )}
-                </span>
-            </div>
-        );
-    };
-
     const getContent = () => {
         if (!enableSignUpWithEmail && !enableExternalSignup) {
             return (
@@ -698,20 +636,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                 {formatMessage({id: 'signup_user_completed.return', defaultMessage: 'Return to log in'})}
                             </button>
                         </div>
-                    )}
-                />
-            );
-        }
-
-        if (desktopLoginLink) {
-            return (
-                <Route
-                    path={'/signup_user_complete/desktop'}
-                    render={() => (
-                        <DesktopAuthToken
-                            href={desktopLoginLink}
-                            onLogin={postSignupSuccess}
-                        />
                     )}
                 />
             );
@@ -830,7 +754,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                         info={passwordInfo as string}
                                         error={passwordError}
                                     />
-                                    {getNewsletterCheck()}
                                     <SaveButton
                                         extraClasses='signup-body-card-form-button-submit large'
                                         saving={isWaiting}
@@ -841,24 +764,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                     />
                                 </form>
                             )}
-                            {enableSignUpWithEmail && enableExternalSignup && (
-                                <div className='signup-body-card-form-divider'>
-                                    <span className='signup-body-card-form-divider-label'>
-                                        {formatMessage({id: 'signup_user_completed.or', defaultMessage: 'or create an account with'})}
-                                    </span>
-                                </div>
-                            )}
-                            {enableExternalSignup && (
-                                <div className={classNames('signup-body-card-form-login-options', {column: !enableSignUpWithEmail})}>
-                                    {getExternalSignupOptions().map((option) => (
-                                        <ExternalLoginButton
-                                            key={option.id}
-                                            direction={enableSignUpWithEmail ? undefined : 'column'}
-                                            {...option}
-                                        />
-                                    ))}
-                                </div>
-                            )}
                             {enableSignUpWithEmail && !serverError && (
                                 <p className='signup-body-card-agreement'>
                                     <FormattedMessage
@@ -866,22 +771,24 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                         defaultMessage='By proceeding to create your account and use {siteName}, you agree to our <termsOfUseLink>Terms of Use</termsOfUseLink> and <privacyPolicyLink>Privacy Policy</privacyPolicyLink>.  If you do not agree, you cannot use {siteName}.'
                                         values={{
                                             siteName: SiteName,
-                                            termsOfUseLink: (chunks) => (
-                                                <ExternalLink
-                                                    href={TermsOfServiceLink as string}
-                                                    location='signup-terms-of-use'
-                                                >
-                                                    {chunks}
-                                                </ExternalLink>
-                                            ),
-                                            privacyPolicyLink: (chunks) => (
-                                                <ExternalLink
-                                                    href={PrivacyPolicyLink as string}
-                                                    location='signup-privacy-policy'
-                                                >
-                                                    {chunks}
-                                                </ExternalLink>
-                                            ),
+                                            termsOfUseLink: (chunks) => null,
+                                            // (
+                                            //     <ExternalLink
+                                            //         href={TermsOfServiceLink as string}
+                                            //         location='signup-terms-of-use'
+                                            //     >
+                                            //         {chunks}
+                                            //     </ExternalLink>
+                                            // ),
+                                            privacyPolicyLink: (chunks) => null,
+                                            // (
+                                            //     <ExternalLink
+                                            //         href={PrivacyPolicyLink as string}
+                                            //         location='signup-privacy-policy'
+                                            //     >
+                                            //         {chunks}
+                                            //     </ExternalLink>
+                                            // ),
                                         }}
                                     />
                                 </p>

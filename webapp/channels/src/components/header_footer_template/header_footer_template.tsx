@@ -56,7 +56,7 @@ const HeaderFooterNotLoggedIn = (props: Props) => {
                             id='copyright'
                             className='pull-right footer-link copyright'
                         >
-                            {`© 2015-${new Date().getFullYear()} Stroichat`}
+                            {`© ${new Date().getFullYear()} Stroichat`}
                         </span>
                     </div>
                 </div>
