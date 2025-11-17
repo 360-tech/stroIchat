@@ -18,13 +18,13 @@ import {Permissions} from 'mattermost-redux/constants';
 import AboutBuildModal from 'components/about_build_modal';
 import {VisitSystemConsoleTour} from 'components/onboarding_tasks';
 import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
-import TeamPermissionGate from 'components/permissions_gates/team_permission_gate';
-import MarketplaceModal from 'components/plugin_marketplace/marketplace_modal';
+// import TeamPermissionGate from 'components/permissions_gates/team_permission_gate';
+// import MarketplaceModal from 'components/plugin_marketplace/marketplace_modal';
 import Menu from 'components/widgets/menu/menu';
 
 import {ModalIdentifiers} from 'utils/constants';
-import {makeUrlSafe} from 'utils/url';
-import * as UserAgent from 'utils/user_agent';
+// import {makeUrlSafe} from 'utils/url';
+// import * as UserAgent from 'utils/user_agent';
 
 import type {ModalData} from 'types/actions';
 
@@ -36,7 +36,6 @@ export type Props = {
     teamName?: string;
     siteName: string;
     currentUser: UserProfile;
-    appDownloadLink: string;
     isMessaging: boolean;
     enableCommands: boolean;
     enableIncomingWebhooks: boolean;
@@ -60,7 +59,6 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
         teamName,
         siteName,
         currentUser,
-        appDownloadLink,
         isMessaging,
         enableCommands,
         enableIncomingWebhooks,
@@ -118,7 +116,7 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
                     text={formatMessage({id: 'navbar_dropdown.integrations', defaultMessage: 'Integrations'})}
                     icon={<WebhookIncomingIcon size={18}/>}
                 />
-                <TeamPermissionGate
+                {/* <TeamPermissionGate
                     teamId={teamId}
                     permissions={[Permissions.SYSCONSOLE_WRITE_PLUGINS]}
                 >
@@ -130,14 +128,7 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
                         text={formatMessage({id: 'navbar_dropdown.marketplace', defaultMessage: 'App Marketplace'})}
                         icon={<ViewGridPlusOutlineIcon size={18}/>}
                     />
-                </TeamPermissionGate>
-                <Menu.ItemExternalLink
-                    id='nativeAppLink'
-                    show={appDownloadLink && !UserAgent.isMobileApp()}
-                    url={makeUrlSafe(appDownloadLink)}
-                    text={formatMessage({id: 'navbar_dropdown.nativeApps', defaultMessage: 'Download Apps'})}
-                    icon={<DownloadOutlineIcon size={18}/>}
-                />
+                </TeamPermissionGate> */}
                 <Menu.ItemToggleModalRedux
                     id='about'
                     modalId={ModalIdentifiers.ABOUT}

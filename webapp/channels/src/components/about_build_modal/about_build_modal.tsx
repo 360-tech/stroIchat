@@ -200,19 +200,6 @@ export default function AboutBuildModal(props: Props) {
                         </div>
                     </div>
                 </div>
-                <div className='about-modal__footer'>
-                    <div className='form-group'>
-                        <div className='about-modal__copyright'>
-                            <FormattedMessage
-                                id='about.copyright'
-                                defaultMessage='Copyright 2015 - {currentYear} Stroichat, Inc. All rights reserved'
-                                values={{
-                                    currentYear: new Date().getFullYear(),
-                                }}
-                            />
-                        </div>
-                    </div>
-                </div>
                 <div className='about-modal__hash'>
                     <p>
                         <FormattedMessage

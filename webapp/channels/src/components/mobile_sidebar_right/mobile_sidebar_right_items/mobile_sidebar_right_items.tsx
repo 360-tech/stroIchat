@@ -266,13 +266,6 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
                         text={formatMessage({id: 'navbar_dropdown.report', defaultMessage: 'Report a Problem'})}
                         icon={<i className='fa fa-phone'/>}
                     />
-                    <Menu.ItemExternalLink
-                        id='nativeAppLink'
-                        show={this.props.appDownloadLink}
-                        url={safeAppDownloadLink}
-                        text={formatMessage({id: 'navbar_dropdown.nativeApps', defaultMessage: 'Download Apps'})}
-                        icon={<i className='fa fa-mobile'/>}
-                    />
                     <Menu.ItemToggleModalRedux
                         id='about'
                         modalId={ModalIdentifiers.ABOUT}
