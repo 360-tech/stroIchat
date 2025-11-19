@@ -11,9 +11,7 @@ import {savePreferences} from 'mattermost-redux/actions/preferences';
 import {get as selectPreference} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 
-import ExternalLink from 'components/external_link';
-
-import {Preferences, LicenseLinks} from 'utils/constants';
+import {Preferences} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
@@ -128,25 +126,11 @@ const UserSeatAlertBanner: React.FC<UserSeatAlertBannerProps> = ({license, total
         );
     }
 
-    const actionButtonLeft = (
-        <ExternalLink
-            href={LicenseLinks.CONTACT_SALES}
-            location='license_settings_user_seat_alert'
-            className='style-button AlertBanner__buttonLeft'
-        >
-            <FormattedMessage
-                id='admin.license.userSeatAlert.contactSales'
-                defaultMessage='Contact Sales'
-            />
-        </ExternalLink>
-    );
-
     return (
         <AlertBanner
             mode={mode}
             title={title}
             message={message}
-            actionButtonLeft={actionButtonLeft}
             onDismiss={handleDismiss}
             closeBtnTooltip={formatMessage({id: 'admin.license.userSeatAlert.closeBtnTooltip', defaultMessage: 'Dismiss'})}
         />

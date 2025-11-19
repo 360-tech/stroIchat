@@ -13,11 +13,8 @@ import {getOverageBannerPreferences} from 'mattermost-redux/selectors/entities/p
 import {getCurrentUser, isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/users';
 
 import AlertBanner from 'components/alert_banner';
-import {useExpandOverageUsersCheck} from 'components/common/hooks/useExpandOverageUsersCheck';
-import ExternalLink from 'components/external_link';
 
-import {LicenseLinks, StatTypes, Preferences} from 'utils/constants';
-import {getIsGovSku} from 'utils/license_utils';
+import {StatTypes, Preferences} from 'utils/constants';
 import {calculateOverageUserActivated} from 'utils/overage_team';
 
 import type {GlobalState} from 'types/store';
@@ -38,7 +35,6 @@ const OverageUsersBannerNotice = () => {
     const stats = useSelector((state: GlobalState) => state.entities.admin.analytics) || {};
     const isAdmin = useSelector(isCurrentUserSystemAdmin);
     const license = useSelector(getLicense);
-    const isGovSku = getIsGovSku(license);
     const seatsPurchased = parseInt(license.Users, 10);
     const isCloud = false;
     const currentUser = useSelector((state: GlobalState) => getCurrentUser(state));
@@ -59,9 +55,6 @@ const OverageUsersBannerNotice = () => {
     const overageByUsers = activeUsers - seatsPurchased;
     const isOverageState = overageByUsers > 0 && (isBetween5PercerntAnd10PercentPurchasedSeats || isOver10PercerntPurchasedSeats);
     const hasPermission = isAdmin && isOverageState && !isCloud;
-    const {
-        cta,
-    } = useExpandOverageUsersCheck();
 
     if (!hasPermission || adminHasDismissed({overagePreferences, preferenceName})) {
         return null;
@@ -77,30 +70,6 @@ const OverageUsersBannerNotice = () => {
     };
 
     let message;
-
-    if (!isGovSku) {
-        message = (
-            <FormattedMessage
-                id='licensingPage.overageUsersBanner.noticeDescription'
-                defaultMessage='Notify your Customer Success Manager on your next true-up check. <a></a>'
-                values={{
-                    a: () => {
-                        return (
-                            <ExternalLink
-                                location='overage_users_banner'
-                                className='overage_users_banner__button'
-                                href={LicenseLinks.CONTACT_SALES}
-                            >
-                                <FormattedMessage {...cta}/>
-                            </ExternalLink>
-                        );
-                    },
-                }}
-            >
-                {(text) => <p className='overage_users_banner__description'>{text}</p>}
-            </FormattedMessage>
-        );
-    }
 
     return (
         <AlertBanner

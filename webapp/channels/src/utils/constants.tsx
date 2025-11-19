@@ -380,7 +380,6 @@ export const ModalIdentifiers = {
     EDIT_CATEGORY: 'edit_category',
     DELETE_CATEGORY: 'delete_category',
     SIDEBAR_WHATS_NEW_MODAL: 'sidebar_whats_new_modal',
-    ENTERPRISE_EDITION_LICENSE: 'enterprise_edition_license',
     CONFIRM_NOTIFY_ADMIN: 'confirm_notify_admin',
     REMOVE_NEXT_STEPS_MODAL: 'remove_next_steps_modal',
     MORE_CHANNELS: 'more_channels',
@@ -395,7 +394,6 @@ export const ModalIdentifiers = {
     JOIN_CHANNEL_PROMPT: 'join_channel_prompt',
     COLLAPSED_REPLY_THREADS_MODAL: 'collapsed_reply_threads_modal',
     NOTIFY_CONFIRM_MODAL: 'notify_confirm_modal',
-    CONFIRM_LICENSE_REMOVAL: 'confirm_license_removal',
     CONFIRM: 'confirm',
     USER_GROUPS: 'user_groups',
     USER_GROUPS_CREATE: 'user_groups_create',
@@ -1134,19 +1132,6 @@ export const DeveloperLinks = {
     SETUP_OAUTH2: 'https://mattermost.com/pl/setup-oauth-2.0',
     SETUP_OUTGOING_WEBHOOKS: 'https://mattermost.com/pl/setup-outgoing-webhooks',
 };
-
-export const LicenseLinks = {
-    CONTACT_SALES: 'https://mattermost.com/contact-sales/',
-    ENTRY_LIMITS_INFO: 'https://mattermost.com/pl/mattermost-entry-limits',
-    TRIAL_INFO_LINK: 'https://mattermost.com/trial',
-    EMBARGOED_COUNTRIES: 'https://mattermost.com/pl/limitations-for-embargoed-countries',
-    SOFTWARE_SERVICES_LICENSE_AGREEMENT: 'https://mattermost.com/pl/software-and-services-license-agreement',
-    SOFTWARE_SERVICES_LICENSE_AGREEMENT_TEXT: 'Software Services and License Agreement',
-    UNSUPPORTED: 'https://mattermost.com/pricing/',
-    UNSUPPORTED_UPGRADE_LINK: 'https://docs.mattermost.com/administration-guide/upgrade/enterprise-install-upgrade.html#upgrading-to-enterprise-edition-from-mattermost-team-edition',
-};
-
-export const MattermostLink = 'https://mattermost.com/';
 
 export const BillingSchemes = {
     FLAT_FEE: 'flat_fee',

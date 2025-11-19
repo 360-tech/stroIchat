@@ -13,7 +13,6 @@ import {getOverageBannerPreferences} from 'mattermost-redux/selectors/entities/p
 import {getCurrentUser, isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/users';
 
 import AnnouncementBar from 'components/announcement_bar/default_announcement_bar';
-import {useExpandOverageUsersCheck} from 'components/common/hooks/useExpandOverageUsersCheck';
 
 import {StatTypes, Preferences, AnnouncementBarTypes} from 'utils/constants';
 import {calculateOverageUserActivated} from 'utils/overage_team';
@@ -56,9 +55,6 @@ const OverageUsersBanner = () => {
 
     const isOverageState = overageByUsers > 0 && (isBetween5PercerntAnd10PercentPurchasedSeats || isOver10PercerntPurchasedSeats);
     const hasPermission = isAdmin && isOverageState && !isCloud;
-    const {
-        cta,
-    } = useExpandOverageUsersCheck();
 
     const handleClose = () => {
         dispatch(savePreferences(currentUser.id, [{
@@ -87,7 +83,7 @@ const OverageUsersBanner = () => {
             type={isBetween5PercerntAnd10PercentPurchasedSeats ? AnnouncementBarTypes.ADVISOR : AnnouncementBarTypes.CRITICAL}
             showCloseButton={true}
             onButtonClick={() => console.log('AnnouncementBar handleClick, not sales link')}
-            modalButtonText={cta}
+            modalButtonText={"Contact Sales"}
             message={message}
             showLinkAsButton={true}
             isTallBanner={true}
