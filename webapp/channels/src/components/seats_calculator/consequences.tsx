@@ -60,23 +60,6 @@ export default function Consequences(props: Props) {
         />
     );
 
-    if (props.isCloud) {
-        text = (
-            <FormattedMessage
-                defaultMessage={'Your credit card will be charged today. <a>See how billing works.</a>'}
-                id={'cloud_signup.signup_consequences'}
-                values={{
-                    a: (chunks: React.ReactNode) => (
-                        <ExternalLink
-                            location='seats_calculator_consequences'
-                            href={props.isCloud ? CloudLinks.BILLING_DOCS : HostedCustomerLinks.BILLING_DOCS}
-                        >
-                            {chunks}
-                        </ExternalLink>
-                    ),
-                }}
-            />);
-    }
     return (
         <div className='signup-consequences'>
             {text}

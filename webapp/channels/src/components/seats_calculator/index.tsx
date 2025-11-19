@@ -52,14 +52,8 @@ export const errorInvalidNumber = (
         defaultMessage='Enter a valid number of seats'
     />
 );
-export const errorMinSeats = (
-    <FormattedMessage
-        id='cloud_upgrade.error_min_seats'
-        defaultMessage='Minimum of 10 seats required'
-    />
-);
 
-function validateSeats(seats: string, annualPricePerSeat: number, minSeats: number, cloud: boolean): Seats {
+function validateSeats(seats: string, annualPricePerSeat: number, minSeats: number): Seats {
     if (seats === '') {
         return {
             quantity: '',
@@ -75,13 +69,6 @@ function validateSeats(seats: string, annualPricePerSeat: number, minSeats: numb
         };
     }
 
-    if (seatsNumber < 10) {
-        return {
-            quantity: seats,
-            error: errorMinSeats,
-        };
-    }
-
     const maxSeats = calculateMaxUsers(annualPricePerSeat);
     const tooFewUsersErrorMessage = (
         <FormattedMessage
@@ -93,20 +80,13 @@ function validateSeats(seats: string, annualPricePerSeat: number, minSeats: numb
         />
     );
 
-    let errorPrefix = (
+    const errorPrefix = (
         <FormattedMessage
             id='plan.self_serve'
             defaultMessage='Self-serve'
         />
     );
-    if (cloud) {
-        errorPrefix = (
-            <FormattedMessage
-                id='plan.cloud'
-                defaultMessage='Cloud'
-            />
-        );
-    }
+
     const tooManyUsersErrorMessage = (
         <>
             {errorPrefix}

@@ -8,7 +8,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import type {PreferenceType} from '@mattermost/types/preferences';
 
 import {savePreferences} from 'mattermost-redux/actions/preferences';
-import {isCurrentLicenseCloud} from 'mattermost-redux/selectors/entities/cloud';
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
 import {getOverageBannerPreferences} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUser, isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/users';
@@ -38,7 +37,7 @@ const OverageUsersBanner = () => {
     const isAdmin = useSelector(isCurrentUserSystemAdmin);
     const license = useSelector(getLicense);
     const seatsPurchased = parseInt(license.Users, 10);
-    const isCloud = useSelector(isCurrentLicenseCloud);
+    const isCloud = false;
     const currentUser = useSelector((state: GlobalState) => getCurrentUser(state));
     const overagePreferences = useSelector(getOverageBannerPreferences);
     const activeUsers = ((stats || {})[StatTypes.TOTAL_USERS]) as number || 0;
@@ -69,7 +68,6 @@ const OverageUsersBanner = () => {
             value: 'Overage users banner watched',
         }]));
     };
-
 
     if (!hasPermission || adminHasDismissed({overagePreferences, preferenceName})) {
         return null;

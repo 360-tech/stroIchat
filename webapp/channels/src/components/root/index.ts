@@ -10,7 +10,6 @@ import type {Dispatch} from 'redux';
 
 import {getFirstAdminSetupComplete} from 'mattermost-redux/actions/general';
 import {getProfiles} from 'mattermost-redux/actions/users';
-import {isCurrentLicenseCloud} from 'mattermost-redux/selectors/entities/cloud';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
 import {getTeam} from 'mattermost-redux/selectors/entities/teams';
@@ -72,7 +71,7 @@ function mapStateToProps(state: GlobalState) {
         rhsIsOpen: getIsRhsOpen(state),
         rhsState: getRhsState(state),
         shouldShowAppBar: shouldShowAppBar(state),
-        isCloud: isCurrentLicenseCloud(state),
+        isCloud: false,
         isDevModeEnabled: isDevModeEnabled(state),
     };
 }

@@ -118,7 +118,6 @@ export const Preferences = {
     TEAMS_ORDER: 'teams_order',
     CLOUD_UPGRADE_BANNER: 'cloud_upgrade_banner',
     CLOUD_TRIAL_BANNER: 'cloud_trial_banner',
-    START_TRIAL_MODAL: 'start_trial_modal',
     ADMIN_CLOUD_UPGRADE_PANEL: 'admin_cloud_upgrade_panel',
     CATEGORY_EMOJI: 'emoji',
     EMOJI_SKINTONE: 'emoji_skintone',
@@ -163,7 +162,6 @@ export const Touched = {
 
 // Category for actions/interactions that will happen just once
 export const Unique = {
-    HAS_CLOUD_PURCHASE: 'has_cloud_purchase',
     REQUEST_TRIAL_AFTER_SERVER_UPGRADE: 'request_trial_after_upgrade',
     CLICKED_UPGRADE_AND_TRIAL_BTN: 'clicked_upgradeandtrial_btn',
 };
@@ -382,25 +380,17 @@ export const ModalIdentifiers = {
     EDIT_CATEGORY: 'edit_category',
     DELETE_CATEGORY: 'delete_category',
     SIDEBAR_WHATS_NEW_MODAL: 'sidebar_whats_new_modal',
-    UPGRADE_CLOUD_ACCOUNT: 'upgrade_cloud_account',
-    START_TRIAL_MODAL: 'start_trial_modal',
-    TRIAL_BENEFITS_MODAL: 'trial_benefits_modal',
-    PRICING_MODAL: 'pricing_modal',
-    LEARN_MORE_TRIAL_MODAL: 'learn_more_trial_modal',
     ENTERPRISE_EDITION_LICENSE: 'enterprise_edition_license',
     CONFIRM_NOTIFY_ADMIN: 'confirm_notify_admin',
     REMOVE_NEXT_STEPS_MODAL: 'remove_next_steps_modal',
     MORE_CHANNELS: 'more_channels',
     NEW_CHANNEL_MODAL: 'new_channel_modal',
-    CLOUD_PURCHASE: 'cloud_purchase',
     SELF_HOSTED_PURCHASE: 'self_hosted_purchase',
-    CLOUD_DOWNGRADE_CHOOSE_TEAM: 'cloud_downgrade_choose_team',
     SUCCESS_MODAL: 'success_modal',
     ERROR_MODAL: 'error_modal',
     DND_CUSTOM_TIME_PICKER: 'dnd_custom_time_picker',
     POST_REMINDER_CUSTOM_TIME_PICKER: 'post_reminder_custom_time_picker',
     CUSTOM_STATUS: 'custom_status',
-    COMMERCIAL_SUPPORT: 'commercial_support',
     NO_INTERNET_CONNECTION: 'no_internet_connection',
     JOIN_CHANNEL_PROMPT: 'join_channel_prompt',
     COLLAPSED_REPLY_THREADS_MODAL: 'collapsed_reply_threads_modal',
@@ -426,7 +416,6 @@ export const ModalIdentifiers = {
     FEATURE_RESTRICTED_MODAL: 'feature_restricted_modal',
     FORWARD_POST_MODAL: 'forward_post_modal',
     JOIN_PUBLIC_CHANNEL_MODAL: 'join_public_channel_modal',
-    CLOUD_INVOICE_PREVIEW: 'cloud_invoice_preview',
     BILLING_HISTORY: 'billing_history',
     SUM_OF_MEMBERS_MODAL: 'sum_of_members_modal',
     RESTORE_POST_MODAL: 'restore_post',
@@ -762,17 +751,6 @@ export const Threads = {
     CHANGED_LAST_UPDATE_AT: 'changed_last_update_at',
 };
 
-export const CloudBanners = {
-    HIDE: 'hide',
-    TRIAL: 'trial',
-    UPGRADE_FROM_TRIAL: 'upgrade_from_trial',
-    THREE_DAYS_LEFT_TRIAL_MODAL_DISMISSED: 'dismiss_3_days_left_trial_modal',
-    NUDGE_TO_CLOUD_YEARLY_PLAN_SNOOZED: 'nudge_to_cloud_yearly_plan_snoozed',
-    NUDGE_TO_PAID_PLAN_SNOOZED: 'nudge_to_paid_plan_snoozed',
-    ANNUAL_RENEWAL_60_DAY: 'annual_renewal_60_day',
-    ANNUAL_RENEWAL_30_DAY: 'annual_renewal_30_day',
-};
-
 export const ConfigurationBanners = {
     LICENSE_EXPIRED: 'license_expired',
 };
@@ -970,10 +948,6 @@ defineMessages({
     socketError: {
         id: 'channel_loader.socketError',
         defaultMessage: 'Please check connection, Mattermost unreachable. If issue persists, ask administrator to [check WebSocket port](!https://docs.mattermost.com/install/troubleshooting.html#please-check-connection-mattermost-unreachable-if-issue-persists-ask-administrator-to-check-websocket-port).',
-    },
-    trialLicenseExpiring: {
-        id: 'announcement_bar.error.trial_license_expiring',
-        defaultMessage: 'There are {days} days left on your free trial.',
     },
 });
 
