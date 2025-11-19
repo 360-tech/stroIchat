@@ -5200,7 +5200,7 @@
   "user.settings.display.theme.applyToAllTeams": "Применить новую тему для всех моих команд",
   "user.settings.display.theme.customTheme": "Пользовательская Тема",
   "user.settings.display.theme.describe": "Откройте для настройки темы",
-  "user.settings.display.theme.otherThemes": "Посмотреть другие темы",
+  "user.settings.display.theme.premadeThemes": "Предопределенные темы",
   "user.settings.display.theme.title": "Тема",
   "user.settings.display.timezone": "Часовой пояс",
   "user.settings.display.title": "Вид",

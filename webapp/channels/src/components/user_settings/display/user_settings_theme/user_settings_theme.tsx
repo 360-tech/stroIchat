@@ -7,7 +7,6 @@ import {FormattedMessage} from 'react-intl';
 
 import type {Theme} from 'mattermost-redux/selectors/entities/preferences';
 
-import ExternalLink from 'components/external_link';
 import SettingItemMax from 'components/setting_item_max';
 import SettingItemMin from 'components/setting_item_min';
 import type SettingItemMinComponent from 'components/setting_item_min';
@@ -28,8 +27,6 @@ type Props = {
     updateSection: (section: string) => void;
     setRequireConfirm?: (requireConfirm: boolean) => void;
     allowCustomThemes: boolean;
-    showAllTeamsCheckbox: boolean;
-    applyToAllTeams: boolean;
     actions: {
         saveTheme: (teamId: string, theme: Theme) => void;
         deleteTeamSpecificThemes: () => void;
@@ -40,8 +37,6 @@ type Props = {
 type State = {
     isSaving: boolean;
     type: string;
-    showAllTeamsCheckbox: boolean;
-    applyToAllTeams: boolean;
     serverError: string;
     theme: Theme;
 };
@@ -86,8 +81,6 @@ export default class ThemeSetting extends React.PureComponent<Props, State> {
         return {
             theme,
             type: theme.type || 'premade',
-            showAllTeamsCheckbox: props.showAllTeamsCheckbox,
-            applyToAllTeams: props.applyToAllTeams,
             serverError: '',
             isSaving: false,
         };
@@ -98,15 +91,11 @@ export default class ThemeSetting extends React.PureComponent<Props, State> {
     }
 
     submitTheme = async (): Promise<void> => {
-        const teamId = this.state.applyToAllTeams ? '' : this.props.currentTeamId;
+        const teamId = this.props.currentTeamId;
 
         this.setState({isSaving: true});
 
         await this.props.actions.saveTheme(teamId, this.state.theme);
-
-        if (this.state.applyToAllTeams) {
-            await this.props.actions.deleteTeamSpecificThemes();
-        }
 
         this.props.setRequireConfirm?.(false);
         this.originalTheme = Object.assign({}, this.state.theme);
@@ -203,61 +192,10 @@ export default class ThemeSetting extends React.PureComponent<Props, State> {
                                 />
                             </label>
                         </div>
-                        <div className='radio radio-inline'>
-                            <label>
-                                <input
-                                    id='customThemes'
-                                    type='radio'
-                                    name='theme'
-                                    checked={displayCustom}
-                                    onChange={this.updateType.bind(this, 'custom')}
-                                />
-                                <FormattedMessage
-                                    id='user.settings.display.theme.customTheme'
-                                    defaultMessage='Custom Theme'
-                                />
-                            </label>
-                        </div>
                     </div>,
                 );
 
                 inputs.push(premade, custom);
-
-                inputs.push(
-                    <div key='otherThemes'>
-                        <br/>
-                        <ExternalLink
-                            id='otherThemes'
-                            href='http://docs.mattermost.com/help/settings/theme-colors.html#custom-theme-examples'
-                            location='user_settings_theme'
-                        >
-                            <FormattedMessage
-                                id='user.settings.display.theme.otherThemes'
-                                defaultMessage='See other themes'
-                            />
-                        </ExternalLink>
-                    </div>,
-                );
-            }
-
-            let allTeamsCheckbox = null;
-            if (this.state.showAllTeamsCheckbox) {
-                allTeamsCheckbox = (
-                    <div className='checkbox user-settings__submit-checkbox'>
-                        <label>
-                            <input
-                                id='applyThemeToAllTeams'
-                                type='checkbox'
-                                checked={this.state.applyToAllTeams}
-                                onChange={(e) => this.setState({applyToAllTeams: e.target.checked})}
-                            />
-                            <FormattedMessage
-                                id='user.settings.display.theme.applyToAllTeams'
-                                defaultMessage='Apply new theme to all my teams'
-                            />
-                        </label>
-                    </div>
-                );
             }
 
             themeUI = (
@@ -281,7 +219,6 @@ export default class ThemeSetting extends React.PureComponent<Props, State> {
                             </div>
                         </fieldset>
                     }
-                    submitExtra={allTeamsCheckbox}
                     submit={this.submitTheme}
                     disableEnterSubmit={true}
                     saving={this.state.isSaving}
