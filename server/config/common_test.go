@@ -34,8 +34,8 @@ func init() {
 			PublicLinkSalt: model.NewPointer("abcdefghijklmnopqrstuvwxyz0123456789"),
 		},
 		LocalizationSettings: model.LocalizationSettings{
-			DefaultServerLocale: model.NewPointer("en"),
-			DefaultClientLocale: model.NewPointer("en"),
+			DefaultServerLocale: model.NewPointer("ru"),
+			DefaultClientLocale: model.NewPointer("ru"),
 		},
 	}
 

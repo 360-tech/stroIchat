@@ -151,11 +151,12 @@ describe('selectors/i18n', () => {
     });
 
     describe('getTranslations', () => {
+        const defaultLocale = General.DEFAULT_LOCALE;
         const state = {
             views: {
                 i18n: {
                     translations: {
-                        en: {
+                        [defaultLocale]: {
                             'test.hello_world': 'Hello, World!',
                         },
                     },
@@ -164,16 +165,16 @@ describe('selectors/i18n', () => {
         };
 
         test('returns loaded translations', () => {
-            expect(getTranslations(state, 'en')).toBe(state.views.i18n.translations.en);
+            expect(getTranslations(state, defaultLocale)).toBe(state.views.i18n.translations[defaultLocale]);
         });
 
         test('returns null for unloaded translations', () => {
             expect(getTranslations(state, 'fr')).toEqual(undefined);
         });
 
-        test('returns English translations for unsupported locale', () => {
-            // This test will have to be changed if we add support for Gaelic
-            expect(getTranslations(state, 'gd')).toBe(state.views.i18n.translations.en);
+        test('returns default translations for unsupported locale', () => {
+            // Update this test if Gaelic becomes supported
+            expect(getTranslations(state, 'gd')).toBe(state.views.i18n.translations[defaultLocale]);
         });
     });
 });

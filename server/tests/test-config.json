@@ -265,8 +265,8 @@
         "EnableDaily": false
     },
     "LocalizationSettings": {
-        "DefaultServerLocale": "en",
-        "DefaultClientLocale": "en",
+        "DefaultServerLocale": "ru",
+        "DefaultClientLocale": "ru",
         "AvailableLocales": ""
     },
     "SamlSettings": {

@@ -31,8 +31,7 @@ export function getTranslations(state: GlobalState, locale: string): Translation
     if (localeInfo) {
         translations = state.views.i18n.translations[locale];
     } else {
-        // Default to English if an unsupported locale is specified
-        translations = state.views.i18n.translations.en;
+        translations = state.views.i18n.translations[General.DEFAULT_LOCALE];
     }
 
     return translations;

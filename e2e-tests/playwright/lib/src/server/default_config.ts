@@ -504,8 +504,8 @@ const defaultServerConfig: AdminConfig = {
         BatchSize: 30000,
     },
     LocalizationSettings: {
-        DefaultServerLocale: 'en',
-        DefaultClientLocale: 'en',
+        DefaultServerLocale: 'ru',
+        DefaultClientLocale: 'ru',
         AvailableLocales: '',
         EnableExperimentalLocales: false,
     },
