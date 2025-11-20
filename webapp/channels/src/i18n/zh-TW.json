@@ -2837,8 +2837,6 @@
   "announcementBar.notification.unsupportedBar.cta": "更新您的瀏覽器",
   "announcementBar.notification.unsupportedBar.message": "您的瀏覽器不支援瀏覽器通知。",
   "announcement_bar.error.email_verification_required": "請到信箱收信，以驗證您的電子郵件地址。",
-  "announcement_bar.error.license_expired": "{licenseSku} 企業授權已過期，部份功能可能會被停用。",
-  "announcement_bar.error.license_expiring": "{licenseSku}企業授權將於 {date, date, long} 過期。",
   "announcement_bar.error.past_grace": "{licenseSku}企業版授權已過期，某些功能已被關閉。詳情請聯絡系統管理員。",
   "announcement_bar.error.preview_mode": "預覽模式：電子郵件通知尚未設定。",
   "announcement_bar.error.purchase_a_license_now": "立即選購授權",

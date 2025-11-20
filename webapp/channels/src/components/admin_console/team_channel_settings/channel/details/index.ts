@@ -33,14 +33,12 @@ import {getScheme as loadScheme} from 'mattermost-redux/actions/schemes';
 import {getTeam as fetchTeam} from 'mattermost-redux/actions/teams';
 import {getProfilesByIds} from 'mattermost-redux/actions/users';
 import {getChannel, getChannelModerations} from 'mattermost-redux/selectors/entities/channels';
-import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getAllGroups, getGroupsAssociatedToChannel} from 'mattermost-redux/selectors/entities/groups';
 import {getScheme} from 'mattermost-redux/selectors/entities/schemes';
 import {getTeam} from 'mattermost-redux/selectors/entities/teams';
 
 import {setNavigationBlocked} from 'actions/admin_actions';
-
-import {isMinimumEnterpriseAdvancedLicense, isMinimumEnterpriseLicense, isMinimumProfessionalLicense} from 'utils/license_utils';
 
 import ChannelDetails from './channel_details';
 
@@ -54,17 +52,14 @@ type OwnProps = {
 
 function mapStateToProps(state: GlobalState, ownProps: OwnProps) {
     const config = getConfig(state);
-    const license = getLicense(state);
-
-    const isLicensed = license?.IsLicensed === 'true';
 
     // Channel Moderation is only available for Professional and above
-    const channelModerationEnabled = isLicensed && isMinimumProfessionalLicense(license);
+    const channelModerationEnabled = false;
 
     // Channel Groups is only available for Enterprise and above
-    const channelGroupsEnabled = isLicensed && isMinimumEnterpriseLicense(license);
+    const channelGroupsEnabled = false;
 
-    const abacSupported = isLicensed && isMinimumEnterpriseAdvancedLicense(license) && config.FeatureFlagAttributeBasedAccessControl === 'true';
+    const abacSupported = false;
 
     const guestAccountsEnabled = config.EnableGuestAccounts === 'true';
     const channelID = ownProps.match.params.channel_id;

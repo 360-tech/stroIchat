@@ -29,8 +29,6 @@ import {runEaseOfUseChecks} from './dashboard_checks/easy_management';
 import {runPerformanceChecks} from './dashboard_checks/performance';
 import {runUpdateChecks} from './dashboard_checks/updates';
 
-import {daysToLicenseExpire} from '../../../utils/license_utils';
-
 export const impactModifiers: Record<ItemStatus, number> = {
     [ItemStatus.NONE]: 1,
     [ItemStatus.OK]: 1,
@@ -225,13 +223,6 @@ const useMetricsData = (
     const analytics = useSelector((state: GlobalState) => state.entities.admin.analytics) as unknown as Options['analytics'];
 
     const canStartTrial = license?.IsLicensed !== 'true' && prevTrialLicense?.IsLicensed !== 'true';
-    const daysUntilExpiration = daysToLicenseExpire(license) || -1;
-
-    const isLicensed = license?.IsLicensed === 'true' && daysUntilExpiration >= 0;
-
-    const isCloud = false;
-    const isEnterprise = false;
-    const isStarterLicense = false;
 
     const trialOrEnterpriseCtaConfig = useMemo(() => ({
         configUrl: canStartTrial ? ConsolePages.LICENSE : 'contactSalesLink',
@@ -239,14 +230,14 @@ const useMetricsData = (
     }), [canStartTrial, formatMessage]);
 
     const options: Options = useMemo(() => ({
-        isLicensed,
-        isEnterpriseLicense: isEnterprise,
+        isLicensed: false,
+        isEnterpriseLicense: false,
         trialOrEnterpriseCtaConfig,
-        isStarterLicense,
-        isCloud,
+        isStarterLicense: false,
+        isCloud: false,
         analytics,
         installedVersion,
-    }), [isLicensed, isEnterprise, trialOrEnterpriseCtaConfig, isStarterLicense, isCloud, analytics, installedVersion]);
+    }), [trialOrEnterpriseCtaConfig, analytics, installedVersion]);
 
     useEffect(() => {
         setLoading(true);

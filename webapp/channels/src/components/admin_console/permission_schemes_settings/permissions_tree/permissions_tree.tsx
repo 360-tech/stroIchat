@@ -10,12 +10,6 @@ import type {Role} from '@mattermost/types/roles';
 import GeneralConstants from 'mattermost-redux/constants/general';
 import Permissions from 'mattermost-redux/constants/permissions';
 
-import {
-    isEnterpriseLicense,
-    isMinimumEnterpriseAdvancedLicense,
-    isNonEnterpriseLicense,
-} from 'utils/license_utils';
-
 import type {AdditionalValues, Group} from './types';
 
 import EditPostTimeLimitButton from '../edit_post_time_limit_button';
@@ -122,7 +116,7 @@ export default class PermissionsTree extends React.PureComponent<Props, State> {
                     Permissions.PLAYBOOK_PUBLIC_MANAGE_PROPERTIES,
                     Permissions.PLAYBOOK_PUBLIC_MANAGE_MEMBERS,
                 ],
-                isVisible: isNonEnterpriseLicense,
+                isVisible: () => true,
             },
             {
                 id: 'playbook_public',
@@ -132,7 +126,7 @@ export default class PermissionsTree extends React.PureComponent<Props, State> {
                     Permissions.PLAYBOOK_PUBLIC_MANAGE_MEMBERS,
                     Permissions.PLAYBOOK_PUBLIC_MAKE_PRIVATE,
                 ],
-                isVisible: isEnterpriseLicense,
+                isVisible: () => false,
             },
             {
                 id: 'playbook_private',
@@ -142,7 +136,7 @@ export default class PermissionsTree extends React.PureComponent<Props, State> {
                     Permissions.PLAYBOOK_PRIVATE_MANAGE_MEMBERS,
                     Permissions.PLAYBOOK_PRIVATE_MAKE_PUBLIC,
                 ],
-                isVisible: isEnterpriseLicense,
+                isVisible: () =>false,
             },
             {
                 id: 'runs',
@@ -288,12 +282,6 @@ export default class PermissionsTree extends React.PureComponent<Props, State> {
                     Permissions.ORDER_BOOKMARK_PRIVATE_CHANNEL,
                 ],
             });
-        }
-
-        if (isMinimumEnterpriseAdvancedLicense(license)) {
-            publicChannelsGroup.permissions.push(Permissions.MANAGE_PUBLIC_CHANNEL_BANNER);
-            privateChannelsGroup.permissions.push(Permissions.MANAGE_PRIVATE_CHANNEL_BANNER);
-            privateChannelsGroup.permissions.push(Permissions.MANAGE_CHANNEL_ACCESS_RULES);
         }
 
         this.groups = this.groups.filter((group) => {

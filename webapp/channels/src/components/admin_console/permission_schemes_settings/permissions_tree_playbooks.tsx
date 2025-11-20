@@ -9,8 +9,6 @@ import type {Role} from '@mattermost/types/roles';
 
 import Permissions from 'mattermost-redux/constants/permissions';
 
-import {isEnterpriseLicense, isNonEnterpriseLicense} from 'utils/license_utils';
-
 import PermissionGroup from './permission_group';
 
 interface Props {
@@ -30,7 +28,7 @@ const groups = [
             Permissions.PLAYBOOK_PUBLIC_MANAGE_PROPERTIES,
             Permissions.PLAYBOOK_PUBLIC_MANAGE_MEMBERS,
         ],
-        isVisible: isNonEnterpriseLicense,
+        isVisible: true,
     },
     {
         id: 'playbook_public',
@@ -39,7 +37,7 @@ const groups = [
             Permissions.PLAYBOOK_PUBLIC_MANAGE_MEMBERS,
             Permissions.PLAYBOOK_PUBLIC_MAKE_PRIVATE,
         ],
-        isVisible: isEnterpriseLicense,
+        isVisible: false,
     },
     {
         id: 'playbook_private',
@@ -48,7 +46,7 @@ const groups = [
             Permissions.PLAYBOOK_PRIVATE_MANAGE_MEMBERS,
             Permissions.PLAYBOOK_PRIVATE_MAKE_PUBLIC,
         ],
-        isVisible: isEnterpriseLicense,
+        isVisible: false,
     },
     {
         id: 'runs',

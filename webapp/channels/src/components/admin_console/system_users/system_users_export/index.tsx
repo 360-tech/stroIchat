@@ -11,7 +11,6 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import {savePreferences} from 'mattermost-redux/actions/preferences';
 import {Preferences} from 'mattermost-redux/constants';
-import {getLicense} from 'mattermost-redux/selectors/entities/general';
 import {get} from 'mattermost-redux/selectors/entities/preferences';
 
 import {startUsersBatchExport} from 'actions/views/admin';
@@ -21,7 +20,6 @@ import {getAdminConsoleUserManagementTableProperties} from 'selectors/views/admi
 import WithTooltip from 'components/with_tooltip';
 
 import {ModalIdentifiers} from 'utils/constants';
-import {isMinimumProfessionalLicense} from 'utils/license_utils';
 
 import {ExportErrorModal} from './export_error_modal';
 import {ExportUserDataModal} from './export_user_data_modal';
@@ -48,8 +46,7 @@ export function SystemUsersExport(props: Props) {
         tableOptionsToUserReport.date_range = ReportDuration.AllTime;
     }
 
-    const license = useSelector(getLicense);
-    const isLicensed = license.IsLicensed === 'true' && isMinimumProfessionalLicense(license);
+    const isLicensed = false;
 
     async function doExport(checked?: boolean) {
         const {error} = await dispatch(startUsersBatchExport(tableOptionsToUserReport));
