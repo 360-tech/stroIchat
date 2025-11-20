@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import type {Dispatch} from 'redux';
 
-import {getCloudSubscription as selectCloudSubscription, getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud';
 import {
     getConfig,
 } from 'mattermost-redux/selectors/entities/general';
@@ -19,7 +18,7 @@ import {
 import {showMentions, showFlaggedPosts, closeRightHandSide, closeMenu as closeRhsMenu} from 'actions/views/rhs';
 import {getRhsState} from 'selectors/rhs';
 
-import {RHSStates, CloudProducts} from 'utils/constants';
+import {RHSStates} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
@@ -39,13 +38,6 @@ function mapStateToProps(state: GlobalState) {
     const moreTeamsToJoin = joinableTeams && joinableTeams.length > 0;
     const rhsState = getRhsState(state);
 
-    const subscription = selectCloudSubscription(state);
-    const subscriptionProduct = getSubscriptionProduct(state);
-
-    const isCloud = false;
-    const isStarterFree = isCloud && subscriptionProduct?.sku === CloudProducts.STARTER;
-    const isFreeTrial = isCloud && subscription?.is_free_trial === 'true';
-
     return {
         appDownloadLink,
         experimentalPrimaryTeam,
@@ -60,8 +52,8 @@ function mapStateToProps(state: GlobalState) {
         teamIsGroupConstrained: Boolean(currentTeam?.group_constrained),
         isLicensedForLDAPGroups: state.entities.general.license.LDAPGroups === 'true',
         guestAccessEnabled: config.EnableGuestAccounts === 'true',
-        isStarterFree,
-        isFreeTrial,
+        isStarterFree: false,
+        isFreeTrial: false,
     };
 }
 

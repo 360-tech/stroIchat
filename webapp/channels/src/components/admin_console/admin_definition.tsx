@@ -46,20 +46,11 @@ import AccessControlPolicyJobs from './access_control/jobs';
 import PolicyDetails from './access_control/policy_details';
 import * as DefinitionConstants from './admin_definition_constants';
 import {getRestrictedIndicator, it, usesLegacyOauth, validators} from './admin_definition_helpers';
-import AuditLoggingCertificateUploadSetting from './audit_logging';
-import Audits from './audits';
-import {searchableStrings as auditSearchableStrings} from './audits/audits';
 import BrandImageSetting from './brand_image_setting/brand_image_setting';
 import ClientSideUserIdsSetting from './client_side_userids_setting';
 import ClusterSettings, {searchableStrings as clusterSearchableStrings} from './cluster_settings';
 import CustomEnableDisableGuestAccountsSetting from './custom_enable_disable_guest_accounts_setting';
-import CustomTermsOfServiceSettings from './custom_terms_of_service_settings';
-import {messages as customTermsOfServiceMessages, searchableStrings as customTermsOfServiceSearchableStrings} from './custom_terms_of_service_settings/custom_terms_of_service_settings';
 import CustomURLSchemesSetting from './custom_url_schemes_setting';
-import DataRetentionSettings from './data_retention_settings';
-import CustomDataRetentionForm from './data_retention_settings/custom_policy_form';
-import {searchableStrings as dataRetentionSearchableStrings} from './data_retention_settings/data_retention_settings';
-import GlobalDataRetentionForm from './data_retention_settings/global_policy_form';
 import DatabaseSettings, {searchableStrings as databaseSearchableStrings} from './database_settings';
 import ElasticSearchSettings, {searchableStrings as elasticSearchSearchableStrings} from './elasticsearch_settings';
 import {
@@ -249,66 +240,6 @@ const AdminDefinition: AdminDefinitionType = {
         },
     },
 
-    // billing: {
-    //     icon: (
-    //         <CreditCardOutlineIcon
-    //             size={16}
-    //             color={'currentColor'}
-    //         />
-    //     ),
-    //     sectionTitle: defineMessage({id: 'admin.sidebar.billing', defaultMessage: 'Billing & Account'}),
-    //     isHidden: it.not(it.licensedForFeature('Cloud')),
-    //     subsections: {
-    //         subscription: {
-    //             url: 'billing/subscription',
-    //             title: defineMessage({id: 'admin.sidebar.subscription', defaultMessage: 'Subscription'}),
-    //             searchableStrings: billingSubscriptionSearchableStrings,
-    //             schema: {
-    //                 id: 'BillingSubscriptions',
-    //                 component: BillingSubscriptions,
-    //             },
-
-    //             // cloud only view
-    //             isHidden: it.not(it.licensedForFeature('Cloud')),
-    //             isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
-    //         },
-    //         billing_history: {
-    //             url: 'billing/billing_history',
-    //             title: defineMessage({id: 'admin.sidebar.billing_history', defaultMessage: 'Billing History'}),
-    //             searchableStrings: billingHistorySearchableStrings,
-    //             schema: {
-    //                 id: 'BillingHistory',
-    //                 component: BillingHistory,
-    //             },
-    //             isHidden: it.not(it.licensedForFeature('Cloud')),
-    //             isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
-    //         },
-    //         company_info: {
-    //             url: 'billing/company_info',
-    //             title: defineMessage({id: 'admin.sidebar.company_info', defaultMessage: 'Company Information'}),
-    //             searchableStrings: billingCompanyInfoSearchableStrings,
-    //             schema: {
-    //                 id: 'CompanyInfo',
-    //                 component: CompanyInfo,
-    //             },
-
-    //             // cloud only view
-    //             isHidden: it.not(it.licensedForFeature('Cloud')),
-    //             isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
-    //         },
-    //         company_info_edit: {
-    //             url: 'billing/company_info_edit',
-    //             schema: {
-    //                 id: 'CompanyInfoEdit',
-    //                 component: CompanyInfoEdit,
-    //             },
-
-    //             // cloud only view
-    //             isHidden: it.not(it.licensedForFeature('Cloud')),
-    //             isDisabled: it.not(it.userHasWritePermissionOnResource('billing')),
-    //         },
-    //     },
-    // },
     reporting: {
         icon: (
             <ChartBarIcon
@@ -5093,18 +5024,6 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableCommands',
                             label: defineMessage({id: 'admin.service.cmdsTitle', defaultMessage: 'Enable Custom Slash Commands: '}),
-                            help_text: defineMessage({id: 'admin.service.cmdsDesc', defaultMessage: 'When true, custom slash commands will be allowed. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DeveloperLinks.SETUP_CUSTOM_SLASH_COMMANDS}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
-                            help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.INTEGRATIONS.INTEGRATION_MANAGEMENT)),
                         },
                         {
@@ -5130,42 +5049,6 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'number',
                             key: 'ServiceSettings.OutgoingIntegrationRequestsTimeout',
                             label: defineMessage({id: 'admin.service.integrationRequestTitle', defaultMessage: 'Integration request timeout: '}),
-                            help_text: defineMessage({id: 'admin.service.integrationRequestDesc', defaultMessage: 'The number of seconds to wait for Integration requests. That includes <slashCommands>Slash Commands</slashCommands>, <outgoingWebhooks>Outgoing Webhooks</outgoingWebhooks>, <interactiveMessages>Interactive Messages</interactiveMessages> and <interactiveDialogs>Interactive Dialogs</interactiveDialogs>.'}),
-                            help_text_values: {
-                                slashCommands: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DeveloperLinks.CUSTOM_SLASH_COMMANDS}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                                outgoingWebhooks: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DeveloperLinks.OUTGOING_WEBHOOKS}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                                interactiveMessages: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DeveloperLinks.INTERACTIVE_MESSAGES}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                                interactiveDialogs: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DeveloperLinks.INTERACTIVE_DIALOGS}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
-                            help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.INTEGRATIONS.INTEGRATION_MANAGEMENT)),
                         },
                         {

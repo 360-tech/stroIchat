@@ -63,7 +63,6 @@ const Preferences = {
     UNREAD_SCROLL_POSITION_START_FROM_LEFT: 'start_from_left_off',
     UNREAD_SCROLL_POSITION_START_FROM_NEWEST: 'start_from_newest',
 
-    CATEGORY_UPGRADE_CLOUD: 'upgrade_cloud',
     SYSTEM_CONSOLE_LIMIT_REACHED: 'system_console_limit_reached',
 
     NEW_CHANNEL_WITH_BOARD_TOUR_SHOWED: 'channel_with_board_tip_showed',

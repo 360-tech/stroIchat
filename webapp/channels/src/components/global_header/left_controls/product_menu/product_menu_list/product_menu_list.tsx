@@ -1,14 +1,13 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useIntl} from 'react-intl';
 
 import {
     ApplicationCogIcon,
-    DownloadOutlineIcon,
     InformationOutlineIcon,
-    ViewGridPlusOutlineIcon,
+    // ViewGridPlusOutlineIcon,
     WebhookIncomingIcon,
 } from '@mattermost/compass-icons/components';
 import type {UserProfile} from '@mattermost/types/users';
@@ -23,8 +22,6 @@ import SystemPermissionGate from 'components/permissions_gates/system_permission
 import Menu from 'components/widgets/menu/menu';
 
 import {ModalIdentifiers} from 'utils/constants';
-// import {makeUrlSafe} from 'utils/url';
-// import * as UserAgent from 'utils/user_agent';
 
 import type {ModalData} from 'types/actions';
 
@@ -49,13 +46,12 @@ export type Props = {
     handleVisitConsoleClick: React.MouseEventHandler<HTMLElement>;
     actions: {
         openModal: <P>(modalData: ModalData<P>) => void;
-        getPrevTrialLicense: () => void;
     };
 };
 
 const ProductMenuList = (props: Props): JSX.Element | null => {
     const {
-        teamId,
+        // teamId,
         teamName,
         siteName,
         currentUser,
@@ -66,17 +62,13 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
         enableOutgoingWebhooks,
         canManageSystemBots,
         canManageIntegrations,
-        enablePluginMarketplace,
+        // enablePluginMarketplace,
         showVisitSystemConsoleTour,
         onClick,
         handleVisitConsoleClick,
         isMobile = false,
     } = props;
     const {formatMessage} = useIntl();
-
-    useEffect(() => {
-        props.actions.getPrevTrialLicense();
-    }, []);
 
     if (!currentUser) {
         return null;

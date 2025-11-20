@@ -302,10 +302,6 @@ export function getIsOnboardingFlowEnabled(state: GlobalState): boolean {
     return getConfig(state).EnableOnboardingFlow === 'true';
 }
 
-export function getHasDismissedSystemConsoleLimitReached(state: GlobalState): boolean {
-    return getBool(state, Preferences.CATEGORY_UPGRADE_CLOUD, Preferences.SYSTEM_CONSOLE_LIMIT_REACHED, false);
-}
-
 export function syncedDraftsAreAllowed(state: GlobalState): boolean {
     return getConfig(state).AllowSyncedDrafts === 'true';
 }

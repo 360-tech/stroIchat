@@ -580,12 +580,6 @@ export function handleEvent(msg) {
     case SocketEvents.USER_ACTIVATION_STATUS_CHANGED:
         dispatch(handleUserActivationStatusChange());
         break;
-    case SocketEvents.CLOUD_PAYMENT_STATUS_UPDATED:
-        dispatch(handleCloudPaymentStatusUpdated(msg));
-        break;
-    case SocketEvents.CLOUD_SUBSCRIPTION_CHANGED:
-        dispatch(handleCloudSubscriptionChanged(msg));
-        break;
     case SocketEvents.FIRST_ADMIN_VISIT_MARKETPLACE_STATUS_RECEIVED:
         handleFirstAdminVisitMarketplaceStatusReceivedEvent(msg);
         break;

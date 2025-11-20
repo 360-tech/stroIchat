@@ -9,7 +9,7 @@ import type {AdminConfig, ClientLicense} from '@mattermost/types/config';
 
 import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_indicator';
 
-import {getLicenseTier, LicenseSkus} from 'utils/constants';
+import {LicenseSkus} from 'utils/constants';
 
 import type {Check, ConsoleAccess} from './types';
 import ValidationResult from './validation';
@@ -45,19 +45,12 @@ export const it = {
     enterpriseReady: (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean) => Boolean(enterpriseReady),
     licensed: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => license?.IsLicensed === 'true',
     cloudLicensed: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && fabClasses),
-    licensedForFeature: (feature: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && license[feature] === 'true'),
-    licensedForSku: (skuName: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && license.SkuShortName === skuName),
-    minLicenseTier: (skuName: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && getLicenseTier(license.SkuShortName) >= getLicenseTier(skuName)),
-    licensedForCloudStarter: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => Boolean(license?.IsLicensed && false && license.SkuShortName === LicenseSkus.Starter),
+    licensedForFeature: (feature: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => false,
+    licensedForSku: (skuName: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => false,
+    minLicenseTier: (skuName: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => false,
+    licensedForCloudStarter: (config: Partial<AdminConfig>, state: any, license?: ClientLicense) => false,
     hidePaymentInfo: (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean, consoleAccess?: ConsoleAccess, cloud?: CloudState) => {
-        if (!cloud) {
-            return true;
-        }
-        const productId = cloud?.subscription?.product_id;
-        if (!productId) {
-            return false;
-        }
-        return cloud?.subscription?.is_free_trial === 'true';
+        return true;
     },
     userHasReadPermissionOnResource: (key: string) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean, consoleAccess?: ConsoleAccess) => (consoleAccess?.read as any)?.[key],
     userHasReadPermissionOnSomeResources: (key: { [key: string]: string }) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean, consoleAccess?: ConsoleAccess) => Object.values(key).some((resource) => (consoleAccess?.read as any)?.[resource]),

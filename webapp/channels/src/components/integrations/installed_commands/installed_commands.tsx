@@ -12,9 +12,7 @@ import type {RelationOneToOne} from '@mattermost/types/utilities';
 import type {ActionResult} from 'mattermost-redux/types/actions';
 
 import BackstageList from 'components/backstage/components/backstage_list';
-import ExternalLink from 'components/external_link';
 
-import {DeveloperLinks} from 'utils/constants';
 import * as Utils from 'utils/utils';
 
 import InstalledCommand, {matchesFilter} from '../installed_command';
@@ -111,36 +109,6 @@ export default class InstalledCommands extends React.PureComponent<Props> {
                         defaultMessage='No slash commands match <b>{searchTerm}</b>'
                         values={{
                             b: (chunks) => <b>{chunks}</b>,
-                        }}
-                    />
-                }
-                helpText={
-                    <FormattedMessage
-                        id='installed_commands.help'
-                        defaultMessage='Use slash commands to connect external tools to Mattermost. {buildYourOwn} or visit the {appDirectory} to find self-hosted, third-party apps and integrations.'
-                        values={{
-                            buildYourOwn: (
-                                <ExternalLink
-                                    href={DeveloperLinks.SETUP_CUSTOM_SLASH_COMMANDS}
-                                    location='installed_commands'
-                                >
-                                    <FormattedMessage
-                                        id='installed_commands.help.buildYourOwn'
-                                        defaultMessage='Build Your Own'
-                                    />
-                                </ExternalLink>
-                            ),
-                            appDirectory: (
-                                <ExternalLink
-                                    href='https://mattermost.com/marketplace'
-                                    location='installed_commands'
-                                >
-                                    <FormattedMessage
-                                        id='installed_commands.help.appDirectory'
-                                        defaultMessage='App Directory'
-                                    />
-                                </ExternalLink>
-                            ),
                         }}
                     />
                 }

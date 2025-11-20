@@ -116,16 +116,10 @@ export const Preferences = {
     CATEGORY_SYSTEM_NOTICE: 'system_notice',
     RECOMMENDED_NEXT_STEPS: 'recommended_next_steps',
     TEAMS_ORDER: 'teams_order',
-    CLOUD_UPGRADE_BANNER: 'cloud_upgrade_banner',
-    CLOUD_TRIAL_BANNER: 'cloud_trial_banner',
-    ADMIN_CLOUD_UPGRADE_PANEL: 'admin_cloud_upgrade_panel',
     CATEGORY_EMOJI: 'emoji',
     EMOJI_SKINTONE: 'emoji_skintone',
     ONE_CLICK_REACTIONS_ENABLED: 'one_click_reactions_enabled',
     ONE_CLICK_REACTIONS_ENABLED_DEFAULT: 'true',
-    CLOUD_TRIAL_END_BANNER: 'cloud_trial_end_banner',
-    CLOUD_USER_EPHEMERAL_INFO: 'cloud_user_ephemeral_info',
-    CATEGORY_CLOUD_LIMITS: 'cloud_limits',
 
     // For one off things that have a special, attention-grabbing UI until you interact with them
     TOUCHED: 'touched',
@@ -150,29 +144,11 @@ export const Preferences = {
     OVERAGE_USERS_BANNER: ReduxPreferences.CATEGORY_OVERAGE_USERS_BANNER,
     POST_HISTORY_LIMIT_BANNER: ReduxPreferences.CATEGORY_POST_HISTORY_LIMIT_BANNER,
     USERS_LIMITS_BANNER: 'users_limits_banner',
-    TO_CLOUD_YEARLY_PLAN_NUDGE: 'to_cloud_yearly_plan_nudge',
-    TO_PAID_PLAN_NUDGE: 'to_paid_plan_nudge',
-    CLOUD_ANNUAL_RENEWAL_BANNER: 'cloud_annual_renewal_banner',
 };
 
 // For one off things that have a special, attention-grabbing UI until you interact with them
 export const Touched = {
     ADD_CHANNELS_CTA: 'add_channels_cta',
-};
-
-// Category for actions/interactions that will happen just once
-export const Unique = {
-    REQUEST_TRIAL_AFTER_SERVER_UPGRADE: 'request_trial_after_upgrade',
-    CLICKED_UPGRADE_AND_TRIAL_BTN: 'clicked_upgradeandtrial_btn',
-};
-
-export const TrialPeriodDays = {
-    TRIAL_30_DAYS: 30,
-    TRIAL_14_DAYS: 14,
-    TRIAL_WARNING_THRESHOLD: 7,
-    TRIAL_2_DAYS: 2,
-    TRIAL_1_DAY: 1,
-    TRIAL_0_DAYS: 0,
 };
 
 export const suitePluginIds = {
@@ -384,7 +360,6 @@ export const ModalIdentifiers = {
     REMOVE_NEXT_STEPS_MODAL: 'remove_next_steps_modal',
     MORE_CHANNELS: 'more_channels',
     NEW_CHANNEL_MODAL: 'new_channel_modal',
-    SELF_HOSTED_PURCHASE: 'self_hosted_purchase',
     SUCCESS_MODAL: 'success_modal',
     ERROR_MODAL: 'error_modal',
     DND_CUSTOM_TIME_PICKER: 'dnd_custom_time_picker',
@@ -408,19 +383,15 @@ export const ModalIdentifiers = {
     USERS_TO_BE_REMOVED: 'users_to_be_removed',
     DELETE_DRAFT: 'delete_draft_modal',
     SEND_DRAFT: 'send_draft_modal',
-    UPLOAD_LICENSE: 'upload_license',
-    CLOUD_LIMITS: 'cloud_limits',
     REQUEST_BUSINESS_EMAIL_MODAL: 'request_business_email_modal',
     FEATURE_RESTRICTED_MODAL: 'feature_restricted_modal',
     FORWARD_POST_MODAL: 'forward_post_modal',
     JOIN_PUBLIC_CHANNEL_MODAL: 'join_public_channel_modal',
-    BILLING_HISTORY: 'billing_history',
     SUM_OF_MEMBERS_MODAL: 'sum_of_members_modal',
     RESTORE_POST_MODAL: 'restore_post',
     INFO_TOAST: 'info_toast',
     MARK_ALL_THREADS_AS_READ: 'mark_all_threads_as_read_modal',
     DELINQUENCY_MODAL_DOWNGRADE: 'delinquency_modal_downgrade',
-    CLOUD_LIMITS_DOWNGRADE: 'cloud_limits_downgrade',
     PERSIST_NOTIFICATION_CONFIRM_MODAL: 'persist_notification_confirm_modal',
     AIR_GAPPED_SELF_HOSTED_PURCHASE: 'air_gapped_self_hosted_purchase',
     DOWNGRADE_MODAL: 'downgrade_modal',
@@ -494,41 +465,13 @@ export const EventTypes = Object.assign(
     }),
 );
 
-export const CloudProducts = {
-
-    // STARTER sku is used by both free cloud starter
-    // and paid cloud starter (legacy cloud starter).
-    // Where differentiation is needed, check whether any limits are applied.
-    // If none are applied, it must be legacy cloud starter.
-    STARTER: 'cloud-starter',
-    PROFESSIONAL: 'cloud-professional',
-    ENTERPRISE: 'cloud-enterprise',
-    LEGACY: 'cloud-legacy',
-    ADVANCED: 'cloud-advanced',
-};
-
-export const CloudBillingTypes = {
-    INTERNAL: 'internal',
-    LICENSED: 'licensed',
-};
-
-export const SelfHostedProducts = {
-    STARTER: 'starter',
-    PROFESSIONAL: 'professional',
-    ENTERPRISE: 'enterprise',
-};
-
 export const MattermostFeatures = {
     GUEST_ACCOUNTS: 'mattermost.feature.guest_accounts',
     CUSTOM_USER_GROUPS: 'mattermost.feature.custom_user_groups',
     CREATE_MULTIPLE_TEAMS: 'mattermost.feature.create_multiple_teams',
     START_CALL: 'mattermost.feature.start_call',
-    PLAYBOOKS_RETRO: 'mattermost.feature.playbooks_retro',
     UNLIMITED_MESSAGES: 'mattermost.feature.unlimited_messages',
     UNLIMITED_FILE_STORAGE: 'mattermost.feature.unlimited_file_storage',
-    ALL_PROFESSIONAL_FEATURES: 'mattermost.feature.all_professional',
-    ALL_ENTERPRISE_FEATURES: 'mattermost.feature.all_enterprise',
-    UPGRADE_DOWNGRADED_WORKSPACE: 'mattermost.feature.upgrade_downgraded_workspace',
     PLUGIN_FEATURE: 'mattermost.feature.plugin',
     HIGHLIGHT_WITHOUT_NOTIFICATION: 'mattermost.feature.highlight_without_notification',
 };
@@ -542,25 +485,6 @@ export enum LicenseSkus {
     EnterpriseAdvanced = 'advanced',
     Entry = 'entry',
 }
-
-export function getLicenseTier(licenseSku: string): number {
-    switch (licenseSku) {
-    case LicenseSkus.Professional:
-        return 10;
-    case LicenseSkus.Enterprise:
-        return 20;
-    case LicenseSkus.Entry:
-    case LicenseSkus.EnterpriseAdvanced:
-        return 30;
-    default:
-        return 0;
-    }
-}
-
-export const CloudProductToSku = {
-    [CloudProducts.PROFESSIONAL]: LicenseSkus.Professional,
-    [CloudProducts.ENTERPRISE]: LicenseSkus.Enterprise,
-};
 
 export const A11yClassNames = {
     REGION: 'a11y__region',
@@ -662,8 +586,6 @@ export const SocketEvents = {
     SIDEBAR_CATEGORY_DELETED: 'sidebar_category_deleted',
     SIDEBAR_CATEGORY_ORDER_UPDATED: 'sidebar_category_order_updated',
     USER_ACTIVATION_STATUS_CHANGED: 'user_activation_status_change',
-    CLOUD_PAYMENT_STATUS_UPDATED: 'cloud_payment_status_updated',
-    CLOUD_SUBSCRIPTION_CHANGED: 'cloud_subscription_changed',
     APPS_FRAMEWORK_REFRESH_BINDINGS: 'custom_com.mattermost.apps_refresh_bindings',
     APPS_FRAMEWORK_PLUGIN_ENABLED: 'custom_com.mattermost.apps_plugin_enabled',
     APPS_FRAMEWORK_PLUGIN_DISABLED: 'custom_com.mattermost.apps_plugin_disabled',
@@ -967,7 +889,6 @@ export const FileTypes = {
     PATCH: 'patch',
     SVG: 'svg',
     OTHER: 'other',
-    LICENSE_EXTENSION: '.mattermost-license',
 };
 
 export const NotificationLevels = {
@@ -1059,28 +980,6 @@ export const AboutLinks = {
     PRIVACY_POLICY: 'https://360tech.pro',
 };
 
-export const CloudLinks = {
-    BILLING_DOCS: 'https://docs.mattermost.com/pl/cloud-billing',
-    PRICING: 'https://mattermost.com/pl/pricing/',
-    PRORATED_PAYMENT: 'https://mattermost.com/pl/mattermost-cloud-prorate-documentation',
-    DEPLOYMENT_OPTIONS: 'https://mattermost.com/deploy/',
-    DOWNLOAD_UPDATE: 'https://mattermost.com/deploy/',
-    CLOUD_SIGNUP_PAGE: 'https://mattermost.com/sign-up/',
-    SELF_HOSTED_SIGNUP: 'https://customers.mattermost.com/signup',
-    DELINQUENCY_DOCS: 'https://docs.mattermost.com/about/cloud-subscriptions.html#failed-or-late-payments',
-    SELF_HOSTED_PRICING: 'https://mattermost.com/pl/pricing/#self-hosted',
-};
-
-export const HostedCustomerLinks = {
-    BILLING_DOCS: 'https://mattermost.com/pl/how-self-hosted-billing-works',
-    SELF_HOSTED_BILLING: 'https://mattermost.com/pl/self-hosted-billing',
-    TERMS_AND_CONDITIONS: 'https://mattermost.com/enterprise-edition-terms/',
-    SECURITY_UPDATES: 'https://mattermost.com/security-updates/',
-    DOWNLOAD: 'https://mattermost.com/download',
-    NEWSLETTER_UNSUBSCRIBE_LINK: 'https://forms.mattermost.com/UnsubscribePage.html',
-    PRIVACY: AboutLinks.PRIVACY_POLICY,
-};
-
 export const DocLinks = {
     ABOUT_TEAMS: 'https://docs.mattermost.com/welcome/about-teams.html#team-url',
     ADVANCED_LOGGING: 'https://mattermost.com/pl/advanced-logging',
@@ -1102,7 +1001,6 @@ export const DocLinks = {
     MULTI_FACTOR_AUTH: 'https://mattermost.com/pl/multi-factor-authentication',
     ONBOARD_ADVANCED_PERMISSIONS: 'https://mattermost.com/pl/advanced-permissions',
     ONBOARD_LDAP: 'https://mattermost.com/pl/setup-ldap',
-    SELF_HOSTED_BILLING: HostedCustomerLinks.SELF_HOSTED_BILLING,
     SESSION_LENGTHS: 'https://mattermost.com/pl/configure-session-lengths',
     SETUP_IMAGE_PROXY: 'https://mattermost.com/pl/setup-image-proxy',
     SETUP_LDAP: 'https://mattermost.com/pl/setup-ldap',
@@ -1118,7 +1016,6 @@ export const DocLinks = {
 };
 
 export const DeveloperLinks = {
-    CUSTOM_SLASH_COMMANDS: 'https://mattermost.com/pl/custom-slash-commands',
     ENABLE_OAUTH2: 'https://mattermost.com/pl/enable-oauth',
     INCOMING_WEBHOOKS: 'https://mattermost.com/pl/incoming-webhooks',
     OUTGOING_WEBHOOKS: 'https://mattermost.com/pl/outgoing-webhooks',
@@ -1127,7 +1024,6 @@ export const DeveloperLinks = {
     PERSONAL_ACCESS_TOKENS: 'https://mattermost.com/pl/personal-access-tokens',
     PLUGIN_SIGNING: 'https://mattermost.com/pl/sign-plugins',
     PLUGINS: 'https://mattermost.com/pl/plugins',
-    SETUP_CUSTOM_SLASH_COMMANDS: 'https://mattermost.com/pl/setup-custom-slash-commands',
     SETUP_INCOMING_WEBHOOKS: 'https://mattermost.com/pl/setup-incoming-webhooks',
     SETUP_OAUTH2: 'https://mattermost.com/pl/setup-oauth-2.0',
     SETUP_OUTGOING_WEBHOOKS: 'https://mattermost.com/pl/setup-outgoing-webhooks',
@@ -2092,8 +1988,6 @@ export const ConsolePages = {
     WEB_SERVER: '/admin_console/environment/web_server',
     PUSH_NOTIFICATION_CENTER: '/admin_console/environment/push_notification_server',
     SMTP: '/admin_console/environment/smtp',
-    PAYMENT_INFO: '/admin_console/billing/payment_info',
-    BILLING_HISTORY: '/admin_console/billing/billing_history',
 };
 
 export const WindowSizes = {

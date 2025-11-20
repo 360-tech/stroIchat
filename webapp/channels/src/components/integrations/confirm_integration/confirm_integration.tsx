@@ -68,24 +68,6 @@ const ConfirmIntegration = ({team, location, commands, oauthApps, incomingHooks,
                 defaultMessage='Slash Commands'
             />
         );
-        helpText = (
-            <p>
-                <FormattedMessage
-                    id='add_command.doneHelp'
-                    defaultMessage='Your slash command is set up. The following token will be sent in the outgoing payload. Please use it to verify the request came from your Mattermost team (details at <link>Slash Commands</link>).'
-                    values={{
-                        link: (msg) => (
-                            <ExternalLink
-                                href={DeveloperLinks.SETUP_CUSTOM_SLASH_COMMANDS}
-                                location='confirm_integration'
-                            >
-                                {msg}
-                            </ExternalLink>
-                        ),
-                    }}
-                />
-            </p>
-        );
         tokenText = (
             <p className='word-break--all'>
                 <FormattedMessage

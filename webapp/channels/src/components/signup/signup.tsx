@@ -6,7 +6,7 @@ import throttle from 'lodash/throttle';
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {useLocation, useHistory, Route} from 'react-router-dom';
+import {useLocation, useHistory} from 'react-router-dom';
 
 import type {ServerError} from '@mattermost/types/errors';
 import type {UserProfile} from '@mattermost/types/users';
@@ -14,7 +14,7 @@ import type {UserProfile} from '@mattermost/types/users';
 import {getTeamInviteInfo} from 'mattermost-redux/actions/teams';
 import {createUser, loadMe} from 'mattermost-redux/actions/users';
 import {Client4} from 'mattermost-redux/client';
-import {getConfig, getLicense, getPasswordConfig} from 'mattermost-redux/selectors/entities/general';
+import {getConfig, getPasswordConfig} from 'mattermost-redux/selectors/entities/general';
 import {getIsOnboardingFlowEnabled} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 import {isEmail} from 'mattermost-redux/utils/helpers';
@@ -27,30 +27,18 @@ import {getGlobalItem} from 'selectors/storage';
 
 import AlertBanner from 'components/alert_banner';
 import type {ModeType, AlertBannerProps} from 'components/alert_banner';
-import useCWSAvailabilityCheck, {CSWAvailabilityCheckTypes} from 'components/common/hooks/useCWSAvailabilityCheck';
-import DesktopAuthToken from 'components/desktop_auth_token';
-import ExternalLink from 'components/external_link';
-import ExternalLoginButton from 'components/external_login_button/external_login_button';
-import type {ExternalLoginButtonType} from 'components/external_login_button/external_login_button';
 import AlternateLinkLayout from 'components/header_footer_route/content_layouts/alternate_link';
 import ColumnLayout from 'components/header_footer_route/content_layouts/column';
 import type {CustomizeHeaderType} from 'components/header_footer_route/header_footer_route';
 import LoadingScreen from 'components/loading_screen';
 import Markdown from 'components/markdown';
 import SaveButton from 'components/save_button';
-import EntraIdIcon from 'components/widgets/icons/entra_id_icon';
-import LockIcon from 'components/widgets/icons/lock_icon';
-import LoginGitlabIcon from 'components/widgets/icons/login_gitlab_icon';
-import LoginGoogleIcon from 'components/widgets/icons/login_google_icon';
-import LoginOpenIDIcon from 'components/widgets/icons/login_openid_icon';
-import CheckInput from 'components/widgets/inputs/check';
 import Input, {SIZE} from 'components/widgets/inputs/input/input';
 import type {CustomMessageInputType} from 'components/widgets/inputs/input/input';
 import PasswordInput from 'components/widgets/inputs/password_input/password_input';
 
-import {Constants, HostedCustomerLinks, ItemStatus, ValidationErrors} from 'utils/constants';
+import {Constants, ItemStatus, ValidationErrors} from 'utils/constants';
 import {isValidPassword} from 'utils/password';
-import {isDesktopApp} from 'utils/user_agent';
 import {isValidUsername} from 'utils/utils';
 
 import type {GlobalState} from 'types/store';
@@ -89,20 +77,11 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         EnableSignUpWithOpenId,
         EnableLdap,
         EnableSaml,
-        SamlLoginButtonText,
-        LdapLoginFieldName,
         SiteName,
         CustomDescriptionText,
-        GitLabButtonText,
-        GitLabButtonColor,
-        OpenIdButtonText,
-        OpenIdButtonColor,
         EnableCustomBrand,
         CustomBrandText,
-        TermsOfServiceLink,
-        PrivacyPolicyLink,
     } = config;
-    const {IsLicensed} = useSelector(getLicense);
     const loggedIn = Boolean(useSelector(getCurrentUserId));
     const onboardingFlowEnabled = useSelector(getIsOnboardingFlowEnabled);
     const usedBefore = useSelector((state: GlobalState) => (!inviteId && !loggedIn && token ? getGlobalItem(state, token, null) : undefined));
@@ -111,7 +90,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const nameInput = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);
 
-    const isLicensed = IsLicensed === 'true';
     const enableOpenServer = EnableOpenServer === 'true';
     const enableUserCreation = EnableUserCreation === 'true';
     const noAccounts = NoAccounts === 'true';
@@ -139,10 +117,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const [teamName, setTeamName] = useState(parsedTeamName ?? '');
     const [alertBanner, setAlertBanner] = useState<AlertBannerProps | null>(null);
     const [isMobileView, setIsMobileView] = useState(false);
-    const [subscribeToSecurityNewsletter, setSubscribeToSecurityNewsletter] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
-
-    const cwsAvailability = useCWSAvailabilityCheck();
 
     const enableExternalSignup = enableSignUpWithGitLab || enableSignUpWithOffice365 || enableSignUpWithGoogle || enableSignUpWithOpenId || enableLDAP || enableSAML;
     const hasError = Boolean(emailError || nameError || passwordError || serverError || alertBanner);
@@ -150,96 +125,12 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const passwordConfig = useSelector(getPasswordConfig);
     const {error: passwordInfo} = isValidPassword('', passwordConfig, intl);
 
-    const [desktopLoginLink, setDesktopLoginLink] = useState('');
-
-    const subscribeToSecurityNewsletterFunc = () => {
-        try {
-            Client4.subscribeToNewsletter({email, subscribed_content: 'security_newsletter'});
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(error);
-        }
-    };
-
     // const getExternalSignupOptions = () => {
     //     const externalLoginOptions: ExternalLoginButtonType[] = [];
 
     //     if (!enableExternalSignup) {
     //         return externalLoginOptions;
     //     }
-
-        // if (enableSignUpWithGitLab) {
-        //     const url = `${Client4.getOAuthRoute()}/gitlab/signup${search}`;
-        //     externalLoginOptions.push({
-        //         id: 'gitlab',
-        //         url,
-        //         icon: <LoginGitlabIcon/>,
-        //         label: GitLabButtonText || formatMessage({id: 'login.gitlab', defaultMessage: 'GitLab'}),
-        //         style: {color: GitLabButtonColor, borderColor: GitLabButtonColor},
-        //         onClick: desktopExternalAuth(url),
-        //     });
-        // }
-
-        // if (isLicensed && enableSignUpWithGoogle) {
-        //     const url = `${Client4.getOAuthRoute()}/google/signup${search}`;
-        //     externalLoginOptions.push({
-        //         id: 'google',
-        //         url,
-        //         icon: <LoginGoogleIcon/>,
-        //         label: formatMessage({id: 'login.google', defaultMessage: 'Google'}),
-        //         onClick: desktopExternalAuth(url),
-        //     });
-        // }
-
-        // if (isLicensed && enableSignUpWithOffice365) {
-        //     const url = `${Client4.getOAuthRoute()}/office365/signup${search}`;
-        //     externalLoginOptions.push({
-        //         id: 'office365',
-        //         url,
-        //         icon: <EntraIdIcon/>,
-        //         label: formatMessage({id: 'login.office365', defaultMessage: 'Entra ID'}),
-        //         onClick: desktopExternalAuth(url),
-        //     });
-        // }
-
-        // if (isLicensed && enableSignUpWithOpenId) {
-        //     const url = `${Client4.getOAuthRoute()}/openid/signup${search}`;
-        //     externalLoginOptions.push({
-        //         id: 'openid',
-        //         url,
-        //         icon: <LoginOpenIDIcon/>,
-        //         label: OpenIdButtonText || formatMessage({id: 'login.openid', defaultMessage: 'Open ID'}),
-        //         style: {color: OpenIdButtonColor, borderColor: OpenIdButtonColor},
-        //         onClick: desktopExternalAuth(url),
-        //     });
-        // }
-
-        // if (isLicensed && enableLDAP) {
-        //     const newSearchParam = new URLSearchParams(search);
-        //     newSearchParam.set('extra', Constants.CREATE_LDAP);
-
-        //     externalLoginOptions.push({
-        //         id: 'ldap',
-        //         url: `${Client4.getUrl()}/login?${newSearchParam.toString()}`,
-        //         icon: <LockIcon/>,
-        //         label: LdapLoginFieldName || formatMessage({id: 'signup.ldap', defaultMessage: 'AD/LDAP Credentials'}),
-        //         onClick: () => {},
-        //     });
-        // }
-
-        // if (isLicensed && enableSAML) {
-        //     const newSearchParam = new URLSearchParams(search);
-        //     newSearchParam.set('action', 'signup');
-
-        //     const url = `${Client4.getUrl()}/login/sso/saml?${newSearchParam.toString()}`;
-        //     externalLoginOptions.push({
-        //         id: 'saml',
-        //         url,
-        //         icon: <LockIcon/>,
-        //         label: SamlLoginButtonText || formatMessage({id: 'login.saml', defaultMessage: 'SAML'}),
-        //         onClick: desktopExternalAuth(url),
-        //     });
-        // }
 
     //     return externalLoginOptions;
     // };
@@ -595,9 +486,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
             }
 
             await handleSignupSuccess(user, data!);
-            if (subscribeToSecurityNewsletter) {
-                subscribeToSecurityNewsletterFunc();
-            }
         } else {
             setIsWaiting(false);
         }

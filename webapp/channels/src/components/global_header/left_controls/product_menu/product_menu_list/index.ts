@@ -5,12 +5,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import type {Dispatch} from 'redux';
 
-import {getPrevTrialLicense} from 'mattermost-redux/actions/admin';
 import {Permissions} from 'mattermost-redux/constants';
 import {
     getConfig,
     getFirstAdminVisitMarketplaceStatus,
-    getLicense,
     isMarketplaceEnabled,
 } from 'mattermost-redux/selectors/entities/general';
 import {
@@ -49,18 +47,15 @@ function mapStateToProps(state: GlobalState) {
     const showVisitSystemConsoleTour = step === TaskNameMapToSteps[OnboardingTasksName.VISIT_SYSTEM_CONSOLE].STARTED;
     const enableCustomUserGroups = isCustomGroupsEnabled(state);
     const isMobile = getIsMobileView(state);
-    const license = getLicense(state);
 
     const isCloudStarterFree = false;
     const isCloudFreeTrial = false;
 
-    const isEnterpriseReady = config.BuildEnterpriseReady === 'true';
-    const isSelfHostedStarter = isEnterpriseReady && (license.IsLicensed === 'false');
-    const isSelfHostedFreeTrial = license.IsTrial === 'true';
+    const isSelfHostedStarter = false;
+    const isSelfHostedFreeTrial = false;
 
     const isStarterFree = isCloudStarterFree || isSelfHostedStarter;
     const isFreeTrial = isCloudFreeTrial || isSelfHostedFreeTrial;
-    console.log({isSelfHostedStarter, isEnterpriseReady, isCloudStarterFree, isSelfHostedFreeTrial, isCloudFreeTrial});
 
     return {
         isMobile,
@@ -89,7 +84,6 @@ function mapDispatchToProps(dispatch: Dispatch) {
     return {
         actions: bindActionCreators({
             openModal,
-            getPrevTrialLicense,
         }, dispatch),
     };
 }

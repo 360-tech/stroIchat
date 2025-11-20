@@ -7,8 +7,6 @@ import type {AdminConfig} from '@mattermost/types/config';
 
 import {Client4} from 'mattermost-redux/client';
 
-import {CloudLinks, DocLinks} from 'utils/constants';
-
 import {impactModifiers} from '../dashboard.data';
 import {ItemStatus} from '../dashboard.type';
 import type {Options} from '../dashboard.type';
@@ -26,9 +24,9 @@ const testServerVersion = async (
             defaultMessage: '{type} version update available.',
         }, {type: serverVersion.type}),
         description: serverVersion.description,
-        configUrl: CloudLinks.DOWNLOAD_UPDATE,
+        configUrl: '',
         configText: formatMessage({id: 'admin.reporting.workspace_optimization.updates.server_version.cta', defaultMessage: 'Download update'}),
-        infoUrl: DocLinks.UPGRADE_SERVER,
+        infoUrl: '',
         infoText: formatMessage({id: 'admin.reporting.workspace_optimization.cta.learnMore', defaultMessage: 'Learn more'}),
         telemetryAction: 'server-version',
         status: serverVersion.status,

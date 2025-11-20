@@ -3,10 +3,9 @@
 
 import moment from 'moment';
 
-import type {Product} from '@mattermost/types/cloud';
 import type {ClientLicense} from '@mattermost/types/config';
 
-import {CloudProducts, getLicenseTier, LicenseSkus, SelfHostedProducts} from 'utils/constants';
+import {LicenseSkus} from 'utils/constants';
 
 const LICENSE_EXPIRY_NOTIFICATION = 1000 * 60 * 60 * 24 * 60; // 60 days
 const LICENSE_GRACE_PERIOD = 1000 * 60 * 60 * 24 * 10; // 10 days
@@ -100,25 +99,13 @@ export const licenseSKUWithFirstLetterCapitalized = (license: ClientLicense) => 
 };
 
 export function isMinimumProfessionalLicense(license: ClientLicense): boolean {
-    if (!license) {
         return false;
-    }
-
-    return getLicenseTier(license.SkuShortName) >= getLicenseTier(LicenseSkus.Professional);
 }
 
 export function isMinimumEnterpriseLicense(license: ClientLicense): boolean {
-    if (!license) {
         return false;
-    }
-
-    return getLicenseTier(license.SkuShortName) >= getLicenseTier(LicenseSkus.Enterprise);
 }
 
 export function isMinimumEnterpriseAdvancedLicense(license?: ClientLicense): boolean {
-    if (!license) {
         return false;
-    }
-
-    return getLicenseTier(license.SkuShortName) >= getLicenseTier(LicenseSkus.EnterpriseAdvanced);
 }
