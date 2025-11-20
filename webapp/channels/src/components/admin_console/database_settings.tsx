@@ -7,7 +7,7 @@ import {FormattedMessage, defineMessage, defineMessages} from 'react-intl';
 
 import type {AdminConfig} from '@mattermost/types/config';
 
-import {recycleDatabaseConnection, ping} from 'actions/admin_actions';
+import {ping} from 'actions/admin_actions';
 
 import ExternalLink from 'components/external_link';
 
@@ -17,7 +17,6 @@ import BooleanSetting from './boolean_setting';
 import MigrationsTable from './database';
 import type {BaseState} from './old_admin_settings';
 import OLDAdminSettings from './old_admin_settings';
-import RequestButton from './request_button/request_button';
 import SettingSet from './setting_set';
 import SettingsGroup from './settings_group';
 import TextSetting from './text_setting';
@@ -156,44 +155,6 @@ export default class DatabaseSettings extends OLDAdminSettings<Props, State> {
 
     renderSettings = () => {
         const dataSource = '**********' + this.state.dataSource.substring(this.state.dataSource.indexOf('@'));
-
-        let recycleDbButton = <div/>;
-        if (this.props.license.IsLicensed === 'true') {
-            recycleDbButton = (
-                <RequestButton
-                    requestAction={recycleDatabaseConnection}
-                    helpText={
-                        <FormattedMessage
-                            {...messages.recycleDescription}
-                            values={{
-                                featureName: (
-                                    <b>
-                                        <FormattedMessage {...messages.featureName}/>
-                                    </b>
-                                ),
-                                reloadConfiguration: (
-                                    <a href='../environment/web_server'>
-                                        <b>
-                                            <FormattedMessage {...messages.reloadConfiguration}/>
-                                        </b>
-                                    </a>
-                                ),
-                            }}
-                        />
-                    }
-                    buttonText={
-                        <FormattedMessage {...messages.button}/>
-                    }
-                    showSuccessMessage={false}
-                    errorMessage={defineMessage({
-                        id: 'admin.recycle.reloadFail',
-                        defaultMessage: 'Recycling unsuccessful: {error}',
-                    })}
-                    includeDetailedError={true}
-                    disabled={this.props.isDisabled}
-                />
-            );
-        }
 
         return (
             <SettingsGroup>
@@ -353,7 +314,6 @@ export default class DatabaseSettings extends OLDAdminSettings<Props, State> {
                     setByEnv={this.isSetByEnv('SqlSettings.Trace')}
                     disabled={this.props.isDisabled}
                 />
-                {recycleDbButton}
                 <BooleanSetting
                     id='disableDatabaseSearch'
                     label={

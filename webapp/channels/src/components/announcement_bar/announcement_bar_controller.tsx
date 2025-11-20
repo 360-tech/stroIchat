@@ -27,8 +27,6 @@ type Props = {
     warnMetricsStatus?: Record<string, WarnMetricStatus>;
     actions: {
         dismissError: (index: number) => void;
-        getCloudSubscription: () => void;
-        getCloudCustomer: () => void;
     };
 };
 
@@ -88,9 +86,7 @@ class AnnouncementBarController extends React.PureComponent<Props> {
                 <VersionBar/>
                 <ConfigurationAnnouncementBar
                     config={this.props.config}
-                    license={this.props.license}
                     canViewSystemErrors={this.props.canViewSystemErrors}
-                    warnMetricsStatus={this.props.warnMetricsStatus}
                 />
             </>
         );

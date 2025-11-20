@@ -36,7 +36,6 @@ const OverageUsersBanner = () => {
     const isAdmin = useSelector(isCurrentUserSystemAdmin);
     const license = useSelector(getLicense);
     const seatsPurchased = parseInt(license.Users, 10);
-    const isCloud = false;
     const currentUser = useSelector((state: GlobalState) => getCurrentUser(state));
     const overagePreferences = useSelector(getOverageBannerPreferences);
     const activeUsers = ((stats || {})[StatTypes.TOTAL_USERS]) as number || 0;
@@ -54,7 +53,7 @@ const OverageUsersBanner = () => {
     const overageByUsers = activeUsers - seatsPurchased;
 
     const isOverageState = overageByUsers > 0 && (isBetween5PercerntAnd10PercentPurchasedSeats || isOver10PercerntPurchasedSeats);
-    const hasPermission = isAdmin && isOverageState && !isCloud;
+    const hasPermission = isAdmin && isOverageState;
 
     const handleClose = () => {
         dispatch(savePreferences(currentUser.id, [{

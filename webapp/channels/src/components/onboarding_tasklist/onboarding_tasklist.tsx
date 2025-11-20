@@ -123,8 +123,6 @@ const Button = styled.button<{open: boolean}>(({open}) => {
     `;
 });
 
-const isCloud = false;
-const isCloudPreview = false;
 const OnBoardingTaskList = (): JSX.Element | null => {
     const {formatMessage} = useIntl();
     const location = useLocation();
@@ -236,7 +234,7 @@ const OnBoardingTaskList = (): JSX.Element | null => {
         dispatch(savePreferences(currentUserId, preferences));
     }, [open, currentUserId]);
 
-    if (!hasPreferences || !showTaskList || !isEnableOnboardingFlow || (isCloud && isCloudPreview) || location.pathname === '/preparing-workspace') {
+    if (!hasPreferences || !showTaskList || !isEnableOnboardingFlow || location.pathname === '/preparing-workspace') {
         return null;
     }
 

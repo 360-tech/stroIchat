@@ -83,6 +83,6 @@ export const isScheduledPostsEnabled: (a: GlobalState) => boolean = createSelect
     getConfig,
     getLicense,
     (config: Partial<ClientConfig>, license: ClientLicense): boolean => {
-        return config.ScheduledPosts === 'true' && license.IsLicensed === 'true';
+        return false;
     },
 );

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import type {Dispatch} from 'redux';
 
-import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getMyTeams} from 'mattermost-redux/selectors/entities/teams';
 
 import {deferNavigation} from 'actions/admin_actions.jsx';
@@ -17,17 +17,13 @@ import type {GlobalState} from 'types/store';
 import AdminNavbarDropdown from './admin_navbar_dropdown';
 
 function mapStateToProps(state: GlobalState) {
-    const license = getLicense(state);
-    const isLicensed = license.IsLicensed === 'true';
-    const isCloud = license.Cloud === 'true';
-
     return {
         locale: getCurrentLocale(state),
         teams: getMyTeams(state),
         siteName: getConfig(state).SiteName,
         navigationBlocked: getNavigationBlocked(state),
-        isLicensed,
-        isCloud,
+        isLicensed: false,
+        isCloud: false,
     };
 }
 

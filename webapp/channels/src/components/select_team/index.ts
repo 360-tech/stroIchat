@@ -8,7 +8,6 @@ import type {Dispatch} from 'redux';
 import {loadRolesIfNeeded} from 'mattermost-redux/actions/roles';
 import {getTeams} from 'mattermost-redux/actions/teams';
 import {Permissions} from 'mattermost-redux/constants';
-import {getCloudSubscription as selectCloudSubscription} from 'mattermost-redux/selectors/entities/cloud';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {haveISystemPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getSortedListableTeams, getTeamMemberships} from 'mattermost-redux/selectors/entities/teams';
@@ -28,10 +27,6 @@ function mapStateToProps(state: GlobalState) {
     const currentUser = getCurrentUser(state);
     const myTeamMemberships = Object.values(getTeamMemberships(state));
 
-    const subscription = selectCloudSubscription(state);
-    const isCloud = false;
-    const isFreeTrial = subscription?.is_free_trial === 'true';
-
     return {
         currentUserId: currentUser.id,
         currentUserRoles: currentUser.roles || '',
@@ -45,8 +40,8 @@ function mapStateToProps(state: GlobalState) {
         canJoinPublicTeams: haveISystemPermission(state, {permission: Permissions.JOIN_PUBLIC_TEAMS}),
         canJoinPrivateTeams: haveISystemPermission(state, {permission: Permissions.JOIN_PRIVATE_TEAMS}),
         totalTeamsCount: state.entities.teams.totalCount || 0,
-        isCloud,
-        isFreeTrial,
+        isCloud: false,
+        isFreeTrial: false,
     };
 }
 

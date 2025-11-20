@@ -128,10 +128,7 @@ export const getSearchPluginSuggestions = createSelector(
     getLicense,
     (state: GlobalState) => state.plugins.components.SearchSuggestions,
     (license, components = []) => {
-        if (license.IsLicensed !== 'true') {
-            return [];
-        }
-        return components;
+        return [];
     },
 );
 
@@ -140,10 +137,7 @@ export const getSearchBoxHints = createSelector(
     getLicense,
     (state: GlobalState) => state.plugins.components.SearchHints,
     (license, components = []) => {
-        if (license.IsLicensed !== 'true') {
-            return [];
-        }
-        return components;
+        return [];
     },
 );
 
@@ -152,9 +146,6 @@ export const getSearchButtons = createSelector(
     getLicense,
     (state: GlobalState) => state.plugins.components.SearchButtons,
     (license, components = []) => {
-        if (license.IsLicensed !== 'true') {
-            return [];
-        }
-        return components;
+        return [];
     },
 );

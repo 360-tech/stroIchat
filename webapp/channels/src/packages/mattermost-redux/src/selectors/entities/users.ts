@@ -599,7 +599,7 @@ export const shouldShowTermsOfService: (state: GlobalState) => boolean = createS
         const acceptedTermsId = user ? user.terms_of_service_id : '';
         const acceptedAt = user ? user.terms_of_service_create_at : 0;
 
-        const featureEnabled = license.IsLicensed === 'true' && config.EnableCustomTermsOfService === 'true';
+        const featureEnabled = false;
         const reacceptanceTime = parseInt(config.CustomTermsOfServiceReAcceptancePeriod!, 10) * 1000 * 60 * 60 * 24;
         const timeElapsed = new Date().getTime() - acceptedAt;
         return Boolean(user && featureEnabled && (config.CustomTermsOfServiceId !== acceptedTermsId || timeElapsed > reacceptanceTime));

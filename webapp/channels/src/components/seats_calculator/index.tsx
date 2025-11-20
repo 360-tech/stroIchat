@@ -28,7 +28,6 @@ interface Props {
     price: number;
     seats: Seats;
     existingUsers: number;
-    isCloud: boolean;
     onChange: (seats: Seats) => void;
     excludeTotal?: boolean;
 }
@@ -132,14 +131,14 @@ export default function SeatsCalculator(props: Props) {
             // nulls out the customMessage. By forcefully creating a new react element error,
             // it will trigger the error still existing, and the error will keep being shown
             // in the input component
-            props.onChange(validateSeats(props.seats.quantity, annualPricePerSeat, props.existingUsers, props.isCloud));
+            props.onChange(validateSeats(props.seats.quantity, annualPricePerSeat, props.existingUsers));
             return;
         }
-        props.onChange(validateSeats(value, annualPricePerSeat, props.existingUsers, props.isCloud));
+        props.onChange(validateSeats(value, annualPricePerSeat, props.existingUsers));
     };
 
     useEffect(() => {
-        props.onChange(validateSeats(props.seats.quantity, annualPricePerSeat, props.existingUsers, props.isCloud));
+        props.onChange(validateSeats(props.seats.quantity, annualPricePerSeat, props.existingUsers));
     }, []);
 
     const maxSeats = calculateMaxUsers(annualPricePerSeat);

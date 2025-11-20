@@ -62,12 +62,6 @@ export function canEditPost(state: GlobalState, config: any, license: any, teamI
 
     const permission = isOwner ? Permissions.EDIT_POST : Permissions.EDIT_OTHERS_POSTS;
     canEdit = haveIChannelPermission(state, teamId, channelId, permission);
-    if (license.IsLicensed === 'true' && config.PostEditTimeLimit !== '-1' && config.PostEditTimeLimit !== -1) {
-        const timeLeft = (post.create_at + (config.PostEditTimeLimit * 1000)) - Date.now();
-        if (timeLeft <= 0) {
-            canEdit = false;
-        }
-    }
 
     return canEdit;
 }

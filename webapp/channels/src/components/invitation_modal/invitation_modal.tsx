@@ -73,7 +73,6 @@ export type Props = {
     invitableChannels: Channel[];
     emailInvitationsEnabled: boolean;
     isAdmin: boolean;
-    isCloud: boolean;
     canAddUsers: boolean;
     canInviteGuests: boolean;
     onExited: () => void;
@@ -410,7 +409,6 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 emailInvitationsEnabled={this.props.emailInvitationsEnabled}
                 onChangeUsersEmails={this.onChangeUsersEmails}
                 onUsersInputChange={this.onUsersInputChange}
-                isCloud={false}
                 canAddUsers={this.props.canAddUsers}
                 canInviteGuests={this.props.canInviteGuests}
                 headerClass='InvitationModal__header'

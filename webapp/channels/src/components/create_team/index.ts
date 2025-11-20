@@ -4,7 +4,6 @@
 import {connect} from 'react-redux';
 
 import {getCurrentChannel} from 'mattermost-redux/selectors/entities/channels';
-import {getCloudSubscription as selectCloudSubscription} from 'mattermost-redux/selectors/entities/cloud';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 
@@ -22,18 +21,13 @@ function mapStateToProps(state: GlobalState) {
     const customDescriptionText = config.CustomDescriptionText;
     const siteName = config.SiteName;
 
-    const subscription = selectCloudSubscription(state);
-
-    const isCloud = false;
-    const isFreeTrial = subscription?.is_free_trial === 'true';
-
     return {
         currentChannel,
         currentTeam,
         customDescriptionText,
         siteName,
-        isCloud,
-        isFreeTrial,
+        isCloud: false,
+        isFreeTrial: false,
     };
 }
 

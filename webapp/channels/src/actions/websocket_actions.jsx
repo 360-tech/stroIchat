@@ -18,7 +18,6 @@ import {
     IntegrationTypes,
     PreferenceTypes,
     AppsTypes,
-    CloudTypes,
     HostedCustomerTypes,
     ChannelBookmarkTypes,
     ScheduledPostTypes,
@@ -37,7 +36,6 @@ import {
     fetchAllMyTeamsChannels,
     fetchChannelsAndMembers,
 } from 'mattermost-redux/actions/channels';
-import {getCloudSubscription} from 'mattermost-redux/actions/cloud';
 import {clearErrors, logError} from 'mattermost-redux/actions/errors';
 import {setServerVersion, getClientConfig, getCustomProfileAttributeFields} from 'mattermost-redux/actions/general';
 import {getGroup as fetchGroup} from 'mattermost-redux/actions/groups';
@@ -1615,34 +1613,6 @@ export function handleUserActivationStatusChange() {
                 doDispatch(getStandardAnalytics());
             }
         }
-    };
-}
-
-function handleCloudPaymentStatusUpdated() {
-    return (doDispatch) => doDispatch(getCloudSubscription());
-}
-
-export function handleCloudSubscriptionChanged(msg) {
-    return (doDispatch, doGetState) => {
-        const state = doGetState();
-        const license = getLicense(state);
-
-        if (license.Cloud === 'true') {
-            if (msg.data.limits) {
-                doDispatch({
-                    type: CloudTypes.RECEIVED_CLOUD_LIMITS,
-                    data: msg.data.limits,
-                });
-            }
-
-            if (msg.data.subscription) {
-                doDispatch({
-                    type: CloudTypes.RECEIVED_CLOUD_SUBSCRIPTION,
-                    data: msg.data.subscription,
-                });
-            }
-        }
-        return {data: true};
     };
 }
 

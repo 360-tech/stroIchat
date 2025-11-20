@@ -58,7 +58,6 @@ export type Props = InviteState & {
     isAdmin: boolean;
     usersLoader: (value: string, callback: (users: UserProfile[]) => void) => Promise<UserProfile[]> | undefined;
     onChangeUsersEmails: (usersEmails: Array<UserProfile | string>) => void;
-    isCloud: boolean;
     emailInvitationsEnabled: boolean;
     onUsersInputChange: (usersEmailsSearch: string) => void;
     headerClass: string;

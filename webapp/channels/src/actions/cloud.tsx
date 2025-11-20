@@ -4,11 +4,9 @@
 import type {ServerError} from '@mattermost/types/errors';
 
 import {CloudTypes} from 'mattermost-redux/action_types';
-import {getCloudCustomer, getCloudProducts, getCloudSubscription, getInvoices} from 'mattermost-redux/actions/cloud';
 import {Client4} from 'mattermost-redux/client';
-import {getCloudErrors} from 'mattermost-redux/selectors/entities/cloud';
 
-import type {ActionFunc, ThunkActionFunc} from 'types/store';
+import type {ThunkActionFunc} from 'types/store';
 
 export function getInstallation() {
     return async () => {
@@ -117,50 +115,5 @@ export function getTeamsUsage(): ThunkActionFunc<Promise<boolean | ServerError>>
             return error;
         }
         return {data: false};
-    };
-}
-
-export function getCloudPreviewModalData(): ThunkActionFunc<Promise<boolean | ServerError>> {
-    return async () => {
-        try {
-            const result = await Client4.getCloudPreviewModalData();
-            if (result) {
-                return {data: result};
-            }
-        } catch (error) {
-            return error;
-        }
-        return true;
-    };
-}
-
-export function retryFailedCloudFetches(): ActionFunc<boolean> {
-    return (dispatch, getState) => {
-        const errors = getCloudErrors(getState());
-        if (Object.keys(errors).length === 0) {
-            return {data: true};
-        }
-
-        if (errors.subscription) {
-            dispatch(getCloudSubscription());
-        }
-
-        if (errors.products) {
-            dispatch(getCloudProducts());
-        }
-
-        if (errors.customer) {
-            dispatch(getCloudCustomer());
-        }
-
-        if (errors.invoices) {
-            dispatch(getInvoices());
-        }
-
-        if (errors.limits) {
-            dispatch(getCloudLimits());
-        }
-
-        return {data: true};
     };
 }

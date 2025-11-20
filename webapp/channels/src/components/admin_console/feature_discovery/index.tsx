@@ -6,8 +6,6 @@ import {bindActionCreators} from 'redux';
 import type {Dispatch} from 'redux';
 
 import {getPrevTrialLicense} from 'mattermost-redux/actions/admin';
-import {getCloudSubscription} from 'mattermost-redux/actions/cloud';
-import {checkHadPriorTrial, getCloudCustomer} from 'mattermost-redux/selectors/entities/cloud';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
 import {openModal} from 'actions/views/modals';
@@ -18,10 +16,9 @@ import type {GlobalState} from 'types/store';
 
 import FeatureDiscovery from './feature_discovery';
 
+const customer = undefined;
 function mapStateToProps(state: GlobalState) {
     const subscription = state.entities.cloud.subscription;
-    const hasPriorTrial = checkHadPriorTrial(state);
-    const customer = getCloudCustomer(state);
     const config = getConfig(state);
     const isEnterpriseReady = config?.BuildEnterpriseReady === 'true';
 
@@ -29,11 +26,8 @@ function mapStateToProps(state: GlobalState) {
         stats: state.entities.admin.analytics,
         prevTrialLicense: state.entities.admin.prevTrialLicense,
         isCloud: false,
-        isCloudTrial: false,
         isSubscriptionLoaded: subscription !== undefined && subscription !== null,
         isEnterpriseReady,
-        hadPrevCloudTrial: hasPriorTrial,
-        isPaidSubscription: false,
         customer,
     };
 }
@@ -42,7 +36,6 @@ function mapDispatchToProps(dispatch: Dispatch) {
     return {
         actions: bindActionCreators({
             getPrevTrialLicense,
-            getCloudSubscription,
             openModal,
         }, dispatch),
     };

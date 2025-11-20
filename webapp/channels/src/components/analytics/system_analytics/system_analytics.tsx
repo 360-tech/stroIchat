@@ -349,26 +349,10 @@ export default class SystemAnalytics extends React.PureComponent<Props, State> {
             );
         }
 
-        const isCloud = this.props.license.Cloud === 'true';
         const userCount = (
             <ActivatedUserCard
                 activatedUsers={this.getStatValue(stats[StatTypes.TOTAL_USERS])}
                 seatsPurchased={parseInt(this.props.license.Users, 10)}
-                isCloud={isCloud}
-            />
-        );
-
-        const seatsPurchased = (
-            <StatisticCount
-                id='seatPurchased'
-                title={
-                    <FormattedMessage
-                        id='analytics.system.seatsPurchased'
-                        defaultMessage='Licensed Seats'
-                    />
-                }
-                icon='fa-users'
-                count={parseInt(this.props.license.Users, 10)}
             />
         );
 
@@ -480,7 +464,6 @@ export default class SystemAnalytics extends React.PureComponent<Props, State> {
             systemCards = (
                 <>
                     {userCount}
-                    {isCloud ? null : seatsPurchased}
                     {teamCount}
                     {channelCount}
                     {skippedIntensiveQueries ? null : postCount}
@@ -496,7 +479,6 @@ export default class SystemAnalytics extends React.PureComponent<Props, State> {
             systemCards = (
                 <>
                     {userCount}
-                    {isCloud || !isLicensed ? null : seatsPurchased}
                     {teamCount}
                     {channelCount}
                     {skippedIntensiveQueries ? null : postCount}

@@ -320,7 +320,6 @@ export default class TeamAnalytics extends React.PureComponent<Props, State> {
                             <ActivatedUserCard
                                 activatedUsers={this.getStatValue(stats[StatTypes.TOTAL_USERS])}
                                 seatsPurchased={parseInt(this.props.license.Users, 10)}
-                                isCloud={this.props.license.Cloud === 'true'}
                             />
                             <StatisticCount
                                 title={<FormattedMessage {...messages.publicChannels}/>}

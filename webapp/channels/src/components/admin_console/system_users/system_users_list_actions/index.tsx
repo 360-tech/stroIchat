@@ -55,7 +55,6 @@ export function SystemUsersListAction({user, currentUser, tableId, rowIndex, onE
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
     const config = useSelector(getConfig);
-    const isLicensed = useSelector(getLicense)?.IsLicensed === 'true';
     const haveSysConsoleWriteUserManagementUsersPermissions = useSelector((state: GlobalState) => haveISystemPermission(state, {permission: Permissions.SYSCONSOLE_WRITE_USERMANAGEMENT_USERS}));
     const showManageUserSettings = useSelector(getShowManageUserSettings);
 
@@ -505,7 +504,7 @@ export function SystemUsersListAction({user, currentUser, tableId, rowIndex, onE
                     onClick={handlePromoteToMemberClick}
                 />
             }
-            {!isGuest(user.roles) && user.id !== currentUser.id && isLicensed && config.GuestAccountsSettings?.Enable &&
+            {!isGuest(user.roles) && user.id !== currentUser.id && config.GuestAccountsSettings?.Enable &&
                 <Menu.Item
                     id={`${menuItemIdPrefix}-demoteToGuest`}
                     labels={

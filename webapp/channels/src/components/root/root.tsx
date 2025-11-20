@@ -163,15 +163,10 @@ export default class Root extends React.PureComponent<Props, State> {
             return;
         }
 
-        // Disabled to avoid breaking the CWS flow
-        if (this.props.isCloud) {
-            return;
-        }
-
-        // Disable for Rainforest tests
-        if (window.location.hostname?.endsWith('.test.mattermost.com')) {
-            return;
-        }
+        // // Disable for Rainforest tests
+        // if (window.location.hostname?.endsWith('.test.mattermost.com')) {
+        //     return;
+        // }
 
         this.props.history.push('/landing#' + this.props.location.pathname + this.props.location.search);
         BrowserStore.setLandingPageSeen(true);

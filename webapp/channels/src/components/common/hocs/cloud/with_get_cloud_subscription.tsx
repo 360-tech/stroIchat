@@ -6,14 +6,9 @@ import type {ComponentType} from 'react';
 
 import type {Subscription} from '@mattermost/types/cloud';
 
-interface Actions {
-    getCloudSubscription?: () => void;
-}
-
 interface UsedHocProps {
     subscription?: Subscription;
     isCloud: boolean;
-    actions: Actions;
     userIsAdmin?: boolean;
 }
 

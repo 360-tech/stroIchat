@@ -3,18 +3,13 @@
 
 import {connect} from 'react-redux';
 
-import {getLicense} from 'mattermost-redux/selectors/entities/general';
-
 import type {GlobalState} from 'types/store';
 
 import SystemAnalytics from './system_analytics';
 
 function mapStateToProps(state: GlobalState) {
-    const license = getLicense(state);
-    const isLicensed = license.IsLicensed === 'true';
-
     return {
-        isLicensed,
+        isLicensed: false,
         stats: state.entities.admin.analytics,
         pluginStatHandlers: state.plugins.siteStatsHandlers,
     };

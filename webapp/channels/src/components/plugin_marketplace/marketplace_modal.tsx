@@ -62,7 +62,6 @@ const MarketplaceModal = () => {
     const isStreamlinedMarketplaceEnabled = useSelector(streamlinedMarketplaceEnabled);
 
     // const isStreamlinedMarketplaceEnabled = false;
-    const isCloud = false;
 
     const [tabKey, setTabKey] = useState(MarketplaceTabs.ALL_LISTING);
     const [filter, setFilter] = useState('');
@@ -197,20 +196,20 @@ const MarketplaceModal = () => {
         );
     }, [installedListing.length, listing.length, page, handleOnNextPage, handleOnPreviousPage, tabKey, isStreamlinedMarketplaceEnabled]);
 
-    const getAppendedContent = useCallback(() => {
-        if (!isStreamlinedMarketplaceEnabled || isCloud) {
+    const getAppendedContent = () => {
+        if (!isStreamlinedMarketplaceEnabled) {
             return null;
         }
 
         return <WebMarketplaceBanner/>;
-    }, [isStreamlinedMarketplaceEnabled, isCloud]);
+    };
 
     return (
         <GenericModal
             id='marketplace-modal'
             className={classNames('marketplace-modal', {
                 'streamlined-marketplace': isStreamlinedMarketplaceEnabled,
-                'with-web-marketplace-link': isStreamlinedMarketplaceEnabled && !isCloud,
+                'with-web-marketplace-link': isStreamlinedMarketplaceEnabled,
             })}
             modalHeaderText={formatMessage({id: 'marketplace_modal.title', defaultMessage: 'App Marketplace'})}
             ariaLabel={formatMessage({id: 'marketplace_modal.title', defaultMessage: 'App Marketplace'})}

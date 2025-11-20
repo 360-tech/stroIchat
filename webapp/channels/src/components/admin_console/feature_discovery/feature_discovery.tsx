@@ -31,16 +31,10 @@ type Props = {
     stats?: AnalyticsState;
     actions: {
         getPrevTrialLicense: () => void;
-        getCloudSubscription: () => void;
         openModal: <P>(modalData: ModalData<P>) => void;
     };
     isEnterpriseReady: boolean;
-    isCloud: boolean;
-    isCloudTrial: boolean;
-    hadPrevCloudTrial: boolean;
     isSubscriptionLoaded: boolean;
-    isPaidSubscription: boolean;
-    customer?: CloudCustomer;
 }
 
 type State = {

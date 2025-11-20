@@ -6,7 +6,6 @@ import {bindActionCreators} from 'redux';
 import type {Dispatch} from 'redux';
 
 import {getStandardAnalytics} from 'mattermost-redux/actions/admin';
-import {getCloudSubscription, getCloudCustomer} from 'mattermost-redux/actions/cloud';
 import {dismissError} from 'mattermost-redux/actions/errors';
 import {Permissions} from 'mattermost-redux/constants';
 import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
@@ -25,7 +24,6 @@ function mapStateToProps(state: GlobalState) {
     const license = getLicense(state);
     const config = getConfig(state);
     const errors = getDisplayableErrors(state);
-    const isCloud = license.Cloud === 'true';
     const subscription = state.entities.cloud?.subscription;
     const userIsAdmin = isCurrentUserSystemAdmin(state);
 
@@ -39,7 +37,6 @@ function mapStateToProps(state: GlobalState) {
         config,
         canViewSystemErrors,
         latestError,
-        isCloud,
         subscription,
         userIsAdmin,
     };
@@ -52,8 +49,6 @@ function mapDispatchToProps(dispatch: Dispatch) {
             getStandardAnalytics,
             dismissError: dismissFirstError,
             dismissNotice,
-            getCloudSubscription,
-            getCloudCustomer,
         }, dispatch),
     };
 }

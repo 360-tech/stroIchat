@@ -16,19 +16,18 @@ import Title from './title';
 type ActivatedUserCardProps = {
     seatsPurchased: number;
     activatedUsers: number | undefined;
-    isCloud: boolean;
 }
 
-const ActivatedUserCard = ({activatedUsers, seatsPurchased, isCloud}: ActivatedUserCardProps) => {
+const ActivatedUserCard = ({activatedUsers, seatsPurchased}: ActivatedUserCardProps) => {
     const {isBetween5PercerntAnd10PercentPurchasedSeats, isOver10PercerntPurchasedSeats} = calculateOverageUserActivated({seatsPurchased, activeUsers: activatedUsers || 0});
-    const showOverageWarning = !isCloud && (isBetween5PercerntAnd10PercentPurchasedSeats || isOver10PercerntPurchasedSeats);
+    const showOverageWarning = isBetween5PercerntAnd10PercentPurchasedSeats || isOver10PercerntPurchasedSeats;
 
     let activeUserStatus: 'warning' | 'error' | undefined;
-    if (!isCloud && isBetween5PercerntAnd10PercentPurchasedSeats) {
+    if (isBetween5PercerntAnd10PercentPurchasedSeats) {
         activeUserStatus = 'warning';
     }
 
-    if (!isCloud && isOver10PercerntPurchasedSeats) {
+    if (isOver10PercerntPurchasedSeats) {
         activeUserStatus = 'error';
     }
 
