@@ -59,7 +59,7 @@ export const getShowManageUserSettings = createSelector(
     'showManageUserSettings',
     getLicense,
     (state) => state,
-    (license, state) => {prise = false;
+    (license, state) => {
         return false;
     },
 );

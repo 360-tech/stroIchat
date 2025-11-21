@@ -23,7 +23,6 @@ import LeaveTeamIcon from 'components/widgets/icons/leave_team_icon';
 import Menu from 'components/widgets/menu/menu';
 
 import {ModalIdentifiers} from 'utils/constants';
-import {makeUrlSafe} from 'utils/url';
 
 import type {PropsFromRedux} from './index';
 
@@ -60,9 +59,6 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
     render() {
         const {formatMessage} = this.props.intl;
 
-        const safeAppDownloadLink = makeUrlSafe(this.props.appDownloadLink || '');
-        const teamsLimitReached = this.props.isStarterFree && !this.props.isFreeTrial && this.props.usageDeltaTeams >= 0;
-
         const pluginItems = this.props.pluginMenuItems.map((item) => (
             <Menu.ItemAction
                 id={item.id + '_pluginmenuitem'}
@@ -81,24 +77,6 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
             <Menu
                 ariaLabel={formatMessage({id: 'navbar_dropdown.menuAriaLabel', defaultMessage: 'main menu'})}
             >
-                <Menu.Group>
-                    <SystemPermissionGate
-                        permissions={[Permissions.SYSCONSOLE_WRITE_BILLING]}
-                    >
-                        <Menu.CloudTrial
-                            id='menuCloudTrial'
-                        />
-                    </SystemPermissionGate>
-                </Menu.Group>
-                <Menu.Group>
-                    <SystemPermissionGate
-                        permissions={[Permissions.SYSCONSOLE_WRITE_ABOUT_EDITION_AND_LICENSE]}
-                    >
-                        <Menu.StartTrial
-                            id='startTrial'
-                        />
-                    </SystemPermissionGate>
-                </Menu.Group>
                 <Menu.Group>
                     <Menu.ItemAction
                         id='recentMentions'
@@ -226,7 +204,7 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
                     <SystemPermissionGate permissions={[Permissions.CREATE_TEAM]}>
                         <Menu.ItemLink
                             id='createTeam'
-                            show={!teamsLimitReached}
+                            show={true}
                             to='/create_team'
                             text={formatMessage({id: 'navbar_dropdown.create', defaultMessage: 'Create a Team'})}
                             icon={<i className='fa fa-plus-square'/>}
