@@ -4,8 +4,7 @@
 import {connect, type ConnectedProps} from 'react-redux';
 
 import {patchUser, updateMe} from 'mattermost-redux/actions/users';
-import {getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud';
-import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {
     isCollapsedThreadsEnabled,
     isCollapsedThreadsEnabledForUser,
