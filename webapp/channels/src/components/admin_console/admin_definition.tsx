@@ -2827,13 +2827,6 @@ const AdminDefinition: AdminDefinitionType = {
                             help_text: defineMessage({id: 'admin.customization.enableEmojiPickerDesc', defaultMessage: 'The emoji picker allows users to select emoji to add as reactions or use in messages. Enabling the emoji picker with a large number of custom emoji may slow down performance.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.EMOJI)),
                         },
-                        {
-                            type: 'bool',
-                            key: 'ServiceSettings.EnableCustomEmoji',
-                            label: defineMessage({id: 'admin.customization.enableCustomEmojiTitle', defaultMessage: 'Enable Custom Emoji:'}),
-                            help_text: defineMessage({id: 'admin.customization.enableCustomEmojiDesc', defaultMessage: 'Enable users to create custom emoji for use in messages. When enabled, custom emoji settings can be accessed in Channels through the emoji picker.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.EMOJI)),
-                        },
                     ],
                 },
             },
@@ -2858,25 +2851,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'dropdown',
                             key: 'ServiceSettings.CollapsedThreads',
                             label: defineMessage({id: 'admin.experimental.collapsedThreads.title', defaultMessage: 'Threaded Discussions'}),
-                            help_text: defineMessage({id: 'admin.experimental.collapsedThreads.desc', defaultMessage: 'When enabled (default off), users must enable Threaded Discussions in Settings. When disabled, users cannot access Threaded Discussions. Please review our <linkKnownIssues>documentation for known issues</linkKnownIssues> and help provide feedback in our <linkCommunityChannel>Community Channel</linkCommunityChannel>.'}),
-                            help_text_values: {
-                                linkKnownIssues: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://support.mattermost.com/hc/en-us/articles/4413183568276'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                                linkCommunityChannel: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://community-daily.mattermost.com/core/channels/folded-reply-threads'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.experimental.collapsedThreads.desc', defaultMessage: 'When enabled (default off), users must enable Threaded Discussions in Settings. When disabled, users cannot access Threaded Discussions.'}),
                             help_text_markdown: false,
                             options: [
                                 {
@@ -2903,16 +2878,6 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'ServiceSettings.PostPriority',
                             label: defineMessage({id: 'admin.posts.postPriority.title', defaultMessage: 'Message Priority'}),
                             help_text: defineMessage({id: 'admin.posts.postPriority.desc', defaultMessage: 'When enabled, users can configure a visual indicator to communicate messages that are important or urgent. Learn more about message priority in our <link>documentation</link>.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://mattermost.com/pl/message-priority/'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                         },
@@ -2920,17 +2885,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.AllowPersistentNotifications',
                             label: defineMessage({id: 'admin.posts.persistentNotifications.title', defaultMessage: 'Persistent Notifications'}),
-                            help_text: defineMessage({id: 'admin.posts.persistentNotifications.desc', defaultMessage: 'When enabled, users can trigger repeating notifications for the recipients of urgent messages. Learn more about message priority and persistent notifications in our <link>documentation</link>.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://mattermost.com/pl/message-priority/'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.posts.persistentNotifications.desc', defaultMessage: 'When enabled, users can trigger repeating notifications for the recipients of urgent messages.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                             isHidden: it.configIsFalse('ServiceSettings', 'PostPriority'),
@@ -2948,17 +2903,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'number',
                             key: 'ServiceSettings.PersistentNotificationMaxRecipients',
                             label: defineMessage({id: 'admin.posts.persistentNotificationsMaxRecipients.title', defaultMessage: 'Maximum number of recipients for persistent notifications'}),
-                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsMaxRecipients.desc', defaultMessage: 'Configure the maximum number of recipients to which users may send persistent notifications. Learn more about message priority and persistent notifications in our <link>documentation</link>.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://mattermost.com/pl/message-priority/'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsMaxRecipients.desc', defaultMessage: 'Configure the maximum number of recipients to which users may send persistent notifications.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                             isHidden: it.any(
