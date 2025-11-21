@@ -16,14 +16,14 @@ import faviconDefault16x16 from 'images/favicon/favicon-default-16x16.png';
 import faviconDefault32x32 from 'images/favicon/favicon-default-32x32.png';
 import faviconDefault64x64 from 'images/favicon/favicon-default-64x64.png';
 import faviconDefault96x96 from 'images/favicon/favicon-default-96x96.png';
-import faviconMention16x16 from 'images/favicon/favicon-mentions-16x16.png';
-import faviconMention32x32 from 'images/favicon/favicon-mentions-32x32.png';
-import faviconMention64x64 from 'images/favicon/favicon-mentions-64x64.png';
-import faviconMention96x96 from 'images/favicon/favicon-mentions-96x96.png';
-import faviconUnread16x16 from 'images/favicon/favicon-unread-16x16.png';
-import faviconUnread32x32 from 'images/favicon/favicon-unread-32x32.png';
-import faviconUnread64x64 from 'images/favicon/favicon-unread-64x64.png';
-import faviconUnread96x96 from 'images/favicon/favicon-unread-96x96.png';
+// import faviconMention16x16 from 'images/favicon/favicon-mentions-16x16.png';
+// import faviconMention32x32 from 'images/favicon/favicon-mentions-32x32.png';
+// import faviconMention64x64 from 'images/favicon/favicon-mentions-64x64.png';
+import faviconMention96x96 from 'images/favicon/favicon-mentions-96x96.svg';
+// import faviconUnread16x16 from 'images/favicon/favicon-unread-16x16.png';
+// import faviconUnread32x32 from 'images/favicon/favicon-unread-32x32.png';
+// import faviconUnread64x64 from 'images/favicon/favicon-unread-64x64.png';
+import faviconUnread96x96 from 'images/favicon/favicon-unread-96x96.svg';
 import {Constants} from 'utils/constants';
 import * as UserAgent from 'utils/user_agent';
 
@@ -44,6 +44,8 @@ type Props = {
     inDrafts: boolean;
     inScheduledPosts: boolean;
 };
+
+const getFavicon = (url: string): string => ensureString(url);
 
 export class UnreadsStatusHandlerClass extends React.PureComponent<Props> {
     componentDidUpdate(prevProps: Props) {
@@ -144,21 +146,19 @@ export class UnreadsStatusHandlerClass extends React.PureComponent<Props> {
         const link64x64 = document.querySelector<HTMLLinkElement>('link[rel="icon"][sizes="64x64"]');
         const link96x96 = document.querySelector<HTMLLinkElement>('link[rel="icon"][sizes="96x96"]');
 
-        const getFavicon = (url: string): string => ensureString(url);
-
         switch (badgeStatus) {
         case BadgeStatus.Mention: {
             // link16x16!.href = getFavicon(faviconMention16x16);
             // link32x32!.href = getFavicon(faviconMention32x32);
             // link64x64!.href = getFavicon(faviconMention64x64);
-            // link96x96!.href = getFavicon(faviconMention96x96);
+            link96x96!.href = getFavicon(faviconMention96x96);
             break;
         }
         case BadgeStatus.Unread: {
             // link16x16!.href = getFavicon(faviconUnread16x16);
             // link32x32!.href = getFavicon(faviconUnread32x32);
             // link64x64!.href = getFavicon(faviconUnread64x64);
-            // link96x96!.href = getFavicon(faviconUnread96x96);
+            link96x96!.href = getFavicon(faviconUnread96x96);
             break;
         }
         default: {
