@@ -394,7 +394,6 @@ export const ModalIdentifiers = {
     DELINQUENCY_MODAL_DOWNGRADE: 'delinquency_modal_downgrade',
     PERSIST_NOTIFICATION_CONFIRM_MODAL: 'persist_notification_confirm_modal',
     AIR_GAPPED_SELF_HOSTED_PURCHASE: 'air_gapped_self_hosted_purchase',
-    DOWNGRADE_MODAL: 'downgrade_modal',
     PURCHASE_IN_PROGRESS: 'purchase_in_progress',
     DELETE_WORKSPACE: 'delete_workspace',
     FEEDBACK: 'feedback',
