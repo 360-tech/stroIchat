@@ -35,7 +35,7 @@ function mapStateToProps(state: GlobalState) {
 
     const appDownloadLink = config.AppDownloadLink || '';
     const enableCommands = config.EnableCommands === 'true';
-    const siteName = config.SiteName || 'Stroichat';
+    const siteName = config.SiteName || 'Стройчат';
     const enableIncomingWebhooks = config.EnableIncomingWebhooks === 'true';
     const enableOAuthServiceProvider = config.EnableOAuthServiceProvider === 'true';
     const enableOutgoingWebhooks = config.EnableOutgoingWebhooks === 'true';

@@ -201,10 +201,10 @@ var config = {
         // Generate manifest.json, honouring any configured publicPath. This also handles injecting
         // <link rel="apple-touch-icon" ... /> and <meta name="apple-*" ... /> tags into root.html.
         new WebpackPwaManifest({
-            name: 'Stroichat',
-            short_name: 'Stroichat',
+            name: 'Стройчат',
+            short_name: 'Стройчат',
             start_url: '..',
-            description: 'Stroichat self-hosted Slack-alternative',
+            description: 'Стройчат - это мессенджер для строительной отрасли',
             background_color: '#ffffff',
             inject: true,
             ios: true,

@@ -48,7 +48,7 @@ const HeaderFooterNotLoggedIn = (props: Props) => {
                             id='company_name'
                             className='pull-right footer-site-name'
                         >
-                            {'Stroichat'}
+                            {config.SiteName || 'Стройчат'}
                         </span>
                     </div>
                     <div className='col-xs-12'>
@@ -56,7 +56,7 @@ const HeaderFooterNotLoggedIn = (props: Props) => {
                             id='copyright'
                             className='pull-right footer-link copyright'
                         >
-                            {`© ${new Date().getFullYear()} Stroichat`}
+                            {`© ${new Date().getFullYear()} ${config.SiteName || 'Стройчат'}`}
                         </span>
                     </div>
                 </div>

@@ -21,7 +21,7 @@ export type HeaderProps = {
 const Header = ({alternateLink, backButtonURL, onBackButtonClick}: HeaderProps) => {
     const {SiteName} = useSelector(getConfig);
 
-    const ariaLabel = SiteName || 'Stroichat';
+    const ariaLabel = SiteName || 'Стройчат';
 
     return (
         <div className='hfroute-header'>

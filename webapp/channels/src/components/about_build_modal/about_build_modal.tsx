@@ -139,6 +139,8 @@ export default function AboutBuildModal(props: Props) {
         );
     }
 
+    const siteName = config.SiteName || 'Стройчат';
+
     return (
         <Modal
             dialogClassName='a11y__modal about-modal'
@@ -156,7 +158,7 @@ export default function AboutBuildModal(props: Props) {
                     <FormattedMessage
                         id='about.title'
                         values={{
-                            appTitle: config.SiteName || 'Stroichat',
+                            appTitle: siteName,
                         }}
                         defaultMessage='About {appTitle}'
                     />
@@ -170,7 +172,7 @@ export default function AboutBuildModal(props: Props) {
                     <div>
                         <h3 className='about-modal__title'>
                             <strong>
-                                {'Stroichat'}
+                                {siteName}
                             </strong>
                         </h3>
                         <p className='about-modal__subtitle pb-2'>
