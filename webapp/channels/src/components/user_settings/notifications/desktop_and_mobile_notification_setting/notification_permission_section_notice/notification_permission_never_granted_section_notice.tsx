@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback} from 'react';
+import React from 'react';
 import {useIntl} from 'react-intl';
 
 import SectionNotice from 'components/section_notice';
@@ -15,12 +15,12 @@ type Props = {
 export default function NotificationPermissionNeverGrantedSectionNotice(props: Props) {
     const intl = useIntl();
 
-    const handleClick = useCallback(async () => {
+    const handleClick = async () => {
         const permission = await requestNotificationPermission();
         if (permission) {
             props.onCtaButtonClick(permission);
         }
-    }, [props.onCtaButtonClick]);
+    };
 
     return (
         <div className='extraContentBeforeSettingList'>
@@ -32,7 +32,7 @@ export default function NotificationPermissionNeverGrantedSectionNotice(props: P
                 })}
                 text={intl.formatMessage({
                     id: 'user.settings.notifications.desktopAndMobile.notificationSection.permissionNeverGranted.message',
-                    defaultMessage: 'You\'re missing important message and call notifications from Mattermost. Mattermost notifications are disabled by this browser.',
+                    defaultMessage: 'You\'re missing important message and call notifications from Stroichat. Stroichat notifications are disabled by this browser.',
                 })}
                 primaryButton={{
                     text: intl.formatMessage({

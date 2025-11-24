@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {useIntl} from 'react-intl';
 
 import SectionNotice from 'components/section_notice';
@@ -23,10 +23,6 @@ export default function NotificationPermissionDesktopDeniedSectionNotice(props: 
             setCheckedPermissionDenied(true);
         }
     }
-
-    const handleInstructionButtonClick = useCallback(() => {
-        window.open('https://mattermost.com/pl/manage-notifications', '_blank', 'noopener,noreferrer');
-    }, []);
 
     const title = checkedPermissionDenied ? intl.formatMessage({
         id: 'user.settings.notifications.desktopAndMobile.notificationSection.permissionDeniedDesktop.titleDenied',
@@ -57,13 +53,6 @@ export default function NotificationPermissionDesktopDeniedSectionNotice(props: 
                     }),
                     onClick: handleCheckPermissionButtonClick,
                     disabled: checkedPermissionDenied,
-                }}
-                tertiaryButton={{
-                    text: intl.formatMessage({
-                        id: 'user.settings.notifications.desktopAndMobile.notificationSection.permissionDenied.instructionButton',
-                        defaultMessage: 'How to enable notifications',
-                    }),
-                    onClick: handleInstructionButtonClick,
                 }}
             />
         </div>

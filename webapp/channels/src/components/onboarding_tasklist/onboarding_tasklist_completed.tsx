@@ -9,8 +9,6 @@ import styled from 'styled-components';
 
 import {getPrevTrialLicense} from 'mattermost-redux/actions/admin';
 
-import ExternalLink from 'components/external_link';
-
 import completedImg from 'images/completed.svg';
 
 const CompletedWrapper = styled.div`
@@ -150,7 +148,7 @@ const Completed = (props: Props): JSX.Element => {
                     <span className='completed-subtitle'>
                         <FormattedMessage
                             id={'onboardingTask.checklist.completed_subtitle'}
-                            defaultMessage='We hope Mattermost is more familiar now.'
+                            defaultMessage='We hope Stroichat is more familiar now.'
                         />
                     </span>
 
@@ -163,24 +161,6 @@ const Completed = (props: Props): JSX.Element => {
                             defaultMessage='Got it'
                         />
                     </button>
-                    <div className='download-apps'>
-                        <span>
-                            <FormattedMessage
-                                id='onboardingTask.checklist.downloads'
-                                defaultMessage='Now that you’re all set up, <link>download our apps.</link>!'
-                                values={{
-                                    link: (msg: React.ReactNode) => (
-                                        <ExternalLink
-                                            location='onboarding_tasklist_completed'
-                                            href='https://mattermost.com/download#desktop'
-                                        >
-                                            {msg}
-                                        </ExternalLink>
-                                    ),
-                                }}
-                            />
-                        </span>
-                    </div>
                 </CompletedWrapper>
             </CSSTransition>
         </>
