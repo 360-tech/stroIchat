@@ -9,7 +9,7 @@ export const OnboardingTaskCategory = 'onboarding_task_list';
 export const OnboardingTasksName = {
     CHANNELS_TOUR: 'channels_tour',
     INVITE_PEOPLE: 'invite_people',
-    DOWNLOAD_APP: 'download_app',
+    // DOWNLOAD_APP: 'download_app',
     COMPLETE_YOUR_PROFILE: 'complete_your_profile',
     VISIT_SYSTEM_CONSOLE: 'visit_system_console',
 };
@@ -30,7 +30,7 @@ export const GenericTaskSteps = {
 export const TaskNameMapToSteps = {
     [OnboardingTasksName.CHANNELS_TOUR]: GenericTaskSteps,
     [OnboardingTasksName.COMPLETE_YOUR_PROFILE]: GenericTaskSteps,
-    [OnboardingTasksName.DOWNLOAD_APP]: GenericTaskSteps,
+    // [OnboardingTasksName.DOWNLOAD_APP]: GenericTaskSteps,
     [OnboardingTasksName.VISIT_SYSTEM_CONSOLE]: GenericTaskSteps,
     [OnboardingTasksName.INVITE_PEOPLE]: GenericTaskSteps,
 };
