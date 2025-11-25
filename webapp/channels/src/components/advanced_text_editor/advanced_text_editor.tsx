@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import classNames from 'classnames';
-import React, {lazy, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -29,7 +29,6 @@ import {connectionErrorCount} from 'selectors/views/system';
 import LocalStorageStore from 'stores/local_storage_store';
 
 import PostBoxIndicator from 'components/advanced_text_editor/post_box_indicator/post_box_indicator';
-import {makeAsyncComponent} from 'components/async_load';
 import AutoHeightSwitcher from 'components/common/auto_height_switcher';
 import useDidUpdate from 'components/common/hooks/useDidUpdate';
 import DeletePostModal from 'components/delete_post_modal';
@@ -45,7 +44,7 @@ import type {TextboxElement} from 'components/textbox';
 import type TextboxClass from 'components/textbox/textbox';
 import {OnboardingTourSteps, OnboardingTourStepsForGuestUsers, TutorialTourName} from 'components/tours/constant';
 import {SendMessageTour} from 'components/tours/onboarding_tour';
-
+import {getIsMobileView} from 'selectors/views/browser';
 import Constants, {
     Locations,
     StoragePrefixes,
@@ -167,10 +166,12 @@ const AdvancedTextEditor = ({
     const maxPostSize = useSelector((state: GlobalState) => parseInt(getConfig(state).MaxPostSize || '', 10) || Constants.DEFAULT_CHARACTER_LIMIT);
     const canUploadFiles = useSelector((state: GlobalState) => canUploadFilesAccordingToConfig(getConfig(state)));
     const fullWidthTextBox = useSelector((state: GlobalState) => get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.CHANNEL_DISPLAY_MODE, Preferences.CHANNEL_DISPLAY_MODE_DEFAULT) === Preferences.CHANNEL_DISPLAY_MODE_FULL_SCREEN);
+    const isMobileView = useSelector((state: GlobalState) => getIsMobileView(state));
     const isFormattingBarHidden = useSelector((state: GlobalState) => {
         const preferenceName = getFormattingBarPreferenceName();
         return getBool(state, Preferences.ADVANCED_TEXT_EDITOR, preferenceName);
-    });
+    }) || isMobileView;
+
     const teammateId = useSelector((state: GlobalState) => getDirectChannel(state, channelId)?.teammate_id || '');
     const teammateDisplayName = useSelector((state: GlobalState) => (teammateId ? getDisplayName(state, teammateId) : ''));
     const showDndWarning = useSelector((state: GlobalState) => (teammateId ? getStatusForUserId(state, teammateId) === UserStatuses.DND : false));
@@ -818,11 +819,11 @@ const AdvancedTextEditor = ({
                                 ref={editorActionsRef}
                                 placement='bottom'
                             >
-                                <ToggleFormattingBar
+                                {isMobileView ? null : <ToggleFormattingBar
                                     onClick={toggleAdvanceTextEditor}
                                     active={showFormattingBar}
                                     disabled={showPreview}
-                                />
+                                />}
                                 <Separator/>
                                 {fileUploadJSX}
                                 {emojiPicker}
