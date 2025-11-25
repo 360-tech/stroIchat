@@ -23,6 +23,7 @@ type Props = {
     inGlobalThreads?: boolean;
     inDrafts?: boolean;
     isMobileView: boolean;
+    isDefaulTheme: boolean;
     isMuted?: boolean;
     isRHSOpen?: boolean;
     user: UserProfile;
@@ -36,6 +37,11 @@ type Props = {
 export default class MobileChannelHeader extends React.PureComponent<Props> {
     componentDidMount() {
         document.querySelector('.inner-wrap')?.addEventListener('click', this.hideSidebars);
+
+        if (this.props.isDefaulTheme) {
+            const property = document.documentElement.style.getPropertyValue('--sidebar-bg');
+            document.documentElement.style.setProperty('--sidebar-teambar-bg', property);
+        }
     }
 
     componentWillUnmount() {

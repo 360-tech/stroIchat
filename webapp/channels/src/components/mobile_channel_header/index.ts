@@ -21,6 +21,7 @@ import {
     closeMenu as closeRhsMenu,
 } from 'actions/views/rhs';
 import {getIsMobileView} from 'selectors/views/browser';
+import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
 
 import type {GlobalState} from 'types/store';
 
@@ -36,14 +37,18 @@ type OwnProps = {
     location: Location;
 }
 
-const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => ({
-    user: getCurrentUser(state),
-    channel: getCurrentChannel(state),
-    isMobileView: getIsMobileView(state),
-    isMuted: isCurrentChannelMuted(state),
-    inGlobalThreads: Boolean(matchPath(ownProps.location.pathname, {path: '/:team/threads/:threadIdentifier?'})),
-    inDrafts: Boolean(matchPath(ownProps.location.pathname, {path: '/:team/drafts'})),
-});
+const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
+    const theme = getTheme(state);
+    return {
+        user: getCurrentUser(state),
+        channel: getCurrentChannel(state),
+        isMobileView: getIsMobileView(state),
+        isMuted: isCurrentChannelMuted(state),
+        isDefaulTheme: theme.type === 'Denim',
+        inGlobalThreads: Boolean(matchPath(ownProps.location.pathname, {path: '/:team/threads/:threadIdentifier?'})),
+        inDrafts: Boolean(matchPath(ownProps.location.pathname, {path: '/:team/drafts'})),
+    };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     actions: bindActionCreators({
