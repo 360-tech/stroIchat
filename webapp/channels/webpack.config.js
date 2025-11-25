@@ -14,7 +14,7 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const webpack = require('webpack');
 const {ModuleFederationPlugin} = require('webpack').container;
 const WebpackPwaManifest = require('webpack-pwa-manifest');
-
+const {GenerateSW} = require('workbox-webpack-plugin');
 const packageJson = require('./package.json');
 
 const NPM_TARGET = process.env.npm_lifecycle_event;
@@ -309,6 +309,29 @@ var config = {
                 '!toggleHighContrast',
                 '!unicodeHighlighter',
             ],
+        }),
+        new GenerateSW({
+            swDest: 'service-worker.js',
+            clientsClaim: true,
+            skipWaiting: true,
+            cleanupOutdatedCaches: true,
+            runtimeCaching: [
+           {
+               urlPattern: ({request}) => request.destination === 'document',
+               handler: 'NetworkFirst',
+               options: {
+                   cacheName: 'html',
+                   networkTimeoutSeconds: 3,
+               },
+           },
+           {
+               urlPattern: ({request}) => request.destination === 'script' || request.destination === 'style',
+               handler: 'StaleWhileRevalidate',
+               options: {
+                   cacheName: 'static-resources',
+               },
+           },
+       ],
         }),
     ],
 };

@@ -70,6 +70,11 @@ function appendOnDOMContentLoadedEvent(onDomContentReady: () => void) {
         // If the DOM is already loaded, call the function immediately
         onDomContentReady();
     }
+
+    // eslint-disable-next-line no-process-env
+    if (navigator.serviceWorker && process.env.NODE_ENV === 'production') {
+        navigator.serviceWorker.register('/static/service-worker.js');
+    }
 }
 
 appendOnDOMContentLoadedEvent(() => {
