@@ -65,6 +65,7 @@ const AutosizeTextarea = React.forwardRef<HTMLTextAreaElement, Props>(({
     onWidthChange,
     onInput,
     placeholder,
+    role,
     ...otherProps
 }: Props, ref) => {
     const height = useRef(0);
@@ -151,6 +152,7 @@ const AutosizeTextarea = React.forwardRef<HTMLTextAreaElement, Props>(({
 
     return (
         <div >
+            {/* eslint-disable-next-line react/forbid-dom-props */}
             <textarea
                 ref={setTextareaRef}
                 data-testid={id}
@@ -158,7 +160,6 @@ const AutosizeTextarea = React.forwardRef<HTMLTextAreaElement, Props>(({
                 {...heightProps}
                 {...otherProps}
                 placeholder={placeholder}
-                role='textbox'
                 dir='auto'
                 disabled={disabled}
                 onChange={onChange}
@@ -166,6 +167,14 @@ const AutosizeTextarea = React.forwardRef<HTMLTextAreaElement, Props>(({
                 value={value}
                 defaultValue={defaultValue}
                 style={showScrollbar ? styles.textAreaWithScroll : styles.textArea}
+                spellCheck={false}
+                autoCorrect='off'
+                autoCapitalize='none'
+                autoComplete='off'
+                inputMode='text'
+
+                // @ts-expect-error - enterKeyHint is a valid HTML attribute for mobile browsers but not in TypeScript types
+                enterKeyHint='send'
             />
             <div style={styles.container}>
                 <div
