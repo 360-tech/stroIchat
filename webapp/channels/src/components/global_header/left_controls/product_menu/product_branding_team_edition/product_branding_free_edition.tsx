@@ -17,7 +17,7 @@ const ProductBrandingFreeEditionContainer = styled.span`
 
 const StyledLogo = styled(Logo)`
     path {
-        fill: rgba(var(--sidebar-text-rgb), 0.75);
+        fill: rgba(var(--sidebar-text-rgb), 1);
     }
 `;
 
