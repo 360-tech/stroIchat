@@ -744,6 +744,7 @@ const AdvancedTextEditor = ({
                     'AdvancedTextEditor__attachment-disabled': !canUploadFiles,
                     scroll: renderScrollbar,
                     'formatting-bar': showFormattingBar,
+                    'AdvancedTextEditor__mb': isMobileView && (location === Locations.CENTER || location === Locations.RHS_COMMENT),
                 })}
             >
                 {!wasNotifiedOfLogIn && (
@@ -819,11 +820,13 @@ const AdvancedTextEditor = ({
                                 ref={editorActionsRef}
                                 placement='bottom'
                             >
-                                {isMobileView ? null : <ToggleFormattingBar
-                                    onClick={toggleAdvanceTextEditor}
-                                    active={showFormattingBar}
-                                    disabled={showPreview}
-                                />}
+                                {isMobileView ? null : (
+                                    <ToggleFormattingBar
+                                        onClick={toggleAdvanceTextEditor}
+                                        active={showFormattingBar}
+                                        disabled={showPreview}
+                                    />
+                                )}
                                 <Separator/>
                                 {fileUploadJSX}
                                 {emojiPicker}
