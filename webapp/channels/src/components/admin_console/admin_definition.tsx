@@ -2145,7 +2145,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'TeamSettings.SiteName',
                             label: defineMessage({id: 'admin.team.siteNameTitle', defaultMessage: 'Site Name:'}),
-                            help_text: defineMessage({id: 'admin.team.siteNameDescription', defaultMessage: 'Name of service shown in login screens and UI. When not specified, it defaults to "Mattermost".'}),
+                            help_text: defineMessage({id: 'admin.team.siteNameDescription', defaultMessage: 'Name of service shown in login screens and UI. When not specified, it defaults to "Stroichat".'}),
                             placeholder: defineMessage({id: 'admin.team.siteNameExample', defaultMessage: 'E.g.: "Stroichat"'}),
                             max_length: Constants.MAX_SITENAME_LENGTH,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
