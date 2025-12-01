@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import classNames from 'classnames';
-import React, {memo, useCallback, useMemo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {defineMessage, useIntl} from 'react-intl';
 import {useSelector} from 'react-redux';
 
@@ -14,7 +14,7 @@ import {isScheduledPostsEnabled} from 'mattermost-redux/selectors/entities/sched
 import {isSendOnCtrlEnter} from 'selectors/preferences';
 
 import {SendPostOptions} from 'components/advanced_text_editor/send_button/send_post_options';
-import WithTooltip from 'components/with_tooltip';
+// import WithTooltip from 'components/with_tooltip';
 import type {ShortcutDefinition} from 'components/with_tooltip/tooltip_shortcut';
 import {ShortcutKeys} from 'components/with_tooltip/tooltip_shortcut';
 
@@ -30,62 +30,63 @@ const SendButton = ({disabled, handleSubmit, channelId}: SendButtonProps) => {
     const {formatMessage} = useIntl();
     const isScheduledPostEnabled = useSelector(isScheduledPostsEnabled);
 
-    const sendMessage = useCallback((e: React.FormEvent, schedulingInfo?: SchedulingInfo) => {
+    const sendMessage = (e: React.FormEvent, schedulingInfo?: SchedulingInfo) => {
         e?.stopPropagation();
         e?.preventDefault();
         handleSubmit(schedulingInfo);
-    }, [handleSubmit]);
+    };
 
-    const sendOnCtrlEnter = useSelector(isSendOnCtrlEnter);
+    // const sendOnCtrlEnter = useSelector(isSendOnCtrlEnter);
 
-    const sendNowKeyboardShortcutDescriptor = useMemo<ShortcutDefinition>(() => {
-        const shortcutDefinition: ShortcutDefinition = {
-            default: [
-                defineMessage({
-                    id: 'shortcuts.generic.enter',
-                    defaultMessage: 'Enter',
-                }),
-            ],
-            mac: [
-                defineMessage({
-                    id: 'shortcuts.generic.enter',
-                    defaultMessage: 'Enter',
-                }),
-            ],
-        };
+    // const sendNowKeyboardShortcutDescriptor = useMemo<ShortcutDefinition>(() => {
+    //     const shortcutDefinition: ShortcutDefinition = {
+    //         default: [
+    //             defineMessage({
+    //                 id: 'shortcuts.generic.enter',
+    //                 defaultMessage: 'Enter',
+    //             }),
+    //         ],
+    //         mac: [
+    //             defineMessage({
+    //                 id: 'shortcuts.generic.enter',
+    //                 defaultMessage: 'Enter',
+    //             }),
+    //         ],
+    //     };
 
-        if (sendOnCtrlEnter) {
-            shortcutDefinition.default.unshift(ShortcutKeys.ctrl);
-            shortcutDefinition.mac?.unshift(ShortcutKeys.cmd);
-        }
+    //     if (sendOnCtrlEnter) {
+    //         shortcutDefinition.default.unshift(ShortcutKeys.ctrl);
+    //         shortcutDefinition.mac?.unshift(ShortcutKeys.cmd);
+    //     }
 
-        return shortcutDefinition;
-    }, [sendOnCtrlEnter]);
+    //     return shortcutDefinition;
+    // }, [sendOnCtrlEnter]);
 
     return (
         <div className={classNames('splitSendButton', {disabled, scheduledPost: isScheduledPostEnabled})}>
-            <WithTooltip
+            {/* <WithTooltip
                 title={formatMessage({id: 'create_post_button.option.send_now', defaultMessage: 'Send Now'})}
                 shortcut={sendNowKeyboardShortcutDescriptor}
                 disabled={disabled}
+            > */}
+            <button
+                className={classNames('SendMessageButton', {disabled}, {singleAction: !isScheduledPostEnabled})}
+                data-testid='SendMessageButton'
+                tabIndex={0}
+                aria-label={formatMessage({
+                    id: 'create_post_button.option.send_now',
+                    defaultMessage: 'Send Now',
+                })}
+                disabled={disabled}
+                onClick={sendMessage}
+                type='submit'
             >
-                <button
-                    className={classNames('SendMessageButton', {disabled}, {singleAction: !isScheduledPostEnabled})}
-                    data-testid='SendMessageButton'
-                    tabIndex={0}
-                    aria-label={formatMessage({
-                        id: 'create_post_button.option.send_now',
-                        defaultMessage: 'Send Now',
-                    })}
-                    disabled={disabled}
-                    onClick={sendMessage}
-                >
-                    <SendIcon
-                        size={18}
-                        color='currentColor'
-                    />
-                </button>
-            </WithTooltip>
+                <SendIcon
+                    size={18}
+                    color='currentColor'
+                />
+            </button>
+            {/* </WithTooltip> */}
 
             {
                 isScheduledPostEnabled &&
