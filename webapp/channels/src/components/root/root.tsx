@@ -308,6 +308,8 @@ export default class Root extends React.PureComponent<Props, State> {
             return <div/>;
         }
 
+        console.log('render root component');
+
         return (
             <RootProvider>
                 <MobileViewWatcher/>
