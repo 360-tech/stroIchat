@@ -2202,7 +2202,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'SupportSettings.TermsOfServiceLink',
                             label: defineMessage({id: 'admin.support.termsTitle', defaultMessage: 'Terms of Use Link:'}),
-                            help_text: defineMessage({id: 'admin.support.termsDesc', defaultMessage: 'Link to the terms under which users may use your online service. By default, this includes the "Mattermost Conditions of Use (End Users)" explaining the terms under which Mattermost software is provided to end users. If you change the default link to add your own terms for using the service you provide, your new terms must include a link to the default terms so end users are aware of the Mattermost Conditions of Use (End User) for Mattermost software.'}),
+                            help_text: defineMessage({id: 'admin.support.termsDesc', defaultMessage: 'Link to the terms under which users may use your online service. By default, this includes the "Stroichat Conditions of Use (End Users)" explaining the terms under which Stroichat software is provided to end users. If you change the default link to add your own terms for using the service you provide, your new terms must include a link to the default terms so end users are aware of the Mattermost Conditions of Use (End User) for Mattermost software.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                         },
@@ -2218,7 +2218,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'SupportSettings.AboutLink',
                             label: defineMessage({id: 'admin.support.aboutTitle', defaultMessage: 'About Link:'}),
-                            help_text: defineMessage({id: 'admin.support.aboutDesc', defaultMessage: 'The URL for the About link on the Mattermost login and sign-up pages. If this field is empty, the About link is hidden from users.'}),
+                            help_text: defineMessage({id: 'admin.support.aboutDesc', defaultMessage: 'The URL for the About link on the Stroichat login and sign-up pages. If this field is empty, the About link is hidden from users.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                         },
@@ -2226,7 +2226,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'SupportSettings.ForgotPasswordLink',
                             label: defineMessage({id: 'admin.support.forgotPasswordTitle', defaultMessage: 'Forgot Password Custom Link:'}),
-                            help_text: defineMessage({id: 'admin.support.forgotPasswordDesc', defaultMessage: 'The URL for the Forgot Password link on the Mattermost login page. If this field is empty the Forgot Password link takes users to the Password Reset page.'}),
+                            help_text: defineMessage({id: 'admin.support.forgotPasswordDesc', defaultMessage: 'The URL for the Forgot Password link on the Stroichat login page. If this field is empty the Forgot Password link takes users to the Password Reset page.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                         },
@@ -2259,7 +2259,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'defaultLicensedReportAProblemLink',
                             label: defineMessage({id: 'admin.support.reportAProblemDefaultLinkTitle', defaultMessage: 'Default Report a Problem Link:'}),
                             help_text: defineMessage({id: 'admin.support.reportAProblemDefaultLinkDescription', defaultMessage: 'Users will be directed to this link when they choose ‘Report a Problem’.'}),
-                            default: 'https://mattermost.com/pl/report_a_problem_licensed',
+                            default: '',
                             isDisabled: it.all(),
                             isHidden: it.any(
                                 it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
@@ -2272,7 +2272,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'defaultUnlicensedReportAProblemLink',
                             label: defineMessage({id: 'admin.support.reportAProblemDefaultLinkTitle', defaultMessage: 'Default Report a Problem Link:'}),
                             help_text: defineMessage({id: 'admin.support.reportAProblemDefaultLinkDescription', defaultMessage: 'Users will be directed to this link when they choose ‘Report a Problem’.'}),
-                            default: 'https://mattermost.com/pl/report_a_problem_unlicensed',
+                            default: ' d',
                             isDisabled: it.all(),
                             isHidden: it.any(
                                 it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
@@ -2325,7 +2325,7 @@ const AdminDefinition: AdminDefinitionType = {
                         {
                             type: 'text',
                             key: 'NativeAppSettings.AppDownloadLink',
-                            label: defineMessage({id: 'admin.customization.appDownloadLinkTitle', defaultMessage: 'Mattermost Apps Download Page Link:'}),
+                            label: defineMessage({id: 'admin.customization.appDownloadLinkTitle', defaultMessage: 'Stroichat Apps Download Page Link:'}),
                             help_text: defineMessage({id: 'admin.customization.appDownloadLinkDesc', defaultMessage: 'Add a link to a download page for the Mattermost apps. When a link is present, an option to "Download Mattermost Apps" will be added in the Product Menu so users can find the download page. Leave this field blank to hide the option from the Product Menu.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
@@ -2350,7 +2350,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableDesktopLandingPage',
                             label: defineMessage({id: 'admin.customization.enableDesktopLandingPageTitle', defaultMessage: 'Enable Desktop App Landing Page:'}),
-                            help_text: defineMessage({id: 'admin.customization.enableDesktopLandingPageDesc', defaultMessage: 'Whether or not to prompt a user to use the Desktop App when they first use Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.customization.enableDesktopLandingPageDesc', defaultMessage: 'Whether or not to prompt a user to use the Desktop App when they first use Stroichat.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
                         },
                     ],
@@ -2384,17 +2384,6 @@ const AdminDefinition: AdminDefinitionType = {
                             label: defineMessage({id: 'admin.general.localization.availableLocalesTitle', defaultMessage: 'Available Languages:'}),
                             help_text: defineMessage({id: 'admin.general.localization.availableLocalesDescription', defaultMessage: 'Set which languages are available for users in <strong>Settings > Display > Language</strong> (leave this field blank to have all supported languages available). If you\'re manually adding new languages, the <strong>Default Client Language</strong> must be added before saving this setting.'}),
                             help_text_markdown: false,
-                            // help_text_values: {
-                            //     link: (msg: string) => (
-                            //         <ExternalLink
-                            //             location='admin_console'
-                            //             href='http://translate.mattermost.com/'
-                            //         >
-                            //             {msg}
-                            //         </ExternalLink>
-                            //     ),
-                            //     strong: (msg: string) => <strong>{msg}</strong>,
-                            // },
                             multiple: true,
                             no_result: defineMessage({id: 'admin.general.localization.availableLocalesNoResults', defaultMessage: 'No results found'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.LOCALIZATION)),
@@ -2444,11 +2433,11 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'dropdown',
                             key: 'TeamSettings.RestrictDirectMessage',
                             label: defineMessage({id: 'admin.team.restrictDirectMessage', defaultMessage: 'Enable users to open Direct Message channels with:'}),
-                            help_text: defineMessage({id: 'admin.team.restrictDirectMessageDesc', defaultMessage: '"Any user on the Mattermost server" enables users to open a Direct Message channel with any user on the server, even if they are not on any teams together. "Any member of the team" limits the ability in the Direct Messages "More" menu to only open Direct Message channels with users who are in the same team.'}),
+                            help_text: defineMessage({id: 'admin.team.restrictDirectMessageDesc', defaultMessage: '"Any user on the Stroichat server" enables users to open a Direct Message channel with any user on the server, even if they are not on any teams together. "Any member of the team" limits the ability in the Direct Messages "More" menu to only open Direct Message channels with users who are in the same team.'}),
                             options: [
                                 {
                                     value: 'any',
-                                    display_name: defineMessage({id: 'admin.team.restrict_direct_message_any', defaultMessage: 'Any user on the Mattermost server'}),
+                                    display_name: defineMessage({id: 'admin.team.restrict_direct_message_any', defaultMessage: 'Any user on the Stroichat server'}),
                                 },
                                 {
                                     value: 'team',
@@ -2565,7 +2554,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'EmailSettings.SendEmailNotifications',
                             label: defineMessage({id: 'admin.environment.notifications.enable.label', defaultMessage: 'Enable Email Notifications:'}),
-                            help_text: defineMessage({id: 'admin.environment.notifications.enable.help', defaultMessage: 'Typically set to true in production. When true, Mattermost attempts to send email notifications. When false, email invitations and user account setting change emails are still sent as long as the SMTP server is configured. Developers may set this field to false to skip email setup for faster development.'}),
+                            help_text: defineMessage({id: 'admin.environment.notifications.enable.help', defaultMessage: 'Typically set to true in production. When true, Stroichat attempts to send email notifications. When false, email invitations and user account setting change emails are still sent as long as the SMTP server is configured. Developers may set this field to false to skip email setup for faster development.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.NOTIFICATIONS)),
                             isHidden: it.licensedForFeature('Cloud'),
                         },
@@ -2597,7 +2586,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'dropdown',
                             key: 'EmailSettings.EmailNotificationContentsType',
                             label: defineMessage({id: 'admin.environment.notifications.contents.label', defaultMessage: 'Email Notification Contents:'}),
-                            help_text: defineMessage({id: 'admin.environment.notifications.contents.help', defaultMessage: '**Send full message contents** - Sender name and channel are included in email notifications. **Send generic description with only sender name** - Only the name of the person who sent the message, with no information about channel name or message contents are included in email notifications. Typically used for compliance reasons if Mattermost contains confidential information and policy dictates it cannot be stored in email.'}),
+                            help_text: defineMessage({id: 'admin.environment.notifications.contents.help', defaultMessage: '**Send full message contents** - Sender name and channel are included in email notifications. **Send generic description with only sender name** - Only the name of the person who sent the message, with no information about channel name or message contents are included in email notifications. Typically used for compliance reasons if Stroichat contains confidential information and policy dictates it cannot be stored in email.'}),
                             help_text_markdown: true,
                             options: [
                                 {
@@ -2616,8 +2605,8 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'EmailSettings.FeedbackName',
                             label: defineMessage({id: 'admin.environment.notifications.notificationDisplay.label', defaultMessage: 'Notification Display Name:'}),
-                            placeholder: defineMessage({id: 'admin.environment.notifications.notificationDisplay.placeholder', defaultMessage: 'Ex: "Mattermost Notification", "System", "No-Reply"'}),
-                            help_text: defineMessage({id: 'admin.environment.notifications.notificationDisplay.help', defaultMessage: 'Display name on email account used when sending notification emails from Mattermost.'}),
+                            placeholder: defineMessage({id: 'admin.environment.notifications.notificationDisplay.placeholder', defaultMessage: 'Ex: "Stroichat Notification", "System", "No-Reply"'}),
+                            help_text: defineMessage({id: 'admin.environment.notifications.notificationDisplay.help', defaultMessage: 'Display name on email account used when sending notification emails from Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.NOTIFICATIONS)),
                                 it.stateIsFalse('EmailSettings.SendEmailNotifications'),
@@ -2629,7 +2618,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'EmailSettings.FeedbackEmail',
                             label: defineMessage({id: 'admin.environment.notifications.feedbackEmail.label', defaultMessage: 'Notification From Address:'}),
                             placeholder: defineMessage({id: 'admin.environment.notifications.feedbackEmail.placeholder', defaultMessage: 'Ex: "mattermost@yourcompany.com", "admin@yourcompany.com"'}),
-                            help_text: defineMessage({id: 'admin.environment.notifications.feedbackEmail.help', defaultMessage: 'Email address displayed on email account used when sending notification emails from Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.environment.notifications.feedbackEmail.help', defaultMessage: 'Email address displayed on email account used when sending notification emails from Stroichat.'}),
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.NOTIFICATIONS)),
@@ -2650,8 +2639,8 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'EmailSettings.ReplyToAddress',
                             label: defineMessage({id: 'admin.environment.notifications.replyToAddress.label', defaultMessage: 'Notification Reply-To Address:'}),
-                            placeholder: defineMessage({id: 'admin.environment.notifications.replyToAddress.placeholder', defaultMessage: 'Ex: "mattermost@yourcompany.com", "admin@yourcompany.com"'}),
-                            help_text: defineMessage({id: 'admin.environment.notifications.replyToAddress.help', defaultMessage: 'Email address used in the Reply-To header when sending notification emails from Mattermost.'}),
+                            placeholder: defineMessage({id: 'admin.environment.notifications.replyToAddress.placeholder', defaultMessage: 'Ex: "Stroichat@yourcompany.com", "admin@yourcompany.com"'}),
+                            help_text: defineMessage({id: 'admin.environment.notifications.replyToAddress.help', defaultMessage: 'Email address used in the Reply-To header when sending notification emails from Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.NOTIFICATIONS)),
                                 it.stateIsFalse('EmailSettings.SendEmailNotifications'),
@@ -2662,7 +2651,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'EmailSettings.FeedbackOrganization',
                             label: defineMessage({id: 'admin.environment.notifications.feedbackOrganization.label', defaultMessage: 'Notification Footer Mailing Address:'}),
                             placeholder: defineMessage({id: 'admin.environment.notifications.feedbackOrganization.placeholder', defaultMessage: 'Ex: "© ABC Corporation, 565 Knight Way, Palo Alto, California, 94305, USA"'}),
-                            help_text: defineMessage({id: 'admin.environment.notifications.feedbackOrganization.help', defaultMessage: 'Organization name and address displayed on email notifications from Mattermost, such as "© ABC Corporation, 565 Knight Way, Palo Alto, California, 94305, USA". If the field is left empty, the organization name and address will not be displayed.'}),
+                            help_text: defineMessage({id: 'admin.environment.notifications.feedbackOrganization.help', defaultMessage: 'Organization name and address displayed on email notifications from Stroichat, such as "© ABC Corporation, 565 Knight Way, Palo Alto, California, 94305, USA". If the field is left empty, the organization name and address will not be displayed.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.NOTIFICATIONS)),
                                 it.stateIsFalse('EmailSettings.SendEmailNotifications'),
@@ -2722,7 +2711,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'MetricsSettings.EnableNotificationMetrics',
                             label: defineMessage({id: 'admin.metrics.enableNotificationMetricsTitle', defaultMessage: 'Enable Notification Monitoring:'}),
-                            help_text: defineMessage({id: 'admin.metrics.enableNotificationMetricsDescription', defaultMessage: 'When true, Mattermost will enable notification data collection for web and Desktop App users.'}),
+                            help_text: defineMessage({id: 'admin.metrics.enableNotificationMetricsDescription', defaultMessage: 'When true, Stroichat will enable notification data collection for web and Desktop App users.'}),
                             isDisabled: it.any(
                                 it.configIsFalse('MetricsSettings', 'Enable'),
                             ),
@@ -2915,17 +2904,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'number',
                             key: 'ServiceSettings.PersistentNotificationIntervalMinutes',
                             label: defineMessage({id: 'admin.posts.persistentNotificationsInterval.title', defaultMessage: 'Frequency of persistent notifications'}),
-                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsInterval.desc', defaultMessage: 'Configure the number of minutes between repeated notifications for urgent messages send with persistent notifications. Learn more about message priority and persistent notifications in our <link>documentation</link>.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://mattermost.com/pl/message-priority/'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsInterval.desc', defaultMessage: 'Configure the number of minutes between repeated notifications for urgent messages send with persistent notifications.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                             isHidden: it.any(
@@ -2938,17 +2917,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'number',
                             key: 'ServiceSettings.PersistentNotificationMaxCount',
                             label: defineMessage({id: 'admin.posts.persistentNotificationsMaxCount.title', defaultMessage: 'Total number of persistent notification per post'}),
-                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsMaxCount.desc', defaultMessage: 'Configure the maximum number of times users may receive persistent notifications. Learn more about message priority and persistent notifications in our <link>documentation</link>.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://mattermost.com/pl/message-priority/'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsMaxCount.desc', defaultMessage: 'Configure the maximum number of times users may receive persistent notifications.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                             isHidden: it.any(
@@ -2960,17 +2929,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.AllowPersistentNotificationsForGuests',
                             label: defineMessage({id: 'admin.posts.persistentNotificationsGuests.title', defaultMessage: 'Allow guests to send persistent notifications'}),
-                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsGuests.desc', defaultMessage: 'Whether a guest is able to require persistent notifications. Learn more about message priority and persistent notifications in our <link>documentation</link>.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://mattermost.com/pl/message-priority/'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsGuests.desc', defaultMessage: 'Whether a guest is able to require persistent notifications.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                             isHidden: it.any(
@@ -3001,7 +2960,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnablePermalinkPreviews',
                             label: defineMessage({id: 'admin.customization.enablePermalinkPreviewsTitle', defaultMessage: 'Enable message link previews:'}),
-                            help_text: defineMessage({id: 'admin.customization.enablePermalinkPreviewsDesc', defaultMessage: 'When enabled, links to Mattermost messages will generate a preview for any users that have access to the original message. Please review our <link>documentation</link> for details.'}),
+                            help_text: defineMessage({id: 'admin.customization.enablePermalinkPreviewsDesc', defaultMessage: 'When enabled, links to Stroichat messages will generate a preview for any users that have access to the original message.'}),
                             help_text_values: {
                                 link: (msg: string) => (
                                     <ExternalLink

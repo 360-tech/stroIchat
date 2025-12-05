@@ -123,7 +123,7 @@ const (
 	ServiceSettingsDefaultMaxURLLength           = 2048
 	ServiceSettingsMaxUniqueReactionsPerPost     = 500
 
-	TeamSettingsDefaultSiteName              = "Stroichat"
+	TeamSettingsDefaultSiteName              = "Стройчат"
 	TeamSettingsDefaultMaxUsersPerTeam       = 50
 	TeamSettingsDefaultCustomBrandText       = ""
 	TeamSettingsDefaultCustomDescriptionText = ""
@@ -238,7 +238,7 @@ const (
 
 	PluginSettingsDefaultDirectory         = "./plugins"
 	PluginSettingsDefaultClientDirectory   = "./client/plugins"
-	PluginSettingsDefaultEnableMarketplace = true
+	PluginSettingsDefaultEnableMarketplace = false
 	PluginSettingsDefaultMarketplaceURL    = "https://api.integrations.mattermost.com"
 	PluginSettingsOldMarketplaceURL        = "https://marketplace.integrations.mattermost.com"
 
@@ -790,7 +790,7 @@ func (s *ServiceSettings) SetDefaults(isUpdate bool) {
 	}
 
 	if s.EnableCustomEmoji == nil {
-		s.EnableCustomEmoji = NewPointer(true)
+		s.EnableCustomEmoji = NewPointer(false)
 	}
 
 	if s.EnableEmojiPicker == nil {
@@ -798,7 +798,7 @@ func (s *ServiceSettings) SetDefaults(isUpdate bool) {
 	}
 
 	if s.EnableGifPicker == nil {
-		s.EnableGifPicker = NewPointer(true)
+		s.EnableGifPicker = NewPointer(false)
 	}
 
 	if s.GiphySdkKey == nil || *s.GiphySdkKey == "" {
@@ -862,7 +862,7 @@ func (s *ServiceSettings) SetDefaults(isUpdate bool) {
 	}
 
 	if s.EnableDesktopLandingPage == nil {
-		s.EnableDesktopLandingPage = NewPointer(true)
+		s.EnableDesktopLandingPage = NewPointer(false)
 	}
 
 	if s.EnableSVGs == nil {
