@@ -1,15 +1,10 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
-import {defineMessage, type MessageDescriptor} from 'react-intl';
+import {type MessageDescriptor} from 'react-intl';
 
-import type {CloudState, Product} from '@mattermost/types/cloud';
+import type {CloudState} from '@mattermost/types/cloud';
 import type {AdminConfig, ClientLicense} from '@mattermost/types/config';
-
-import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_indicator';
-
-import {LicenseSkus} from 'utils/constants';
 
 import type {Check, ConsoleAccess} from './types';
 import ValidationResult from './validation';
@@ -94,17 +89,7 @@ export const usesLegacyOauth = (config: Partial<AdminConfig>, state: any, licens
     )(config, state, license, enterpriseReady, consoleAccess, cloud);
 };
 
-export const getRestrictedIndicator = (displayBlocked = false, minimumPlanRequiredForFeature = LicenseSkus.Professional) => ({
-    value: (cloud: CloudState) => (
-        <RestrictedIndicator
-            useModal={false}
-            blocked={displayBlocked || !(cloud?.subscription?.is_free_trial === 'true')}
-            minimumPlanRequiredForFeature={minimumPlanRequiredForFeature}
-            tooltipMessageBlocked={defineMessage({
-                id: 'admin.sidebar.restricted_indicator.tooltip.message.blocked',
-                defaultMessage: 'This is {article} {minimumPlanRequiredForFeature} feature, available with an upgrade or free {trialLength}-day trial',
-            })}
-        />
-    ),
-    shouldDisplay: (license: ClientLicense, subscriptionProduct: Product | undefined) => displayBlocked,
+export const getRestrictedIndicator = () => ({
+    value: () => null,
+    shouldDisplay: () => false,
 });

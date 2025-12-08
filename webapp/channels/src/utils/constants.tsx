@@ -384,7 +384,6 @@ export const ModalIdentifiers = {
     DELETE_DRAFT: 'delete_draft_modal',
     SEND_DRAFT: 'send_draft_modal',
     REQUEST_BUSINESS_EMAIL_MODAL: 'request_business_email_modal',
-    FEATURE_RESTRICTED_MODAL: 'feature_restricted_modal',
     FORWARD_POST_MODAL: 'forward_post_modal',
     JOIN_PUBLIC_CHANNEL_MODAL: 'join_public_channel_modal',
     SUM_OF_MEMBERS_MODAL: 'sum_of_members_modal',

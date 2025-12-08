@@ -739,59 +739,59 @@ class NotificationsTab extends React.PureComponent<Props, State> {
             collapsedDescription = customKeysWithHighlightStringArray.map((key) => `"${key}"`).join(', ');
         }
 
-        const collapsedEditButtonWhenDisabled = (
-            <RestrictedIndicator
-                blocked={this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady}
-                feature={MattermostFeatures.HIGHLIGHT_WITHOUT_NOTIFICATION}
-                minimumPlanRequiredForFeature={LicenseSkus.Professional}
-                tooltipTitle={this.props.intl.formatMessage({
-                    id: 'user.settings.notifications.keywordsWithHighlight.disabledTooltipTitle',
-                    defaultMessage: 'Professional feature',
-                })}
-                tooltipMessageBlocked={this.props.intl.formatMessage({
-                    id: 'user.settings.notifications.keywordsWithHighlight.disabledTooltipMessage',
-                    defaultMessage:
-                    'This feature is available on the Professional plan',
-                })}
-                titleAdminPreTrial={this.props.intl.formatMessage({
-                    id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleAdminPreTrial',
-                    defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
-                })}
-                messageAdminPreTrial={this.props.intl.formatMessage({
-                    id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageAdminPreTrial',
-                    defaultMessage: 'Get the ability to passively highlight keywords that you care about. Upgrade to Professional plan to unlock this feature.',
-                })}
-                titleAdminPostTrial={this.props.intl.formatMessage({
-                    id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleAdminPostTrial',
-                    defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
-                })}
-                messageAdminPostTrial={this.props.intl.formatMessage({
-                    id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageAdminPostTrial',
-                    defaultMessage: 'Get the ability to passively highlight keywords that you care about. Upgrade to Professional plan to unlock this feature.',
-                },
-                )}
-                titleEndUser={this.props.intl.formatMessage({
-                    id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleEndUser',
-                    defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
-                })}
-                messageEndUser={this.props.intl.formatMessage(
-                    {
-                        id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageEndUser',
-                        defaultMessage: 'Get the ability to passively highlight keywords that you care about.{br}{br}Request your admin to upgrade to Mattermost Professional to access this feature.',
-                    },
-                    {
-                        br: <br/>,
-                    },
-                )}
-                ctaExtraContent={
-                    <FormattedMessage
-                        id='user.settings.notifications.keywordsWithHighlight.professional'
-                        defaultMessage='Professional'
-                    />
-                }
-                clickCallback={this.handleCloseSettingsModal}
-            />
-        );
+        // const collapsedEditButtonWhenDisabled = (
+        //     <RestrictedIndicator
+        //         blocked={this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady}
+        //         feature={MattermostFeatures.HIGHLIGHT_WITHOUT_NOTIFICATION}
+        //         minimumPlanRequiredForFeature={LicenseSkus.Professional}
+        //         tooltipTitle={this.props.intl.formatMessage({
+        //             id: 'user.settings.notifications.keywordsWithHighlight.disabledTooltipTitle',
+        //             defaultMessage: 'Professional feature',
+        //         })}
+        //         tooltipMessageBlocked={this.props.intl.formatMessage({
+        //             id: 'user.settings.notifications.keywordsWithHighlight.disabledTooltipMessage',
+        //             defaultMessage:
+        //             'This feature is available on the Professional plan',
+        //         })}
+        //         titleAdminPreTrial={this.props.intl.formatMessage({
+        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleAdminPreTrial',
+        //             defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
+        //         })}
+        //         messageAdminPreTrial={this.props.intl.formatMessage({
+        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageAdminPreTrial',
+        //             defaultMessage: 'Get the ability to passively highlight keywords that you care about. Upgrade to Professional plan to unlock this feature.',
+        //         })}
+        //         titleAdminPostTrial={this.props.intl.formatMessage({
+        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleAdminPostTrial',
+        //             defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
+        //         })}
+        //         messageAdminPostTrial={this.props.intl.formatMessage({
+        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageAdminPostTrial',
+        //             defaultMessage: 'Get the ability to passively highlight keywords that you care about. Upgrade to Professional plan to unlock this feature.',
+        //         },
+        //         )}
+        //         titleEndUser={this.props.intl.formatMessage({
+        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleEndUser',
+        //             defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
+        //         })}
+        //         messageEndUser={this.props.intl.formatMessage(
+        //             {
+        //                 id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageEndUser',
+        //                 defaultMessage: 'Get the ability to passively highlight keywords that you care about.{br}{br}Request your admin to upgrade to Mattermost Professional to access this feature.',
+        //             },
+        //             {
+        //                 br: <br/>,
+        //             },
+        //         )}
+        //         ctaExtraContent={
+        //             <FormattedMessage
+        //                 id='user.settings.notifications.keywordsWithHighlight.professional'
+        //                 defaultMessage='Professional'
+        //             />
+        //         }
+        //         clickCallback={this.handleCloseSettingsModal}
+        //     />
+        // );
 
         return (
             <SettingItem
@@ -803,7 +803,7 @@ class NotificationsTab extends React.PureComponent<Props, State> {
                 updateSection={this.handleUpdateSection}
                 max={expandedSection}
                 isDisabled={this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady}
-                collapsedEditButtonWhenDisabled={collapsedEditButtonWhenDisabled}
+                // collapsedEditButtonWhenDisabled={collapsedEditButtonWhenDisabled}
             />);
     };
 

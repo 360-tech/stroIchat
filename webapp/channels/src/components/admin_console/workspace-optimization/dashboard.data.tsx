@@ -208,6 +208,11 @@ const getEaseOfManagementData = async (
     items: await runEaseOfUseChecks(config, formatMessage, options),
 });
 
+const trialOrEnterpriseCtaConfig = {
+    configUrl: '',
+    configText: '',
+};
+
 const useMetricsData = (
     config: Partial<AdminConfig>,
 ) => {
@@ -215,19 +220,10 @@ const useMetricsData = (
     const [data, setData] = useState<DataModel | undefined>(undefined);
 
     const {formatMessage} = useIntl();
-    const prevTrialLicense = useSelector((state: GlobalState) => state.entities.admin.prevTrialLicense);
-    const license = useSelector(getLicense);
 
     // get the currently installed server version
     const installedVersion = useSelector((state: GlobalState) => getServerVersion(state));
     const analytics = useSelector((state: GlobalState) => state.entities.admin.analytics) as unknown as Options['analytics'];
-
-    const canStartTrial = license?.IsLicensed !== 'true' && prevTrialLicense?.IsLicensed !== 'true';
-
-    const trialOrEnterpriseCtaConfig = useMemo(() => ({
-        configUrl: canStartTrial ? ConsolePages.LICENSE : 'contactSalesLink',
-        configText: canStartTrial ? formatMessage({id: 'admin.reporting.workspace_optimization.cta.startTrial', defaultMessage: 'Start trial'}) : formatMessage({id: 'admin.reporting.workspace_optimization.cta.upgradeLicense', defaultMessage: 'Contact sales'}),
-    }), [canStartTrial, formatMessage]);
 
     const options: Options = useMemo(() => ({
         isLicensed: false,
@@ -237,7 +233,7 @@ const useMetricsData = (
         isCloud: false,
         analytics,
         installedVersion,
-    }), [trialOrEnterpriseCtaConfig, analytics, installedVersion]);
+    }), [analytics, installedVersion]);
 
     useEffect(() => {
         setLoading(true);
