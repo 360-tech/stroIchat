@@ -5,13 +5,11 @@ import React, {useState} from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage, useIntl} from 'react-intl';
 
-import type {ClientConfig, ClientLicense} from '@mattermost/types/config';
+import type {ClientConfig} from '@mattermost/types/config';
 
 import Logo from 'components/common/svg_images_components/logo_dark_blue_svg';
 import CopyButton from 'components/copy_button';
 import Nbsp from 'components/html_entities/nbsp';
-
-import {getDesktopVersion, isDesktopApp} from 'utils/user_agent';
 
 type SocketStatus = {
     connected: boolean;
@@ -29,11 +27,6 @@ type Props = {
      * Global config object
      */
     config: Partial<ClientConfig>;
-
-    /**
-     * Global license object
-     */
-    license: ClientLicense;
 
     socketStatus: SocketStatus;
 };
@@ -62,12 +55,6 @@ export default function AboutBuildModal(props: Props) {
         ) + '\u00a0' + (config.BuildNumber === 'dev' ? config.BuildNumber : config.Version);
     };
 
-    const getDesktopVersionString = () => {
-        return intl.formatMessage(
-            {id: 'about.desktopVersion', defaultMessage: 'Desktop Version:'},
-        ) + '\u00a0' + getDesktopVersion();
-    };
-
     const getDbVersionString = () => {
         return intl.formatMessage(
             {id: 'about.dbversion', defaultMessage: 'Database Schema Version:'},
@@ -89,7 +76,6 @@ export default function AboutBuildModal(props: Props) {
     const versionInfo = () => {
         const parts = [
             getServerVersionString(),
-            isDesktopApp() && getDesktopVersionString(),
             getDbVersionString(),
             getBuildNumberString(),
             getDatabaseString(),
@@ -184,11 +170,6 @@ export default function AboutBuildModal(props: Props) {
                                 data-testid='aboutModalVersionInfo'
                             >
                                 {getServerVersionString()}<br/>
-                                {isDesktopApp() && (
-                                    <>
-                                        {getDesktopVersionString()}<br/>
-                                    </>
-                                )}
                                 {getDbVersionString()}<br/>
                                 {getBuildNumberString()}<br/>
                                 {getDatabaseString()}<br/>

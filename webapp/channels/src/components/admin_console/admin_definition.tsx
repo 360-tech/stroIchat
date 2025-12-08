@@ -56,7 +56,6 @@ import ElasticSearchSettings, {searchableStrings as elasticSearchSearchableStrin
 import {
     AnnouncementBannerFeatureDiscovery,
     GitLabFeatureDiscovery,
-    GroupsFeatureDiscovery,
     GuestAccessFeatureDiscovery,
     LDAPFeatureDiscovery,
     OpenIDCustomFeatureDiscovery,
@@ -64,7 +63,6 @@ import {
     SAMLFeatureDiscovery,
     SystemRolesFeatureDiscovery,
 } from './feature_discovery/features';
-import AttributeBasedAccessControlFeatureDiscovery from './feature_discovery/features/attribute_based_access_control';
 import UserAttributesFeatureDiscovery from './feature_discovery/features/user_attributes';
 import FeatureFlags, {messages as featureFlagsMessages} from './feature_flags';
 import GroupDetails from './group_settings/group_details';
@@ -347,27 +345,6 @@ const AdminDefinition: AdminDefinitionType = {
                     component: GroupSettings,
                 },
                 restrictedIndicator: getRestrictedIndicator(),
-            },
-            groups_feature_discovery: {
-                url: 'user_management/groups',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.groups', defaultMessage: 'Groups'}),
-                isHidden: it.any(
-                    it.licensedForFeature('LDAPGroups'),
-                ),
-                schema: {
-                    id: 'Groups',
-                    name: defineMessage({id: 'admin.group_settings.groupsPageTitle', defaultMessage: 'Groups'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: GroupsFeatureDiscovery,
-                            key: 'GroupsFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.Enterprise),
             },
             team_detail: {
                 url: `user_management/teams/:team_id(${ID_PATH_PATTERN})`,
