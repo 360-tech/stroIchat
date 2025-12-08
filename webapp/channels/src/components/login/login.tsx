@@ -27,7 +27,6 @@ import LocalStorageStore from 'stores/local_storage_store';
 import AlertBanner from 'components/alert_banner';
 import type {ModeType, AlertBannerProps} from 'components/alert_banner';
 import type {SubmitOptions} from 'components/claim/components/email_to_ldap';
-import DesktopAuthToken from 'components/desktop_auth_token';
 import ExternalLink from 'components/external_link';
 import ExternalLoginButton from 'components/external_login_button/external_login_button';
 import type {ExternalLoginButtonType} from 'components/external_login_button/external_login_button';
@@ -829,21 +828,6 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
                     loginId={loginId}
                     password={password}
                     onSubmit={submit}
-                />
-            );
-        }
-
-        // Handle redirect before checking configs. This is to support the Pre-Authentication header flow.
-        if (desktopLoginLink || query.get('server_token')) {
-            return (
-                <Route
-                    path={'/login/desktop'}
-                    render={() => (
-                        <DesktopAuthToken
-                            href={desktopLoginLink}
-                            onLogin={postSubmit}
-                        />
-                    )}
                 />
             );
         }

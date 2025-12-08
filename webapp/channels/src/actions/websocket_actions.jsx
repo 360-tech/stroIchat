@@ -99,9 +99,6 @@ import {getCurrentUser, getCurrentUserId, getUser, getIsManualStatusForUserId, i
 import {isGuest} from 'mattermost-redux/utils/user_utils';
 
 import {loadChannelsForCurrentUser} from 'actions/channel_actions';
-import {
-    getTeamsUsage,
-} from 'actions/cloud';
 import {loadCustomEmojisIfNeeded} from 'actions/emoji_actions';
 import {redirectUserToDefaultTeam} from 'actions/global_actions';
 import {sendDesktopNotification} from 'actions/notification_actions';
@@ -880,10 +877,6 @@ async function handleTeamAddedEvent(msg) {
     const state = getState();
     await dispatch(TeamActions.getMyTeamUnreads(isCollapsedThreadsEnabled(state)));
     await dispatch(fetchChannelsAndMembers(msg.data.team_id));
-    const license = getLicense(state);
-    if (license.Cloud === 'true') {
-        dispatch(getTeamsUsage());
-    }
 }
 
 export function handleLeaveTeamEvent(msg) {
@@ -950,12 +943,7 @@ export function handleLeaveTeamEvent(msg) {
 }
 
 function handleUpdateTeamEvent(msg) {
-    const state = store.getState();
-    const license = getLicense(state);
     dispatch({type: TeamTypes.UPDATED_TEAM, data: JSON.parse(msg.data.team)});
-    if (license.Cloud === 'true') {
-        dispatch(getTeamsUsage());
-    }
 }
 
 function handleUpdateTeamSchemeEvent() {
@@ -966,10 +954,6 @@ function handleDeleteTeamEvent(msg) {
     const deletedTeam = JSON.parse(msg.data.team);
     const state = store.getState();
     const {teams} = state.entities.teams;
-    const license = getLicense(state);
-    if (license.Cloud === 'true') {
-        dispatch(getTeamsUsage());
-    }
     if (
         deletedTeam &&
         teams &&

@@ -115,19 +115,19 @@ export function executeCommand(message: string, args: CommandArgs): ActionFuncAs
         case '/settings':
             dispatch(openModal({modalId: ModalIdentifiers.USER_SETTINGS, dialogType: UserSettingsModal, dialogProps: {isContentProductSettings: true}}));
             return {data: {frontendHandled: true}};
-        case '/marketplace':
-            // check if user has permissions to access the read plugins
-            if (!haveICurrentTeamPermission(state, Permissions.SYSCONSOLE_WRITE_PLUGINS)) {
-                return {error: {message: localizeMessage({id: 'marketplace_command.no_permission', defaultMessage: 'You do not have the appropriate permissions to access the marketplace.'})}};
-            }
+        // case '/marketplace':
+        //     // check if user has permissions to access the read plugins
+        //     if (!haveICurrentTeamPermission(state, Permissions.SYSCONSOLE_WRITE_PLUGINS)) {
+        //         return {error: {message: localizeMessage({id: 'marketplace_command.no_permission', defaultMessage: 'You do not have the appropriate permissions to access the marketplace.'})}};
+        //     }
 
-            // check config to see if marketplace is enabled
-            if (!isMarketplaceEnabled(state)) {
-                return {error: {message: localizeMessage({id: 'marketplace_command.disabled', defaultMessage: 'The marketplace is disabled. Please contact your System Administrator for details.'})}};
-            }
+        //     // check config to see if marketplace is enabled
+        //     if (!isMarketplaceEnabled(state)) {
+        //         return {error: {message: localizeMessage({id: 'marketplace_command.disabled', defaultMessage: 'The marketplace is disabled. Please contact your System Administrator for details.'})}};
+        //     }
 
-            dispatch(openModal({modalId: ModalIdentifiers.PLUGIN_MARKETPLACE, dialogType: MarketplaceModal}));
-            return {data: {frontendHandled: true}};
+        //     dispatch(openModal({modalId: ModalIdentifiers.PLUGIN_MARKETPLACE, dialogType: MarketplaceModal}));
+        //     return {data: {frontendHandled: true}};
         case '/collapse':
         case '/expand':
             dispatch(PostActions.resetEmbedVisibility());

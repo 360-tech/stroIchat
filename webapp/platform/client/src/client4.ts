@@ -4129,20 +4129,6 @@ export default class Client4 {
         );
     };
 
-    validateBusinessEmail = (email = '') => {
-        return this.doFetchWithResponse<ValidBusinessEmail>(
-            `${this.getCloudRoute()}/validate-business-email`,
-            {method: 'post', body: JSON.stringify({email})},
-        );
-    };
-
-    validateWorkspaceBusinessEmail = () => {
-        return this.doFetchWithResponse<ValidBusinessEmail>(
-            `${this.getCloudRoute()}/validate-workspace-business-email`,
-            {method: 'post'},
-        );
-    };
-
     getSubscription = () => {
         return this.doFetch<Subscription>(
             `${this.getCloudRoute()}/subscription`,
@@ -4167,20 +4153,6 @@ export default class Client4 {
     getPostsUsage = () => {
         return this.doFetch<PostsUsageResponse>(
             `${this.getUsageRoute()}/posts`,
-            {method: 'get'},
-        );
-    };
-
-    getFilesUsage = () => {
-        return this.doFetch<FilesUsageResponse>(
-            `${this.getUsageRoute()}/storage`,
-            {method: 'get'},
-        );
-    };
-
-    getTeamsUsage = () => {
-        return this.doFetch<TeamsUsageResponse>(
-            `${this.getUsageRoute()}/teams`,
             {method: 'get'},
         );
     };

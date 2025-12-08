@@ -12,6 +12,8 @@ const cloudLimitsReceived = false;
 export default function useGetLimits(): [Limits, boolean] {
     const cloudLimits = useSelector(getCloudLimits);
 
+    console.log({cloudLimits});
+
     const result: [Limits, boolean] = useMemo(() => {
         return [cloudLimits, cloudLimitsReceived];
     }, [cloudLimits]);

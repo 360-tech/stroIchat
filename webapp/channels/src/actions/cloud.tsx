@@ -19,28 +19,6 @@ export function getInstallation() {
     };
 }
 
-export function validateBusinessEmail(email = '') {
-    return async () => {
-        try {
-            const res = await Client4.validateBusinessEmail(email);
-            return res.data.is_valid;
-        } catch (error) {
-            return false;
-        }
-    };
-}
-
-export function validateWorkspaceBusinessEmail() {
-    return async () => {
-        try {
-            const res = await Client4.validateWorkspaceBusinessEmail();
-            return res.data.is_valid;
-        } catch (error) {
-            return false;
-        }
-    };
-}
-
 export function getCloudLimits(): ThunkActionFunc<Promise<boolean | ServerError>> {
     return async (dispatch) => {
         try {
@@ -61,59 +39,5 @@ export function getCloudLimits(): ThunkActionFunc<Promise<boolean | ServerError>
             return error;
         }
         return true;
-    };
-}
-
-export function getMessagesUsage(): ThunkActionFunc<Promise<boolean | ServerError>> {
-    return async (dispatch) => {
-        try {
-            const result = await Client4.getPostsUsage();
-            if (result) {
-                dispatch({
-                    type: CloudTypes.RECEIVED_MESSAGES_USAGE,
-                    data: result.count,
-                });
-            }
-        } catch (error) {
-            return error;
-        }
-        return true;
-    };
-}
-
-export function getFilesUsage(): ThunkActionFunc<Promise<boolean | ServerError>> {
-    return async (dispatch) => {
-        try {
-            const result = await Client4.getFilesUsage();
-
-            if (result) {
-                // match limit notation in bits
-                const inBits = result.bytes * 8;
-                dispatch({
-                    type: CloudTypes.RECEIVED_FILES_USAGE,
-                    data: inBits,
-                });
-            }
-        } catch (error) {
-            return error;
-        }
-        return {data: true};
-    };
-}
-
-export function getTeamsUsage(): ThunkActionFunc<Promise<boolean | ServerError>> {
-    return async (dispatch) => {
-        try {
-            const result = await Client4.getTeamsUsage();
-            if (result) {
-                dispatch({
-                    type: CloudTypes.RECEIVED_TEAMS_USAGE,
-                    data: {active: result.active, cloudArchived: result.cloud_archived},
-                });
-            }
-        } catch (error) {
-            return error;
-        }
-        return {data: false};
     };
 }
