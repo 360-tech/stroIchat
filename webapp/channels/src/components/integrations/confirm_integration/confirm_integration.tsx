@@ -404,17 +404,7 @@ const ConfirmIntegration = ({team, location, commands, oauthApps, incomingHooks,
                 <br/>
                 <FormattedMessage
                     id='add_outgoing_webhook.token.message'
-                    defaultMessage='Make sure to add this bot account to teams and channels you want it to interact in. See <link>documentation</link> to learn more.'
-                    values={{
-                        link: (msg) => (
-                            <ExternalLink
-                                href='https://mattermost.com/pl/default-bot-accounts'
-                                location='confirm_integration'
-                            >
-                                {msg}
-                            </ExternalLink>
-                        ),
-                    }}
+                    defaultMessage='Make sure to add this bot account to teams and channels you want it to interact in.'
                 />
             </p>
         );

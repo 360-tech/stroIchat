@@ -20,16 +20,6 @@ export const sectionStrings: Record<string, Record<string, MessageDescriptor>> =
             defaultMessage: 'Edition and License',
         },
     }),
-    billing: defineMessages({
-        name: {
-            id: 'admin.permissions.sysconsole_section_billing.name',
-            defaultMessage: 'Billing',
-        },
-        description: {
-            id: 'admin.permissions.sysconsole_section_billing.description',
-            defaultMessage: 'Access subscription details, billing history, company information and payment information.',
-        },
-    }),
     reporting: defineMessages({
         name: {
             id: 'admin.permissions.sysconsole_section_reporting.name',

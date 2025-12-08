@@ -8,14 +8,13 @@
 import en from './en.json';
 import ru from './ru.json';
 import zhCN from './zh-CN.json';
-import zhTW from './zh-TW.json';
 
 type TranslationsMap = {
     [id: string]: string,
 };
 
-export const langIDs = ["en","ru","zh-CN","zh-TW"];
+export const langIDs = ["en","ru","zh-CN",];
 
-export const langLabels = {"en":"English","ru":"Русский","zh-CN":"中文（中国大陆）","zh-TW":"中文"};
+export const langLabels = {"en":"English","ru":"Русский","zh-CN":"中文（中国大陆）",};
 
-export const langFiles: {[langID: string]: TranslationsMap} = {en,ru,'zh-CN':zhCN,'zh-TW':zhTW};
+export const langFiles: {[langID: string]: TranslationsMap} = {en,ru,'zh-CN':zhCN,};

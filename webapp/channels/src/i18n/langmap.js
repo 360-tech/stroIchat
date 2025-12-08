@@ -6,14 +6,6 @@ module.exports = {
         nativeName: 'English',
         englishName: 'English',
     },
-    'en-GB': {
-        nativeName: 'English (UK)',
-        englishName: 'English (UK)',
-    },
-    'en-US': {
-        nativeName: 'English (US)',
-        englishName: 'English (US)',
-    },
     ru: {
         nativeName: 'Русский',
         englishName: 'Russian',
@@ -25,14 +17,6 @@ module.exports = {
     zh: {
         nativeName: '中文',
         englishName: 'Chinese',
-    },
-    'zh-Hans': {
-        nativeName: '中文简体',
-        englishName: 'Chinese Simplified',
-    },
-    'zh-Hant': {
-        nativeName: '中文繁體',
-        englishName: 'Chinese Traditional',
     },
     'zh-CN': {
         nativeName: '中文（中国大陆）',

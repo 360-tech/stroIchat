@@ -1099,17 +1099,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'FileSettings.AmazonS3SSE',
                             label: defineMessage({id: 'admin.image.amazonS3SSETitle', defaultMessage: 'Enable Server-Side Encryption for Amazon S3:'}),
-                            help_text: defineMessage({id: 'admin.image.amazonS3SSEDescription', defaultMessage: 'When true, encrypt files in Amazon S3 using server-side encryption with Amazon S3-managed keys. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.SESSION_LENGTHS}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.image.amazonS3SSEDescription', defaultMessage: 'When true, encrypt files in Amazon S3 using server-side encryption with Amazon S3-managed keys.'}),
                             help_text_markdown: false,
                             isHidden: it.not(it.licensedForFeature('Compliance')),
                             isDisabled: it.any(
@@ -1304,17 +1294,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'FileSettings.ExportAmazonS3SSE',
                             label: defineMessage({id: 'admin.image.amazonS3SSETitle', defaultMessage: 'Enable Server-Side Encryption for Amazon S3:'}),
-                            help_text: defineMessage({id: 'admin.image.amazonS3SSEDescription', defaultMessage: 'When true, encrypt files in Amazon S3 using server-side encryption with Amazon S3-managed keys. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.SESSION_LENGTHS}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.image.amazonS3SSEDescription', defaultMessage: 'When true, encrypt files in Amazon S3 using server-side encryption with Amazon S3-managed keys.'}),
                             help_text_markdown: false,
                             isHidden: it.any(it.stateEquals('FileSettings.ExportDriverName', 'NONE'), it.stateEquals('FileSettings.DedicatedExportStore', false)),
                             isDisabled: it.any(
@@ -1369,17 +1349,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'dropdown',
                             key: 'ImageProxySettings.ImageProxyType',
                             label: defineMessage({id: 'admin.image.proxyType', defaultMessage: 'Image Proxy Type:'}),
-                            help_text: defineMessage({id: 'admin.image.proxyTypeDescription', defaultMessage: 'Configure an image proxy to load all Markdown images through a proxy. The image proxy prevents users from making insecure image requests, provides caching for increased performance, and automates image adjustments such as resizing. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.SETUP_IMAGE_PROXY}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.image.proxyTypeDescription', defaultMessage: 'Configure an image proxy to load all Markdown images through a proxy. The image proxy prevents users from making insecure image requests, provides caching for increased performance, and automates image adjustments such as resizing.'}),
                             help_text_markdown: false,
                             options: [
                                 {
@@ -4551,37 +4521,37 @@ const AdminDefinition: AdminDefinitionType = {
             },
         },
     },
-    plugins: {
-        icon: (
-            <PowerPlugOutlineIcon
-                size={16}
-                color={'currentColor'}
-            />
-        ),
-        sectionTitle: defineMessage({id: 'admin.sidebar.plugins', defaultMessage: 'Plugins'}),
-        id: 'plugins',
-        isHidden: it.not(it.userHasReadPermissionOnResource('plugins')),
-        subsections: {
-            plugin_management: {
-                url: 'plugins/plugin_management',
-                title: defineMessage({id: 'admin.plugins.pluginManagement', defaultMessage: 'Plugin Management'}),
-                searchableStrings: pluginManagementSearchableStrings,
-                isDisabled: it.not(it.userHasWritePermissionOnResource('plugins')),
-                schema: {
-                    id: 'PluginManagementSettings',
-                    component: PluginManagement,
-                },
-            },
-            custom: {
-                url: 'plugins/plugin_:plugin_id',
-                isDisabled: it.not(it.userHasWritePermissionOnResource('plugins')),
-                schema: {
-                    id: 'CustomPluginSettings',
-                    component: CustomPluginSettings,
-                },
-            },
-        },
-    },
+    // plugins: {
+    //     icon: (
+    //         <PowerPlugOutlineIcon
+    //             size={16}
+    //             color={'currentColor'}
+    //         />
+    //     ),
+    //     sectionTitle: defineMessage({id: 'admin.sidebar.plugins', defaultMessage: 'Plugins'}),
+    //     id: 'plugins',
+    //     isHidden: it.not(it.userHasReadPermissionOnResource('plugins')),
+    //     subsections: {
+    //         plugin_management: {
+    //             url: 'plugins/plugin_management',
+    //             title: defineMessage({id: 'admin.plugins.pluginManagement', defaultMessage: 'Plugin Management'}),
+    //             searchableStrings: pluginManagementSearchableStrings,
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource('plugins')),
+    //             schema: {
+    //                 id: 'PluginManagementSettings',
+    //                 component: PluginManagement,
+    //             },
+    //         },
+    //         custom: {
+    //             url: 'plugins/plugin_:plugin_id',
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource('plugins')),
+    //             schema: {
+    //                 id: 'CustomPluginSettings',
+    //                 component: CustomPluginSettings,
+    //             },
+    //         },
+    //     },
+    // },
     integrations: {
         icon: (
             <SitemapIcon
@@ -4607,17 +4577,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableIncomingWebhooks',
                             label: defineMessage({id: 'admin.service.webhooksTitle', defaultMessage: 'Enable Incoming Webhooks: '}),
-                            help_text: defineMessage({id: 'admin.service.webhooksDescription', defaultMessage: 'When true, incoming webhooks will be allowed. To help combat phishing attacks, all posts from webhooks will be labelled by a BOT tag. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        href={DeveloperLinks.INCOMING_WEBHOOKS}
-                                        location='admin_console'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.service.webhooksDescription', defaultMessage: 'When true, incoming webhooks will be allowed. To help combat phishing attacks, all posts from webhooks will be labelled by a BOT tag.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.INTEGRATIONS.INTEGRATION_MANAGEMENT)),
                         },
@@ -4625,17 +4585,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableOutgoingWebhooks',
                             label: defineMessage({id: 'admin.service.outWebhooksTitle', defaultMessage: 'Enable Outgoing Webhooks: '}),
-                            help_text: defineMessage({id: 'admin.service.outWebhooksDesc', defaultMessage: 'When true, outgoing webhooks will be allowed. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DeveloperLinks.OUTGOING_WEBHOOKS}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.service.outWebhooksDesc', defaultMessage: 'When true, outgoing webhooks will be allowed.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.INTEGRATIONS.INTEGRATION_MANAGEMENT)),
                         },
@@ -4643,12 +4593,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableOutgoingOAuthConnections',
                             label: defineMessage({id: 'admin.service.outgoingOAuthConnectionsTitle', defaultMessage: 'Enable Outgoing OAuth Connections: '}),
-                            help_text: defineMessage({id: 'admin.service.outgoingOAuthConnectionsDesc', defaultMessage: 'When true, outgoing webhooks and slash commands will use set up oauth connections to authenticate with third party services. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (text: string) => (
-                                    <a href='https://360tech.pro/pl/outgoing-oauth-connections'>{text}</a>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.service.outgoingOAuthConnectionsDesc', defaultMessage: 'When true, outgoing webhooks and slash commands will use set up oauth connections to authenticate with third party services.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.INTEGRATIONS.INTEGRATION_MANAGEMENT)),
                         },
@@ -4662,17 +4607,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableOAuthServiceProvider',
                             label: defineMessage({id: 'admin.oauth.providerTitle', defaultMessage: 'Enable OAuth 2.0 Service Provider: '}),
-                            help_text: defineMessage({id: 'admin.oauth.providerDescription', defaultMessage: 'When true, Stroichat can act as an OAuth 2.0 service provider allowing Stroichat to authorize API requests from external applications. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DeveloperLinks.ENABLE_OAUTH2}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.oauth.providerDescription', defaultMessage: 'When true, Stroichat can act as an OAuth 2.0 service provider allowing Stroichat to authorize API requests from external applications.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.INTEGRATIONS.INTEGRATION_MANAGEMENT)),
                             isHidden: it.licensedForFeature('Cloud'),
