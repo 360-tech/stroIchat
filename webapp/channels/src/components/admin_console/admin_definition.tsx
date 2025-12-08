@@ -820,18 +820,8 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'ServiceSettings.ManagedResourcePaths',
                             label: defineMessage({id: 'admin.service.managedResourcePaths', defaultMessage: 'Managed Resource Paths:'}),
-                            help_text: defineMessage({id: 'admin.service.managedResourcePathsDescription', defaultMessage: 'A comma-separated list of paths on the Strocihat server that are managed by another service. See <link>here</link> for more information.'}),
+                            help_text: defineMessage({id: 'admin.service.managedResourcePathsDescription', defaultMessage: 'A comma-separated list of paths on the Strocihat server that are managed by another service.'}),
                             help_text_markdown: false,
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.DESKTOP_MANAGED_RESOURCES}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.WEB_SERVER)),
                         },
                         {
@@ -2715,17 +2705,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableInlineLatex',
                             label: defineMessage({id: 'admin.customization.enableInlineLatexTitle', defaultMessage: 'Enable Inline Latex Rendering:'}),
-                            help_text: defineMessage({id: 'admin.customization.enableInlineLatexDesc', defaultMessage: 'Enable rendering of inline Latex code. If false, Latex can only be rendered in a code block using syntax highlighting. Please review our <link>documentation</link> for details about text formatting.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.FORMAT_MESSAGES}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.customization.enableInlineLatexDesc', defaultMessage: 'Enable rendering of inline Latex code. If false, Latex can only be rendered in a code block using syntax highlighting.'}),
                             help_text_markdown: false,
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),

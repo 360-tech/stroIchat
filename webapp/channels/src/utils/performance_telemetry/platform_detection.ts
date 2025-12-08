@@ -23,9 +23,7 @@ export function getPlatformLabel() {
 }
 
 export function getUserAgentLabel() {
-    if (UserAgent.isDesktopApp()) {
-        return 'desktop';
-    } else if (UserAgent.isFirefox() || UserAgent.isIosFirefox()) {
+    if (UserAgent.isFirefox() || UserAgent.isIosFirefox()) {
         return 'firefox';
     } else if (UserAgent.isChromiumEdge()) {
         return 'edge';

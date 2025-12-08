@@ -79,7 +79,6 @@ export default class ActivityLog extends React.PureComponent<Props, State> {
         const isIPhone = session.props?.platform === 'iPhone';
         const isLinux = session.props?.platform === 'Linux' || session.props?.os?.includes('Linux');
         const isAndroid = session.props?.os?.includes('Android');
-        const isDesktopApp = session.props?.browser?.includes('Desktop App');
         const isIPhoneNativeApp = session.device_id?.includes(General.PUSH_NOTIFY_APPLE_REACT_NATIVE);
         const isIPhoneNativeClassicApp = session.device_id?.includes('apple') && !isIPhoneNativeApp;
         const isAndroidNativeApp = session.device_id?.includes(General.PUSH_NOTIFY_ANDROID_REACT_NATIVE);
@@ -133,13 +132,6 @@ export default class ActivityLog extends React.PureComponent<Props, State> {
                 <FormattedMessage
                     id='activity_log_modal.android'
                     defaultMessage='Android'
-                />
-            );
-        } else if (isDesktopApp) {
-            sessionInfo.devicePlatform = (
-                <FormattedMessage
-                    id='activity_log_modal.desktop'
-                    defaultMessage='Native Desktop App'
                 />
             );
         }

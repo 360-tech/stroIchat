@@ -7,8 +7,6 @@ import {FormattedMessage, useIntl} from 'react-intl';
 
 import WithTooltip from 'components/with_tooltip';
 
-import DesktopApp from 'utils/desktop_api';
-
 type Props = {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
     className?: string;
@@ -19,10 +17,6 @@ export default function PopoutButton({
     className,
 }: Props) {
     const intl = useIntl();
-
-    if (!DesktopApp.canPopout()) {
-        return null;
-    }
 
     return (
         <WithTooltip

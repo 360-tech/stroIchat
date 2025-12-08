@@ -470,13 +470,10 @@ export const MattermostFeatures = {
     START_CALL: 'mattermost.feature.start_call',
     UNLIMITED_MESSAGES: 'mattermost.feature.unlimited_messages',
     UNLIMITED_FILE_STORAGE: 'mattermost.feature.unlimited_file_storage',
-    PLUGIN_FEATURE: 'mattermost.feature.plugin',
     HIGHLIGHT_WITHOUT_NOTIFICATION: 'mattermost.feature.highlight_without_notification',
 };
 
 export enum LicenseSkus {
-    E10 = 'E10',
-    E20 = 'E20',
     Starter = 'starter',
     Professional = 'professional',
     Enterprise = 'enterprise',
@@ -963,58 +960,32 @@ export const AboutLinks = {
 };
 
 export const DocLinks = {
-    ABOUT_TEAMS: 'https://docs.mattermost.com/welcome/about-teams.html#team-url',
-    ADVANCED_LOGGING: 'https://mattermost.com/pl/advanced-logging',
     CONFIGURE_DOCUMENT_CONTENT_SEARCH: 'https://mattermost.com/pl/configure-document-content-search',
-    CONFIGURE_AD_LDAP_QUERY_TIMEOUT: 'https://mattermost.com/pl/configure-ad-ldap-query-timeout',
-    CONFIGURE_OVERRIDE_SAML_BIND_DATA_WITH_LDAP: 'https://mattermost.com/pl/configure-override-saml-bind-data-with-ldap',
     COMPILANCE_EXPORT: 'https://mattermost.com/pl/compliance-export',
-    COMPILANCE_MONITORING: 'https://mattermost.com/pl/compliance-monitoring',
     DATA_RETENTION_POLICY: 'https://mattermost.com/pl/data-retention-policy',
     DEFAULT_LDAP_GROUP_SYNC: 'https://mattermost.com/pl/default-ldap-group-sync',
-    DESKTOP_MANAGED_RESOURCES: 'https://mattermost.com/pl/desktop-managed-resources',
     ELASTICSEARCH: 'https://mattermost.com/pl/setup-elasticsearch',
-    ENABLE_HARDENED_MODE: 'https://mattermost.com/pl/enable-hardened-mode',
-    FORMAT_MESSAGES: 'https://mattermost.com/pl/format-messages',
     FILE_STORAGE: 'https://mattermost.com/pl/configure-file-storage',
-    GUEST_ACCOUNTS: 'https://docs.mattermost.com/onboard/guest-accounts.html',
     HIGH_AVAILABILITY_CLUSTER: 'https://mattermost.com/pl/high-availability-cluster',
     IN_PRODUCT_NOTICES: 'https://mattermost.com/pl/in-product-notices',
     MULTI_FACTOR_AUTH: 'https://mattermost.com/pl/multi-factor-authentication',
     ONBOARD_ADVANCED_PERMISSIONS: 'https://mattermost.com/pl/advanced-permissions',
-    ONBOARD_LDAP: 'https://mattermost.com/pl/setup-ldap',
     SESSION_LENGTHS: 'https://mattermost.com/pl/configure-session-lengths',
-    SETUP_IMAGE_PROXY: 'https://mattermost.com/pl/setup-image-proxy',
     SETUP_LDAP: 'https://mattermost.com/pl/setup-ldap',
-    SETUP_PERFORMANCE_MONITORING: 'https://mattermost.com/pl/setup-performance-monitoring',
     SETUP_PUSH_NOTIFICATIONS: 'https://mattermost.com/pl/setup-push-notifications',
-    SETUP_SAML: 'https://docs.mattermost.com/pl/setup-saml',
     SHARE_LINKS_TO_MESSAGES: 'https://mattermost.com/pl/share-links-to-messages',
     SITE_URL: 'https://mattermost.com/pl/configure-site-url',
     SSL_CERTIFICATE: 'https://mattermost.com/pl/setup-ssl-client-certificate',
-    TRUE_UP_REVIEW: 'https://mattermost.com/pl/true-up-documentation',
     TRUSTED_CONNECTION: 'https://mattermost.com/pl/default-allow-untrusted-internal-connections',
-    UPGRADE_SERVER: 'https://mattermost.com/pl/upgrade-mattermost',
 };
 
 export const DeveloperLinks = {
-    ENABLE_OAUTH2: 'https://mattermost.com/pl/enable-oauth',
-    INCOMING_WEBHOOKS: 'https://mattermost.com/pl/incoming-webhooks',
-    OUTGOING_WEBHOOKS: 'https://mattermost.com/pl/outgoing-webhooks',
-    INTERACTIVE_MESSAGES: 'https://mattermost.com/pl/interactive-messages',
-    INTERACTIVE_DIALOGS: 'https://mattermost.com/pl/interactive-dialogs',
     PERSONAL_ACCESS_TOKENS: 'https://mattermost.com/pl/personal-access-tokens',
     PLUGIN_SIGNING: 'https://mattermost.com/pl/sign-plugins',
     PLUGINS: 'https://mattermost.com/pl/plugins',
     SETUP_INCOMING_WEBHOOKS: 'https://mattermost.com/pl/setup-incoming-webhooks',
     SETUP_OAUTH2: 'https://mattermost.com/pl/setup-oauth-2.0',
     SETUP_OUTGOING_WEBHOOKS: 'https://mattermost.com/pl/setup-outgoing-webhooks',
-};
-
-export const BillingSchemes = {
-    FLAT_FEE: 'flat_fee',
-    PER_SEAT: 'per_seat',
-    SALES_SERVE: 'sales_serve',
 };
 
 export const RecurringIntervals = {

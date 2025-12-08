@@ -51,17 +51,7 @@ const OrganizationStatus = (props: {error: (UrlValidationCheck['error'] | typeof
                 <FormattedMessage
 
                     id='onboarding_wizard.organization.reserved'
-                    defaultMessage='Organization name may not <a>start with a reserved word</a>.'
-                    values={{
-                        a: (chunks: React.ReactNode | React.ReactNodeArray) => (
-                            <ExternalLink
-                                location='organization_status'
-                                href={DocLinks.ABOUT_TEAMS}
-                            >
-                                {chunks}
-                            </ExternalLink>
-                        ),
-                    }}
+                    defaultMessage='Organization name may not start with a reserved word'
                 />
             );
             break;
