@@ -6,7 +6,6 @@ import GitLabFeatureDiscovery from './gitlab';
 import GroupsFeatureDiscovery from './groups';
 import GuestAccessFeatureDiscovery from './guest_access';
 import LDAPFeatureDiscovery from './ldap';
-import MobileSecurityFeatureDiscovery from './mobile_security';
 import OpenIDFeatureDiscovery from './openid';
 import OpenIDCustomFeatureDiscovery from './openid_custom';
 import SAMLFeatureDiscovery from './saml';
@@ -22,5 +21,4 @@ export {
     GuestAccessFeatureDiscovery,
     SystemRolesFeatureDiscovery,
     GroupsFeatureDiscovery,
-    MobileSecurityFeatureDiscovery,
 };

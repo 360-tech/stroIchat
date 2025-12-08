@@ -6,7 +6,7 @@
 import React from 'react';
 import {FormattedMessage, defineMessage, defineMessages} from 'react-intl';
 
-import {AccountMultipleOutlineIcon, ChartBarIcon, CogOutlineIcon, FlaskOutlineIcon, InformationOutlineIcon, PowerPlugOutlineIcon, ServerVariantIcon, ShieldOutlineIcon, SitemapIcon, TableLargeIcon} from '@mattermost/compass-icons/components';
+import {AccountMultipleOutlineIcon, ChartBarIcon, CogOutlineIcon, FlaskOutlineIcon, InformationOutlineIcon, PowerPlugOutlineIcon, ServerVariantIcon, ShieldOutlineIcon, SitemapIcon} from '@mattermost/compass-icons/components';
 
 import {RESOURCE_KEYS} from 'mattermost-redux/constants/permissions_sysconsole';
 
@@ -59,7 +59,6 @@ import {
     GroupsFeatureDiscovery,
     GuestAccessFeatureDiscovery,
     LDAPFeatureDiscovery,
-    MobileSecurityFeatureDiscovery,
     OpenIDCustomFeatureDiscovery,
     OpenIDFeatureDiscovery,
     SAMLFeatureDiscovery,
@@ -500,172 +499,172 @@ const AdminDefinition: AdminDefinitionType = {
             },
         },
     },
-    system_attributes: {
-        icon: (
-            <TableLargeIcon
-                size={16}
-                color={'currentColor'}
-            />
-        ),
-        sectionTitle: defineMessage({id: 'admin.sidebar.systemAttributes', defaultMessage: 'System Attributes'}),
-        isHidden: it.not(it.userHasReadPermissionOnSomeResources(RESOURCE_KEYS.USER_MANAGEMENT)),
-        subsections: {
-            system_properties: {
-                url: 'system_attributes/user_attributes',
-                title: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
-                searchableStrings: systemPropertiesSearchableStrings,
-                isHidden: it.not(it.all(
-                    it.minLicenseTier(LicenseSkus.Enterprise),
-                    it.configIsTrue('FeatureFlags', 'CustomProfileAttributes'),
-                )),
-                schema: {
-                    id: 'SystemProperties',
-                    component: SystemProperties,
-                },
-            },
-            user_attributes_feature_discovery: {
-                url: 'system_attributes/user_attributes',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
-                isHidden: it.any(
-                    it.minLicenseTier(LicenseSkus.Enterprise),
-                    it.configIsFalse('FeatureFlags', 'CustomProfileAttributes'),
-                ),
-                schema: {
-                    id: 'SystemProperties',
-                    name: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: UserAttributesFeatureDiscovery,
-                            key: 'UserAttributesFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.EnterpriseAdvanced),
-            },
-            access_control_policy_details_edit: {
-                url: `system_attributes/attribute_based_access_control/edit_policy/:policy_id(${ID_PATH_PATTERN})`,
-                isHidden: it.any(
-                    it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-                    it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-                ),
-                isDisabled: it.any(
-                    it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-                    it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
-                ),
-                schema: {
-                    id: 'AccessControlPolicy',
-                    component: PolicyDetails,
-                },
-            },
-            access_control_policy_details: {
-                url: 'system_attributes/attribute_based_access_control/edit_policy',
-                isHidden: it.any(
-                    it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-                    it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-                    it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-                schema: {
-                    id: 'AccessControlPolicy',
-                    component: PolicyDetails,
-                },
-            },
-            attribute_based_access_control: {
-                url: 'system_attributes/attribute_based_access_control',
-                title: defineMessage({id: 'admin.sidebar.attributeBasedAccessControl', defaultMessage: 'Attribute-Based Access'}),
-                isHidden: it.any(
-                    it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-                    it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
-                ),
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-                schema: {
-                    id: 'AttributeBasedAccessControl',
-                    isBeta: true,
-                    name: defineMessage({id: 'admin.accesscontrol.title', defaultMessage: 'Attribute-Based Access'}),
-                    sections: [
-                        {
-                            key: 'admin.accesscontrol.settings',
-                            settings: [
-                                {
-                                    type: 'bool',
-                                    key: 'AccessControlSettings.EnableAttributeBasedAccessControl',
-                                    label: defineMessage({id: 'admin.accesscontrol.enableTitle', defaultMessage: 'Allow attribute based access controls on this server'}),
-                                    help_text: defineMessage({id: 'admin.accesscontrol.enableDesc', defaultMessage: 'Allow access restrictions based on user attributes using custom access policies. To effectively use this feature, you must define user attributes in the {userAttributes} section.'}),
-                                    help_text_values: {
-                                        userAttributes: (
-                                            <a href='../system_attributes/user_attributes'>
-                                                <FormattedMessage
-                                                    id='admin.system_properties.user_properties.title'
-                                                    defaultMessage='User Attributes'
-                                                />
-                                            </a>
-                                        ),
-                                    },
-                                },
-                            ],
-                        },
-                        {
-                            key: 'admin.accesscontrol.policies',
-                            isHidden: it.any(
-                                it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-                                it.stateIsFalse('AccessControlSettings.EnableAttributeBasedAccessControl'),
-                            ),
-                            settings: [
-                                {
-                                    type: 'custom',
-                                    component: PolicyList,
-                                    key: 'PolicyListPanel',
-                                },
-                            ],
-                        },
-                        {
-                            key: 'admin.accesscontrol.policyjobs',
-                            isHidden: it.any(
-                                it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-                                it.stateIsFalse('AccessControlSettings.EnableAttributeBasedAccessControl'),
-                            ),
-                            settings: [
-                                {
-                                    type: 'custom',
-                                    component: AccessControlPolicyJobs,
-                                    key: 'AcessControlPolicyJobs',
-                                },
-                            ],
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(false, LicenseSkus.EnterpriseAdvanced),
-            },
-            attribute_based_access_control_feature_discovery: {
-                url: 'system_attributes/attribute_based_access_control',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.attributeBasedAccessControl', defaultMessage: 'Attribute-Based Access'}),
-                isHidden: it.any(
-                    it.minLicenseTier(LicenseSkus.EnterpriseAdvanced),
-                    it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
-                ),
-                schema: {
-                    id: 'AttributeBasedAccessControl',
-                    name: defineMessage({id: 'admin.accesscontrol.title', defaultMessage: 'Attribute-Based Access (Beta)'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: AttributeBasedAccessControlFeatureDiscovery,
-                            key: 'AttributeBasedAccessControlFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.EnterpriseAdvanced),
-            },
-        },
-    },
+    // system_attributes: {
+    //     icon: (
+    //         <TableLargeIcon
+    //             size={16}
+    //             color={'currentColor'}
+    //         />
+    //     ),
+    //     sectionTitle: defineMessage({id: 'admin.sidebar.systemAttributes', defaultMessage: 'System Attributes'}),
+    //     isHidden: it.not(it.userHasReadPermissionOnSomeResources(RESOURCE_KEYS.USER_MANAGEMENT)),
+    //     subsections: {
+    //         system_properties: {
+    //             url: 'system_attributes/user_attributes',
+    //             title: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
+    //             searchableStrings: systemPropertiesSearchableStrings,
+    //             isHidden: it.not(it.all(
+    //                 it.minLicenseTier(LicenseSkus.Enterprise),
+    //                 it.configIsTrue('FeatureFlags', 'CustomProfileAttributes'),
+    //             )),
+    //             schema: {
+    //                 id: 'SystemProperties',
+    //                 component: SystemProperties,
+    //             },
+    //         },
+    //         user_attributes_feature_discovery: {
+    //             url: 'system_attributes/user_attributes',
+    //             isDiscovery: true,
+    //             title: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
+    //             isHidden: it.any(
+    //                 it.minLicenseTier(LicenseSkus.Enterprise),
+    //                 it.configIsFalse('FeatureFlags', 'CustomProfileAttributes'),
+    //             ),
+    //             schema: {
+    //                 id: 'SystemProperties',
+    //                 name: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
+    //                 settings: [
+    //                     {
+    //                         type: 'custom',
+    //                         component: UserAttributesFeatureDiscovery,
+    //                         key: 'UserAttributesFeatureDiscovery',
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
+    //                     },
+    //                 ],
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.EnterpriseAdvanced),
+    //         },
+    //         access_control_policy_details_edit: {
+    //             url: `system_attributes/attribute_based_access_control/edit_policy/:policy_id(${ID_PATH_PATTERN})`,
+    //             isHidden: it.any(
+    //                 it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
+    //                 it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
+    //             ),
+    //             isDisabled: it.any(
+    //                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
+    //                 it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
+    //             ),
+    //             schema: {
+    //                 id: 'AccessControlPolicy',
+    //                 component: PolicyDetails,
+    //             },
+    //         },
+    //         access_control_policy_details: {
+    //             url: 'system_attributes/attribute_based_access_control/edit_policy',
+    //             isHidden: it.any(
+    //                 it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
+    //                 it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
+    //                 it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
+    //             schema: {
+    //                 id: 'AccessControlPolicy',
+    //                 component: PolicyDetails,
+    //             },
+    //         },
+    //         attribute_based_access_control: {
+    //             url: 'system_attributes/attribute_based_access_control',
+    //             title: defineMessage({id: 'admin.sidebar.attributeBasedAccessControl', defaultMessage: 'Attribute-Based Access'}),
+    //             isHidden: it.any(
+    //                 it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
+    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
+    //                 it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
+    //             ),
+    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
+    //             schema: {
+    //                 id: 'AttributeBasedAccessControl',
+    //                 isBeta: true,
+    //                 name: defineMessage({id: 'admin.accesscontrol.title', defaultMessage: 'Attribute-Based Access'}),
+    //                 sections: [
+    //                     {
+    //                         key: 'admin.accesscontrol.settings',
+    //                         settings: [
+    //                             {
+    //                                 type: 'bool',
+    //                                 key: 'AccessControlSettings.EnableAttributeBasedAccessControl',
+    //                                 label: defineMessage({id: 'admin.accesscontrol.enableTitle', defaultMessage: 'Allow attribute based access controls on this server'}),
+    //                                 help_text: defineMessage({id: 'admin.accesscontrol.enableDesc', defaultMessage: 'Allow access restrictions based on user attributes using custom access policies. To effectively use this feature, you must define user attributes in the {userAttributes} section.'}),
+    //                                 help_text_values: {
+    //                                     userAttributes: (
+    //                                         <a href='../system_attributes/user_attributes'>
+    //                                             <FormattedMessage
+    //                                                 id='admin.system_properties.user_properties.title'
+    //                                                 defaultMessage='User Attributes'
+    //                                             />
+    //                                         </a>
+    //                                     ),
+    //                                 },
+    //                             },
+    //                         ],
+    //                     },
+    //                     {
+    //                         key: 'admin.accesscontrol.policies',
+    //                         isHidden: it.any(
+    //                             it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
+    //                             it.stateIsFalse('AccessControlSettings.EnableAttributeBasedAccessControl'),
+    //                         ),
+    //                         settings: [
+    //                             {
+    //                                 type: 'custom',
+    //                                 component: PolicyList,
+    //                                 key: 'PolicyListPanel',
+    //                             },
+    //                         ],
+    //                     },
+    //                     {
+    //                         key: 'admin.accesscontrol.policyjobs',
+    //                         isHidden: it.any(
+    //                             it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
+    //                             it.stateIsFalse('AccessControlSettings.EnableAttributeBasedAccessControl'),
+    //                         ),
+    //                         settings: [
+    //                             {
+    //                                 type: 'custom',
+    //                                 component: AccessControlPolicyJobs,
+    //                                 key: 'AcessControlPolicyJobs',
+    //                             },
+    //                         ],
+    //                     },
+    //                 ],
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(false, LicenseSkus.EnterpriseAdvanced),
+    //         },
+    //         attribute_based_access_control_feature_discovery: {
+    //             url: 'system_attributes/attribute_based_access_control',
+    //             isDiscovery: true,
+    //             title: defineMessage({id: 'admin.sidebar.attributeBasedAccessControl', defaultMessage: 'Attribute-Based Access'}),
+    //             isHidden: it.any(
+    //                 it.minLicenseTier(LicenseSkus.EnterpriseAdvanced),
+    //                 it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
+    //             ),
+    //             schema: {
+    //                 id: 'AttributeBasedAccessControl',
+    //                 name: defineMessage({id: 'admin.accesscontrol.title', defaultMessage: 'Attribute-Based Access (Beta)'}),
+    //                 settings: [
+    //                     {
+    //                         type: 'custom',
+    //                         component: AttributeBasedAccessControlFeatureDiscovery,
+    //                         key: 'AttributeBasedAccessControlFeatureDiscovery',
+    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
+    //                     },
+    //                 ],
+    //             },
+    //             restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.EnterpriseAdvanced),
+    //         },
+    //     },
+    // },
     environment: {
         icon: (
             <ServerVariantIcon
@@ -696,7 +695,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'ServiceSettings.SiteURL',
                             label: defineMessage({id: 'admin.service.siteURL', defaultMessage: 'Site URL:'}),
-                            help_text: defineMessage({id: 'admin.service.siteURLDescription', defaultMessage: 'The URL that users will use to access Mattermost. Standard ports, such as 80 and 443, can be omitted, but non-standard ports are required. For example: http://example.com:8065. This setting is required. Mattermost may be hosted at a subpath. For example: http://example.com:8065/company/mattermost. A restart is required before the server will work correctly.'}),
+                            help_text: defineMessage({id: 'admin.service.siteURLDescription', defaultMessage: 'The URL that users will use to access Stroichat. Standard ports, such as 80 and 443, can be omitted, but non-standard ports are required. For example: http://example.com:8065. This setting is required. Stroichat may be hosted at a subpath. For example: http://example.com:8065/company/stroichat. A restart is required before the server will work correctly.'}),
                             help_text_markdown: true,
                             placeholder: defineMessage({id: 'admin.service.siteURLExample', defaultMessage: 'E.g.: "http://example.com:8065"'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.WEB_SERVER)),
@@ -716,7 +715,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'ServiceSettings.ListenAddress',
                             label: defineMessage({id: 'admin.service.listenAddress', defaultMessage: 'Listen Address:'}),
                             placeholder: defineMessage({id: 'admin.service.listenExample', defaultMessage: 'E.g.: ":8065"'}),
-                            help_text: defineMessage({id: 'admin.service.listenDescription', defaultMessage: 'The address and port to which to bind and listen. Specifying ":8065" will bind to all network interfaces. Specifying "127.0.0.1:8065" will only bind to the network interface having that IP address. If you choose a port of a lower level (called "system ports" or "well-known ports", in the range of 0-1023), you must have permissions to bind to that port. On Linux you can use: "sudo setcap cap_net_bind_service=+ep ./bin/mattermost" to allow Mattermost to bind to well-known ports.'}),
+                            help_text: defineMessage({id: 'admin.service.listenDescription', defaultMessage: 'The address and port to which to bind and listen. Specifying ":8065" will bind to all network interfaces. Specifying "127.0.0.1:8065" will only bind to the network interface having that IP address. If you choose a port of a lower level (called "system ports" or "well-known ports", in the range of 0-1023), you must have permissions to bind to that port. On Linux you can use: "sudo setcap cap_net_bind_service=+ep ./bin/mattermost" to allow Stroichat to bind to well-known ports.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.WEB_SERVER)),
                         },
                         {
@@ -844,7 +843,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'ServiceSettings.ManagedResourcePaths',
                             label: defineMessage({id: 'admin.service.managedResourcePaths', defaultMessage: 'Managed Resource Paths:'}),
-                            help_text: defineMessage({id: 'admin.service.managedResourcePathsDescription', defaultMessage: 'A comma-separated list of paths on the Mattermost server that are managed by another service. See <link>here</link> for more information.'}),
+                            help_text: defineMessage({id: 'admin.service.managedResourcePathsDescription', defaultMessage: 'A comma-separated list of paths on the Strocihat server that are managed by another service. See <link>here</link> for more information.'}),
                             help_text_markdown: false,
                             help_text_values: {
                                 link: (msg: string) => (
@@ -863,7 +862,7 @@ const AdminDefinition: AdminDefinitionType = {
                             action: reloadConfig,
                             key: 'ReloadConfigButton',
                             label: defineMessage({id: 'admin.reload.button', defaultMessage: 'Reload Configuration From Disk'}),
-                            help_text: defineMessage({id: 'admin.reload.reloadDescription', defaultMessage: 'Deployments using multiple databases can switch from one master database to another without restarting the Mattermost server by updating "config.json" to the new desired configuration and using the {featureName} feature to load the new settings while the server is running. The administrator should then use the {recycleDatabaseConnections} feature to recycle the database connections based on the new settings.'}),
+                            help_text: defineMessage({id: 'admin.reload.reloadDescription', defaultMessage: 'Deployments using multiple databases can switch from one master database to another without restarting the Stroichat server by updating "config.json" to the new desired configuration and using the {featureName} feature to load the new settings while the server is running. The administrator should then use the {recycleDatabaseConnections} feature to recycle the database connections based on the new settings.'}),
                             help_text_values: {
                                 featureName: (
                                     <b>
@@ -1014,7 +1013,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'FileSettings.AmazonS3Bucket',
                             label: defineMessage({id: 'admin.image.amazonS3BucketTitle', defaultMessage: 'Amazon S3 Bucket:'}),
                             help_text: defineMessage({id: 'admin.image.amazonS3BucketDescription', defaultMessage: 'Name you selected for your S3 bucket in AWS.'}),
-                            placeholder: defineMessage({id: 'admin.image.amazonS3BucketExample', defaultMessage: 'E.g.: "mattermost-media"'}),
+                            placeholder: defineMessage({id: 'admin.image.amazonS3BucketExample', defaultMessage: 'E.g.: "stroichat-media"'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.FILE_STORAGE)),
                                 it.not(it.stateEquals('FileSettings.DriverName', FILE_STORAGE_DRIVER_S3)),
@@ -1035,7 +1034,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'FileSettings.AmazonS3Region',
                             label: defineMessage({id: 'admin.image.amazonS3RegionTitle', defaultMessage: 'Amazon S3 Region:'}),
-                            help_text: defineMessage({id: 'admin.image.amazonS3RegionDescription', defaultMessage: 'AWS region you selected when creating your S3 bucket. If no region is set, Mattermost attempts to get the appropriate region from AWS, or sets it to "us-east-1" if none found.'}),
+                            help_text: defineMessage({id: 'admin.image.amazonS3RegionDescription', defaultMessage: 'AWS region you selected when creating your S3 bucket. If no region is set, Stroichat attempts to get the appropriate region from AWS, or sets it to "us-east-1" if none found.'}),
                             placeholder: defineMessage({id: 'admin.image.amazonS3RegionExample', defaultMessage: 'E.g.: "us-east-1"'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.FILE_STORAGE)),
@@ -1168,7 +1167,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'FileSettings.DedicatedExportStore',
                             label: defineMessage({id: 'admin.exportStorage.dedicatedExportStore', defaultMessage: 'Enable Dedicated Export Store:'}),
-                            help_text: defineMessage({id: 'admin.exportStorage.dedicatedExportStoreDescription', defaultMessage: 'When enabled, Mattermost will use a dedicated export storage bucket for all export operations. This is required for Mattermost Cloud deployments.'}),
+                            help_text: defineMessage({id: 'admin.exportStorage.dedicatedExportStoreDescription', defaultMessage: 'When enabled, Stroichat will use a dedicated export storage bucket for all export operations.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.FILE_STORAGE)),
                         },
                         {
@@ -1236,7 +1235,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'FileSettings.ExportAmazonS3Bucket',
                             label: defineMessage({id: 'admin.image.amazonS3BucketTitle', defaultMessage: 'Amazon S3 Bucket:'}),
                             help_text: defineMessage({id: 'admin.image.amazonS3BucketDescription', defaultMessage: 'Name you selected for your S3 bucket in AWS.'}),
-                            placeholder: defineMessage({id: 'admin.image.amazonS3BucketExample', defaultMessage: 'E.g.: "mattermost-export"'}),
+                            placeholder: defineMessage({id: 'admin.image.amazonS3BucketExample', defaultMessage: 'E.g.: "stroichat-export"'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.FILE_STORAGE)),
                                 it.stateEquals('FileSettings.DedicatedExportStore', false),
@@ -1259,7 +1258,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'FileSettings.ExportAmazonS3Region',
                             label: defineMessage({id: 'admin.image.amazonS3RegionTitle', defaultMessage: 'Amazon S3 Region:'}),
-                            help_text: defineMessage({id: 'admin.image.amazonS3RegionDescription', defaultMessage: 'AWS region you selected when creating your S3 bucket. If no region is set, Mattermost attempts to get the appropriate region from AWS, or sets it to "us-east-1" if none found.'}),
+                            help_text: defineMessage({id: 'admin.image.amazonS3RegionDescription', defaultMessage: 'AWS region you selected when creating your S3 bucket. If no region is set, Stroichat attempts to get the appropriate region from AWS, or sets it to "us-east-1" if none found.'}),
                             placeholder: defineMessage({id: 'admin.image.amazonS3RegionExample', defaultMessage: 'E.g.: "us-east-1"'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.FILE_STORAGE)),
@@ -1513,7 +1512,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'EmailSettings.SkipServerCertificateVerification',
                             label: defineMessage({id: 'admin.environment.smtp.skipServerCertificateVerification.title', defaultMessage: 'Skip Server Certificate Verification:'}),
-                            help_text: defineMessage({id: 'admin.environment.smtp.skipServerCertificateVerification.description', defaultMessage: 'When true, Mattermost will not verify the email server certificate.'}),
+                            help_text: defineMessage({id: 'admin.environment.smtp.skipServerCertificateVerification.description', defaultMessage: 'When true, Stroichat will not verify the email server certificate.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.SMTP)),
                         },
                         {
@@ -1813,7 +1812,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'LogSettings.FileLocation',
                             label: defineMessage({id: 'admin.log.locationTitle', defaultMessage: 'File Log Directory:'}),
-                            help_text: defineMessage({id: 'admin.log.locationDescription', defaultMessage: 'The location of the log files. If blank, they are stored in the ./logs directory. The path that you set must exist and Mattermost must have write permissions in it. Changing this setting requires a server restart before taking effect.'}),
+                            help_text: defineMessage({id: 'admin.log.locationDescription', defaultMessage: 'The location of the log files. If blank, they are stored in the ./logs directory. The path that you set must exist and Stroichat must have write permissions in it. Changing this setting requires a server restart before taking effect.'}),
                             placeholder: defineMessage({id: 'admin.log.locationPlaceholder', defaultMessage: 'Enter your file location'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.LOGGING)),
@@ -1836,67 +1835,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 ),
                             },
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.LOGGING)),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'LogSettings.EnableDiagnostics',
-                            label: defineMessage({id: 'admin.log.enableDiagnostics', defaultMessage: 'Enable Diagnostics and Error Reporting:'}),
-                            help_text: defineMessage({id: 'admin.log.enableDiagnosticsDescription', defaultMessage: 'Enable this feature to improve the quality and performance of Mattermost by sending error reporting and diagnostic information to Mattermost, Inc. Read our <link>privacy policy</link> to learn more.'}),
-                            help_text_markdown: false,
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={AboutLinks.PRIVACY_POLICY}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
-                            onConfigSave: (displayVal) => {
-                                return displayVal;
-                            },
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.LOGGING)),
-                        },
-                        {
-                            type: 'longtext',
-                            key: 'LogSettings.AdvancedLoggingJSON',
-                            label: defineMessage({id: 'admin.log.AdvancedLoggingJSONTitle', defaultMessage: 'Advanced Logging:'}),
-                            help_text: defineMessage({id: 'admin.log.AdvancedLoggingJSONDescription', defaultMessage: 'The JSON configuration for Advanced Logging. Please see <link>documentation</link> to learn more about Advanced Logging and the JSON format it uses.'}),
-                            help_text_markdown: false,
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.ADVANCED_LOGGING}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
-                            placeholder: defineMessage({id: 'admin.log.AdvancedLoggingJSONPlaceholder', defaultMessage: 'Enter your JSON configuration'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.LOGGING)),
-                            validate: (value) => {
-                                const valid = new ValidationResult(true, '');
-                                if (!value) {
-                                    return valid;
-                                }
-                                try {
-                                    JSON.parse(value);
-                                    return valid;
-                                } catch (error) {
-                                    return new ValidationResult(false, error.message);
-                                }
-                            },
-                            onConfigLoad: (configVal) => JSON.stringify(configVal, null, '  '),
-                            onConfigSave: (displayVal) => {
-                                // Handle case where field is empty
-                                if (!displayVal) {
-                                    return {undefined};
-                                }
-
-                                return JSON.parse(displayVal);
-                            },
                         },
                     ],
                 },
@@ -1930,36 +1868,16 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'MetricsSettings.Enable',
                             label: defineMessage({id: 'admin.metrics.enableTitle', defaultMessage: 'Enable Performance Monitoring:'}),
-                            help_text: defineMessage({id: 'admin.metrics.enableDescription', defaultMessage: 'When true, Mattermost will enable performance monitoring collection and profiling. Please see <link>documentation</link> to learn more about configuring performance monitoring for Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.metrics.enableDescription', defaultMessage: 'When true, Stroichat will enable performance monitoring collection and profiling.'}),
                             help_text_markdown: false,
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.SETUP_PERFORMANCE_MONITORING}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.PERFORMANCE_MONITORING)),
                         },
                         {
                             type: 'bool',
                             key: 'MetricsSettings.EnableClientMetrics',
                             label: defineMessage({id: 'admin.metrics.enableClientMetricsTitle', defaultMessage: 'Enable Client Performance Monitoring:'}),
-                            help_text: defineMessage({id: 'admin.metrics.enableClientMetricsDescription', defaultMessage: 'When true, Mattermost will enable performance monitoring collection for web and desktop app users. Please see <link>documentation</link> to learn more about configuring performance monitoring for Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.metrics.enableClientMetricsDescription', defaultMessage: 'When true, Stroichat will enable performance monitoring collection for web users.'}),
                             help_text_markdown: false,
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.SETUP_PERFORMANCE_MONITORING}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.PERFORMANCE_MONITORING)),
                                 it.configIsFalse('MetricsSettings', 'Enable'),
@@ -2023,103 +1941,12 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'ServiceSettings.AllowedUntrustedInternalConnections',
                             label: defineMessage({id: 'admin.service.internalConnectionsTitle', defaultMessage: 'Allow untrusted internal connections to: '}),
                             placeholder: defineMessage({id: 'admin.service.internalConnectionsEx', defaultMessage: 'webhooks.internal.example.com 127.0.0.1 10.0.16.0/28'}),
-                            help_text: defineMessage({id: 'admin.service.internalConnectionsDesc', defaultMessage: 'A whitelist of local network addresses that can be requested by the Mattermost server on behalf of a client. Care should be used when configuring this setting to prevent unintended access to your local network. See <link>documentation</link> to learn more. Changing this requires a server restart before taking effect.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='https://mattermost.com/pl/default-allow-untrusted-internal-connections'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.service.internalConnectionsDesc', defaultMessage: 'A whitelist of local network addresses that can be requested by the Stroichat server on behalf of a client. Care should be used when configuring this setting to prevent unintended access to your local network. Changing this requires a server restart before taking effect.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.DEVELOPER)),
                         },
                     ],
                 },
-            },
-            mobile_security: {
-                url: 'environment/mobile_security',
-                title: defineMessage({id: 'admin.sidebar.mobileSecurity', defaultMessage: 'Mobile Security'}),
-                isHidden: it.any(
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.MOBILE_SECURITY)),
-                    it.not(it.minLicenseTier(LicenseSkus.Enterprise)),
-                ),
-                schema: {
-                    id: 'MobileSecuritySettings',
-                    name: defineMessage({id: 'admin.mobileSecurity.title', defaultMessage: 'Mobile Security'}),
-                    settings: [
-                        {
-                            type: 'bool',
-                            key: 'NativeAppSettings.MobileEnableBiometrics',
-                            label: defineMessage({id: 'admin.mobileSecurity.biometricsTitle', defaultMessage: 'Enable Biometric Authentication:'}),
-                            help_text: defineMessage({id: 'admin.mobileSecurity.biometricsDescription', defaultMessage: 'Enforces biometric authentication (with PIN/passcode fallback) before accessing the app. Users will be prompted based on session activity and server switching rules.'}),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'NativeAppSettings.MobilePreventScreenCapture',
-                            label: defineMessage({id: 'admin.mobileSecurity.screenCaptureTitle', defaultMessage: 'Prevent Screen Capture:'}),
-                            help_text: defineMessage({id: 'admin.mobileSecurity.screenCaptureDescription', defaultMessage: 'Blocks screenshots and screen recordings when using the mobile app. Screenshots will appear blank, and screen recordings will blur (iOS) or show a black screen (Android). Also applies when switching apps.'}),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'NativeAppSettings.MobileJailbreakProtection',
-                            label: defineMessage({id: 'admin.mobileSecurity.jailbreakTitle', defaultMessage: 'Enable Jailbreak/Root Protection:'}),
-                            help_text: defineMessage({id: 'admin.mobileSecurity.jailbreakDescription', defaultMessage: 'Prevents access to the app on devices detected as jailbroken or rooted. If a device fails the security check, users will be denied access or prompted to switch to a compliant server.'}),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'NativeAppSettings.MobileEnableSecureFilePreview',
-                            label: defineMessage({id: 'admin.mobileSecurity.secureFilePreviewTitle', defaultMessage: 'Enable Secure File Preview Mode:'}),
-                            help_text: defineMessage({id: 'admin.mobileSecurity.secureFilePreviewDescription', defaultMessage: 'Prevents file downloads, previews, and sharing for most file types, even if {mobileAllowDownloads} is enabled. Allows in-app previews for PDFs, videos, and images only. Files are stored temporarily in the app’s cache and cannot be exported or shared.'}),
-                            help_text_values: {
-                                mobileAllowDownloads: (
-                                    <a href='../site_config/file_sharing_downloads'>
-                                        <b>
-                                            <FormattedMessage
-                                                id='admin.mobileSecurity.mobileAllowDownloads'
-                                                defaultMessage='Site Configuration > File Sharing and Downloads > Allow File Downloads on Mobile'
-                                            />
-                                        </b>
-                                    </a>
-                                ),
-                            },
-                            isHidden: it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'NativeAppSettings.MobileAllowPdfLinkNavigation',
-                            label: defineMessage({id: 'admin.mobileSecurity.allowPdfLinkNavigationTitle', defaultMessage: 'Allow Link Navigation in Secure PDFs:'}),
-                            help_text: defineMessage({id: 'admin.mobileSecurity.allowPdfLinkNavigationDescription', defaultMessage: 'Enables tapping links inside PDFs when Secure File Preview Mode is active. Links will open in the device browser or supported app. Has no effect when Secure File Preview Mode is disabled.'}),
-                            isDisabled: it.stateIsFalse('NativeAppSettings.MobileEnableSecureFilePreview'),
-                            isHidden: it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
-                        },
-                    ],
-                },
-            },
-            mobile_security_feature_discovery: {
-                url: 'environment/mobile_security_feature_discovery',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.mobileSecurity', defaultMessage: 'Mobile Security'}),
-                isHidden: it.any(
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.MOBILE_SECURITY)),
-                    it.minLicenseTier(LicenseSkus.Enterprise),
-                ),
-                schema: {
-                    id: 'MobileSecurityFeatureDiscoverySettings',
-                    name: defineMessage({id: 'admin.mobileSecurity.title', defaultMessage: 'Mobile Security'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: MobileSecurityFeatureDiscovery,
-                            key: 'MobileSecurityFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true),
             },
         },
     },
@@ -2185,17 +2012,10 @@ const AdminDefinition: AdminDefinitionType = {
                             ),
                         },
                         {
-                            type: 'bool',
-                            key: 'SupportSettings.EnableAskCommunityLink',
-                            label: defineMessage({id: 'admin.support.enableAskCommunityTitle', defaultMessage: 'Enable Ask Community Link:'}),
-                            help_text: defineMessage({id: 'admin.support.enableAskCommunityDesc', defaultMessage: 'When true, "Ask the community" link appears on the Mattermost user interface and Help Menu, which allows users to join the Mattermost Community to ask questions and help others troubleshoot issues. When false, the link is hidden from users.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
-                        },
-                        {
                             type: 'text',
                             key: 'SupportSettings.HelpLink',
                             label: defineMessage({id: 'admin.support.helpTitle', defaultMessage: 'Help Link:'}),
-                            help_text: defineMessage({id: 'admin.support.helpDesc', defaultMessage: 'The URL for the Help link on the Mattermost login page, sign-up pages, and Help Menu. If this field is empty, the Help link is hidden from users.'}),
+                            help_text: defineMessage({id: 'admin.support.helpDesc', defaultMessage: 'The URL for the Help link on the Stroichat login page, sign-up pages, and Help Menu. If this field is empty, the Help link is hidden from users.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
                         },
                         {
@@ -2316,43 +2136,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 return new ValidationResult(true, '');
                             },
                         },
-                        {
-                            type: 'bool',
-                            key: 'SupportSettings.AllowDownloadLogs',
-                            label: defineMessage({id: 'admin.support.problemAllowDownloadTitle', defaultMessage: 'Allow Mobile App Log Downloads:'}),
-                            help_text: defineMessage({id: 'admin.support.problemAllowDownloadDescription', defaultMessage: 'When enabled, users can download app logs for troubleshooting. If a ‘Report a Problem’ link is shown, logs can be downloaded as part of that flow; if the ‘Report a Problem’ link is hidden, logs remain accessible as a separate option.'}),
-                        },
-                        {
-                            type: 'text',
-                            key: 'NativeAppSettings.AppDownloadLink',
-                            label: defineMessage({id: 'admin.customization.appDownloadLinkTitle', defaultMessage: 'Stroichat Apps Download Page Link:'}),
-                            help_text: defineMessage({id: 'admin.customization.appDownloadLinkDesc', defaultMessage: 'Add a link to a download page for the Mattermost apps. When a link is present, an option to "Download Mattermost Apps" will be added in the Product Menu so users can find the download page. Leave this field blank to hide the option from the Product Menu.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
-                            isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
-                        },
-                        {
-                            type: 'text',
-                            key: 'NativeAppSettings.AndroidAppDownloadLink',
-                            label: defineMessage({id: 'admin.customization.androidAppDownloadLinkTitle', defaultMessage: 'Android App Download Link:'}),
-                            help_text: defineMessage({id: 'admin.customization.androidAppDownloadLinkDesc', defaultMessage: 'Add a link to download the Android app. Users who access the site on a mobile web browser will be prompted with a page giving them the option to download the app. Leave this field blank to prevent the page from appearing.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
-                            isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
-                        },
-                        {
-                            type: 'text',
-                            key: 'NativeAppSettings.IosAppDownloadLink',
-                            label: defineMessage({id: 'admin.customization.iosAppDownloadLinkTitle', defaultMessage: 'iOS App Download Link:'}),
-                            help_text: defineMessage({id: 'admin.customization.iosAppDownloadLinkDesc', defaultMessage: 'Add a link to download the iOS app. Users who access the site on a mobile web browser will be prompted with a page giving them the option to download the app. Leave this field blank to prevent the page from appearing.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
-                            isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'ServiceSettings.EnableDesktopLandingPage',
-                            label: defineMessage({id: 'admin.customization.enableDesktopLandingPageTitle', defaultMessage: 'Enable Desktop App Landing Page:'}),
-                            help_text: defineMessage({id: 'admin.customization.enableDesktopLandingPageDesc', defaultMessage: 'Whether or not to prompt a user to use the Desktop App when they first use Stroichat.'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.CUSTOMIZATION)),
-                        },
                     ],
                 },
             },
@@ -2386,13 +2169,6 @@ const AdminDefinition: AdminDefinitionType = {
                             help_text_markdown: false,
                             multiple: true,
                             no_result: defineMessage({id: 'admin.general.localization.availableLocalesNoResults', defaultMessage: 'No results found'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.LOCALIZATION)),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'LocalizationSettings.EnableExperimentalLocales',
-                            label: defineMessage({id: 'admin.general.localization.enableExperimentalLocalesTitle', defaultMessage: 'Enable Experimental Locales:'}),
-                            help_text: defineMessage({id: 'admin.general.localization.enableExperimentalLocalesDescription', defaultMessage: 'When true, it allows users to select experimental (e.g., in progress) languages.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.LOCALIZATION)),
                         },
                     ],
@@ -2482,7 +2258,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'PrivacySettings.ShowEmailAddress',
                             label: defineMessage({id: 'admin.privacy.showEmailTitle', defaultMessage: 'Show Email Address:'}),
-                            help_text: defineMessage({id: 'admin.privacy.showEmailDescription', defaultMessage: 'When false, hides the email address of members from everyone except System Administrators and the System Roles with read/write access to Compliance, Billing, or User Management.'}),
+                            help_text: defineMessage({id: 'admin.privacy.showEmailDescription', defaultMessage: 'When false, hides the email address of members from everyone except System Administrators and the System Roles with read/write access to User Management.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.USERS_AND_TEAMS)),
                         },
                         {
@@ -2617,7 +2393,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'EmailSettings.FeedbackEmail',
                             label: defineMessage({id: 'admin.environment.notifications.feedbackEmail.label', defaultMessage: 'Notification From Address:'}),
-                            placeholder: defineMessage({id: 'admin.environment.notifications.feedbackEmail.placeholder', defaultMessage: 'Ex: "mattermost@yourcompany.com", "admin@yourcompany.com"'}),
+                            placeholder: defineMessage({id: 'admin.environment.notifications.feedbackEmail.placeholder', defaultMessage: 'Ex: "stroichat@yourcompany.com", "admin@yourcompany.com"'}),
                             help_text: defineMessage({id: 'admin.environment.notifications.feedbackEmail.help', defaultMessage: 'Email address displayed on email account used when sending notification emails from Stroichat.'}),
                             isHidden: it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
                             isDisabled: it.any(
@@ -3179,22 +2955,6 @@ const AdminDefinition: AdminDefinitionType = {
                             help_text: defineMessage({id: 'admin.file.enableFileAttachmentsDesc', defaultMessage: 'When false, disables file sharing on the server. All file and image uploads on messages are forbidden across clients and devices, including mobile.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.FILE_SHARING_AND_DOWNLOADS)),
                         },
-                        {
-                            type: 'bool',
-                            key: 'FileSettings.EnableMobileUpload',
-                            label: defineMessage({id: 'admin.file.enableMobileUploadTitle', defaultMessage: 'Allow File Uploads on Mobile:'}),
-                            help_text: defineMessage({id: 'admin.file.enableMobileUploadDesc', defaultMessage: 'When false, disables file uploads on mobile apps. If Allow File Sharing is set to true, users can still upload files from a mobile web browser.'}),
-                            isHidden: it.not(it.licensedForFeature('Compliance')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.FILE_SHARING_AND_DOWNLOADS)),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'FileSettings.EnableMobileDownload',
-                            label: defineMessage({id: 'admin.file.enableMobileDownloadTitle', defaultMessage: 'Allow File Downloads on Mobile:'}),
-                            help_text: defineMessage({id: 'admin.file.enableMobileDownloadDesc', defaultMessage: 'When false, disables file downloads on mobile apps. Users can still download files from a mobile web browser.'}),
-                            isHidden: it.not(it.licensedForFeature('Compliance')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.FILE_SHARING_AND_DOWNLOADS)),
-                        },
                     ],
                 },
             },
@@ -3341,8 +3101,8 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'TeamSettings.RestrictCreationToDomains',
                             label: defineMessage({id: 'admin.team.restrictTitle', defaultMessage: 'Restrict new system and team members to specified email domains:'}),
-                            help_text: defineMessage({id: 'admin.team.restrictDescription', defaultMessage: 'New user accounts are restricted to the above specified email domain (e.g. "mattermost.com") or list of comma-separated domains (e.g. "corp.mattermost.com, mattermost.com"). New teams can only be created by users from the above domain(s). This setting only affects email login for users.'}),
-                            placeholder: defineMessage({id: 'admin.team.restrictExample', defaultMessage: 'E.g.: "corp.mattermost.com, mattermost.com"'}),
+                            help_text: defineMessage({id: 'admin.team.restrictDescription', defaultMessage: 'New user accounts are restricted to the above specified email domain (e.g. "360tech.pro") or list of comma-separated domains (e.g. "corp.360tech.pro, 360tech.pro"). New teams can only be created by users from the above domain(s). This setting only affects email login for users.'}),
+                            placeholder: defineMessage({id: 'admin.team.restrictExample', defaultMessage: 'E.g.: "corp.360tech.pro, 360tech.pro"'}),
                             isHidden: it.all(
                                 it.licensed,
                                 it.not(it.licensedForSku('starter')),
@@ -3353,8 +3113,8 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'TeamSettings.RestrictCreationToDomains',
                             label: defineMessage({id: 'admin.team.restrictTitle', defaultMessage: 'Restrict new system and team members to specified email domains:'}),
-                            help_text: defineMessage({id: 'admin.team.restrictGuestDescription', defaultMessage: 'New user accounts are restricted to the above specified email domain (e.g. "mattermost.com") or list of comma-separated domains (e.g. "corp.mattermost.com, mattermost.com"). New teams can only be created by users from the above domain(s). This setting affects email login for users. For Guest users, please add domains under Signup > Guest Access.'}),
-                            placeholder: defineMessage({id: 'admin.team.restrictExample', defaultMessage: 'E.g.: "corp.mattermost.com, mattermost.com"'}),
+                            help_text: defineMessage({id: 'admin.team.restrictGuestDescription', defaultMessage: 'New user accounts are restricted to the above specified email domain (e.g. "360tech.pro") or list of comma-separated domains (e.g. "corp.360tech.pro, 360tech.pro"). New teams can only be created by users from the above domain(s). This setting affects email login for users. For Guest users, please add domains under Signup > Guest Access.'}),
+                            placeholder: defineMessage({id: 'admin.team.restrictExample', defaultMessage: 'E.g.: "corp.360tech.pro, 360tech.pro"'}),
                             isHidden: it.any(
                                 it.not(it.licensed),
                                 it.licensedForSku('starter'),
@@ -3401,14 +3161,14 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'EmailSettings.EnableSignUpWithEmail',
                             label: defineMessage({id: 'admin.email.allowSignupTitle', defaultMessage: 'Enable account creation with email:'}),
-                            help_text: defineMessage({id: 'admin.email.allowSignupDescription', defaultMessage: 'When true, Mattermost allows account creation using email and password. This value should be false only when you want to limit sign up to a single sign-on service like AD/LDAP, SAML or GitLab.'}),
+                            help_text: defineMessage({id: 'admin.email.allowSignupDescription', defaultMessage: 'When true, Strocihat allows account creation using email and password. This value should be false only when you want to limit sign up to a single sign-on service like AD/LDAP, SAML or GitLab.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.EMAIL)),
                         },
                         {
                             type: 'bool',
                             key: 'EmailSettings.RequireEmailVerification',
                             label: defineMessage({id: 'admin.email.requireVerificationTitle', defaultMessage: 'Require Email Verification: '}),
-                            help_text: defineMessage({id: 'admin.email.requireVerificationDescription', defaultMessage: 'Typically set to true in production. When true, Mattermost requires email verification after account creation prior to allowing login. Developers may set this field to false to skip sending verification emails for faster development.'}),
+                            help_text: defineMessage({id: 'admin.email.requireVerificationDescription', defaultMessage: 'Typically set to true in production. When true, Stroichat requires email verification after account creation prior to allowing login. Developers may set this field to false to skip sending verification emails for faster development.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.EMAIL)),
                             isHidden: it.licensedForFeature('Cloud'),
                         },
@@ -3416,7 +3176,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'EmailSettings.EnableSignInWithEmail',
                             label: defineMessage({id: 'admin.email.allowEmailSignInTitle', defaultMessage: 'Enable sign-in with email:'}),
-                            help_text: defineMessage({id: 'admin.email.allowEmailSignInDescription', defaultMessage: 'When true, Mattermost allows users to sign in using their email and password.'}),
+                            help_text: defineMessage({id: 'admin.email.allowEmailSignInDescription', defaultMessage: 'When true, Stroichat allows users to sign in using their email and password.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.EMAIL)),
                         },
                         {
@@ -3474,7 +3234,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnforceMultifactorAuthentication',
                             label: defineMessage({id: 'admin.service.enforceMfaTitle', defaultMessage: 'Enforce Multi-factor Authentication:'}),
-                            help_text: defineMessage({id: 'admin.service.enforceMfaDesc', defaultMessage: 'When true, <link>multi-factor authentication</link> is required for login. New users will be required to configure MFA on signup. Logged in users without MFA configured are redirected to the MFA setup page until configuration is complete.\n \nIf your system has users with login methods other than AD/LDAP and email, MFA must be enforced with the authentication provider outside of Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.service.enforceMfaDesc', defaultMessage: 'When true, <link>multi-factor authentication</link> is required for login. New users will be required to configure MFA on signup. Logged in users without MFA configured are redirected to the MFA setup page until configuration is complete.\n \nIf your system has users with login methods other than AD/LDAP and email, MFA must be enforced with the authentication provider outside of Stroichat.'}),
                             help_text_markdown: false,
                             help_text_values: {
                                 link: (msg: string) => (
@@ -3543,36 +3303,15 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'SamlSettings.Enable',
                             label: defineMessage({id: 'admin.saml.enableTitle', defaultMessage: 'Enable Login With SAML 2.0:'}),
-                            help_text: defineMessage({id: 'admin.saml.enableDescription', defaultMessage: 'When true, Mattermost allows login using SAML 2.0. Please see <link>documentation</link> to learn more about configuring SAML for Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.enableDescription', defaultMessage: 'When true, Strocihat allows login using SAML 2.0.'}),
                             help_text_markdown: false,
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href='http://docs.mattermost.com/deployment/sso-saml.html'
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                         },
                         {
                             type: 'bool',
                             key: 'SamlSettings.EnableSyncWithLdap',
                             label: defineMessage({id: 'admin.saml.enableSyncWithLdapTitle', defaultMessage: 'Enable Synchronizing SAML Accounts With AD/LDAP:'}),
-                            help_text: defineMessage({id: 'admin.saml.enableSyncWithLdapDescription', defaultMessage: 'When true, Mattermost periodically synchronizes SAML user attributes, including user deactivation and removal, from AD/LDAP. Enable and configure synchronization settings at <strong>Authentication > AD/LDAP</strong>. When false, user attributes are updated from SAML during user login. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.SETUP_LDAP}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                                strong: (msg: string) => <strong>{msg}</strong>,
-                            },
+                            help_text: defineMessage({id: 'admin.saml.enableSyncWithLdapDescription', defaultMessage: 'When true, Stroichat periodically synchronizes SAML user attributes, including user deactivation and removal, from AD/LDAP. Enable and configure synchronization settings at <strong>Authentication > AD/LDAP</strong>. When false, user attributes are updated from SAML during user login.'}),
                             help_text_markdown: false,
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
@@ -3583,7 +3322,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'SamlSettings.IgnoreGuestsLdapSync',
                             label: defineMessage({id: 'admin.saml.ignoreGuestsLdapSyncTitle', defaultMessage: 'Ignore Guest Users when Synchronizing with AD/LDAP'}),
-                            help_text: defineMessage({id: 'admin.saml.ignoreGuestsLdapSyncDesc', defaultMessage: 'When true, Mattermost will ignore Guest Users who are identified by the Guest Attribute, when synchronizing with AD/LDAP for user deactivation and removal and Guest deactivation will need to be managed manually via System Console > Users.'}),
+                            help_text: defineMessage({id: 'admin.saml.ignoreGuestsLdapSyncDesc', defaultMessage: 'When true, Stroichat will ignore Guest Users who are identified by the Guest Attribute, when synchronizing with AD/LDAP for user deactivation and removal and Guest deactivation will need to be managed manually via System Console > Users.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.configIsFalse('GuestAccountsSettings', 'Enable'),
@@ -3595,18 +3334,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'SamlSettings.EnableSyncWithLdapIncludeAuth',
                             label: defineMessage({id: 'admin.saml.enableSyncWithLdapIncludeAuthTitle', defaultMessage: 'Override SAML bind data with AD/LDAP information:'}),
-                            help_text: defineMessage({id: 'admin.saml.enableSyncWithLdapIncludeAuthDescription', defaultMessage: 'When true, Mattermost will override the SAML ID attribute with the AD/LDAP ID attribute if configured or override the SAML Email attribute with the AD/LDAP Email attribute if SAML ID attribute is not present. This will allow you automatically migrate users from Email binding to ID binding to prevent creation of new users when an email address changes for a user. Moving from true to false, will remove the override from happening. <strong>Note:</strong> SAML IDs must match the LDAP IDs to prevent disabling of user accounts. Please review <link>documentation</link> for more information.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.CONFIGURE_OVERRIDE_SAML_BIND_DATA_WITH_LDAP}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                                strong: (msg: string) => <strong>{msg}</strong>,
-                            },
+                            help_text: defineMessage({id: 'admin.saml.enableSyncWithLdapIncludeAuthDescription', defaultMessage: 'When true, Stroichat will override the SAML ID attribute with the AD/LDAP ID attribute if configured or override the SAML Email attribute with the AD/LDAP Email attribute if SAML ID attribute is not present. This will allow you automatically migrate users from Email binding to ID binding to prevent creation of new users when an email address changes for a user. Moving from true to false, will remove the override from happening. <strong>Note:</strong> SAML IDs must match the LDAP IDs to prevent disabling of user accounts.'}),
                             help_text_markdown: false,
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
@@ -3645,7 +3373,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'SamlSettings.IdpURL',
                             label: defineMessage({id: 'admin.saml.idpUrlTitle', defaultMessage: 'SAML SSO URL:'}),
-                            help_text: defineMessage({id: 'admin.saml.idpUrlDesc', defaultMessage: 'The URL where Mattermost sends a SAML request to start login sequence.'}),
+                            help_text: defineMessage({id: 'admin.saml.idpUrlDesc', defaultMessage: 'The URL where Stroichat sends a SAML request to start login sequence.'}),
                             placeholder: defineMessage({id: 'admin.saml.idpUrlEx', defaultMessage: 'E.g.: "https://idp.example.org/SAML2/SSO/Login"'}),
                             setFromMetadataField: 'idp_url',
                             isDisabled: it.any(
@@ -3688,7 +3416,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'SamlSettings.Verify',
                             label: defineMessage({id: 'admin.saml.verifyTitle', defaultMessage: 'Verify Signature:'}),
-                            help_text: defineMessage({id: 'admin.saml.verifyDescription', defaultMessage: 'When false, Mattermost will not verify that the signature sent from a SAML Response matches the Service Provider Login URL. Disabling verification is not recommended for production environments.'}),
+                            help_text: defineMessage({id: 'admin.saml.verifyDescription', defaultMessage: 'When false, Stroichat will not verify that the signature sent from a SAML Response matches the Service Provider Login URL. Disabling verification is not recommended for production environments.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3699,7 +3427,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.AssertionConsumerServiceURL',
                             label: defineMessage({id: 'admin.saml.assertionConsumerServiceURLTitle', defaultMessage: 'Service Provider Login URL:'}),
                             help_text: defineMessage({id: 'admin.saml.assertionConsumerServiceURLPopulatedDesc', defaultMessage: 'This field is also known as the Assertion Consumer Service URL.'}),
-                            placeholder: defineMessage({id: 'admin.saml.assertionConsumerServiceURLEx', defaultMessage: 'E.g.: "<urlChunk>your-mattermost-url</urlChunk>"'}),
+                            placeholder: defineMessage({id: 'admin.saml.assertionConsumerServiceURLEx', defaultMessage: 'E.g.: "<urlChunk>your-stroichat-url</urlChunk>"'}),
                             placeholder_values: {
                                 urlChunk: (chunk: string) => `https://'<${chunk}>'/login/sso/saml`,
                             },
@@ -3721,7 +3449,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.ServiceProviderIdentifier',
                             label: defineMessage({id: 'admin.saml.serviceProviderIdentifierTitle', defaultMessage: 'Service Provider Identifier:'}),
                             help_text: defineMessage({id: 'admin.saml.serviceProviderIdentifierDesc', defaultMessage: 'The unique identifier for the Service Provider, usually the same as Service Provider Login URL. In ADFS, this MUST match the Relying Party Identifier.'}),
-                            placeholder: defineMessage({id: 'admin.saml.serviceProviderIdentifierEx', defaultMessage: 'E.g.: "<urlChunk>your-mattermost-url</urlChunk>"'}),
+                            placeholder: defineMessage({id: 'admin.saml.serviceProviderIdentifierEx', defaultMessage: 'E.g.: "<urlChunk>your-stroichat-url</urlChunk>"'}),
                             placeholder_values: {
                                 urlChunk: (chunk: string) => `https://'<${chunk}>'/login/sso/saml`,
                             },
@@ -3734,7 +3462,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'SamlSettings.Encrypt',
                             label: defineMessage({id: 'admin.saml.encryptTitle', defaultMessage: 'Enable Encryption:'}),
-                            help_text: defineMessage({id: 'admin.saml.encryptDescription', defaultMessage: 'When false, Mattermost will not decrypt SAML Assertions encrypted with your Service Provider Public Certificate. Disabling encryption is not recommended for production environments.'}),
+                            help_text: defineMessage({id: 'admin.saml.encryptDescription', defaultMessage: 'When false, Stroichat will not decrypt SAML Assertions encrypted with your Service Provider Public Certificate. Disabling encryption is not recommended for production environments.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3762,8 +3490,8 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'fileupload',
                             key: 'SamlSettings.PublicCertificateFile',
                             label: defineMessage({id: 'admin.saml.publicCertificateFileTitle', defaultMessage: 'Service Provider Public Certificate:'}),
-                            help_text: defineMessage({id: 'admin.saml.publicCertificateFileDesc', defaultMessage: 'The certificate used to generate the signature on a SAML request to the Identity Provider for a service provider initiated SAML login, when Mattermost is the Service Provider.'}),
-                            remove_help_text: defineMessage({id: 'admin.saml.publicCertificateFileRemoveDesc', defaultMessage: 'Remove the certificate used to generate the signature on a SAML request to the Identity Provider for a service provider initiated SAML login, when Mattermost is the Service Provider.'}),
+                            help_text: defineMessage({id: 'admin.saml.publicCertificateFileDesc', defaultMessage: 'The certificate used to generate the signature on a SAML request to the Identity Provider for a service provider initiated SAML login, when Stroichat is the Service Provider.'}),
+                            remove_help_text: defineMessage({id: 'admin.saml.publicCertificateFileRemoveDesc', defaultMessage: 'Remove the certificate used to generate the signature on a SAML request to the Identity Provider for a service provider initiated SAML login, when Stroichat is the Service Provider.'}),
                             remove_button_text: defineMessage({id: 'admin.saml.remove.sp_certificate', defaultMessage: 'Remove Service Provider Certificate'}),
                             removing_text: defineMessage({id: 'admin.saml.removing.certificate', defaultMessage: 'Removing Certificate...'}),
                             uploading_text: defineMessage({id: 'admin.saml.uploading.certificate', defaultMessage: 'Uploading Certificate...'}),
@@ -3780,7 +3508,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'SamlSettings.SignRequest',
                             label: defineMessage({id: 'admin.saml.signRequestTitle', defaultMessage: 'Sign Request:'}),
-                            help_text: defineMessage({id: 'admin.saml.signRequestDescription', defaultMessage: 'When true, Mattermost will sign the SAML request using your private key. When false, Mattermost will not sign the SAML request.'}),
+                            help_text: defineMessage({id: 'admin.saml.signRequestDescription', defaultMessage: 'When true, Stroichat will sign the SAML request using your private key. When false, Stroichat will not sign the SAML request.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Encrypt'),
@@ -3842,7 +3570,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.EmailAttribute',
                             label: defineMessage({id: 'admin.saml.emailAttrTitle', defaultMessage: 'Email Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.emailAttrEx', defaultMessage: 'E.g.: "Email" or "PrimaryEmail"'}),
-                            help_text: defineMessage({id: 'admin.saml.emailAttrDesc', defaultMessage: 'The attribute in the SAML Assertion that will be used to populate the email addresses of users in Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.emailAttrDesc', defaultMessage: 'The attribute in the SAML Assertion that will be used to populate the email addresses of users in Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3853,7 +3581,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.UsernameAttribute',
                             label: defineMessage({id: 'admin.saml.usernameAttrTitle', defaultMessage: 'Username Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.usernameAttrEx', defaultMessage: 'E.g.: "Username"'}),
-                            help_text: defineMessage({id: 'admin.saml.usernameAttrDesc', defaultMessage: 'The attribute in the SAML Assertion that will be used to populate the username field in Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.usernameAttrDesc', defaultMessage: 'The attribute in the SAML Assertion that will be used to populate the username field in Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3864,7 +3592,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.IdAttribute',
                             label: defineMessage({id: 'admin.saml.idAttrTitle', defaultMessage: 'Id Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.idAttrEx', defaultMessage: 'E.g.: "Id"'}),
-                            help_text: defineMessage({id: 'admin.saml.idAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to bind users from SAML to users in Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.idAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to bind users from SAML to users in Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3875,7 +3603,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.GuestAttribute',
                             label: defineMessage({id: 'admin.saml.guestAttrTitle', defaultMessage: 'Guest Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.guestAttrEx', defaultMessage: 'E.g.: "usertype=Guest" or "isGuest=true"'}),
-                            help_text: defineMessage({id: 'admin.saml.guestAttrDesc', defaultMessage: '(Optional) Requires Guest Access to be enabled before being applied. The attribute in the SAML Assertion that will be used to apply a guest role to users in Mattermost. Guests are prevented from accessing teams or channels upon logging in until they are assigned a team and at least one channel. Note: If this attribute is removed/changed from your guest user in SAML and the user is still active, they will not be promoted to a member and will retain their Guest role. Guests can be promoted in **System Console > User Management**. Existing members that are identified by this attribute as a guest will be demoted from a member to a guest when they are asked to login next. The next login is based upon Session lengths set in **System Console > Session Lengths**. It is highly recommend to manually demote users to guests in **System Console > User Management ** to ensure access is restricted immediately.'}),
+                            help_text: defineMessage({id: 'admin.saml.guestAttrDesc', defaultMessage: '(Optional) Requires Guest Access to be enabled before being applied. The attribute in the SAML Assertion that will be used to apply a guest role to users in Stroichat. Guests are prevented from accessing teams or channels upon logging in until they are assigned a team and at least one channel. Note: If this attribute is removed/changed from your guest user in SAML and the user is still active, they will not be promoted to a member and will retain their Guest role. Guests can be promoted in **System Console > User Management**. Existing members that are identified by this attribute as a guest will be demoted from a member to a guest when they are asked to login next. The next login is based upon Session lengths set in **System Console > Session Lengths**. It is highly recommend to manually demote users to guests in **System Console > User Management ** to ensure access is restricted immediately.'}),
                             help_text_markdown: true,
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
@@ -3897,7 +3625,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.AdminAttribute',
                             label: defineMessage({id: 'admin.saml.adminAttrTitle', defaultMessage: 'Admin Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.adminAttrEx', defaultMessage: 'E.g.: "usertype=Admin" or "isAdmin=true"'}),
-                            help_text: defineMessage({id: 'admin.saml.adminAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion for designating System Admins. The users selected by the query will have access to your Mattermost server as System Admins. By default, System Admins have complete access to the Mattermost System Console. Existing members that are identified by this attribute will be promoted from member to System Admin upon next login. The next login is based upon Session lengths set in **System Console > Session Lengths.** It is highly recommend to manually demote users to members in **System Console > User Management** to ensure access is restricted immediately. Note: If this filter is removed/changed, System Admins that were promoted via this filter will be demoted to members and will not retain access to the System Console. When this filter is not in use, System Admins can be manually promoted/demoted in **System Console > User Management**.'}),
+                            help_text: defineMessage({id: 'admin.saml.adminAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion for designating System Admins. The users selected by the query will have access to your Stroichat server as System Admins. By default, System Admins have complete access to the Stroichat System Console. Existing members that are identified by this attribute will be promoted from member to System Admin upon next login. The next login is based upon Session lengths set in **System Console > Session Lengths.** It is highly recommend to manually demote users to members in **System Console > User Management** to ensure access is restricted immediately. Note: If this filter is removed/changed, System Admins that were promoted via this filter will be demoted to members and will not retain access to the System Console. When this filter is not in use, System Admins can be manually promoted/demoted in **System Console > User Management**.'}),
                             help_text_markdown: true,
                             isDisabled: it.any(
                                 it.not(it.isSystemAdmin),
@@ -3910,7 +3638,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.FirstNameAttribute',
                             label: defineMessage({id: 'admin.saml.firstnameAttrTitle', defaultMessage: 'First Name Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.firstnameAttrEx', defaultMessage: 'E.g.: "FirstName"'}),
-                            help_text: defineMessage({id: 'admin.saml.firstnameAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the first name of users in Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.firstnameAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the first name of users in Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3921,7 +3649,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.LastNameAttribute',
                             label: defineMessage({id: 'admin.saml.lastnameAttrTitle', defaultMessage: 'Last Name Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.lastnameAttrEx', defaultMessage: 'E.g.: "LastName"'}),
-                            help_text: defineMessage({id: 'admin.saml.lastnameAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the last name of users in Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.lastnameAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the last name of users in Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3932,7 +3660,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.NicknameAttribute',
                             label: defineMessage({id: 'admin.saml.nicknameAttrTitle', defaultMessage: 'Nickname Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.nicknameAttrEx', defaultMessage: 'E.g.: "Nickname"'}),
-                            help_text: defineMessage({id: 'admin.saml.nicknameAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the nickname of users in Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.nicknameAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the nickname of users in Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3943,7 +3671,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.PositionAttribute',
                             label: defineMessage({id: 'admin.saml.positionAttrTitle', defaultMessage: 'Position Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.positionAttrEx', defaultMessage: 'E.g.: "Role"'}),
-                            help_text: defineMessage({id: 'admin.saml.positionAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the position of users in Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.positionAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the position of users in Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -3963,7 +3691,7 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'SamlSettings.LocaleAttribute',
                             label: defineMessage({id: 'admin.saml.localeAttrTitle', defaultMessage: 'Preferred Language Attribute:'}),
                             placeholder: defineMessage({id: 'admin.saml.localeAttrEx', defaultMessage: 'E.g.: "Locale" or "PrimaryLanguage"'}),
-                            help_text: defineMessage({id: 'admin.saml.localeAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the language of users in Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.saml.localeAttrDesc', defaultMessage: '(Optional) The attribute in the SAML Assertion that will be used to populate the language of users in Stroichat.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
                                 it.stateIsFalse('SamlSettings.Enable'),
@@ -4086,7 +3814,7 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: Constants.GITLAB_SERVICE,
                                     display_name: defineMessage({id: 'admin.oauth.gitlab', defaultMessage: 'GitLab'}),
-                                    help_text: defineMessage({id: 'admin.gitlab.EnableMarkdownDesc', defaultMessage: '1. Log in to your GitLab account and go to Profile Settings -> Applications.\n2. Enter Redirect URIs "<loginUrlChunk>your-mattermost-url</loginUrlChunk>" (example: http://localhost:8065/login/gitlab/complete) and "<signupUrlChunk>your-mattermost-url</signupUrlChunk>".\n3. Then use "Application Secret Key" and "Application ID" fields from GitLab to complete the options below.\n4. Complete the Endpoint URLs below.'}),
+                                    help_text: defineMessage({id: 'admin.gitlab.EnableMarkdownDesc', defaultMessage: '1. Log in to your GitLab account and go to Profile Settings -> Applications.\n2. Enter Redirect URIs "<loginUrlChunk>your-stroichat-url</loginUrlChunk>" (example: http://localhost:8065/login/gitlab/complete) and "<signupUrlChunk>your-stroichat-url</signupUrlChunk>".\n3. Then use "Application Secret Key" and "Application ID" fields from GitLab to complete the options below.\n4. Complete the Endpoint URLs below.'}),
                                     help_text_values: {
                                         loginUrlChunk: (chunk: string) => `<${chunk}>/login/gitlab/complete`,
                                         signupUrlChunk: (chunk: string) => `<${chunk}>/signup/gitlab/complete`,
@@ -4097,7 +3825,7 @@ const AdminDefinition: AdminDefinitionType = {
                                     value: Constants.GOOGLE_SERVICE,
                                     display_name: defineMessage({id: 'admin.oauth.google', defaultMessage: 'Google Apps'}),
                                     isHidden: it.all(it.not(it.licensedForFeature('GoogleOAuth')), it.not(it.cloudLicensed)),
-                                    help_text: defineMessage({id: 'admin.google.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Google account.\n2. Go to <linkConsole>https://console.developers.google.com</linkConsole>, click <strong>Credentials</strong> in the left hand sidebar and enter "Mattermost - your-company-name" as the <strong>Project Name</strong>, then click <strong>Create</strong>.\n3. Click the <strong>OAuth consent screen</strong> header and enter "Mattermost" as the <strong>Product name shown to users</strong>, then click <strong>Save</strong>.\n4. Under the <strong>Credentials</strong> header, click <strong>Create credentials</strong>, choose <strong>OAuth client ID</strong> and select <strong>Web Application</strong>.\n5. Under <strong>Restrictions</strong> and <strong>Authorized redirect URIs</strong> enter <strong>"your-mattermost-url/signup/google/complete"</strong> (example: http://localhost:8065/signup/google/complete). Click <strong>Create</strong>.\n6. Paste the <strong>Client ID</strong> and <strong>Client Secret</strong> to the fields below, then click <strong>Save</strong>.\n7. Go to the <linkAPI>Google People API</linkAPI> and click <strong>Enable</strong>.'}),
+                                    help_text: defineMessage({id: 'admin.google.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Google account.\n2. Go to <linkConsole>https://console.developers.google.com</linkConsole>, click <strong>Credentials</strong> in the left hand sidebar and enter "Stroichat - your-company-name" as the <strong>Project Name</strong>, then click <strong>Create</strong>.\n3. Click the <strong>OAuth consent screen</strong> header and enter "Stroichat" as the <strong>Product name shown to users</strong>, then click <strong>Save</strong>.\n4. Under the <strong>Credentials</strong> header, click <strong>Create credentials</strong>, choose <strong>OAuth client ID</strong> and select <strong>Web Application</strong>.\n5. Under <strong>Restrictions</strong> and <strong>Authorized redirect URIs</strong> enter <strong>"your-stroichat-url/signup/google/complete"</strong> (example: http://localhost:8065/signup/google/complete). Click <strong>Create</strong>.\n6. Paste the <strong>Client ID</strong> and <strong>Client Secret</strong> to the fields below, then click <strong>Save</strong>.\n7. Go to the <linkAPI>Google People API</linkAPI> and click <strong>Enable</strong>.'}),
                                     help_text_markdown: false,
                                     help_text_values: {
                                         linkLogin: (msg: string) => (
@@ -4131,7 +3859,7 @@ const AdminDefinition: AdminDefinitionType = {
                                     value: Constants.OFFICE365_SERVICE,
                                     display_name: defineMessage({id: 'admin.oauth.office365', defaultMessage: 'Entra ID'}),
                                     isHidden: it.all(it.not(it.licensedForFeature('Office365OAuth')), it.not(it.cloudLicensed)),
-                                    help_text: defineMessage({id: 'admin.office365.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Microsoft account. \n2. In Microsoft, go to <strong>Applications</strong> and <strong>App Registrations</strong> in the left pane.\n3. Select <strong>New registration</strong>, then enter "Mattermost - your-company-name" as the <strong>Application Name</strong>. \n4. Under <strong>Redirect URI</strong>, select <strong>Web</strong>, and enter "your-mattermost-url/signup/office365/complete" as the <strong>Redirect URI</strong>. Select <strong>Register</strong>.\n5. Copy the Microsoft <strong>Application (client) ID</strong> value, and paste it below as the <strong>Client ID</strong> value. \n6. Copy the Microsoft <strong>Directory (tenant) ID</strong> value, and paste it below as the <strong>Directory (tenant) ID</strong> value. \n7. In Microsoft, create a new client secret. Copy the resulting client secret value, and paste it below as the <strong>Client Secret</strong> value. Select <strong>Save</strong>.'}),
+                                    help_text: defineMessage({id: 'admin.office365.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Microsoft account. \n2. In Microsoft, go to <strong>Applications</strong> and <strong>App Registrations</strong> in the left pane.\n3. Select <strong>New registration</strong>, then enter "Stroichat - your-company-name" as the <strong>Application Name</strong>. \n4. Under <strong>Redirect URI</strong>, select <strong>Web</strong>, and enter "your-stroichat-url/signup/office365/complete" as the <strong>Redirect URI</strong>. Select <strong>Register</strong>.\n5. Copy the Microsoft <strong>Application (client) ID</strong> value, and paste it below as the <strong>Client ID</strong> value. \n6. Copy the Microsoft <strong>Directory (tenant) ID</strong> value, and paste it below as the <strong>Directory (tenant) ID</strong> value. \n7. In Microsoft, create a new client secret. Copy the resulting client secret value, and paste it below as the <strong>Client Secret</strong> value. Select <strong>Save</strong>.'}),
                                     help_text_markdown: false,
                                     help_text_values: {
                                         linkLogin: (msg: string) => (
@@ -4425,7 +4153,7 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: Constants.GITLAB_SERVICE,
                                     display_name: defineMessage({id: 'admin.openid.gitlab', defaultMessage: 'GitLab'}),
-                                    help_text: defineMessage({id: 'admin.gitlab.EnableMarkdownDesc', defaultMessage: '1. Log in to your GitLab account and go to Profile Settings -> Applications.\n2. Enter Redirect URIs "<loginUrlChunk>your-mattermost-url</loginUrlChunk>" (example: http://localhost:8065/login/gitlab/complete) and "<signupUrlChunk>your-mattermost-url</signupUrlChunk>".\n3. Then use "Application Secret Key" and "Application ID" fields from GitLab to complete the options below.\n4. Complete the Endpoint URLs below.'}),
+                                    help_text: defineMessage({id: 'admin.gitlab.EnableMarkdownDesc', defaultMessage: '1. Log in to your GitLab account and go to Profile Settings -> Applications.\n2. Enter Redirect URIs "<loginUrlChunk>your-stroichat-url</loginUrlChunk>" (example: http://localhost:8065/login/gitlab/complete) and "<signupUrlChunk>your-stroichat-url</signupUrlChunk>".\n3. Then use "Application Secret Key" and "Application ID" fields from GitLab to complete the options below.\n4. Complete the Endpoint URLs below.'}),
                                     help_text_values: {
                                         loginUrlChunk: (chunk: string) => `<${chunk}>/login/gitlab/complete`,
                                         signupUrlChunk: (chunk: string) => `<${chunk}>/signup/gitlab/complete`,
@@ -4435,7 +4163,7 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: Constants.GOOGLE_SERVICE,
                                     display_name: defineMessage({id: 'admin.openid.google', defaultMessage: 'Google Apps'}),
-                                    help_text: defineMessage({id: 'admin.google.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Google account.\n2. Go to <linkConsole>https://console.developers.google.com]</linkConsole>, click <strong>Credentials</strong> in the left hand side.\n 3. Under the <strong>Credentials</strong> header, click <strong>Create credentials</strong>, choose <strong>OAuth client ID</strong> and select <strong>Web Application</strong>.\n 4. Enter "Mattermost - your-company-name" as the <strong>Name</strong>.\n 5. Under <strong>Authorized redirect URIs</strong> enter <strong>"your-mattermost-url/signup/google/complete"</strong> (example: http://localhost:8065/signup/google/complete). Click <strong>Create</strong>.\n 6. Paste the <strong>Client ID</strong> and <strong>Client Secret</strong> to the fields below, then click <strong>Save</strong>.\n 7. Go to the <linkAPI>Google People API</linkAPI> and click <strong>Enable</strong>.'}),
+                                    help_text: defineMessage({id: 'admin.google.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Google account.\n2. Go to <linkConsole>https://console.developers.google.com]</linkConsole>, click <strong>Credentials</strong> in the left hand side.\n 3. Under the <strong>Credentials</strong> header, click <strong>Create credentials</strong>, choose <strong>OAuth client ID</strong> and select <strong>Web Application</strong>.\n 4. Enter "Stroichat - your-company-name" as the <strong>Name</strong>.\n 5. Under <strong>Authorized redirect URIs</strong> enter <strong>"your-stroichat-url/signup/google/complete"</strong> (example: http://localhost:8065/signup/google/complete). Click <strong>Create</strong>.\n 6. Paste the <strong>Client ID</strong> and <strong>Client Secret</strong> to the fields below, then click <strong>Save</strong>.\n 7. Go to the <linkAPI>Google People API</linkAPI> and click <strong>Enable</strong>.'}),
                                     help_text_markdown: false,
                                     help_text_values: {
                                         linkLogin: (msg: string) => (
@@ -4468,7 +4196,7 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: Constants.OFFICE365_SERVICE,
                                     display_name: defineMessage({id: 'admin.openid.office365', defaultMessage: 'Entra ID'}),
-                                    help_text: defineMessage({id: 'admin.office365.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Microsoft account. \n2. In Microsoft, go to <strong>Applications</strong> and <strong>App Registrations</strong> in the left pane.\n3. Select <strong>New registration</strong>, then enter "Mattermost - your-company-name" as the <strong>Application Name</strong>. \n4. Under <strong>Redirect URI</strong>, select <strong>Web</strong>, and enter "your-mattermost-url/signup/office365/complete" as the <strong>Redirect URI</strong>. Select <strong>Register</strong>.\n5. Copy the Microsoft <strong>Application (client) ID</strong> value, and paste it below as the <strong>Client ID</strong> value. \n6. Copy the Microsoft <strong>Directory (tenant) ID</strong> value, and paste it below as the <strong>Directory (tenant) ID</strong> value. \n7. In Microsoft, create a new client secret. Copy the resulting client secret value, and paste it below as the <strong>Client Secret</strong> value. Select <strong>Save</strong>.'}),
+                                    help_text: defineMessage({id: 'admin.office365.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Microsoft account. \n2. In Microsoft, go to <strong>Applications</strong> and <strong>App Registrations</strong> in the left pane.\n3. Select <strong>New registration</strong>, then enter "Stroichat - your-company-name" as the <strong>Application Name</strong>. \n4. Under <strong>Redirect URI</strong>, select <strong>Web</strong>, and enter "your-stroichat-url/signup/office365/complete" as the <strong>Redirect URI</strong>. Select <strong>Register</strong>.\n5. Copy the Microsoft <strong>Application (client) ID</strong> value, and paste it below as the <strong>Client ID</strong> value. \n6. Copy the Microsoft <strong>Directory (tenant) ID</strong> value, and paste it below as the <strong>Directory (tenant) ID</strong> value. \n7. In Microsoft, create a new client secret. Copy the resulting client secret value, and paste it below as the <strong>Client Secret</strong> value. Select <strong>Save</strong>.'}),
                                     help_text_markdown: false,
                                     help_text_values: {
                                         linkLogin: (msg: string) => (
@@ -4501,7 +4229,7 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: Constants.OPENID_SERVICE,
                                     display_name: defineMessage({id: 'admin.oauth.openid', defaultMessage: 'OpenID Connect (Other)'}),
-                                    help_text: defineMessage({id: 'admin.openid.EnableMarkdownDesc', defaultMessage: 'Follow provider directions for creating an OpenID Application. Most OpenID Connect providers require authorization of all redirect URIs. In the appropriate field, enter "your-mattermost-url/signup/openid/complete" (example: http://domain.com/signup/openid/complete)'}),
+                                    help_text: defineMessage({id: 'admin.openid.EnableMarkdownDesc', defaultMessage: 'Follow provider directions for creating an OpenID Application. Most OpenID Connect providers require authorization of all redirect URIs. In the appropriate field, enter "your-stroichat-url/signup/openid/complete" (example: http://domain.com/signup/openid/complete)'}),
                                     help_text_markdown: false,
                                 },
                             ],
@@ -4740,7 +4468,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'GuestAccountsSettings.HideTags',
                             label: defineMessage({id: 'admin.guest_access.hideTags', defaultMessage: 'Hide guest tag'}),
-                            help_text: defineMessage({id: 'admin.guest_access.hideTagsDescription', defaultMessage: 'When true, the "guest" tag will not be shown next to the name of all guest users in the Mattermost chat interface.'}),
+                            help_text: defineMessage({id: 'admin.guest_access.hideTagsDescription', defaultMessage: 'When true, the "guest" tag will not be shown next to the name of all guest users in the Stroichat chat interface.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.GUEST_ACCESS)),
                         },
@@ -4778,7 +4506,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'GuestAccountsSettings.EnforceMultifactorAuthentication',
                             label: defineMessage({id: 'admin.guest_access.mfaTitle', defaultMessage: 'Enforce Multi-factor Authentication: '}),
-                            help_text: defineMessage({id: 'admin.guest_access.mfaDescription', defaultMessage: 'When true, <link>multi-factor authentication</link> for guests is required for login. New guest users will be required to configure MFA on signup. Logged in guest users without MFA configured are redirected to the MFA setup page until configuration is complete.\n \nIf your system has guest users with login methods other than AD/LDAP and email, MFA must be enforced with the authentication provider outside of Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.guest_access.mfaDescription', defaultMessage: 'When true, <link>multi-factor authentication</link> for guests is required for login. New guest users will be required to configure MFA on signup. Logged in guest users without MFA configured are redirected to the MFA setup page until configuration is complete.\n \nIf your system has guest users with login methods other than AD/LDAP and email, MFA must be enforced with the authentication provider outside of Stroichat.'}),
                             help_text_values: {
                                 link: (msg: string) => (
                                     <ExternalLink
@@ -4918,7 +4646,7 @@ const AdminDefinition: AdminDefinitionType = {
                             help_text: defineMessage({id: 'admin.service.outgoingOAuthConnectionsDesc', defaultMessage: 'When true, outgoing webhooks and slash commands will use set up oauth connections to authenticate with third party services. See <link>documentation</link> to learn more.'}),
                             help_text_values: {
                                 link: (text: string) => (
-                                    <a href='https://mattermost.com/pl/outgoing-oauth-connections'>{text}</a>
+                                    <a href='https://360tech.pro/pl/outgoing-oauth-connections'>{text}</a>
                                 ),
                             },
                             help_text_markdown: false,
@@ -4934,7 +4662,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableOAuthServiceProvider',
                             label: defineMessage({id: 'admin.oauth.providerTitle', defaultMessage: 'Enable OAuth 2.0 Service Provider: '}),
-                            help_text: defineMessage({id: 'admin.oauth.providerDescription', defaultMessage: 'When true, Mattermost can act as an OAuth 2.0 service provider allowing Mattermost to authorize API requests from external applications. See <link>documentation</link> to learn more.'}),
+                            help_text: defineMessage({id: 'admin.oauth.providerDescription', defaultMessage: 'When true, Stroichat can act as an OAuth 2.0 service provider allowing Stroichat to authorize API requests from external applications. See <link>documentation</link> to learn more.'}),
                             help_text_values: {
                                 link: (msg: string) => (
                                     <ExternalLink
@@ -5012,7 +4740,7 @@ const AdminDefinition: AdminDefinitionType = {
                                 linkDocumentation: (msg: string) => (
                                     <ExternalLink
                                         location='admin_console'
-                                        href='https://mattermost.com/pl/default-bot-accounts'
+                                        href='https://360tech.pro/pl/default-bot-accounts'
                                     >
                                         {msg}
                                     </ExternalLink>
@@ -5116,7 +4844,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'ServiceSettings.FrameAncestors',
                             label: defineMessage({id: 'admin.customization.frameAncestorTitle', defaultMessage: 'Frame Ancestors:'}),
-                            help_text: defineMessage({id: 'admin.customization.frameAncestorDesc', defaultMessage: 'Allows the Mattermost web client to be embedded in other websites. Enter a space-separated list of domains that are allowed to embed the Mattermost web client. Leave blank to disallow embedding.'}),
+                            help_text: defineMessage({id: 'admin.customization.frameAncestorDesc', defaultMessage: 'Allows the Stroichat web client to be embedded in other websites. Enter a space-separated list of domains that are allowed to embed the Stroichat web client. Leave blank to disallow embedding.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.INTEGRATIONS.CORS)),
                         },
                     ],
@@ -5144,33 +4872,6 @@ const AdminDefinition: AdminDefinitionType = {
                     id: 'ExperimentalSettings',
                     name: defineMessage({id: 'admin.experimental.experimentalFeatures', defaultMessage: 'Experimental Features'}),
                     settings: [
-                        {
-                            type: 'color',
-                            key: 'LdapSettings.LoginButtonColor',
-                            label: defineMessage({id: 'admin.experimental.ldapSettingsLoginButtonColor.title', defaultMessage: 'AD/LDAP Login Button Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.ldapSettingsLoginButtonColor.desc', defaultMessage: 'Specify the color of the AD/LDAP login button for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isHidden: it.not(it.licensedForFeature('LDAP')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
-                            type: 'color',
-                            key: 'LdapSettings.LoginButtonBorderColor',
-                            label: defineMessage({id: 'admin.experimental.ldapSettingsLoginButtonBorderColor.title', defaultMessage: 'AD/LDAP Login Button Border Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.ldapSettingsLoginButtonBorderColor.desc', defaultMessage: 'Specify the color of the AD/LDAP login button border for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isHidden: it.not(it.licensedForFeature('LDAP')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
-                            type: 'color',
-                            key: 'LdapSettings.LoginButtonTextColor',
-                            label: defineMessage({id: 'admin.experimental.ldapSettingsLoginButtonTextColor.title', defaultMessage: 'AD/LDAP Login Button Text Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.ldapSettingsLoginButtonTextColor.desc', defaultMessage: 'Specify the color of the AD/LDAP login button text for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isHidden: it.not(it.licensedForFeature('LDAP')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
                         {
                             type: 'bool',
                             key: 'ServiceSettings.ExperimentalEnableAuthenticationTransfer',
@@ -5211,30 +4912,6 @@ const AdminDefinition: AdminDefinitionType = {
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
                         },
                         {
-                            type: 'color',
-                            key: 'EmailSettings.LoginButtonColor',
-                            label: defineMessage({id: 'admin.experimental.emailSettingsLoginButtonColor.title', defaultMessage: 'Email Login Button Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.emailSettingsLoginButtonColor.desc', defaultMessage: 'Specify the color of the email login button for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
-                            type: 'color',
-                            key: 'EmailSettings.LoginButtonBorderColor',
-                            label: defineMessage({id: 'admin.experimental.emailSettingsLoginButtonBorderColor.title', defaultMessage: 'Email Login Button Border Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.emailSettingsLoginButtonBorderColor.desc', defaultMessage: 'Specify the color of the email login button border for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
-                            type: 'color',
-                            key: 'EmailSettings.LoginButtonTextColor',
-                            label: defineMessage({id: 'admin.experimental.emailSettingsLoginButtonTextColor.title', defaultMessage: 'Email Login Button Text Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.emailSettingsLoginButtonTextColor.desc', defaultMessage: 'Specify the color of the email login button text for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
                             type: 'bool',
                             key: 'TeamSettings.EnableUserDeactivation',
                             label: defineMessage({id: 'admin.experimental.enableUserDeactivation.title', defaultMessage: 'Enable Account Deactivation:'}),
@@ -5268,24 +4945,6 @@ const AdminDefinition: AdminDefinitionType = {
                         },
                         {
                             type: 'bool',
-                            key: 'ServiceSettings.ExperimentalEnableHardenedMode',
-                            label: defineMessage({id: 'admin.experimental.experimentalEnableHardenedMode.title', defaultMessage: 'Enable Hardened Mode:'}),
-                            help_text: defineMessage({id: 'admin.experimental.experimentalEnableHardenedMode.desc', defaultMessage: 'Enables a hardened mode for Mattermost that makes user experience trade-offs in the interest of security. See <link>documentation</link> to learn more.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.ENABLE_HARDENED_MODE}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
-                            help_text_markdown: false,
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
-                            type: 'bool',
                             key: 'ThemeSettings.EnableThemeSelection',
                             label: defineMessage({id: 'admin.experimental.enableThemeSelection.title', defaultMessage: 'Enable Theme Selection:'}),
                             help_text: defineMessage({id: 'admin.experimental.enableThemeSelection.desc', defaultMessage: 'Enables the **Display > Theme** tab in Settings so users can select their theme.'}),
@@ -5295,21 +4954,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 it.licensedForSku('starter'),
                             ),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'ThemeSettings.AllowCustomThemes',
-                            label: defineMessage({id: 'admin.experimental.allowCustomThemes.title', defaultMessage: 'Allow Custom Themes:'}),
-                            help_text: defineMessage({id: 'admin.experimental.allowCustomThemes.desc', defaultMessage: 'Enables the **Display > Theme > Custom Theme** section in Settings.'}),
-                            help_text_markdown: true,
-                            isHidden: it.any(
-                                it.not(it.licensed),
-                                it.licensedForSku('starter'),
-                            ),
-                            isDisabled: it.any(
-                                it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                                it.stateIsFalse('ThemeSettings.EnableThemeSelection'),
-                            ),
                         },
                         {
                             type: 'dropdown',
@@ -5349,7 +4993,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ServiceSettings.EnableTutorial',
                             label: defineMessage({id: 'admin.experimental.enableTutorial.title', defaultMessage: 'Enable Tutorial:'}),
-                            help_text: defineMessage({id: 'admin.experimental.enableTutorial.desc', defaultMessage: 'When true, users are prompted with a tutorial when they open Mattermost for the first time after account creation. When false, the tutorial is disabled, and users are placed in Town Square when they open Mattermost for the first time after account creation.'}),
+                            help_text: defineMessage({id: 'admin.experimental.enableTutorial.desc', defaultMessage: 'When true, users are prompted with a tutorial when they open Stroichat for the first time after account creation. When false, the tutorial is disabled, and users are placed in Town Square when they open Stroichat for the first time after account creation.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
                         },
@@ -5400,33 +5044,6 @@ const AdminDefinition: AdminDefinitionType = {
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
                         },
                         {
-                            type: 'color',
-                            key: 'SamlSettings.LoginButtonColor',
-                            label: defineMessage({id: 'admin.experimental.samlSettingsLoginButtonColor.title', defaultMessage: 'SAML Login Button Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.samlSettingsLoginButtonColor.desc', defaultMessage: 'Specify the color of the SAML login button for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isHidden: it.not(it.licensedForFeature('SAML')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
-                            type: 'color',
-                            key: 'SamlSettings.LoginButtonBorderColor',
-                            label: defineMessage({id: 'admin.experimental.samlSettingsLoginButtonBorderColor.title', defaultMessage: 'SAML Login Button Border Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.samlSettingsLoginButtonBorderColor.desc', defaultMessage: 'Specify the color of the SAML login button border for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isHidden: it.not(it.licensedForFeature('SAML')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
-                            type: 'color',
-                            key: 'SamlSettings.LoginButtonTextColor',
-                            label: defineMessage({id: 'admin.experimental.samlSettingsLoginButtonTextColor.title', defaultMessage: 'SAML Login Button Text Color:'}),
-                            help_text: defineMessage({id: 'admin.experimental.samlSettingsLoginButtonTextColor.desc', defaultMessage: 'Specify the color of the SAML login button text for white labeling purposes. Use a hex code with a #-sign before the code. This setting only applies to the mobile apps.'}),
-                            help_text_markdown: false,
-                            isHidden: it.not(it.licensedForFeature('SAML')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                        },
-                        {
                             type: 'bool',
                             key: 'EmailSettings.UseChannelInEmailNotifications',
                             label: defineMessage({id: 'admin.experimental.useChannelInEmailNotifications.title', defaultMessage: 'Use Channel Name in Email Notifications:'}),
@@ -5438,7 +5055,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'number',
                             key: 'TeamSettings.UserStatusAwayTimeout',
                             label: defineMessage({id: 'admin.experimental.userStatusAwayTimeout.title', defaultMessage: 'User Status Away Timeout:'}),
-                            help_text: defineMessage({id: 'admin.experimental.userStatusAwayTimeout.desc', defaultMessage: 'This setting defines the number of seconds after which the user\'s status indicator changes to "Away", when they are away from Mattermost.'}),
+                            help_text: defineMessage({id: 'admin.experimental.userStatusAwayTimeout.desc', defaultMessage: 'This setting defines the number of seconds after which the user\'s status indicator changes to "Away", when they are away from Stroichat.'}),
                             help_text_markdown: false,
                             placeholder: defineMessage({id: 'admin.experimental.userStatusAwayTimeout.example', defaultMessage: 'E.g.: "300"'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
@@ -5456,14 +5073,14 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'ExperimentalSettings.DisableRefetchingOnBrowserFocus',
                             label: defineMessage({id: 'admin.experimental.disableRefetchingOnBrowserFocus.title', defaultMessage: 'Disable data refetching on browser refocus:'}),
-                            help_text: defineMessage({id: 'admin.experimental.disableRefetchingOnBrowserFocus.desc', defaultMessage: 'When true, Mattermost will not refetch channels and channel members when the browser regains focus. This may result in improved performance for users with many channels and channel members.'}),
+                            help_text: defineMessage({id: 'admin.experimental.disableRefetchingOnBrowserFocus.desc', defaultMessage: 'When true, Stroichat will not refetch channels and channel members when the browser regains focus. This may result in improved performance for users with many channels and channel members.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
                         },
                         {
                             type: 'bool',
                             key: 'ExperimentalSettings.DisableWakeUpReconnectHandler',
                             label: defineMessage({id: 'admin.experimental.disableWakeUpReconnectHandler.title', defaultMessage: 'Disable Wake Up Reconnect Handler:'}),
-                            help_text: defineMessage({id: 'admin.experimental.disableWakeUpReconnectHandler.desc', defaultMessage: 'When true, Mattermost will not attempt to detect when the computer has woken up and refetch data. This might reduce the amount of regular network traffic the app is sending.'}),
+                            help_text: defineMessage({id: 'admin.experimental.disableWakeUpReconnectHandler.desc', defaultMessage: 'When true, Stroichat will not attempt to detect when the computer has woken up and refetch data. This might reduce the amount of regular network traffic the app is sending.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
                         },
                         {

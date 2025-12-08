@@ -1484,7 +1484,7 @@ func (s *LogSettings) isValid() *AppError {
 
 func (s *LogSettings) SetDefaults() {
 	if s.EnableConsole == nil {
-		s.EnableConsole = NewPointer(true)
+		s.EnableConsole = NewPointer(false)
 	}
 
 	if s.ConsoleLevel == nil {
@@ -1496,7 +1496,7 @@ func (s *LogSettings) SetDefaults() {
 	}
 
 	if s.EnableFile == nil {
-		s.EnableFile = NewPointer(true)
+		s.EnableFile = NewPointer(false)
 	}
 
 	if s.FileLevel == nil {
@@ -2204,7 +2204,7 @@ func (s *SupportSettings) SetDefaults() {
 	}
 
 	if s.AllowDownloadLogs == nil {
-		s.AllowDownloadLogs = NewPointer(true)
+		s.AllowDownloadLogs = NewPointer(false)
 	}
 
 	if !isSafeLink(s.ForgotPasswordLink) {
@@ -2228,7 +2228,7 @@ func (s *SupportSettings) SetDefaults() {
 	}
 
 	if s.EnableAskCommunityLink == nil {
-		s.EnableAskCommunityLink = NewPointer(true)
+		s.EnableAskCommunityLink = NewPointer(false)
 	}
 }
 

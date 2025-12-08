@@ -5,7 +5,7 @@
 
 /* eslint-disable */
 
-import enAU from './en-AU.json';
+import en from './en.json';
 import ru from './ru.json';
 import zhCN from './zh-CN.json';
 import zhTW from './zh-TW.json';
@@ -14,8 +14,8 @@ type TranslationsMap = {
     [id: string]: string,
 };
 
-export const langIDs = ["en-AU","ru","zh-CN","zh-TW"];
+export const langIDs = ["en","ru","zh-CN","zh-TW"];
 
-export const langLabels = {"en-AU":"English","ru":"Русский","zh-CN":"中文（中国大陆）","zh-TW":"中文"};
+export const langLabels = {"en":"English","ru":"Русский","zh-CN":"中文（中国大陆）","zh-TW":"中文"};
 
-export const langFiles: {[langID: string]: TranslationsMap} = {'en-AU':enAU,ru,'zh-CN':zhCN,'zh-TW':zhTW};
+export const langFiles: {[langID: string]: TranslationsMap} = {en,ru,'zh-CN':zhCN,'zh-TW':zhTW};
