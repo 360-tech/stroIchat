@@ -1510,6 +1510,26 @@ func (a *App) prepareInviteGuestsToChannels(teamID string, guestsInvite *model.G
 		}
 	}
 
+	// Validate guest subtype if provided
+	if guestsInvite.GuestSubtype != "" {
+		validSubtypes := []string{
+			model.GuestSubtypeNotSpecified,
+			model.GuestSubtypeContractor,
+			model.GuestSubtypeCustomer,
+			model.GuestSubtypePartner,
+		}
+		isValid := false
+		for _, validSubtype := range validSubtypes {
+			if guestsInvite.GuestSubtype == validSubtype {
+				isValid = true
+				break
+			}
+		}
+		if !isValid {
+			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "api.team.invite_guests.invalid_guest_subtype.app_error", nil, "", http.StatusBadRequest)
+		}
+	}
+
 	return user, team, channels, nil
 }
 
@@ -1545,7 +1565,11 @@ func (a *App) InviteGuestsToChannelsGracefully(rctx request.CTX, teamID string, 
 			rctx.Logger().Warn("Unable to get the sender user profile image.", mlog.String("user_id", user.Id), mlog.String("team_id", team.Id), mlog.Err(err))
 		}
 
-		eErr := a.Srv().EmailService.SendGuestInviteEmails(team, channels, user.GetDisplayName(nameFormat), user.Id, senderProfileImage, goodEmails, a.GetSiteURL(), guestsInvite.Message, true, user.IsSystemAdmin(), a.UserIsFirstAdmin(rctx, user))
+		guestSubtype := guestsInvite.GuestSubtype
+		if guestSubtype == "" {
+			guestSubtype = model.GuestSubtypeNotSpecified
+		}
+		eErr := a.Srv().EmailService.SendGuestInviteEmails(team, channels, user.GetDisplayName(nameFormat), user.Id, senderProfileImage, goodEmails, a.GetSiteURL(), guestsInvite.Message, true, user.IsSystemAdmin(), a.UserIsFirstAdmin(rctx, user), guestSubtype)
 		if eErr != nil {
 			switch {
 			case errors.Is(eErr, email.SendMailError):
@@ -1644,7 +1668,11 @@ func (a *App) InviteGuestsToChannels(rctx request.CTX, teamID string, guestsInvi
 		rctx.Logger().Warn("Unable to get the sender user profile image.", mlog.String("user_id", user.Id), mlog.String("team_id", team.Id), mlog.Err(err))
 	}
 
-	eErr := a.Srv().EmailService.SendGuestInviteEmails(team, channels, user.GetDisplayName(nameFormat), user.Id, senderProfileImage, guestsInvite.Emails, a.GetSiteURL(), guestsInvite.Message, false, user.IsSystemAdmin(), a.UserIsFirstAdmin(rctx, user))
+	guestSubtype := guestsInvite.GuestSubtype
+	if guestSubtype == "" {
+		guestSubtype = model.GuestSubtypeNotSpecified
+	}
+	eErr := a.Srv().EmailService.SendGuestInviteEmails(team, channels, user.GetDisplayName(nameFormat), user.Id, senderProfileImage, guestsInvite.Emails, a.GetSiteURL(), guestsInvite.Message, false, user.IsSystemAdmin(), a.UserIsFirstAdmin(rctx, user), guestSubtype)
 	if eErr != nil {
 		switch {
 		case errors.Is(eErr, email.NoRateLimiterError):

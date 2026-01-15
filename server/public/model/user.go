@@ -68,6 +68,13 @@ const (
 	UserRolesMaxLength    = 256
 
 	DesktopTokenTTL = time.Minute * 3
+
+	// Guest subtype constants
+	UserPropsKeyGuestSubtype     = "guest_subtype"
+	GuestSubtypeNotSpecified     = "not_specified"
+	GuestSubtypeContractor       = "contractor"
+	GuestSubtypeCustomer         = "customer"
+	GuestSubtypePartner          = "partner"
 )
 
 //msgp:tuple User
@@ -798,6 +805,27 @@ func (u *User) ValidateCustomStatus() bool {
 		}
 	}
 	return true
+}
+
+// GetGuestSubtype returns the guest subtype for the user, or "not_specified" if not set.
+func (u *User) GetGuestSubtype() string {
+	if u.Props == nil {
+		return GuestSubtypeNotSpecified
+	}
+	subtype, exists := u.Props[UserPropsKeyGuestSubtype]
+	if !exists || subtype == "" {
+		return GuestSubtypeNotSpecified
+	}
+	return subtype
+}
+
+// SetGuestSubtype sets the guest subtype for the user.
+func (u *User) SetGuestSubtype(subtype string) {
+	u.MakeNonNil()
+	if subtype == "" {
+		subtype = GuestSubtypeNotSpecified
+	}
+	u.Props[UserPropsKeyGuestSubtype] = subtype
 }
 
 func (u *User) GetFullName() string {

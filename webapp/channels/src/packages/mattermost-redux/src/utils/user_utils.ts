@@ -61,6 +61,18 @@ export function isGuest(roles: string): boolean {
     return spaceSeparatedStringIncludes('system_guest', roles);
 }
 
+export function getGuestSubtype(user: UserProfile): string {
+    if (!user.props || !user.props.guest_subtype) {
+        return 'not_specified';
+    }
+    return user.props.guest_subtype;
+}
+
+export function isGuestSubtype(subtype: string): boolean {
+    const validSubtypes = ['not_specified', 'contractor', 'customer', 'partner'];
+    return validSubtypes.includes(subtype);
+}
+
 export function isTeamAdmin(roles: string): boolean {
     return spaceSeparatedStringIncludes(General.TEAM_ADMIN_ROLE, roles);
 }

@@ -57,6 +57,15 @@ export const InviteTypes = {
     INVITE_GUEST: 'guest',
 };
 
+export const GuestSubtype = {
+    NOT_SPECIFIED: 'not_specified',
+    CONTRACTOR: 'contractor',
+    CUSTOMER: 'customer',
+    PARTNER: 'partner',
+} as const;
+
+export type GuestSubtype = typeof GuestSubtype[keyof typeof GuestSubtype];
+
 export const PreviousViewedTypes = {
     CHANNELS: 'channels',
     THREADS: 'threads',

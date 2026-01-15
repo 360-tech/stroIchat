@@ -53,6 +53,7 @@ export type Props = {
             users: UserProfile[],
             emails: string[],
             message: string,
+            guestSubtype?: string,
         ) => Promise<ActionResult<InviteResults>>;
         sendMembersInvites: (
             teamId: string,
@@ -210,6 +211,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 users,
                 emails,
                 this.state.invite.customMessage.open ? this.state.invite.customMessage.message : '',
+                this.state.invite.guestSubtype,
             );
             invites = result.data!;
         }
@@ -246,9 +248,20 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 inviteType: state.invite.inviteType,
                 customMessage: state.invite.customMessage,
                 inviteChannels: state.invite.inviteChannels,
+                guestSubtype: state.invite.guestSubtype,
             },
             result: defaultResultState,
             termWithoutResults: null,
+        }));
+    };
+
+    setGuestSubtype = (subtype: string) => {
+        this.setState((state: State) => ({
+            ...state,
+            invite: {
+                ...state.invite,
+                guestSubtype: subtype,
+            },
         }));
     };
 
@@ -415,6 +428,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 footerClass='InvitationModal__footer'
                 onClose={this.handleHide}
                 channelToInvite={this.props.channelToInvite}
+                setGuestSubtype={this.setGuestSubtype}
                 {...this.state.invite}
             />
         );

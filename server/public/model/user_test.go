@@ -632,3 +632,68 @@ func TestSanitizeProfile(t *testing.T) {
 		require.Empty(t, user.Props[UserPropsKeyRemoteEmail])
 	})
 }
+
+func TestGetGuestSubtype(t *testing.T) {
+	t.Run("should return not_specified when Props is nil", func(t *testing.T) {
+		user := &User{}
+		require.Equal(t, GuestSubtypeNotSpecified, user.GetGuestSubtype())
+	})
+
+	t.Run("should return not_specified when guest_subtype is not set", func(t *testing.T) {
+		user := &User{
+			Props: StringMap{"other": "value"},
+		}
+		require.Equal(t, GuestSubtypeNotSpecified, user.GetGuestSubtype())
+	})
+
+	t.Run("should return not_specified when guest_subtype is empty", func(t *testing.T) {
+		user := &User{
+			Props: StringMap{UserPropsKeyGuestSubtype: ""},
+		}
+		require.Equal(t, GuestSubtypeNotSpecified, user.GetGuestSubtype())
+	})
+
+	t.Run("should return correct subtype when set", func(t *testing.T) {
+		user := &User{
+			Props: StringMap{UserPropsKeyGuestSubtype: GuestSubtypeContractor},
+		}
+		require.Equal(t, GuestSubtypeContractor, user.GetGuestSubtype())
+
+		user.Props[UserPropsKeyGuestSubtype] = GuestSubtypeCustomer
+		require.Equal(t, GuestSubtypeCustomer, user.GetGuestSubtype())
+
+		user.Props[UserPropsKeyGuestSubtype] = GuestSubtypePartner
+		require.Equal(t, GuestSubtypePartner, user.GetGuestSubtype())
+	})
+}
+
+func TestSetGuestSubtype(t *testing.T) {
+	t.Run("should initialize Props when nil", func(t *testing.T) {
+		user := &User{}
+		user.SetGuestSubtype(GuestSubtypeContractor)
+		require.NotNil(t, user.Props)
+		require.Equal(t, GuestSubtypeContractor, user.Props[UserPropsKeyGuestSubtype])
+	})
+
+	t.Run("should set not_specified when empty string provided", func(t *testing.T) {
+		user := &User{
+			Props: StringMap{},
+		}
+		user.SetGuestSubtype("")
+		require.Equal(t, GuestSubtypeNotSpecified, user.Props[UserPropsKeyGuestSubtype])
+	})
+
+	t.Run("should set correct subtype", func(t *testing.T) {
+		user := &User{
+			Props: StringMap{},
+		}
+		user.SetGuestSubtype(GuestSubtypeContractor)
+		require.Equal(t, GuestSubtypeContractor, user.Props[UserPropsKeyGuestSubtype])
+
+		user.SetGuestSubtype(GuestSubtypeCustomer)
+		require.Equal(t, GuestSubtypeCustomer, user.Props[UserPropsKeyGuestSubtype])
+
+		user.SetGuestSubtype(GuestSubtypePartner)
+		require.Equal(t, GuestSubtypePartner, user.Props[UserPropsKeyGuestSubtype])
+	})
+}

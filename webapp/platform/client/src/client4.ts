@@ -1518,10 +1518,10 @@ export default class Client4 {
         );
     };
 
-    sendEmailGuestInvitesToChannelsGracefully = async (teamId: string, channelIds: string[], emails: string[], message: string) => {
+    sendEmailGuestInvitesToChannelsGracefully = async (teamId: string, channelIds: string[], emails: string[], message: string, guestSubtype?: string) => {
         return this.doFetch<TeamInviteWithError[]>(
             `${this.getTeamRoute(teamId)}/invite-guests/email?graceful=true`,
-            {method: 'post', body: JSON.stringify({emails, channels: channelIds, message})},
+            {method: 'post', body: JSON.stringify({emails, channels: channelIds, message, guest_subtype: guestSubtype || ''})},
         );
     };
 

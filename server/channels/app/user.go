@@ -93,6 +93,14 @@ func (a *App) CreateUserWithToken(rctx request.CTX, user *model.User, token *mod
 	user.Email = tokenData["email"]
 	user.EmailVerified = true
 
+	// Extract guest subtype from token if present
+	if token.Type == TokenTypeGuestInvitation {
+		if guestSubtype, exists := tokenData["guest_subtype"]; exists && guestSubtype != "" {
+			user.SetGuestSubtype(guestSubtype)
+		}
+		// Note: CreateGuest will set default subtype if not set
+	}
+
 	var ruser *model.User
 	var err *model.AppError
 	if token.Type == TokenTypeTeamInvitation {
@@ -232,6 +240,13 @@ func (a *App) CreateUser(rctx request.CTX, user *model.User) (*model.User, *mode
 // CreateGuest creates a guest and sets several fields of the returned User struct to
 // their zero values.
 func (a *App) CreateGuest(rctx request.CTX, user *model.User) (*model.User, *model.AppError) {
+	// Set default guest subtype if not specified
+	// Check if Props is nil or guest_subtype is not set
+	if user.Props == nil {
+		user.SetGuestSubtype(model.GuestSubtypeNotSpecified)
+	} else if _, exists := user.Props[model.UserPropsKeyGuestSubtype]; !exists {
+		user.SetGuestSubtype(model.GuestSubtypeNotSpecified)
+	}
 	return a.createUserOrGuest(rctx, user, true)
 }
 

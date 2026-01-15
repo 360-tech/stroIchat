@@ -1142,6 +1142,49 @@ func TestCreateUserWithToken(t *testing.T) {
 		assert.Equal(t, members[0].ChannelId, th.BasicChannel.Id)
 	})
 
+	t.Run("valid guest request with guest_subtype in token", func(t *testing.T) {
+		invitationEmail := strings.ToLower(model.NewId()) + "other-email@test.com"
+		token := model.NewToken(
+			TokenTypeGuestInvitation,
+			model.MapToJSON(map[string]string{
+				"teamId":       th.BasicTeam.Id,
+				"email":        invitationEmail,
+				"channels":     th.BasicChannel.Id,
+				"senderId":     th.BasicUser.Id,
+				"guest_subtype": model.GuestSubtypeContractor,
+			}),
+		)
+
+		require.NoError(t, th.App.Srv().Store().Token().Save(token))
+		guest := model.User{Email: invitationEmail, Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
+		newGuest, err := th.App.CreateUserWithToken(th.Context, &guest, token)
+		require.Nil(t, err, "Should add user to the team. err=%v", err)
+
+		assert.True(t, newGuest.IsGuest())
+		require.Equal(t, model.GuestSubtypeContractor, newGuest.GetGuestSubtype())
+	})
+
+	t.Run("valid guest request without guest_subtype in token should default to not_specified", func(t *testing.T) {
+		invitationEmail := strings.ToLower(model.NewId()) + "other-email@test.com"
+		token := model.NewToken(
+			TokenTypeGuestInvitation,
+			model.MapToJSON(map[string]string{
+				"teamId":   th.BasicTeam.Id,
+				"email":    invitationEmail,
+				"channels": th.BasicChannel.Id,
+				"senderId": th.BasicUser.Id,
+			}),
+		)
+
+		require.NoError(t, th.App.Srv().Store().Token().Save(token))
+		guest := model.User{Email: invitationEmail, Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
+		newGuest, err := th.App.CreateUserWithToken(th.Context, &guest, token)
+		require.Nil(t, err, "Should add user to the team. err=%v", err)
+
+		assert.True(t, newGuest.IsGuest())
+		require.Equal(t, model.GuestSubtypeNotSpecified, newGuest.GetGuestSubtype())
+	})
+
 	t.Run("create guest having email domain restrictions", func(t *testing.T) {
 		enableGuestDomainRestrictions := *th.App.Config().GuestAccountsSettings.RestrictCreationToDomains
 		defer func() {
@@ -1698,6 +1741,47 @@ func TestGetViewUsersRestrictions(t *testing.T) {
 		assert.NotNil(t, restrictions.Channels)
 		assert.ElementsMatch(t, restrictions.Teams, []string{team1.Id})
 		assert.ElementsMatch(t, []string{team1townsquare.Id, team1offtopic.Id, team1channel1.Id, team1channel2.Id, team2townsquare.Id, team2offtopic.Id, team2channel1.Id}, restrictions.Channels)
+	})
+}
+
+func TestCreateGuest(t *testing.T) {
+	mainHelper.Parallel(t)
+	th := Setup(t).InitBasic()
+	defer th.TearDown()
+
+	t.Run("should set default guest_subtype when not specified", func(t *testing.T) {
+		guest := &model.User{
+			Email:    "guest" + model.NewId() + "@test.com",
+			Username: "guest" + model.NewId(),
+			Password: "Password1",
+		}
+		newGuest, err := th.App.CreateGuest(th.Context, guest)
+		require.Nil(t, err)
+		require.Equal(t, model.GuestSubtypeNotSpecified, newGuest.GetGuestSubtype())
+	})
+
+	t.Run("should preserve guest_subtype when already set", func(t *testing.T) {
+		guest := &model.User{
+			Email:    "guest" + model.NewId() + "@test.com",
+			Username: "guest" + model.NewId(),
+			Password: "Password1",
+			Props:    model.StringMap{model.UserPropsKeyGuestSubtype: model.GuestSubtypeContractor},
+		}
+		newGuest, err := th.App.CreateGuest(th.Context, guest)
+		require.Nil(t, err)
+		require.Equal(t, model.GuestSubtypeContractor, newGuest.GetGuestSubtype())
+	})
+
+	t.Run("should set default guest_subtype when Props is nil", func(t *testing.T) {
+		guest := &model.User{
+			Email:    "guest" + model.NewId() + "@test.com",
+			Username: "guest" + model.NewId(),
+			Password: "Password1",
+			Props:    nil,
+		}
+		newGuest, err := th.App.CreateGuest(th.Context, guest)
+		require.Nil(t, err)
+		require.Equal(t, model.GuestSubtypeNotSpecified, newGuest.GetGuestSubtype())
 	})
 }
 

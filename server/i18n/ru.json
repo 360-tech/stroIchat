@@ -5352,6 +5352,10 @@
     "translation": "Каналы в приглашении должны быть частью команды в приглашении."
   },
   {
+    "id": "api.team.invite_guests.invalid_guest_subtype.app_error",
+    "translation": "Указан недопустимый подтип гостя."
+  },
+  {
     "id": "api.team.search_teams.pagination_not_implemented.public_team_search",
     "translation": "Пагинация не выполняется для поиска в публичных группах."
   },

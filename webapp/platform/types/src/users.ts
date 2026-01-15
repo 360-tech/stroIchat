@@ -128,6 +128,8 @@ export type UserCustomStatus = {
     expires_at?: string;
 };
 
+export type GuestSubtype = 'not_specified' | 'contractor' | 'customer' | 'partner';
+
 export type UserAccessToken = {
     id: string;
     token?: string;

@@ -21,7 +21,9 @@ import {getSiteURL} from 'utils/url';
 import AddToChannels, {defaultCustomMessage, defaultInviteChannels} from './add_to_channels';
 import type {CustomMessageProps, InviteChannels} from './add_to_channels';
 import InviteAs, {InviteType} from './invite_as';
+import GuestSubtypeSelector from './guest_subtype_selector';
 import OverageUsersBannerNotice from './overage_users_banner_notice';
+import {GuestSubtype} from 'utils/constants';
 
 import './invite_view.scss';
 
@@ -32,6 +34,7 @@ export const initializeInviteState = (initialSearchValue = '', inviteAsGuest = f
         inviteChannels: defaultInviteChannels,
         usersEmails: [],
         usersEmailsSearch: initialSearchValue,
+        guestSubtype: GuestSubtype.NOT_SPECIFIED,
     });
 };
 
@@ -41,6 +44,7 @@ export type InviteState = {
     inviteChannels: InviteChannels;
     usersEmails: Array<UserProfile | string>;
     usersEmailsSearch: string;
+    guestSubtype: string;
 };
 
 export type Props = InviteState & {
@@ -67,6 +71,7 @@ export type Props = InviteState & {
     townSquareDisplayName: string;
     channelToInvite?: Channel;
     onPaste?: (e: ClipboardEvent) => void;
+    setGuestSubtype: (subtype: string) => void;
 }
 
 export default function InviteView(props: Props) {
@@ -233,6 +238,13 @@ export default function InviteView(props: Props) {
                     canInviteGuests={props.canInviteGuests}
                 />
                 }
+                {props.inviteType === InviteType.GUEST && (
+                    <GuestSubtypeSelector
+                        guestSubtype={props.guestSubtype}
+                        setGuestSubtype={props.setGuestSubtype}
+                        titleClass='InviteView__sectionTitle'
+                    />
+                )}
                 {(props.inviteType === InviteType.GUEST || (props.inviteType === InviteType.MEMBER && props.channelToInvite)) && (
                     <AddToChannels
                         setCustomMessage={props.setCustomMessage}

@@ -8,15 +8,17 @@ import (
 )
 
 type GuestsInvite struct {
-	Emails   []string `json:"emails"`
-	Channels []string `json:"channels"`
-	Message  string   `json:"message"`
+	Emails       []string `json:"emails"`
+	Channels     []string `json:"channels"`
+	Message      string   `json:"message"`
+	GuestSubtype string   `json:"guest_subtype"`
 }
 
 func (i *GuestsInvite) Auditable() map[string]any {
 	return map[string]any{
-		"emails":   i.Emails,
-		"channels": i.Channels,
+		"emails":        i.Emails,
+		"channels":      i.Channels,
+		"guest_subtype": i.GuestSubtype,
 	}
 }
 

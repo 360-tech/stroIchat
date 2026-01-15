@@ -119,6 +119,7 @@ func TestSendInviteEmails(t *testing.T) {
 			false,
 			false,
 			false,
+			model.GuestSubtypeNotSpecified,
 		)
 		require.NoError(t, err)
 
@@ -149,6 +150,7 @@ func TestSendInviteEmails(t *testing.T) {
 			false,
 			false,
 			false,
+			model.GuestSubtypeNotSpecified,
 		)
 		require.NoError(t, err)
 
@@ -164,6 +166,7 @@ func TestSendInviteEmails(t *testing.T) {
 			true,
 			false,
 			false,
+			model.GuestSubtypeNotSpecified,
 		)
 		require.Error(t, err)
 	})
@@ -185,6 +188,7 @@ func TestSendInviteEmails(t *testing.T) {
 			false,
 			false,
 			false,
+			model.GuestSubtypeNotSpecified,
 		)
 		require.NoError(t, err)
 

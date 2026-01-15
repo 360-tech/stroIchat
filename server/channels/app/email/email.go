@@ -496,6 +496,7 @@ func (es *Service) SendGuestInviteEmails(
 	errorWhenNotSent bool,
 	isSystemAdmin bool,
 	isFirstAdmin bool,
+	guestSubtype string,
 ) error {
 	if es.perHourEmailRateLimiter == nil {
 		return NoRateLimiterError
@@ -509,6 +510,11 @@ func (es *Service) SendGuestInviteEmails(
 		mlog.Error("rate limit exceeded", mlog.Duration("RetryAfter", result.RetryAfter), mlog.Duration("ResetAfter", result.ResetAfter), mlog.String("user_id", senderUserId),
 			mlog.String("team_id", team.Id), mlog.String("retry_after_secs", fmt.Sprintf("%f", result.RetryAfter.Seconds())), mlog.String("reset_after_secs", fmt.Sprintf("%f", result.ResetAfter.Seconds())))
 		return RateLimitExceededError
+	}
+
+	// Set default subtype if not specified
+	if guestSubtype == "" {
+		guestSubtype = model.GuestSubtypeNotSpecified
 	}
 
 	for _, invite := range invites {
@@ -540,11 +546,12 @@ func (es *Service) SendGuestInviteEmails(
 			token := model.NewToken(
 				TokenTypeGuestInvitation,
 				model.MapToJSON(map[string]string{
-					"teamId":   team.Id,
-					"channels": strings.Join(channelIDs, " "),
-					"email":    invite,
-					"guest":    "true",
-					"senderId": senderUserId,
+					"teamId":        team.Id,
+					"channels":      strings.Join(channelIDs, " "),
+					"email":         invite,
+					"guest":         "true",
+					"senderId":      senderUserId,
+					"guest_subtype": guestSubtype,
 				}),
 			)
 

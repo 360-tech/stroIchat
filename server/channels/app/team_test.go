@@ -1665,6 +1665,7 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 			true,
 			false,
 			false,
+			mock.AnythingOfType("string"),
 		).Once().Return(nil)
 		emailServiceMock.On("Stop").Once().Return()
 		th.App.Srv().EmailService = &emailServiceMock
@@ -1692,6 +1693,7 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 			true,
 			false,
 			false,
+			mock.AnythingOfType("string"),
 		).Once().Return(email.SendMailError)
 		emailServiceMock.On("Stop").Once().Return()
 		th.App.Srv().EmailService = &emailServiceMock
@@ -1704,6 +1706,149 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 		require.Nil(t, err)
 		require.Len(t, res, 1)
 		require.NotNil(t, res[0].Error)
+	})
+
+	t.Run("should handle guest_subtype in gracefully invite", func(t *testing.T) {
+		emailServiceMock := emailmocks.ServiceInterface{}
+		emailServiceMock.On("SendGuestInviteEmails",
+			mock.AnythingOfType("*model.Team"),
+			mock.AnythingOfType("[]*model.Channel"),
+			mock.AnythingOfType("string"),
+			mock.AnythingOfType("string"),
+			mock.AnythingOfType("[]uint8"),
+			[]string{"guest@test.com"},
+			"",
+			"",
+			true,
+			false,
+			false,
+			model.GuestSubtypeCustomer,
+		).Once().Return(nil)
+		emailServiceMock.On("Stop").Maybe().Return()
+		th.App.Srv().EmailService = &emailServiceMock
+
+		res, err := th.App.InviteGuestsToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
+			Emails:       []string{"guest@test.com"},
+			Channels:     []string{th.BasicChannel.Id},
+			GuestSubtype: model.GuestSubtypeCustomer,
+		}, th.BasicUser.Id)
+		require.Nil(t, err)
+		require.Len(t, res, 1)
+		require.Nil(t, res[0].Error)
+		emailServiceMock.AssertExpectations(t)
+	})
+}
+
+func TestInviteGuestsToChannelsWithGuestSubtype(t *testing.T) {
+	mainHelper.Parallel(t)
+	th := Setup(t).InitBasic()
+	defer th.TearDown()
+
+	th.App.UpdateConfig(func(cfg *model.Config) {
+		*cfg.ServiceSettings.EnableEmailInvitations = true
+	})
+
+	t.Run("should accept valid guest_subtype", func(t *testing.T) {
+		emailServiceMock := emailmocks.ServiceInterface{}
+		emailServiceMock.On("SendGuestInviteEmails",
+			mock.AnythingOfType("*model.Team"),
+			mock.AnythingOfType("[]*model.Channel"),
+			mock.AnythingOfType("string"),
+			mock.AnythingOfType("string"),
+			mock.AnythingOfType("[]uint8"),
+			[]string{"guest@test.com"},
+			"",
+			"",
+			false,
+			false,
+			false,
+			model.GuestSubtypeContractor,
+		).Once().Return(nil)
+		emailServiceMock.On("Stop").Maybe().Return()
+		th.App.Srv().EmailService = &emailServiceMock
+
+		err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
+			Emails:       []string{"guest@test.com"},
+			Channels:     []string{th.BasicChannel.Id},
+			GuestSubtype: model.GuestSubtypeContractor,
+		}, th.BasicUser.Id)
+		require.Nil(t, err)
+		emailServiceMock.AssertExpectations(t)
+	})
+
+	t.Run("should reject invalid guest_subtype", func(t *testing.T) {
+		err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
+			Emails:       []string{"guest@test.com"},
+			Channels:     []string{th.BasicChannel.Id},
+			GuestSubtype: "invalid_subtype",
+		}, th.BasicUser.Id)
+		require.NotNil(t, err)
+		require.Equal(t, "api.team.invite_guests.invalid_guest_subtype.app_error", err.Id)
+	})
+
+	t.Run("should default to not_specified when guest_subtype is empty", func(t *testing.T) {
+		emailServiceMock := emailmocks.ServiceInterface{}
+		emailServiceMock.On("SendGuestInviteEmails",
+			mock.AnythingOfType("*model.Team"),
+			mock.AnythingOfType("[]*model.Channel"),
+			mock.AnythingOfType("string"),
+			mock.AnythingOfType("string"),
+			mock.AnythingOfType("[]uint8"),
+			[]string{"guest@test.com"},
+			"",
+			"",
+			false,
+			false,
+			false,
+			model.GuestSubtypeNotSpecified,
+		).Once().Return(nil)
+		emailServiceMock.On("Stop").Maybe().Return()
+		th.App.Srv().EmailService = &emailServiceMock
+
+		err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
+			Emails:       []string{"guest@test.com"},
+			Channels:     []string{th.BasicChannel.Id},
+			GuestSubtype: "",
+		}, th.BasicUser.Id)
+		require.Nil(t, err)
+		emailServiceMock.AssertExpectations(t)
+	})
+
+	t.Run("should accept all valid guest_subtypes", func(t *testing.T) {
+		validSubtypes := []string{
+			model.GuestSubtypeNotSpecified,
+			model.GuestSubtypeContractor,
+			model.GuestSubtypeCustomer,
+			model.GuestSubtypePartner,
+		}
+
+		for _, subtype := range validSubtypes {
+			emailServiceMock := emailmocks.ServiceInterface{}
+			emailServiceMock.On("SendGuestInviteEmails",
+				mock.AnythingOfType("*model.Team"),
+				mock.AnythingOfType("[]*model.Channel"),
+				mock.AnythingOfType("string"),
+				mock.AnythingOfType("string"),
+				mock.AnythingOfType("[]uint8"),
+				[]string{"guest@test.com"},
+				"",
+				"",
+				false,
+				false,
+				false,
+				subtype,
+			).Once().Return(nil)
+			emailServiceMock.On("Stop").Maybe().Return()
+			th.App.Srv().EmailService = &emailServiceMock
+
+			err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
+				Emails:       []string{"guest@test.com"},
+				Channels:     []string{th.BasicChannel.Id},
+				GuestSubtype: subtype,
+			}, th.BasicUser.Id)
+			require.Nil(t, err, "Should accept guest_subtype: %s", subtype)
+			emailServiceMock.AssertExpectations(t)
+		}
 	})
 }
 

@@ -44,10 +44,16 @@ func (us *UserService) CreateUser(rctx request.CTX, user *model.User, opts UserC
 
 	// Below is a special case where the first user in the entire
 	// system is granted the system_admin role
+	// But preserve guest role if user is a guest
 	if ok, err := us.store.IsEmpty(true); err != nil {
 		return nil, errors.Wrap(UserStoreIsEmptyError, err.Error())
 	} else if ok {
-		user.Roles = model.SystemAdminRoleId + " " + model.SystemUserRoleId
+		if opts.Guest {
+			// First user is a guest, give them admin + guest roles
+			user.Roles = model.SystemAdminRoleId + " " + model.SystemGuestRoleId
+		} else {
+			user.Roles = model.SystemAdminRoleId + " " + model.SystemUserRoleId
+		}
 	}
 
 	if _, ok := i18n.GetSupportedLocales()[user.Locale]; !ok {
