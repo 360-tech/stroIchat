@@ -3656,7 +3656,7 @@ type GuestAccountsSettings struct {
 
 func (s *GuestAccountsSettings) SetDefaults() {
 	if s.Enable == nil {
-		s.Enable = NewPointer(false)
+		s.Enable = NewPointer(true)
 	}
 
 	if s.HideTags == nil {

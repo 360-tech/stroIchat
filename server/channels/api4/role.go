@@ -193,11 +193,6 @@ func patchRole(c *Context, w http.ResponseWriter, r *http.Request) {
 		*patch.Permissions = model.RemoveDuplicateStrings(*patch.Permissions)
 	}
 
-	if c.App.Channels().License() != nil && isGuest && !*c.App.Channels().License().Features.GuestAccountsPermissions {
-		c.Err = model.NewAppError("Api4.PatchRoles", "api.roles.patch_roles.license.error", nil, "", http.StatusNotImplemented)
-		return
-	}
-
 	if oldRole.Name == model.TeamAdminRoleId ||
 		oldRole.Name == model.ChannelAdminRoleId ||
 		oldRole.Name == model.SystemUserRoleId ||

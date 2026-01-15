@@ -432,23 +432,8 @@ func NewServer(options ...Option) (*Server, error) {
 	}
 
 	s.platform.AddConfigListener(func(oldCfg, newCfg *model.Config) {
-		appInstance := New(ServerConnector(s.Channels()))
-		if *oldCfg.GuestAccountsSettings.Enable && !*newCfg.GuestAccountsSettings.Enable {
-			c := request.EmptyContext(s.Log())
-			if appErr := appInstance.DeactivateGuests(c); appErr != nil {
-				mlog.Error("Unable to deactivate guest accounts", mlog.Err(appErr))
-			}
-		}
 	})
 
-	// Disable active guest accounts on first run if guest accounts are disabled
-	if !*s.platform.Config().GuestAccountsSettings.Enable {
-		appInstance := New(ServerConnector(s.Channels()))
-		c := request.EmptyContext(s.Log())
-		if appErr := appInstance.DeactivateGuests(c); appErr != nil {
-			mlog.Error("Unable to deactivate guest accounts", mlog.Err(appErr))
-		}
-	}
 
 	if s.runEssentialJobs {
 		s.runJobs()

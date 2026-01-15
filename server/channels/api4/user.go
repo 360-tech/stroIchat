@@ -241,14 +241,6 @@ func createUser(c *Context, w http.ResponseWriter, r *http.Request) {
 		auditRec.AddMeta("token_type", token.Type)
 
 		if token.Type == app.TokenTypeGuestInvitation {
-			if c.App.Channels().License() == nil {
-				c.Err = model.NewAppError("CreateUserWithToken", "api.user.create_user.guest_accounts.license.app_error", nil, "", http.StatusBadRequest)
-				return
-			}
-			if !*c.App.Config().GuestAccountsSettings.Enable {
-				c.Err = model.NewAppError("CreateUserWithToken", "api.user.create_user.guest_accounts.disabled.app_error", nil, "", http.StatusBadRequest)
-				return
-			}
 		}
 		ruser, err = c.App.CreateUserWithToken(c.AppContext, &user, token)
 	} else if inviteId != "" {
@@ -1642,10 +1634,6 @@ func updateUserActive(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if active && user.IsGuest() && !*c.App.Config().GuestAccountsSettings.Enable {
-		c.Err = model.NewAppError("updateUserActive", "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error", nil, "userId="+c.Params.UserId, http.StatusUnauthorized)
-		return
-	}
 
 	if user.AuthService == model.UserAuthServiceLdap {
 		c.Err = model.NewAppError("updateUserActive", "api.user.update_active.cannot_modify_status_when_user_is_managed_by_ldap.app_error", nil, "userId="+c.Params.UserId, http.StatusForbidden)
@@ -2018,14 +2006,6 @@ func login(c *Context, w http.ResponseWriter, r *http.Request) {
 	auditRec.AddEventResultState(user)
 
 	if user.IsGuest() {
-		if c.App.Channels().License() == nil {
-			c.Err = model.NewAppError("login", "api.user.login.guest_accounts.license.error", nil, "", http.StatusUnauthorized)
-			return
-		}
-		if !*c.App.Config().GuestAccountsSettings.Enable {
-			c.Err = model.NewAppError("login", "api.user.login.guest_accounts.disabled.error", nil, "", http.StatusUnauthorized)
-			return
-		}
 	}
 
 	if user.IsRemote() {
@@ -2976,22 +2956,6 @@ func demoteUserToGuest(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if c.App.Channels().License() == nil {
-		c.Err = model.NewAppError("Api4.demoteUserToGuest", "api.team.demote_user_to_guest.license.error", nil, "", http.StatusNotImplemented)
-		return
-	}
-
-	if !*c.App.Config().GuestAccountsSettings.Enable {
-		c.Err = model.NewAppError("Api4.demoteUserToGuest", "api.team.demote_user_to_guest.disabled.error", nil, "", http.StatusNotImplemented)
-		return
-	}
-
-	guestEnabled := c.App.Channels().License() != nil && *c.App.Channels().License().Features.GuestAccounts
-
-	if !guestEnabled {
-		c.Err = model.NewAppError("Api4.demoteUserToGuest", "api.team.invite_guests_to_channels.disabled.error", nil, "", http.StatusForbidden)
-		return
-	}
 
 	auditRec := c.MakeAuditRecord(model.AuditEventDemoteUserToGuest, model.AuditStatusFail)
 	model.AddEventParameterToAuditRec(auditRec, "user_id", c.Params.UserId)
