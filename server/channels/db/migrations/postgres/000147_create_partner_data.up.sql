@@ -1,13 +1,8 @@
 -- Create partner data structure in database
 -- This migration prepares the database for partner functionality
--- Actual partner role assignment and partner_subtype setting is handled by application logic
-DO $$
-BEGIN
-    -- This migration ensures the database structure is ready for partner data
-    -- Partner roles (system_partner, team_partner, channel_partner) and partner_subtype
-    -- will be set by the application when users are created or promoted to partner status
-    
-    -- No data changes are made here as partner assignment is business logic
-    -- that should be handled by the application layer, not database migrations
-    
-END $$;
+
+-- Add partner role columns to schemes table (required for partner permissions system)
+ALTER TABLE schemes ADD COLUMN IF NOT EXISTS defaultteampartnerrole VARCHAR(64);
+ALTER TABLE schemes ADD COLUMN IF NOT EXISTS defaultchannelpartnerrole VARCHAR(64);
+
+CREATE INDEX IF NOT EXISTS idx_schemes_channel_partner_role ON schemes (defaultchannelpartnerrole);

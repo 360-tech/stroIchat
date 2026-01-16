@@ -1,19 +1,26 @@
 -- Rollback: Remove partner data
+
+-- Remove partner role columns from schemes table
+ALTER TABLE schemes DROP COLUMN IF EXISTS defaultchannelpartnerrole;
+ALTER TABLE schemes DROP COLUMN IF EXISTS defaultteampartnerrole;
+DROP INDEX IF EXISTS idx_schemes_channel_partner_role;
+
+
 DO $$
 BEGIN
     -- Remove partner_subtype from users.props
     IF EXISTS (
-        SELECT 1 
-        FROM information_schema.columns 
-        WHERE table_name = 'users' 
-          AND column_name = 'props' 
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name = 'users'
+          AND column_name = 'props'
           AND data_type = 'jsonb'
           AND table_schema = current_schema()
     ) THEN
         -- Remove partner_subtype key from props
-        UPDATE users 
+        UPDATE users
         SET props = props - 'partner_subtype'
-        WHERE props IS NOT NULL 
+        WHERE props IS NOT NULL
           AND props ? 'partner_subtype';
     END IF;
 
@@ -26,8 +33,8 @@ BEGIN
         ),
         ' channel_partner', '', 'g'
     ))
-    WHERE roles LIKE '%system_partner%' 
-       OR roles LIKE '%team_partner%' 
+    WHERE roles LIKE '%system_partner%'
+       OR roles LIKE '%team_partner%'
        OR roles LIKE '%channel_partner%';
 
     -- Clean up any remaining partner role references
@@ -37,9 +44,9 @@ BEGIN
 
     -- Remove partner roles from teammembers table if it exists
     IF EXISTS (
-        SELECT 1 
-        FROM information_schema.tables 
-        WHERE table_name = 'teammembers' 
+        SELECT 1
+        FROM information_schema.tables
+        WHERE table_name = 'teammembers'
           AND table_schema = current_schema()
     ) THEN
         UPDATE teammembers
@@ -50,8 +57,8 @@ BEGIN
             ),
             ' channel_partner', '', 'g'
         ))
-        WHERE roles LIKE '%system_partner%' 
-           OR roles LIKE '%team_partner%' 
+        WHERE roles LIKE '%system_partner%'
+           OR roles LIKE '%team_partner%'
            OR roles LIKE '%channel_partner%';
 
         -- Clean up any remaining partner role references
@@ -62,9 +69,9 @@ BEGIN
 
     -- Remove partner roles from channelmembers table if it exists
     IF EXISTS (
-        SELECT 1 
-        FROM information_schema.tables 
-        WHERE table_name = 'channelmembers' 
+        SELECT 1
+        FROM information_schema.tables
+        WHERE table_name = 'channelmembers'
           AND table_schema = current_schema()
     ) THEN
         UPDATE channelmembers
@@ -75,8 +82,8 @@ BEGIN
             ),
             ' channel_partner', '', 'g'
         ))
-        WHERE roles LIKE '%system_partner%' 
-           OR roles LIKE '%team_partner%' 
+        WHERE roles LIKE '%system_partner%'
+           OR roles LIKE '%team_partner%'
            OR roles LIKE '%channel_partner%';
 
         -- Clean up any remaining partner role references
