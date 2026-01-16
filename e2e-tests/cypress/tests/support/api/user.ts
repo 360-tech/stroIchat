@@ -452,27 +452,27 @@ function apiCreateUser({
 Cypress.Commands.add('apiCreateUser', apiCreateUser);
 
 /**
- * Create a new guest user with an options to set name prefix and be able to bypass tutorial steps.
- * @param {string} options.prefix - 'guest' (default) or any prefix to easily identify a guest
- * @param {boolean} options.bypassTutorial - true (default) or false for guest to go thru tutorial steps
+ * Create a new partner user with an options to set name prefix and be able to bypass tutorial steps.
+ * @param {string} options.prefix - 'partner' (default) or any prefix to easily identify a partner
+ * @param {boolean} options.bypassTutorial - true (default) or false for partner to go thru tutorial steps
  * @param {boolean} options.showOnboarding - false (default) to hide or true to show Onboarding steps
- * @returns {UserProfile} `out.guest` as `UserProfile` object
+ * @returns {UserProfile} `out.partner` as `UserProfile` object
  *
  * @example
- *   cy.apiCreateGuestUser(options);
+ *   cy.apiCreatePartnerUser(options);
  */
-function apiCreateGuestUser({
-    prefix = 'guest',
+function apiCreatePartnerUser({
+    prefix = 'partner',
     bypassTutorial = true,
-}: Partial<CreateUserOptions>): ChainableT<{guest: UserProfile}> {
+}: Partial<CreateUserOptions>): ChainableT<{partner: UserProfile}> {
     return cy.apiCreateUser({prefix, bypassTutorial}).then(({user}) => {
-        cy.apiDemoteUserToGuest(user.id);
+        cy.apiDemoteUserToPartner(user.id);
 
-        return cy.wrap({guest: user});
+        return cy.wrap({partner: user});
     });
 }
 
-Cypress.Commands.add('apiCreateGuestUser', apiCreateGuestUser);
+Cypress.Commands.add('apiCreatePartnerUser', apiCreatePartnerUser);
 
 /**
  * Revoke all active sessions for a user
@@ -621,15 +621,15 @@ function apiActivateUser(userId: string): ChainableT<any> {
 Cypress.Commands.add('apiActivateUser', apiActivateUser);
 
 /**
- * Convert a regular user into a guest. This will convert the user into a guest for the whole system while retaining their existing team and channel memberships.
+ * Convert a regular user into a partner. This will convert the user into a partner for the whole system while retaining their existing team and channel memberships.
  * See https://api.mattermost.com/#tag/users/paths/~1users~1{user_id}~1demote/post
  * @param {string} userId - User ID
- * @returns {UserProfile} out.guest: `UserProfile` object
+ * @returns {UserProfile} out.partner: `UserProfile` object
  *
  * @example
- *   cy.apiDemoteUserToGuest('user-id');
+ *   cy.apiDemoteUserToPartner('user-id');
  */
-function apiDemoteUserToGuest(userId: string): ChainableT<{guest: UserProfile}> {
+function apiDemoteUserToPartner(userId: string): ChainableT<{partner: UserProfile}> {
     return cy.request({
         headers: {'X-Requested-With': 'XMLHttpRequest'},
         url: `/api/v4/users/${userId}/demote`,
@@ -637,23 +637,23 @@ function apiDemoteUserToGuest(userId: string): ChainableT<{guest: UserProfile}> 
     }).then((response) => {
         expect(response.status).to.equal(200);
         return cy.apiGetUserById(userId).then(({user}) => {
-            return cy.wrap({guest: user});
+            return cy.wrap({partner: user});
         });
     });
 }
 
-Cypress.Commands.add('apiDemoteUserToGuest', apiDemoteUserToGuest);
+Cypress.Commands.add('apiDemoteUserToPartner', apiDemoteUserToPartner);
 
 /**
- * Convert a guest into a regular user. This will convert the guest into a user for the whole system while retaining any team and channel memberships and automatically joining them to the default channels.
+ * Convert a partner into a regular user. This will convert the partner into a user for the whole system while retaining any team and channel memberships and automatically joining them to the default channels.
  * See https://api.mattermost.com/#tag/users/paths/~1users~1{user_id}~1promote/post
  * @param {string} userId - User ID
  * @returns {UserProfile} out.user: `UserProfile` object
  *
  * @example
- *   cy.apiPromoteGuestToUser('user-id');
+ *   cy.apiPromotePartnerToUser('user-id');
  */
-function apiPromoteGuestToUser(userId: string): ChainableT<{user: UserProfile}> {
+function apiPromotePartnerToUser(userId: string): ChainableT<{user: UserProfile}> {
     return cy.request({
         headers: {'X-Requested-With': 'XMLHttpRequest'},
         url: `/api/v4/users/${userId}/promote`,
@@ -664,7 +664,7 @@ function apiPromoteGuestToUser(userId: string): ChainableT<{user: UserProfile}> 
     });
 }
 
-Cypress.Commands.add('apiPromoteGuestToUser', apiPromoteGuestToUser);
+Cypress.Commands.add('apiPromotePartnerToUser', apiPromotePartnerToUser);
 
 /**
  * Verifies a user's email via userId without having to go to the user's email inbox.
@@ -867,15 +867,15 @@ declare global {
             apiCreateCustomAdmin: typeof apiCreateCustomAdmin;
             apiCreateAdmin: typeof apiCreateAdmin;
             apiCreateUser: typeof apiCreateUser;
-            apiCreateGuestUser: typeof apiCreateGuestUser;
+            apiCreatePartnerUser: typeof apiCreatePartnerUser;
             apiRevokeUserSessions: typeof apiRevokeUserSessions;
             apiGetUsers: typeof apiGetUsers;
             apiGetUsersNotInTeam: typeof apiGetUsersNotInTeam;
             apiPatchUserRoles: typeof apiPatchUserRoles;
             apiDeactivateUser: typeof apiDeactivateUser;
             apiActivateUser: typeof apiActivateUser;
-            apiDemoteUserToGuest: typeof apiDemoteUserToGuest;
-            apiPromoteGuestToUser: typeof apiPromoteGuestToUser;
+            apiDemoteUserToPartner: typeof apiDemoteUserToPartner;
+            apiPromotePartnerToUser: typeof apiPromotePartnerToUser;
             apiVerifyUserEmailById: typeof apiVerifyUserEmailById;
             apiActivateUserMFA: typeof apiActivateUserMFA;
             apiResetPassword: typeof apiResetPassword;

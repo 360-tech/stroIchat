@@ -814,12 +814,12 @@ func TestLeaveDefaultChannel(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	guest := th.CreateGuest()
-	th.LinkUserToTeam(guest, th.BasicTeam)
+	partner := th.CreatePartner()
+	th.LinkUserToTeam(partner, th.BasicTeam)
 
 	townSquare, appErr := th.App.GetChannelByName(th.Context, "town-square", th.BasicTeam.Id, false)
 	require.Nil(t, appErr)
-	th.AddUserToChannel(guest, townSquare)
+	th.AddUserToChannel(partner, townSquare)
 	th.AddUserToChannel(th.BasicUser, townSquare)
 
 	t.Run("User tries to leave the default channel", func(t *testing.T) {
@@ -830,10 +830,10 @@ func TestLeaveDefaultChannel(t *testing.T) {
 		assert.Nil(t, appErr)
 	})
 
-	t.Run("Guest leaves the default channel", func(t *testing.T) {
-		appErr = th.App.LeaveChannel(th.Context, townSquare.Id, guest.Id)
-		assert.Nil(t, appErr, "It should allow to remove a guest user from the default channel")
-		_, appErr = th.App.GetChannelMember(th.Context, townSquare.Id, guest.Id)
+	t.Run("Partner leaves the default channel", func(t *testing.T) {
+		appErr = th.App.LeaveChannel(th.Context, townSquare.Id, partner.Id)
+		assert.Nil(t, appErr, "It should allow to remove a partner user from the default channel")
+		_, appErr = th.App.GetChannelMember(th.Context, townSquare.Id, partner.Id)
 		assert.NotNil(t, appErr)
 	})
 
@@ -934,27 +934,27 @@ func TestLeaveLastChannel(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	guest := th.CreateGuest()
-	th.LinkUserToTeam(guest, th.BasicTeam)
+	partner := th.CreatePartner()
+	th.LinkUserToTeam(partner, th.BasicTeam)
 
 	townSquare, appErr := th.App.GetChannelByName(th.Context, "town-square", th.BasicTeam.Id, false)
 	require.Nil(t, appErr)
-	th.AddUserToChannel(guest, townSquare)
-	th.AddUserToChannel(guest, th.BasicChannel)
+	th.AddUserToChannel(partner, townSquare)
+	th.AddUserToChannel(partner, th.BasicChannel)
 
-	t.Run("Guest leaves not last channel", func(t *testing.T) {
-		appErr = th.App.LeaveChannel(th.Context, townSquare.Id, guest.Id)
+	t.Run("Partner leaves not last channel", func(t *testing.T) {
+		appErr = th.App.LeaveChannel(th.Context, townSquare.Id, partner.Id)
 		require.Nil(t, appErr)
-		_, appErr = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+		_, appErr = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		assert.Nil(t, appErr, "It should maintain the team membership")
 	})
 
-	t.Run("Guest leaves last channel", func(t *testing.T) {
-		appErr = th.App.LeaveChannel(th.Context, th.BasicChannel.Id, guest.Id)
-		assert.Nil(t, appErr, "It should allow to remove a guest user from the default channel")
-		_, appErr = th.App.GetChannelMember(th.Context, th.BasicChannel.Id, guest.Id)
+	t.Run("Partner leaves last channel", func(t *testing.T) {
+		appErr = th.App.LeaveChannel(th.Context, th.BasicChannel.Id, partner.Id)
+		assert.Nil(t, appErr, "It should allow to remove a partner user from the default channel")
+		_, appErr = th.App.GetChannelMember(th.Context, th.BasicChannel.Id, partner.Id)
 		assert.NotNil(t, appErr)
-		_, appErr = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+		_, appErr = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		assert.Nil(t, appErr, "It should remove the team membership")
 	})
 }
@@ -1550,14 +1550,14 @@ func TestGetPrivateChannelsForTeam(t *testing.T) {
 	assert.ElementsMatch(t, expectedChannels, channels)
 }
 
-func TestUpdateChannelMemberRolesChangingGuest(t *testing.T) {
+func TestUpdateChannelMemberRolesChangingPartner(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	t.Run("from guest to user", func(t *testing.T) {
+	t.Run("from partner to user", func(t *testing.T) {
 		user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		ruser, _ := th.App.CreateGuest(th.Context, &user)
+		ruser, _ := th.App.CreatePartner(th.Context, &user)
 
 		_, _, appErr := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, ruser.Id, "")
 		require.Nil(t, appErr)
@@ -1566,10 +1566,10 @@ func TestUpdateChannelMemberRolesChangingGuest(t *testing.T) {
 		require.Nil(t, appErr)
 
 		_, appErr = th.App.UpdateChannelMemberRoles(th.Context, th.BasicChannel.Id, ruser.Id, "channel_user")
-		require.NotNil(t, appErr, "Should fail when try to modify the guest role")
+		require.NotNil(t, appErr, "Should fail when try to modify the partner role")
 	})
 
-	t.Run("from user to guest", func(t *testing.T) {
+	t.Run("from user to partner", func(t *testing.T) {
 		user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
 		ruser, _ := th.App.CreateUser(th.Context, &user)
 
@@ -1579,8 +1579,8 @@ func TestUpdateChannelMemberRolesChangingGuest(t *testing.T) {
 		_, appErr = th.App.AddUserToChannel(th.Context, ruser, th.BasicChannel, false)
 		require.Nil(t, appErr)
 
-		_, appErr = th.App.UpdateChannelMemberRoles(th.Context, th.BasicChannel.Id, ruser.Id, "channel_guest")
-		require.NotNil(t, appErr, "Should fail when try to modify the guest role")
+		_, appErr = th.App.UpdateChannelMemberRoles(th.Context, th.BasicChannel.Id, ruser.Id, "channel_partner")
+		require.NotNil(t, appErr, "Should fail when try to modify the partner role")
 	})
 
 	t.Run("from user to admin", func(t *testing.T) {
@@ -1594,12 +1594,12 @@ func TestUpdateChannelMemberRolesChangingGuest(t *testing.T) {
 		require.Nil(t, appErr)
 
 		_, appErr = th.App.UpdateChannelMemberRoles(th.Context, th.BasicChannel.Id, ruser.Id, "channel_user channel_admin")
-		require.Nil(t, appErr, "Should work when you not modify guest role")
+		require.Nil(t, appErr, "Should work when you not modify partner role")
 	})
 
-	t.Run("from guest to guest plus custom", func(t *testing.T) {
+	t.Run("from partner to partner plus custom", func(t *testing.T) {
 		user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		ruser, _ := th.App.CreateGuest(th.Context, &user)
+		ruser, _ := th.App.CreatePartner(th.Context, &user)
 
 		_, _, appErr := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, ruser.Id, "")
 		require.Nil(t, appErr)
@@ -1610,13 +1610,13 @@ func TestUpdateChannelMemberRolesChangingGuest(t *testing.T) {
 		_, appErr = th.App.CreateRole(&model.Role{Name: "custom", DisplayName: "custom", Description: "custom"})
 		require.Nil(t, appErr)
 
-		_, appErr = th.App.UpdateChannelMemberRoles(th.Context, th.BasicChannel.Id, ruser.Id, "channel_guest custom")
-		require.Nil(t, appErr, "Should work when you not modify guest role")
+		_, appErr = th.App.UpdateChannelMemberRoles(th.Context, th.BasicChannel.Id, ruser.Id, "channel_partner custom")
+		require.Nil(t, appErr, "Should work when you not modify partner role")
 	})
 
-	t.Run("a guest cant have user role", func(t *testing.T) {
+	t.Run("a partner cant have user role", func(t *testing.T) {
 		user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		ruser, _ := th.App.CreateGuest(th.Context, &user)
+		ruser, _ := th.App.CreatePartner(th.Context, &user)
 
 		_, _, appErr := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, ruser.Id, "")
 		require.Nil(t, appErr)
@@ -1624,8 +1624,8 @@ func TestUpdateChannelMemberRolesChangingGuest(t *testing.T) {
 		_, appErr = th.App.AddUserToChannel(th.Context, ruser, th.BasicChannel, false)
 		require.Nil(t, appErr)
 
-		_, appErr = th.App.UpdateChannelMemberRoles(th.Context, th.BasicChannel.Id, ruser.Id, "channel_guest channel_user")
-		require.NotNil(t, appErr, "Should work when you not modify guest role")
+		_, appErr = th.App.UpdateChannelMemberRoles(th.Context, th.BasicChannel.Id, ruser.Id, "channel_partner channel_user")
+		require.NotNil(t, appErr, "Should work when you not modify partner role")
 	})
 }
 
@@ -2043,7 +2043,7 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 		PermissionsModeratedByPatch   map[string]*model.ChannelModeratedRoles
 		RevertChannelModerationsPatch []*model.ChannelModerationPatch
 		HigherScopedMemberPermissions []string
-		HigherScopedGuestPermissions  []string
+		HigherScopedPartnerPermissions  []string
 		ShouldError                   bool
 		ShouldHaveNoChannelScheme     bool
 	}{
@@ -2148,71 +2148,71 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 			},
 		},
 		{
-			Name: "Removing create posts from guests role",
+			Name: "Removing create posts from partners role",
 			ChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name:  &createPosts,
-					Roles: &model.ChannelModeratedRolesPatch{Guests: model.NewPointer(false)},
+					Roles: &model.ChannelModeratedRolesPatch{Partners: model.NewPointer(false)},
 				},
 			},
 			PermissionsModeratedByPatch: map[string]*model.ChannelModeratedRoles{
 				createPosts: {
-					Guests: &model.ChannelModeratedRole{Value: false, Enabled: true},
+					Partners: &model.ChannelModeratedRole{Value: false, Enabled: true},
 				},
 			},
 			RevertChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name:  &createPosts,
-					Roles: &model.ChannelModeratedRolesPatch{Guests: model.NewPointer(true)},
+					Roles: &model.ChannelModeratedRolesPatch{Partners: model.NewPointer(true)},
 				},
 			},
 		},
 		{
-			Name: "Removing create reactions from guests role",
+			Name: "Removing create reactions from partners role",
 			ChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name:  &createReactions,
-					Roles: &model.ChannelModeratedRolesPatch{Guests: model.NewPointer(false)},
+					Roles: &model.ChannelModeratedRolesPatch{Partners: model.NewPointer(false)},
 				},
 			},
 			PermissionsModeratedByPatch: map[string]*model.ChannelModeratedRoles{
 				createReactions: {
-					Guests: &model.ChannelModeratedRole{Value: false, Enabled: true},
+					Partners: &model.ChannelModeratedRole{Value: false, Enabled: true},
 				},
 			},
 			RevertChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name:  &createReactions,
-					Roles: &model.ChannelModeratedRolesPatch{Guests: model.NewPointer(true)},
+					Roles: &model.ChannelModeratedRolesPatch{Partners: model.NewPointer(true)},
 				},
 			},
 		},
 		{
-			Name: "Removing channel mentions from guests role",
+			Name: "Removing channel mentions from partners role",
 			ChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name:  &channelMentions,
-					Roles: &model.ChannelModeratedRolesPatch{Guests: model.NewPointer(false)},
+					Roles: &model.ChannelModeratedRolesPatch{Partners: model.NewPointer(false)},
 				},
 			},
 			PermissionsModeratedByPatch: map[string]*model.ChannelModeratedRoles{
 				channelMentions: {
-					Guests: &model.ChannelModeratedRole{Value: false, Enabled: true},
+					Partners: &model.ChannelModeratedRole{Value: false, Enabled: true},
 				},
 			},
 			RevertChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name:  &channelMentions,
-					Roles: &model.ChannelModeratedRolesPatch{Guests: model.NewPointer(true)},
+					Roles: &model.ChannelModeratedRolesPatch{Partners: model.NewPointer(true)},
 				},
 			},
 		},
 		{
-			Name: "Removing manage members from guests role should not error",
+			Name: "Removing manage members from partners role should not error",
 			ChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name:  &manageMembers,
-					Roles: &model.ChannelModeratedRolesPatch{Guests: model.NewPointer(false)},
+					Roles: &model.ChannelModeratedRolesPatch{Partners: model.NewPointer(false)},
 				},
 			},
 			PermissionsModeratedByPatch: map[string]*model.ChannelModeratedRoles{},
@@ -2220,11 +2220,11 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 			ShouldHaveNoChannelScheme:   true,
 		},
 		{
-			Name: "Removing manage bookmarks from guests role should not error",
+			Name: "Removing manage bookmarks from partners role should not error",
 			ChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name:  &manageBookmarks,
-					Roles: &model.ChannelModeratedRolesPatch{Guests: model.NewPointer(false)},
+					Roles: &model.ChannelModeratedRolesPatch{Partners: model.NewPointer(false)},
 				},
 			},
 			PermissionsModeratedByPatch: map[string]*model.ChannelModeratedRoles{},
@@ -2238,7 +2238,7 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 					Name: &nonChannelModeratedPermission,
 					Roles: &model.ChannelModeratedRolesPatch{
 						Members: model.NewPointer(false),
-						Guests:  model.NewPointer(false),
+						Partners:  model.NewPointer(false),
 					},
 				},
 			},
@@ -2253,7 +2253,7 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 					Name: &createPosts,
 					Roles: &model.ChannelModeratedRolesPatch{
 						Members: model.NewPointer(true),
-						Guests:  model.NewPointer(false),
+						Partners:  model.NewPointer(false),
 					},
 				},
 			},
@@ -2262,22 +2262,22 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 			ShouldError:                   true,
 		},
 		{
-			Name: "Error when adding a permission that is disabled in the parent guest role",
+			Name: "Error when adding a permission that is disabled in the parent partner role",
 			ChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name: &createPosts,
 					Roles: &model.ChannelModeratedRolesPatch{
 						Members: model.NewPointer(false),
-						Guests:  model.NewPointer(true),
+						Partners:  model.NewPointer(true),
 					},
 				},
 			},
 			PermissionsModeratedByPatch:  map[string]*model.ChannelModeratedRoles{},
-			HigherScopedGuestPermissions: []string{},
+			HigherScopedPartnerPermissions: []string{},
 			ShouldError:                  true,
 		},
 		{
-			Name: "Removing a permission from the member role that is disabled in the parent guest role",
+			Name: "Removing a permission from the member role that is disabled in the parent partner role",
 			ChannelModerationsPatch: []*model.ChannelModerationPatch{
 				{
 					Name: &createPosts,
@@ -2289,16 +2289,16 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 			PermissionsModeratedByPatch: map[string]*model.ChannelModeratedRoles{
 				createPosts: {
 					Members: &model.ChannelModeratedRole{Value: false, Enabled: true},
-					Guests:  &model.ChannelModeratedRole{Value: false, Enabled: false},
+					Partners:  &model.ChannelModeratedRole{Value: false, Enabled: false},
 				},
 				createReactions: {
-					Guests: &model.ChannelModeratedRole{Value: false, Enabled: false},
+					Partners: &model.ChannelModeratedRole{Value: false, Enabled: false},
 				},
 				channelMentions: {
-					Guests: &model.ChannelModeratedRole{Value: false, Enabled: false},
+					Partners: &model.ChannelModeratedRole{Value: false, Enabled: false},
 				},
 			},
-			HigherScopedGuestPermissions: []string{},
+			HigherScopedPartnerPermissions: []string{},
 			ShouldError:                  false,
 		},
 		{
@@ -2308,21 +2308,21 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 					Name: &createPosts,
 					Roles: &model.ChannelModeratedRolesPatch{
 						Members: model.NewPointer(true),
-						Guests:  model.NewPointer(true),
+						Partners:  model.NewPointer(true),
 					},
 				},
 				{
 					Name: &createReactions,
 					Roles: &model.ChannelModeratedRolesPatch{
 						Members: model.NewPointer(true),
-						Guests:  model.NewPointer(true),
+						Partners:  model.NewPointer(true),
 					},
 				},
 				{
 					Name: &channelMentions,
 					Roles: &model.ChannelModeratedRolesPatch{
 						Members: model.NewPointer(true),
-						Guests:  model.NewPointer(true),
+						Partners:  model.NewPointer(true),
 					},
 				},
 				{
@@ -2345,10 +2345,10 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			higherScopedPermissionsOverridden := tc.HigherScopedMemberPermissions != nil || tc.HigherScopedGuestPermissions != nil
+			higherScopedPermissionsOverridden := tc.HigherScopedMemberPermissions != nil || tc.HigherScopedPartnerPermissions != nil
 			// If the test case restricts higher scoped permissions.
 			if higherScopedPermissionsOverridden {
-				higherScopedGuestRoleName, higherScopedMemberRoleName, _, _ := th.App.GetTeamSchemeChannelRoles(th.Context, channel.TeamId)
+				higherScopedPartnerRoleName, higherScopedMemberRoleName, _, _ := th.App.GetTeamSchemeChannelRoles(th.Context, channel.TeamId)
 				if tc.HigherScopedMemberPermissions != nil {
 					higherScopedMemberRole, appErr := th.App.GetRoleByName(th.Context, higherScopedMemberRoleName)
 					require.Nil(t, appErr)
@@ -2362,15 +2362,15 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 					}()
 				}
 
-				if tc.HigherScopedGuestPermissions != nil {
-					higherScopedGuestRole, appErr := th.App.GetRoleByName(th.Context, higherScopedGuestRoleName)
+				if tc.HigherScopedPartnerPermissions != nil {
+					higherScopedPartnerRole, appErr := th.App.GetRoleByName(th.Context, higherScopedPartnerRoleName)
 					require.Nil(t, appErr)
-					originalPermissions := higherScopedGuestRole.Permissions
+					originalPermissions := higherScopedPartnerRole.Permissions
 
-					_, appErr = th.App.PatchRole(higherScopedGuestRole, &model.RolePatch{Permissions: &tc.HigherScopedGuestPermissions})
+					_, appErr = th.App.PatchRole(higherScopedPartnerRole, &model.RolePatch{Permissions: &tc.HigherScopedPartnerPermissions})
 					require.Nil(t, appErr)
 					defer func() {
-						_, appErr := th.App.PatchRole(higherScopedGuestRole, &model.RolePatch{Permissions: &originalPermissions})
+						_, appErr := th.App.PatchRole(higherScopedPartnerRole, &model.RolePatch{Permissions: &originalPermissions})
 						require.Nil(t, appErr)
 					}()
 				}
@@ -2401,14 +2401,14 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 					require.Equal(t, moderation.Roles.Members.Enabled, true)
 				}
 
-				if permission, found := tc.PermissionsModeratedByPatch[moderation.Name]; found && permission.Guests != nil {
-					require.Equal(t, moderation.Roles.Guests.Value, permission.Guests.Value)
-					require.Equal(t, moderation.Roles.Guests.Enabled, permission.Guests.Enabled)
+				if permission, found := tc.PermissionsModeratedByPatch[moderation.Name]; found && permission.Partners != nil {
+					require.Equal(t, moderation.Roles.Partners.Value, permission.Partners.Value)
+					require.Equal(t, moderation.Roles.Partners.Enabled, permission.Partners.Enabled)
 				} else if moderation.Name == manageMembers || moderation.Name == "manage_bookmarks" {
-					require.Empty(t, moderation.Roles.Guests)
+					require.Empty(t, moderation.Roles.Partners)
 				} else {
-					require.Equal(t, moderation.Roles.Guests.Value, true)
-					require.Equal(t, moderation.Roles.Guests.Enabled, true)
+					require.Equal(t, moderation.Roles.Partners.Value, true)
+					require.Equal(t, moderation.Roles.Partners.Enabled, true)
 				}
 			}
 
@@ -2425,7 +2425,7 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 				Name: &createPosts,
 				Roles: &model.ChannelModeratedRolesPatch{
 					Members: model.NewPointer(false),
-					Guests:  model.NewPointer(false),
+					Partners:  model.NewPointer(false),
 				},
 			},
 		}
@@ -2434,7 +2434,7 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 				Name: &createPosts,
 				Roles: &model.ChannelModeratedRolesPatch{
 					Members: model.NewPointer(false),
-					Guests:  model.NewPointer(false),
+					Partners:  model.NewPointer(false),
 				},
 			},
 		}
@@ -2461,11 +2461,11 @@ func TestPatchChannelModerationsForChannel(t *testing.T) {
 		}
 		wg.Wait()
 
-		higherScopedGuestRoleName, higherScopedMemberRoleName, _, _ := th.App.GetTeamSchemeChannelRoles(th.Context, channel.TeamId)
+		higherScopedPartnerRoleName, higherScopedMemberRoleName, _, _ := th.App.GetTeamSchemeChannelRoles(th.Context, channel.TeamId)
 		higherScopedMemberRole, _ := th.App.GetRoleByName(th.Context, higherScopedMemberRoleName)
-		higherScopedGuestRole, _ := th.App.GetRoleByName(th.Context, higherScopedGuestRoleName)
+		higherScopedPartnerRole, _ := th.App.GetRoleByName(th.Context, higherScopedPartnerRoleName)
 		assert.Contains(t, higherScopedMemberRole.Permissions, createPosts)
-		assert.Contains(t, higherScopedGuestRole.Permissions, createPosts)
+		assert.Contains(t, higherScopedPartnerRole.Permissions, createPosts)
 	})
 
 	t.Run("Updates the authorization to create post", func(t *testing.T) {

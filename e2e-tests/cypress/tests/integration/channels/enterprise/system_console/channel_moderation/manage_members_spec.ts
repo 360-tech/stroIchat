@@ -41,7 +41,7 @@ function addButtonDoesNotExists() {
 
 describe('MM-23102 - Channel Moderation - Manage Members', () => {
     let regularUser: UserProfile;
-    let guestUser: UserProfile;
+    let partnerUser: UserProfile;
     let testTeam: Team;
     let testChannel: Channel;
 
@@ -58,23 +58,23 @@ describe('MM-23102 - Channel Moderation - Manage Members', () => {
             testTeam = team;
             testChannel = channel;
 
-            cy.apiCreateGuestUser({}).then(({guest}) => {
-                guestUser = guest;
+            cy.apiCreatePartnerUser({}).then(({partner}) => {
+                partnerUser = partner;
 
-                cy.apiAddUserToTeam(testTeam.id, guestUser.id).then(() => {
-                    cy.apiAddUserToChannel(testChannel.id, guestUser.id);
+                cy.apiAddUserToTeam(testTeam.id, partnerUser.id).then(() => {
+                    cy.apiAddUserToChannel(testChannel.id, partnerUser.id);
                 });
             });
         });
     });
 
-    it('MM-T1547 No option to Manage Members for Guests', () => {
+    it('MM-T1547 No option to Manage Members for Partners', () => {
         visitChannelConfigPage(testChannel);
 
-        // * Assert that Manage Members for Guests does not exist (checkbox is not there)
+        // * Assert that Manage Members for Partners does not exist (checkbox is not there)
         cy.findByTestId(checkboxesTitleToIdMap.MANAGE_MEMBERS_GUESTS).should('not.exist');
 
-        visitChannel(guestUser, testChannel, testTeam);
+        visitChannel(partnerUser, testChannel, testTeam);
 
         // # View members rhs
         viewManageChannelMembersRHS();

@@ -23,7 +23,7 @@ export function createNewTeamAndMoveToOffTopic(teamName, sidebarItemClass) {
 }
 
 export function removeMeFromCurrentChannel() {
-    // # Remove the Guest User from channel
+    // # Remove the Partner User from channel
     let channelId;
     return cy.getCurrentChannelId().then((res) => {
         channelId = res;

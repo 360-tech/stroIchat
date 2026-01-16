@@ -39,7 +39,7 @@ describe('components/sidebar/invite_members_button', () => {
             },
             roles: {
                 roles: {
-                    system_role: {permissions: ['test_system_permission', 'add_user_to_team', 'invite_guest']},
+                    system_role: {permissions: ['test_system_permission', 'add_user_to_team', 'invite_partner']},
                     team_role: {permissions: ['test_team_no_permission']},
                 },
             },
@@ -62,16 +62,16 @@ describe('components/sidebar/invite_members_button', () => {
     });
 
     test('should return nothing when user does not have permissions', () => {
-        const guestUser = {
-            currentUserId: 'guest_user_id',
+        const partnerUser = {
+            currentUserId: 'partner_user_id',
             profiles: {
                 user_id: {
-                    id: 'guest_user_id',
+                    id: 'partner_user_id',
                     roles: 'team_role',
                 },
             },
         };
-        const noPermissionsState = {...state, entities: {...state.entities, users: guestUser}};
+        const noPermissionsState = {...state, entities: {...state.entities, users: partnerUser}};
         const store = mockStore(noPermissionsState);
 
         const wrapper = mountWithIntl(

@@ -21,7 +21,7 @@ import {isAdmin} from 'mattermost-redux/utils/user_utils';
 
 import {
     sendMembersInvites,
-    sendGuestsInvites,
+    sendPartnersInvites,
     sendMembersInvitesToChannels,
 } from 'actions/invite_actions';
 
@@ -46,7 +46,7 @@ const searchChannels = (teamId: string, term: string) => {
 
 type OwnProps = {
     channelToInvite?: Channel;
-    canInviteGuests?: boolean;
+    canInvitePartners?: boolean;
 }
 
 export function mapStateToProps(state: GlobalState, props: OwnProps) {
@@ -67,19 +67,19 @@ export function mapStateToProps(state: GlobalState, props: OwnProps) {
         }
         return haveIChannelPermission(state, currentTeam?.id, channel.id, Permissions.MANAGE_PUBLIC_CHANNEL_MEMBERS);
     });
-    const guestAccountsEnabled = config.EnableGuestAccounts === 'true';
+    const partnerAccountsEnabled = config.EnablePartnerAccounts === 'true';
     const emailInvitationsEnabled = config.EnableEmailInvitations === 'true';
     const isEnterpriseReady = config.BuildEnterpriseReady === 'true';
     const isGroupConstrained = Boolean(currentTeam?.group_constrained);
-    const calculatedCanInviteGuests = !isGroupConstrained && isEnterpriseReady && guestAccountsEnabled && haveICurrentTeamPermission(state, Permissions.INVITE_GUEST);
-    const canInviteGuests = props.canInviteGuests === undefined ? calculatedCanInviteGuests : (calculatedCanInviteGuests && props.canInviteGuests);
+    const calculatedCanInvitePartners = !isGroupConstrained && isEnterpriseReady && partnerAccountsEnabled && haveICurrentTeamPermission(state, Permissions.INVITE_PARTNER);
+    const canInvitePartners = props.canInvitePartners === undefined ? calculatedCanInvitePartners : (calculatedCanInvitePartners && props.canInvitePartners);
 
     const canAddUsers = haveICurrentTeamPermission(state, Permissions.ADD_USER_TO_TEAM);
 
     return {
         invitableChannels,
         currentTeam,
-        canInviteGuests,
+        canInvitePartners,
         canAddUsers,
         emailInvitationsEnabled,
         isCloud: false,
@@ -92,7 +92,7 @@ export function mapStateToProps(state: GlobalState, props: OwnProps) {
 function mapDispatchToProps(dispatch: Dispatch) {
     return {
         actions: bindActionCreators({
-            sendGuestsInvites,
+            sendPartnersInvites,
             sendMembersInvites,
             sendMembersInvitesToChannels,
             regenerateTeamInviteId,

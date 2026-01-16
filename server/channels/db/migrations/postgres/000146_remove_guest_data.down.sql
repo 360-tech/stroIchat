@@ -1,0 +1,3 @@
+-- Rollback: This migration removes data, so rollback is not applicable
+-- Guest data cannot be restored once removed
+-- If rollback is needed, guest data would need to be restored from backup

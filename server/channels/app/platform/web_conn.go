@@ -841,7 +841,7 @@ func (wc *WebConn) createHelloMessage() *model.WebSocketEvent {
 	return msg
 }
 
-func (wc *WebConn) ShouldSendEventToGuest(msg *model.WebSocketEvent) bool {
+func (wc *WebConn) ShouldSendEventToPartner(msg *model.WebSocketEvent) bool {
 	var userID string
 	var canSee bool
 
@@ -1001,8 +1001,8 @@ func (wc *WebConn) ShouldSendEvent(msg *model.WebSocketEvent) bool {
 		return wc.isMemberOfTeam(msg.GetBroadcast().TeamId)
 	}
 
-	if wc.GetSession().Props[model.SessionPropIsGuest] == "true" {
-		return wc.ShouldSendEventToGuest(msg)
+	if wc.GetSession().Props[model.SessionPropIsPartner] == "true" {
+		return wc.ShouldSendEventToPartner(msg)
 	}
 
 	return true

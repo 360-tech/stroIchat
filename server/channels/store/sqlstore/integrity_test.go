@@ -238,8 +238,8 @@ func createDefaultRoles(ss store.Store) {
 	})
 
 	ss.Role().Save(&model.Role{
-		Name:        model.TeamGuestRoleId,
-		DisplayName: model.TeamGuestRoleId,
+		Name:        model.TeamPartnerRoleId,
+		DisplayName: model.TeamPartnerRoleId,
 		Permissions: []string{
 			model.PermissionViewTeam.Id,
 		},
@@ -265,8 +265,8 @@ func createDefaultRoles(ss store.Store) {
 	})
 
 	ss.Role().Save(&model.Role{
-		Name:        model.ChannelGuestRoleId,
-		DisplayName: model.ChannelGuestRoleId,
+		Name:        model.ChannelPartnerRoleId,
+		DisplayName: model.ChannelPartnerRoleId,
 		Permissions: []string{
 			model.PermissionReadChannel.Id,
 			model.PermissionReadChannelContent.Id,

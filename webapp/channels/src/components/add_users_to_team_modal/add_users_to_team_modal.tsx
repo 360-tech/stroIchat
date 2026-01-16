@@ -11,13 +11,13 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import {Client4} from 'mattermost-redux/client';
 import type {ActionResult} from 'mattermost-redux/types/actions';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import MultiSelect from 'components/multiselect/multiselect';
 import type {Value} from 'components/multiselect/multiselect';
 import ProfilePicture from 'components/profile_picture';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 
 import {displayEntireNameForUser} from 'utils/utils';
 
@@ -30,7 +30,7 @@ type Props = {
     team: Team;
     users: UserProfile[];
     intl: IntlShape;
-    filterExcludeGuests?: boolean;
+    filterExcludePartners?: boolean;
     excludeUsers: { [userId: string]: UserProfile };
     includeUsers: { [userId: string]: UserProfile };
     onAddCallback: (users: UserProfile[]) => void;
@@ -60,7 +60,7 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
         super(props);
 
         let filterOptions = {};
-        if (props.filterExcludeGuests) {
+        if (props.filterExcludePartners) {
             filterOptions = {role: 'system_user'};
         }
 
@@ -131,7 +131,7 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
                     <div className='more-modal__name'>
                         {displayEntireNameForUser(option)}
                         {option.is_bot && <BotTag/>}
-                        {isGuest(option.roles) && <GuestTag className='popoverlist'/>}
+                        {isPartner(option.roles) && <PartnerTag className='popoverlist'/>}
                     </div>
                 </div>
                 <div className='more-modal__actions'>

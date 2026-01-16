@@ -35,18 +35,18 @@ describe('components/admin_console/permission_schemes_settings/permission_system
     };
     const defaultProps = {
         config: {
-            EnableGuestAccounts: 'true',
+            EnablePartnerAccounts: 'true',
         },
         license: {
             IsLicensed: 'true',
             CustomPermissionsSchemes: 'true',
-            GuestAccountsPermissions: 'true',
+            PartnerAccountsPermissions: 'true',
         },
         location: {} as Location,
         roles: {
-            system_guest: defaultRole,
-            team_guest: defaultRole,
-            channel_guest: defaultRole,
+            system_partner: defaultRole,
+            team_partner: defaultRole,
+            channel_partner: defaultRole,
             system_user: defaultRole,
             team_user: defaultRole,
             channel_user: defaultRole,
@@ -94,15 +94,15 @@ describe('components/admin_console/permission_schemes_settings/permission_system
 
     test('should match snapshot on roles with permissions', (done) => {
         const roles: Record<string, Role> = {
-            system_guest: {
+            system_partner: {
                 ...defaultRole,
                 permissions: ['create_post'],
             },
-            team_guest: {
+            team_partner: {
                 ...defaultRole,
                 permissions: ['invite_user'],
             },
-            channel_guest: {
+            channel_partner: {
                 ...defaultRole,
                 permissions: ['add_reaction'],
             },
@@ -164,7 +164,7 @@ describe('components/admin_console/permission_schemes_settings/permission_system
         const license = {
             IsLicensed: 'true',
             CustomPermissionsSchemes: 'false',
-            GuestAccountsPermissions: 'false',
+            PartnerAccountsPermissions: 'false',
         };
         let editRole = jest.fn().mockImplementation(() => Promise.resolve({data: {}}));
         const wrapper = shallowWithIntl(
@@ -179,7 +179,7 @@ describe('components/admin_console/permission_schemes_settings/permission_system
 
         await getAnyInstance(wrapper).handleSubmit();
         expect(editRole).toHaveBeenCalledTimes(8);
-        license.GuestAccountsPermissions = 'true';
+        license.PartnerAccountsPermissions = 'true';
         editRole = jest.fn().mockImplementation(() => Promise.resolve({data: {}}));
         const wrapper2 = shallowWithIntl(
             <PermissionSystemSchemeSettings

@@ -35,11 +35,11 @@ func (s *LocalCacheChannelStore) handleClusterInvalidateChannelPinnedPostCount(m
 	}
 }
 
-func (s *LocalCacheChannelStore) handleClusterInvalidateChannelGuestCounts(msg *model.ClusterMessage) {
+func (s *LocalCacheChannelStore) handleClusterInvalidateChannelPartnerCounts(msg *model.ClusterMessage) {
 	if bytes.Equal(msg.Data, clearCacheMessageData) {
-		s.rootStore.channelGuestCountCache.Purge()
+		s.rootStore.channelPartnerCountCache.Purge()
 	} else {
-		s.rootStore.channelGuestCountCache.Remove(string(msg.Data))
+		s.rootStore.channelPartnerCountCache.Remove(string(msg.Data))
 	}
 }
 
@@ -82,7 +82,7 @@ func (s LocalCacheChannelStore) ClearMembersForUserCache() {
 func (s LocalCacheChannelStore) ClearCaches() {
 	s.rootStore.doClearCacheCluster(s.rootStore.channelMemberCountsCache)
 	s.rootStore.doClearCacheCluster(s.rootStore.channelPinnedPostCountsCache)
-	s.rootStore.doClearCacheCluster(s.rootStore.channelGuestCountCache)
+	s.rootStore.doClearCacheCluster(s.rootStore.channelPartnerCountCache)
 	s.rootStore.doClearCacheCluster(s.rootStore.channelByIdCache)
 	s.rootStore.doClearCacheCluster(s.rootStore.channelMembersForUserCache)
 	s.rootStore.doClearCacheCluster(s.rootStore.channelMembersNotifyPropsCache)
@@ -90,7 +90,7 @@ func (s LocalCacheChannelStore) ClearCaches() {
 	if s.rootStore.metrics != nil {
 		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelMemberCountsCache.Name())
 		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelPinnedPostCountsCache.Name())
-		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelGuestCountCache.Name())
+		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelPartnerCountCache.Name())
 		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelByIdCache.Name())
 		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelMembersForUserCache.Name())
 		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelMembersNotifyPropsCache.Name())
@@ -112,10 +112,10 @@ func (s LocalCacheChannelStore) InvalidateMemberCount(channelId string) {
 	}
 }
 
-func (s LocalCacheChannelStore) InvalidateGuestCount(channelId string) {
-	s.rootStore.doInvalidateCacheCluster(s.rootStore.channelGuestCountCache, channelId, nil)
+func (s LocalCacheChannelStore) InvalidatePartnerCount(channelId string) {
+	s.rootStore.doInvalidateCacheCluster(s.rootStore.channelPartnerCountCache, channelId, nil)
 	if s.rootStore.metrics != nil {
-		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelGuestCountCache.Name())
+		s.rootStore.metrics.IncrementMemCacheInvalidationCounter(s.rootStore.channelPartnerCountCache.Name())
 	}
 }
 
@@ -172,17 +172,17 @@ func (s LocalCacheChannelStore) GetMemberCount(channelId string, allowFromCache 
 	return count, err
 }
 
-func (s LocalCacheChannelStore) GetGuestCount(channelId string, allowFromCache bool) (int64, error) {
+func (s LocalCacheChannelStore) GetPartnerCount(channelId string, allowFromCache bool) (int64, error) {
 	if allowFromCache {
 		var count int64
-		if err := s.rootStore.doStandardReadCache(s.rootStore.channelGuestCountCache, channelId, &count); err == nil {
+		if err := s.rootStore.doStandardReadCache(s.rootStore.channelPartnerCountCache, channelId, &count); err == nil {
 			return count, nil
 		}
 	}
-	count, err := s.ChannelStore.GetGuestCount(channelId, allowFromCache)
+	count, err := s.ChannelStore.GetPartnerCount(channelId, allowFromCache)
 
 	if allowFromCache && err == nil {
-		s.rootStore.doStandardAddToCache(s.rootStore.channelGuestCountCache, channelId, count)
+		s.rootStore.doStandardAddToCache(s.rootStore.channelPartnerCountCache, channelId, count)
 	}
 
 	return count, err

@@ -4774,7 +4774,7 @@
     "translation": "无效的 AD/LDAP 管理筛选器。"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "无效的 AD/LDAP 访客筛选器。"
   },
   {
@@ -4802,15 +4802,15 @@
     "translation": "无效的签名算法。"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "无效的频道。"
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "无效的频道。"
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "无效的邮箱。"
   },
   {
@@ -4894,7 +4894,7 @@
     "translation": "移除以下频道成员因组限制被拒绝：{{ .UserIDs }}"
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "频道成员更新无效：您不能手动添加或移除访客角色。"
   },
   {
@@ -4942,19 +4942,19 @@
     "translation": "位置导入来源。"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "您的许可证不支持访客帐号"
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "邀请到的频道必须属于团队。"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "频道成员更新无效：用户不能同时作为访客和用户。"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} 邀请您以访客加入团队 {{ .TeamDisplayName }}"
   },
   {
@@ -4974,11 +4974,11 @@
     "translation": "未能解析重置密码令牌"
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "您无法启动访客帐号因为访客功能未启用。"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "您提供的电子邮件不属于访客允许的域名。请与您的管理员联系或使用一个不同的电子邮件注册。"
   },
   {
@@ -5062,7 +5062,7 @@
     "translation": "频道名称不能为 16 进制格式。请输入其他的频道名称。"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "无效的访客属性。格式必须为“栏=值”。"
   },
   {
@@ -5070,7 +5070,7 @@
     "translation": "组中的名称属性有无效的字符"
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "无效的邮箱。"
   },
   {
@@ -5130,7 +5130,7 @@
     "translation": "请加我到您想要我互动的团队与频道。请使用浏览器或桌面应用进行操作。"
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v 由 %v 以访客身份添加至频道。"
   },
   {
@@ -5142,7 +5142,7 @@
     "translation": "您的许可证不支持频道管理"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v 以访客身份加入频道。"
   },
   {
@@ -5166,7 +5166,7 @@
     "translation": "频道类型无法更新。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "频道成员更新无效：用户不能同时作为访客和用户。"
   },
   {
@@ -5174,7 +5174,7 @@
     "translation": "默认频道无法改为私有。"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "频道成员更新无效：您不能手动添加或移除访客角色。"
   },
   {
@@ -5266,7 +5266,7 @@
     "translation": "添加团队成员时发生错误。"
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "访客不能使用邀请链接加入团队。请申请加入团队的访客邮件邀请。"
   },
   {
@@ -5274,11 +5274,11 @@
     "translation": "您没有权限列出所有团队"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "您的许可证不支持访客帐号"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "访客帐号已停用。"
   },
   {
@@ -5302,11 +5302,11 @@
     "translation": "Mattermost 企业许可证已停用。"
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "访客帐号已停用。"
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "您的许可证不支持访客帐号。"
   },
   {
@@ -5314,11 +5314,11 @@
     "translation": "无法创建用户，无效的邀请。"
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "无法转换该用户至访客因为他已经是访客。"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "访客帐号已停用"
   },
   {
@@ -5334,7 +5334,7 @@
     "translation": "输入有效的用户名和密码。"
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "无法转换该访客至普通用户因为他不是访客。"
   },
   {
@@ -6846,7 +6846,7 @@
     "translation": "查找帐户时遇到错误。"
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "更新用户失败。"
   },
   {
@@ -7010,7 +7010,7 @@
     "translation": "无法保存账户。"
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "更新用户失败。"
   },
   {
@@ -7254,7 +7254,7 @@
     "translation": "设定状态错误。"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "无效或缺少请求正文。"
   },
   {
@@ -7318,7 +7318,7 @@
     "translation": "有疑问吗？"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "您以访客身份被邀请与团队合作"
   },
   {
@@ -8342,7 +8342,7 @@
     "translation": "获取最后可访问的消息时出错"
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "您的许可证不支持访客帐号"
   },
   {
@@ -8350,7 +8350,7 @@
     "translation": "Mattermost 是一个开源平台，用于跨工具和团队的安全通信、协作和工作编排。\nMattermost 包含两个关键工具：\n\n**频道** - 通过 1:1 和群组消息与您的团队保持联系。\n**[Playbooks](/playbooks)** - 构建和配置可重复的流程以实现特定且可预测的结果。\n\n[查看文档和指南]({{.HelpLink}})"
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "访客帐户已禁用"
   },
   {
@@ -9246,7 +9246,7 @@
     "translation": "缺少发送报告至的用户 id"
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "团队成员更新无效：访客不能成为团队成员或团队管理员，请先将其提升为用户。"
   },
   {
@@ -9338,7 +9338,7 @@
     "translation": "URL 过长"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "团队成员更新无效：不能为单个团队设置访客，一位系统管理员必须将用户降级为访客，或将访客提升为用户。"
   },
   {
@@ -9362,7 +9362,7 @@
     "translation": "用户未被允许创建频道书签。"
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "创建频道书签失败。"
   },
   {
@@ -9374,7 +9374,7 @@
     "translation": "删除频道书签失败。"
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "删除频道书签失败。"
   },
   {
@@ -9386,7 +9386,7 @@
     "translation": "更新频道书签失败。"
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "更新频道书签失败。"
   },
   {
@@ -9398,7 +9398,7 @@
     "translation": "更新频道书签的排序顺序失败。"
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "更新频道书签的排序顺序失败。"
   },
   {
@@ -9502,11 +9502,11 @@
     "translation": "更新于必须是有效的时间。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "频道成员更新无效：访客不能成为团队成员或团队管理员，请先提升为用户。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "频道成员更新无效：不能将访客设置到单一频道，系统管理员必须将访客升级为用户或将用户降级为访客。"
   },
   {
@@ -10034,7 +10034,7 @@
     "translation": "无法过滤配置。"
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "用户角色和访客状态不一致。"
   },
   {
@@ -10586,7 +10586,7 @@
     "translation": "无效的频道 ID。"
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
     "translation": "由于此频道有基于用户属性的访问限制，因此无法邀请访客用户加入。"
   },
   {

@@ -19,7 +19,7 @@ import {getRandomId} from '../../../../utils';
 // for setup with AWS: Follow the instructions mentioned in the mattermost/platform-private/config/ldap-test-setup.txt file
 context('ldap', () => {
     const user1 = ldapUsers['test-1'];
-    const guest1 = ldapUsers['board-1'];
+    const partner1 = ldapUsers['board-1'];
     const admin1 = ldapUsers['dev-1'];
 
     let testSettings;
@@ -38,11 +38,11 @@ context('ldap', () => {
         });
 
         removeUserFromAllTeams(user1);
-        removeUserFromAllTeams(guest1);
+        removeUserFromAllTeams(partner1);
         removeUserFromAllTeams(admin1);
 
         disableOnboardingTaskList(user1);
-        disableOnboardingTaskList(guest1);
+        disableOnboardingTaskList(partner1);
         disableOnboardingTaskList(admin1);
 
         cy.apiAdminLogin();
@@ -117,13 +117,13 @@ context('ldap', () => {
         });
     });
 
-    describe('LDAP Login flow - Guest Login', () => {
-        it('Invalid login with guest filter', () => {
-            testSettings.user = guest1;
+    describe('LDAP Login flow - Partner Login', () => {
+        it('Invalid login with partner filter', () => {
+            testSettings.user = partner1;
             const ldapSetting = {
                 LdapSettings: {
                     UserFilter: '(cn=no_users)',
-                    GuestFilter: '(cn=no_guests)',
+                    PartnerFilter: '(cn=no_partners)',
                 },
             };
             cy.apiAdminLogin().then(() => {
@@ -136,12 +136,12 @@ context('ldap', () => {
             });
         });
 
-        it('LDAP login, new guest, no channels', () => {
-            testSettings.user = guest1;
+        it('LDAP login, new partner, no channels', () => {
+            testSettings.user = partner1;
             const ldapSetting = {
                 LdapSettings: {
                     UserFilter: '(cn=no_users)',
-                    GuestFilter: '(cn=board*)',
+                    PartnerFilter: '(cn=board*)',
                 },
             };
             cy.apiAdminLogin().then(() => {
@@ -155,13 +155,13 @@ context('ldap', () => {
         });
     });
 
-    describe('LDAP Add Member and Guest to teams and test logins', () => {
+    describe('LDAP Add Member and Partner to teams and test logins', () => {
         before(() => {
             cy.apiAdminLogin();
 
             cy.apiGetTeamByName(testSettings.teamName).then((team) => {
                 cy.apiGetChannelByName(testSettings.teamName, 'town-square').then(({channel}) => {
-                    cy.apiGetUserByEmail(guest1.email).then(({user}) => {
+                    cy.apiGetUserByEmail(partner1.email).then(({user}) => {
                         cy.apiAddUserToTeam(team.id, user.id).then(() => {
                             cy.apiAddUserToChannel(channel.id, user.id);
                         });
@@ -192,11 +192,11 @@ context('ldap', () => {
             });
         });
 
-        it('LDAP Guest login with team invite', () => {
-            testSettings.user = guest1;
+        it('LDAP Partner login with team invite', () => {
+            testSettings.user = partner1;
             const ldapSetting = {
                 LdapSettings: {
-                    GuestFilter: '(cn=board*)',
+                    PartnerFilter: '(cn=board*)',
                 },
             };
             cy.apiAdminLogin().then(() => {

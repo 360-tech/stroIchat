@@ -6,8 +6,8 @@ import {MattermostFeatures} from './constants';
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function mapFeatureIdToTranslation(id: string, formatMessage: Function): string {
     switch (id) {
-    case MattermostFeatures.GUEST_ACCOUNTS:
-        return formatMessage({id: 'webapp.mattermost.feature.guest_accounts', defaultMessage: 'Guest Accounts'});
+    case MattermostFeatures.Partner_ACCOUNTS:
+        return formatMessage({id: 'webapp.mattermost.feature.partner_accounts', defaultMessage: 'Partner Accounts'});
     case MattermostFeatures.CUSTOM_USER_GROUPS:
         return formatMessage({id: 'webapp.mattermost.feature.custom_user_groups', defaultMessage: 'Custom User groups'});
     case MattermostFeatures.CREATE_MULTIPLE_TEAMS:

@@ -7,12 +7,12 @@ import {useSelector} from 'react-redux';
 
 import {getChannelMember} from 'mattermost-redux/selectors/entities/channels';
 import {getCurrentTeam, getTeamMember} from 'mattermost-redux/selectors/entities/teams';
-import {isGuest, isSystemAdmin} from 'mattermost-redux/utils/user_utils';
+import {isPartner, isSystemAdmin} from 'mattermost-redux/utils/user_utils';
 
 import {getRhsState} from 'selectors/rhs';
 
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 import Tag from 'components/widgets/tag/tag';
 
 import type {A11yFocusEventDetail} from 'utils/constants';
@@ -90,9 +90,9 @@ const ProfilePopoverTitle = ({
                 size={'sm'}
             />
         );
-    } else if (isGuest(roles)) {
+    } else if (isPartner(roles)) {
         roleTitle = (
-            <GuestTag
+            <PartnerTag
                 className='user-popover__role'
                 size={'sm'}
             />

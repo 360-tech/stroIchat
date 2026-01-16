@@ -84,7 +84,7 @@ describe('components/channel_invite_modal/team_warning_banner', () => {
                 <TeamWarningBanner
                     teamId={teamId}
                     users={[]}
-                    guests={[]}
+                    partners={[]}
                 />
             </Provider>,
         );
@@ -99,7 +99,7 @@ describe('components/channel_invite_modal/team_warning_banner', () => {
                 <TeamWarningBanner
                     teamId={teamId}
                     users={users}
-                    guests={[]}
+                    partners={[]}
                 />
             </Provider>,
         );
@@ -114,37 +114,37 @@ describe('components/channel_invite_modal/team_warning_banner', () => {
                 <TeamWarningBanner
                     teamId={teamId}
                     users={users}
-                    guests={[]}
+                    partners={[]}
                 />
             </Provider>,
         );
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot for team_warning_banner with > 10 guest profiles', () => {
-        const guests = createUsers(11);
+    test('should match snapshot for team_warning_banner with > 10 partner profiles', () => {
+        const partners = createUsers(11);
 
         const wrapper = mountWithIntl(
             <Provider store={store}>
                 <TeamWarningBanner
                     teamId={teamId}
                     users={[]}
-                    guests={guests}
+                    partners={partners}
                 />
             </Provider>,
         );
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot for team_warning_banner with < 10 guest profiles', () => {
-        const guests = createUsers(2);
+    test('should match snapshot for team_warning_banner with < 10 partner profiles', () => {
+        const partners = createUsers(2);
 
         const wrapper = mountWithIntl(
             <Provider store={store}>
                 <TeamWarningBanner
                     teamId={teamId}
                     users={[]}
-                    guests={guests}
+                    partners={partners}
                 />
             </Provider>,
         );

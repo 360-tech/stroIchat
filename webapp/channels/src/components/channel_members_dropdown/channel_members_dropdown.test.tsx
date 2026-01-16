@@ -68,16 +68,16 @@ describe('components/channel_members_dropdown', () => {
         },
     };
 
-    test('should match snapshot for dropdown with guest user', () => {
+    test('should match snapshot for dropdown with partner user', () => {
         const props = {
             ...baseProps,
             user: {
                 ...baseProps.user,
-                roles: 'system_guest',
+                roles: 'system_partner',
             },
             channelMember: {
                 ...baseProps.channelMember,
-                roles: 'channel_guest',
+                roles: 'channel_partner',
             },
             canChangeMemberRoles: true,
         };
@@ -102,16 +102,16 @@ describe('components/channel_members_dropdown', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot for not dropdown with guest user', () => {
+    test('should match snapshot for not dropdown with partner user', () => {
         const props = {
             ...baseProps,
             user: {
                 ...baseProps.user,
-                roles: 'system_guest',
+                roles: 'system_partner',
             },
             channelMember: {
                 ...baseProps.channelMember,
-                roles: 'channel_guest',
+                roles: 'channel_partner',
             },
             canChangeMemberRoles: false,
         };

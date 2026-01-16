@@ -12,7 +12,7 @@ import {Client4} from 'mattermost-redux/client';
 import Markdown from 'components/markdown';
 import ProfilePicture from 'components/profile_picture';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 
 import type {DMUser} from './channel_info_rhs';
 import EditableArea from './components/editable_area';
@@ -105,7 +105,7 @@ const AboutAreaDM = ({channel, dmUser, actions}: Props) => {
                     <UsernameContainer>
                         <Username>{dmUser.display_name}</Username>
                         {dmUser.user.is_bot && <BotTag/>}
-                        {dmUser.is_guest && <GuestTag/>}
+                        {dmUser.is_partner && <PartnerTag/>}
                     </UsernameContainer>
                     <UserPosition>
                         <Markdown message={dmUser.user.is_bot ? dmUser.user.bot_description : dmUser.user.position}/>

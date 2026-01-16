@@ -104,9 +104,9 @@ var PermissionReadOthersBots *Permission
 var PermissionManageBots *Permission
 var PermissionManageOthersBots *Permission
 var PermissionViewMembers *Permission
-var PermissionInviteGuest *Permission
-var PermissionPromoteGuest *Permission
-var PermissionDemoteToGuest *Permission
+var PermissionInvitePartner *Permission
+var PermissionPromotePartner *Permission
+var PermissionDemoteToPartner *Permission
 var PermissionUseChannelMentions *Permission
 var PermissionUseGroupMentions *Permission
 var PermissionAddBookmarkPublicChannel *Permission
@@ -318,8 +318,8 @@ var PermissionSysconsoleWriteAuthenticationSaml *Permission
 var PermissionSysconsoleReadAuthenticationOpenid *Permission
 var PermissionSysconsoleWriteAuthenticationOpenid *Permission
 
-var PermissionSysconsoleReadAuthenticationGuestAccess *Permission
-var PermissionSysconsoleWriteAuthenticationGuestAccess *Permission
+var PermissionSysconsoleReadAuthenticationPartnerAccess *Permission
+var PermissionSysconsoleWriteAuthenticationPartnerAccess *Permission
 
 var PermissionSysconsoleReadPlugins *Permission
 var PermissionSysconsoleWritePlugins *Permission
@@ -1208,22 +1208,22 @@ func initializePermissions() {
 		"authentication.permisssions.view_members.description",
 		PermissionScopeTeam,
 	}
-	PermissionInviteGuest = &Permission{
-		"invite_guest",
-		"authentication.permissions.invite_guest.name",
-		"authentication.permissions.invite_guest.description",
+	PermissionInvitePartner = &Permission{
+		"invite_partner",
+		"authentication.permissions.invite_partner.name",
+		"authentication.permissions.invite_partner.description",
 		PermissionScopeTeam,
 	}
-	PermissionPromoteGuest = &Permission{
-		"promote_guest",
-		"authentication.permissions.promote_guest.name",
-		"authentication.permissions.promote_guest.description",
+	PermissionPromotePartner = &Permission{
+		"promote_partner",
+		"authentication.permissions.promote_partner.name",
+		"authentication.permissions.promote_partner.description",
 		PermissionScopeSystem,
 	}
-	PermissionDemoteToGuest = &Permission{
-		"demote_to_guest",
-		"authentication.permissions.demote_to_guest.name",
-		"authentication.permissions.demote_to_guest.description",
+	PermissionDemoteToPartner = &Permission{
+		"demote_to_partner",
+		"authentication.permissions.demote_to_partner.name",
+		"authentication.permissions.demote_to_partner.description",
 		PermissionScopeSystem,
 	}
 	PermissionUseChannelMentions = &Permission{
@@ -1912,14 +1912,14 @@ func initializePermissions() {
 		"",
 		PermissionScopeSystem,
 	}
-	PermissionSysconsoleReadAuthenticationGuestAccess = &Permission{
-		"sysconsole_read_authentication_guest_access",
+	PermissionSysconsoleReadAuthenticationPartnerAccess = &Permission{
+		"sysconsole_read_authentication_partner_access",
 		"",
 		"",
 		PermissionScopeSystem,
 	}
-	PermissionSysconsoleWriteAuthenticationGuestAccess = &Permission{
-		"sysconsole_write_authentication_guest_access",
+	PermissionSysconsoleWriteAuthenticationPartnerAccess = &Permission{
+		"sysconsole_write_authentication_partner_access",
 		"",
 		"",
 		PermissionScopeSystem,
@@ -2325,7 +2325,7 @@ func initializePermissions() {
 		PermissionSysconsoleReadAuthenticationLdap,
 		PermissionSysconsoleReadAuthenticationSaml,
 		PermissionSysconsoleReadAuthenticationOpenid,
-		PermissionSysconsoleReadAuthenticationGuestAccess,
+		PermissionSysconsoleReadAuthenticationPartnerAccess,
 		PermissionSysconsoleReadPlugins,
 		PermissionSysconsoleReadIntegrationsIntegrationManagement,
 		PermissionSysconsoleReadIntegrationsBotAccounts,
@@ -2384,7 +2384,7 @@ func initializePermissions() {
 		PermissionSysconsoleWriteAuthenticationLdap,
 		PermissionSysconsoleWriteAuthenticationSaml,
 		PermissionSysconsoleWriteAuthenticationOpenid,
-		PermissionSysconsoleWriteAuthenticationGuestAccess,
+		PermissionSysconsoleWriteAuthenticationPartnerAccess,
 		PermissionSysconsoleWritePlugins,
 		PermissionSysconsoleWriteIntegrationsIntegrationManagement,
 		PermissionSysconsoleWriteIntegrationsBotAccounts,
@@ -2428,8 +2428,8 @@ func initializePermissions() {
 		PermissionManageOthersBots,
 		PermissionReadJobs,
 		PermissionManageJobs,
-		PermissionPromoteGuest,
-		PermissionDemoteToGuest,
+		PermissionPromotePartner,
+		PermissionDemoteToPartner,
 		PermissionEditBrand,
 		PermissionManageSharedChannels,
 		PermissionManageSecureConnections,
@@ -2503,7 +2503,7 @@ func initializePermissions() {
 		PermissionImportTeam,
 		PermissionViewTeam,
 		PermissionViewMembers,
-		PermissionInviteGuest,
+		PermissionInvitePartner,
 		PermissionPublicPlaybookCreate,
 		PermissionPrivatePlaybookCreate,
 	}

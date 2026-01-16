@@ -103,11 +103,11 @@ func TestSendInviteEmails(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	t.Run("SendGuestInviteEmails", func(t *testing.T) {
+	t.Run("SendPartnerInviteEmails", func(t *testing.T) {
 		err := mail.DeleteMailBox(emailTo)
 		require.NoError(t, err, "Failed to delete mailbox")
 
-		err = th.service.SendGuestInviteEmails(
+		err = th.service.SendPartnerInviteEmails(
 			th.BasicTeam,
 			[]*model.Channel{th.BasicChannel},
 			"test-user",
@@ -119,14 +119,14 @@ func TestSendInviteEmails(t *testing.T) {
 			false,
 			false,
 			false,
-			model.GuestSubtypeNotSpecified,
+			model.PartnerSubtypeNotSpecified,
 		)
 		require.NoError(t, err)
 
 		verifyMailbox(t)
 	})
 
-	t.Run("SendGuestInviteEmail can return error when SMTP connection fails", func(t *testing.T) {
+	t.Run("SendPartnerInviteEmail can return error when SMTP connection fails", func(t *testing.T) {
 		originalTimeout := *th.service.config().EmailSettings.SMTPServerTimeout
 		originalPort := *th.service.config().EmailSettings.SMTPPort
 		th.UpdateConfig(func(cfg *model.Config) {
@@ -138,7 +138,7 @@ func TestSendInviteEmails(t *testing.T) {
 			*cfg.EmailSettings.SMTPServerTimeout = originalTimeout
 		})
 
-		err := th.service.SendGuestInviteEmails(
+		err := th.service.SendPartnerInviteEmails(
 			th.BasicTeam,
 			[]*model.Channel{th.BasicChannel},
 			"test-user",
@@ -150,11 +150,11 @@ func TestSendInviteEmails(t *testing.T) {
 			false,
 			false,
 			false,
-			model.GuestSubtypeNotSpecified,
+			model.PartnerSubtypeNotSpecified,
 		)
 		require.NoError(t, err)
 
-		err = th.service.SendGuestInviteEmails(
+		err = th.service.SendPartnerInviteEmails(
 			th.BasicTeam,
 			[]*model.Channel{th.BasicChannel},
 			"test-user",
@@ -166,17 +166,17 @@ func TestSendInviteEmails(t *testing.T) {
 			true,
 			false,
 			false,
-			model.GuestSubtypeNotSpecified,
+			model.PartnerSubtypeNotSpecified,
 		)
 		require.Error(t, err)
 	})
 
-	t.Run("SendGuestInviteEmails should sanitize HTML input", func(t *testing.T) {
+	t.Run("SendPartnerInviteEmails should sanitize HTML input", func(t *testing.T) {
 		err := mail.DeleteMailBox(emailTo)
 		require.NoError(t, err, "Failed to delete mailbox")
 
 		message := `<a href="http://testserver">sanitized message</a>`
-		err = th.service.SendGuestInviteEmails(
+		err = th.service.SendPartnerInviteEmails(
 			th.BasicTeam,
 			[]*model.Channel{th.BasicChannel},
 			"test-user",
@@ -188,7 +188,7 @@ func TestSendInviteEmails(t *testing.T) {
 			false,
 			false,
 			false,
-			model.GuestSubtypeNotSpecified,
+			model.PartnerSubtypeNotSpecified,
 		)
 		require.NoError(t, err)
 

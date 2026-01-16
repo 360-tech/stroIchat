@@ -103,9 +103,9 @@ func (_m *ChannelStore) AnalyticsTypeCount(teamID string, channelType model.Chan
 	return r0, r1
 }
 
-// Autocomplete provides a mock function with given fields: rctx, userID, term, includeDeleted, isGuest
-func (_m *ChannelStore) Autocomplete(rctx request.CTX, userID string, term string, includeDeleted bool, isGuest bool) (model.ChannelListWithTeamData, error) {
-	ret := _m.Called(rctx, userID, term, includeDeleted, isGuest)
+// Autocomplete provides a mock function with given fields: rctx, userID, term, includeDeleted, isPartner
+func (_m *ChannelStore) Autocomplete(rctx request.CTX, userID string, term string, includeDeleted bool, isPartner bool) (model.ChannelListWithTeamData, error) {
+	ret := _m.Called(rctx, userID, term, includeDeleted, isPartner)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Autocomplete")
@@ -114,10 +114,10 @@ func (_m *ChannelStore) Autocomplete(rctx request.CTX, userID string, term strin
 	var r0 model.ChannelListWithTeamData
 	var r1 error
 	if rf, ok := ret.Get(0).(func(request.CTX, string, string, bool, bool) (model.ChannelListWithTeamData, error)); ok {
-		return rf(rctx, userID, term, includeDeleted, isGuest)
+		return rf(rctx, userID, term, includeDeleted, isPartner)
 	}
 	if rf, ok := ret.Get(0).(func(request.CTX, string, string, bool, bool) model.ChannelListWithTeamData); ok {
-		r0 = rf(rctx, userID, term, includeDeleted, isGuest)
+		r0 = rf(rctx, userID, term, includeDeleted, isPartner)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(model.ChannelListWithTeamData)
@@ -125,7 +125,7 @@ func (_m *ChannelStore) Autocomplete(rctx request.CTX, userID string, term strin
 	}
 
 	if rf, ok := ret.Get(1).(func(request.CTX, string, string, bool, bool) error); ok {
-		r1 = rf(rctx, userID, term, includeDeleted, isGuest)
+		r1 = rf(rctx, userID, term, includeDeleted, isPartner)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -133,9 +133,9 @@ func (_m *ChannelStore) Autocomplete(rctx request.CTX, userID string, term strin
 	return r0, r1
 }
 
-// AutocompleteInTeam provides a mock function with given fields: rctx, teamID, userID, term, includeDeleted, isGuest
-func (_m *ChannelStore) AutocompleteInTeam(rctx request.CTX, teamID string, userID string, term string, includeDeleted bool, isGuest bool) (model.ChannelList, error) {
-	ret := _m.Called(rctx, teamID, userID, term, includeDeleted, isGuest)
+// AutocompleteInTeam provides a mock function with given fields: rctx, teamID, userID, term, includeDeleted, isPartner
+func (_m *ChannelStore) AutocompleteInTeam(rctx request.CTX, teamID string, userID string, term string, includeDeleted bool, isPartner bool) (model.ChannelList, error) {
+	ret := _m.Called(rctx, teamID, userID, term, includeDeleted, isPartner)
 
 	if len(ret) == 0 {
 		panic("no return value specified for AutocompleteInTeam")
@@ -144,10 +144,10 @@ func (_m *ChannelStore) AutocompleteInTeam(rctx request.CTX, teamID string, user
 	var r0 model.ChannelList
 	var r1 error
 	if rf, ok := ret.Get(0).(func(request.CTX, string, string, string, bool, bool) (model.ChannelList, error)); ok {
-		return rf(rctx, teamID, userID, term, includeDeleted, isGuest)
+		return rf(rctx, teamID, userID, term, includeDeleted, isPartner)
 	}
 	if rf, ok := ret.Get(0).(func(request.CTX, string, string, string, bool, bool) model.ChannelList); ok {
-		r0 = rf(rctx, teamID, userID, term, includeDeleted, isGuest)
+		r0 = rf(rctx, teamID, userID, term, includeDeleted, isPartner)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(model.ChannelList)
@@ -155,7 +155,7 @@ func (_m *ChannelStore) AutocompleteInTeam(rctx request.CTX, teamID string, user
 	}
 
 	if rf, ok := ret.Get(1).(func(request.CTX, string, string, string, bool, bool) error); ok {
-		r1 = rf(rctx, teamID, userID, term, includeDeleted, isGuest)
+		r1 = rf(rctx, teamID, userID, term, includeDeleted, isPartner)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -1355,12 +1355,12 @@ func (_m *ChannelStore) GetForPost(postID string) (*model.Channel, error) {
 	return r0, r1
 }
 
-// GetGuestCount provides a mock function with given fields: channelID, allowFromCache
-func (_m *ChannelStore) GetGuestCount(channelID string, allowFromCache bool) (int64, error) {
+// GetPartnerCount provides a mock function with given fields: channelID, allowFromCache
+func (_m *ChannelStore) GetPartnerCount(channelID string, allowFromCache bool) (int64, error) {
 	ret := _m.Called(channelID, allowFromCache)
 
 	if len(ret) == 0 {
-		panic("no return value specified for GetGuestCount")
+		panic("no return value specified for GetPartnerCount")
 	}
 
 	var r0 int64
@@ -2241,8 +2241,8 @@ func (_m *ChannelStore) InvalidateChannelByName(teamID string, name string) {
 	_m.Called(teamID, name)
 }
 
-// InvalidateGuestCount provides a mock function with given fields: channelID
-func (_m *ChannelStore) InvalidateGuestCount(channelID string) {
+// InvalidatePartnerCount provides a mock function with given fields: channelID
+func (_m *ChannelStore) InvalidatePartnerCount(channelID string) {
 	_m.Called(channelID)
 }
 

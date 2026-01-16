@@ -212,8 +212,8 @@ func (th *TestHelper) addUserToChannel(channel *model.Channel, user *model.User)
 		ChannelId:   channel.Id,
 		UserId:      user.Id,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
-		SchemeGuest: user.IsGuest(),
-		SchemeUser:  !user.IsGuest(),
+		SchemePartner: user.IsPartner(),
+		SchemeUser:  !user.IsPartner(),
 	}
 
 	var err error
@@ -229,8 +229,8 @@ func (th *TestHelper) addUserToTeam(team *model.Team, user *model.User) *model.T
 	tm := &model.TeamMember{
 		TeamId:      team.Id,
 		UserId:      user.Id,
-		SchemeGuest: user.IsGuest(),
-		SchemeUser:  !user.IsGuest(),
+		SchemePartner: user.IsPartner(),
+		SchemeUser:  !user.IsPartner(),
 	}
 
 	var err error
@@ -243,14 +243,14 @@ func (th *TestHelper) addUserToTeam(team *model.Team, user *model.User) *model.T
 }
 
 func (th *TestHelper) CreateUser() *model.User {
-	return th.CreateUserOrGuest(false)
+	return th.CreateUserOrPartner(false)
 }
 
-func (th *TestHelper) CreateGuest() *model.User {
-	return th.CreateUserOrGuest(true)
+func (th *TestHelper) CreatePartner() *model.User {
+	return th.CreateUserOrPartner(true)
 }
 
-func (th *TestHelper) CreateUserOrGuest(guest bool) *model.User {
+func (th *TestHelper) CreateUserOrPartner(partner bool) *model.User {
 	id := model.NewId()
 
 	user := &model.User{
@@ -262,8 +262,8 @@ func (th *TestHelper) CreateUserOrGuest(guest bool) *model.User {
 	}
 
 	var err error
-	if guest {
-		if user, err = th.service.userService.CreateUser(th.Context, user, users.UserCreateOptions{Guest: true}); err != nil {
+	if partner {
+		if user, err = th.service.userService.CreateUser(th.Context, user, users.UserCreateOptions{Partner: true}); err != nil {
 			panic(err)
 		}
 	} else {

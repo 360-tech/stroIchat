@@ -69,12 +69,12 @@ const (
 
 	DesktopTokenTTL = time.Minute * 3
 
-	// Guest subtype constants
-	UserPropsKeyGuestSubtype     = "guest_subtype"
-	GuestSubtypeNotSpecified     = "not_specified"
-	GuestSubtypeContractor       = "contractor"
-	GuestSubtypeCustomer         = "customer"
-	GuestSubtypePartner          = "partner"
+	// Partner subtype constants
+	UserPropsKeyPartnerSubtype     = "partner_subtype"
+	PartnerSubtypeNotSpecified     = "not_specified"
+	PartnerSubtypeContractor       = "contractor"
+	PartnerSubtypeCustomer         = "customer"
+	PartnerSubtypePartner          = "partner"
 )
 
 //msgp:tuple User
@@ -807,25 +807,25 @@ func (u *User) ValidateCustomStatus() bool {
 	return true
 }
 
-// GetGuestSubtype returns the guest subtype for the user, or "not_specified" if not set.
-func (u *User) GetGuestSubtype() string {
+// GetPartnerSubtype returns the partner subtype for the user, or "not_specified" if not set.
+func (u *User) GetPartnerSubtype() string {
 	if u.Props == nil {
-		return GuestSubtypeNotSpecified
+		return PartnerSubtypeNotSpecified
 	}
-	subtype, exists := u.Props[UserPropsKeyGuestSubtype]
+	subtype, exists := u.Props[UserPropsKeyPartnerSubtype]
 	if !exists || subtype == "" {
-		return GuestSubtypeNotSpecified
+		return PartnerSubtypeNotSpecified
 	}
 	return subtype
 }
 
-// SetGuestSubtype sets the guest subtype for the user.
-func (u *User) SetGuestSubtype(subtype string) {
+// SetPartnerSubtype sets the partner subtype for the user.
+func (u *User) SetPartnerSubtype(subtype string) {
 	u.MakeNonNil()
 	if subtype == "" {
-		subtype = GuestSubtypeNotSpecified
+		subtype = PartnerSubtypeNotSpecified
 	}
-	u.Props[UserPropsKeyGuestSubtype] = subtype
+	u.Props[UserPropsKeyPartnerSubtype] = subtype
 }
 
 func (u *User) GetFullName() string {
@@ -896,8 +896,8 @@ func IsValidUserRoles(userRoles string) bool {
 
 // Make sure you actually want to use this function. In context.go there are functions to check permissions
 // This function should not be used to check permissions.
-func (u *User) IsGuest() bool {
-	return IsInRole(u.Roles, SystemGuestRoleId)
+func (u *User) IsPartner() bool {
+	return IsInRole(u.Roles, SystemPartnerRoleId)
 }
 
 func (u *User) IsSystemAdmin() bool {
@@ -1103,7 +1103,7 @@ type UserWithGroups struct {
 	User
 	GroupIDs    *string  `json:"-"`
 	Groups      []*Group `json:"groups"`
-	SchemeGuest bool     `json:"scheme_guest"`
+	SchemePartner bool     `json:"scheme_partner"`
 	SchemeUser  bool     `json:"scheme_user"`
 	SchemeAdmin bool     `json:"scheme_admin"`
 }

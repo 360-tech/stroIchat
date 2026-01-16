@@ -19,7 +19,7 @@ import (
 
 const (
 	EmojisPermissionsMigrationKey                  = "EmojisPermissionsMigrationComplete"
-	GuestRolesCreationMigrationKey                 = "GuestRolesCreationMigrationComplete"
+	PartnerRolesCreationMigrationKey                 = "PartnerRolesCreationMigrationComplete"
 	SystemConsoleRolesCreationMigrationKey         = "SystemConsoleRolesCreationMigrationComplete"
 	CustomGroupAdminRoleCreationMigrationKey       = "CustomGroupAdminRoleCreationMigrationComplete"
 	ContentExtractionConfigDefaultTrueMigrationKey = "ContentExtractionConfigDefaultTrueMigrationComplete"
@@ -182,17 +182,17 @@ func (s *Server) doEmojisPermissionsMigration() error {
 	return nil
 }
 
-func (a *App) DoGuestRolesCreationMigration() error {
-	if err := a.Srv().doGuestRolesCreationMigration(); err != nil {
-		return fmt.Errorf("Failed to complete guest roles creation migration: %w", err)
+func (a *App) DoPartnerRolesCreationMigration() error {
+	if err := a.Srv().doPartnerRolesCreationMigration(); err != nil {
+		return fmt.Errorf("Failed to complete partner roles creation migration: %w", err)
 	}
 	return nil
 }
 
-func (s *Server) doGuestRolesCreationMigration() error {
+func (s *Server) doPartnerRolesCreationMigration() error {
 	// If the migration is already marked as completed, don't do it again.
 	var nfErr *store.ErrNotFound
-	if _, err := s.Store().System().GetByName(GuestRolesCreationMigrationKey); err == nil {
+	if _, err := s.Store().System().GetByName(PartnerRolesCreationMigrationKey); err == nil {
 		return nil
 	} else if !errors.As(err, &nfErr) {
 		return fmt.Errorf("could not query migration: %w", err)
@@ -200,19 +200,19 @@ func (s *Server) doGuestRolesCreationMigration() error {
 
 	roles := model.MakeDefaultRoles()
 	var multiErr *multierror.Error
-	if _, err := s.Store().Role().GetByName(context.Background(), model.ChannelGuestRoleId); err != nil {
-		if _, err := s.Store().Role().Save(roles[model.ChannelGuestRoleId]); err != nil {
-			multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new guest role to database: %w", err))
+	if _, err := s.Store().Role().GetByName(context.Background(), model.ChannelPartnerRoleId); err != nil {
+		if _, err := s.Store().Role().Save(roles[model.ChannelPartnerRoleId]); err != nil {
+			multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new partner role to database: %w", err))
 		}
 	}
-	if _, err := s.Store().Role().GetByName(context.Background(), model.TeamGuestRoleId); err != nil {
-		if _, err := s.Store().Role().Save(roles[model.TeamGuestRoleId]); err != nil {
-			multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new guest role to database: %w", err))
+	if _, err := s.Store().Role().GetByName(context.Background(), model.TeamPartnerRoleId); err != nil {
+		if _, err := s.Store().Role().Save(roles[model.TeamPartnerRoleId]); err != nil {
+			multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new partner role to database: %w", err))
 		}
 	}
-	if _, err := s.Store().Role().GetByName(context.Background(), model.SystemGuestRoleId); err != nil {
-		if _, err := s.Store().Role().Save(roles[model.SystemGuestRoleId]); err != nil {
-			multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new guest role to database: %w", err))
+	if _, err := s.Store().Role().GetByName(context.Background(), model.SystemPartnerRoleId); err != nil {
+		if _, err := s.Store().Role().Save(roles[model.SystemPartnerRoleId]); err != nil {
+			multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new partner role to database: %w", err))
 		}
 	}
 
@@ -221,35 +221,35 @@ func (s *Server) doGuestRolesCreationMigration() error {
 		multiErr = multierror.Append(multiErr, fmt.Errorf("failed to get all schemes: %w", err))
 	}
 	for _, scheme := range schemes {
-		if scheme.DefaultTeamGuestRole == "" || scheme.DefaultChannelGuestRole == "" {
+		if scheme.DefaultTeamPartnerRole == "" || scheme.DefaultChannelPartnerRole == "" {
 			if scheme.Scope == model.SchemeScopeTeam {
-				// Team Guest Role
-				teamGuestRole := &model.Role{
+				// Team Partner Role
+				teamPartnerRole := &model.Role{
 					Name:          model.NewId(),
-					DisplayName:   fmt.Sprintf("Team Guest Role for Scheme %s", scheme.Name),
-					Permissions:   roles[model.TeamGuestRoleId].Permissions,
+					DisplayName:   fmt.Sprintf("Team Partner Role for Scheme %s", scheme.Name),
+					Permissions:   roles[model.TeamPartnerRoleId].Permissions,
 					SchemeManaged: true,
 				}
 
-				if savedRole, err := s.Store().Role().Save(teamGuestRole); err != nil {
-					multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new guest role for custom scheme: %w", err))
+				if savedRole, err := s.Store().Role().Save(teamPartnerRole); err != nil {
+					multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new partner role for custom scheme: %w", err))
 				} else {
-					scheme.DefaultTeamGuestRole = savedRole.Name
+					scheme.DefaultTeamPartnerRole = savedRole.Name
 				}
 			}
 
-			// Channel Guest Role
-			channelGuestRole := &model.Role{
+			// Channel Partner Role
+			channelPartnerRole := &model.Role{
 				Name:          model.NewId(),
-				DisplayName:   fmt.Sprintf("Channel Guest Role for Scheme %s", scheme.Name),
-				Permissions:   roles[model.ChannelGuestRoleId].Permissions,
+				DisplayName:   fmt.Sprintf("Channel Partner Role for Scheme %s", scheme.Name),
+				Permissions:   roles[model.ChannelPartnerRoleId].Permissions,
 				SchemeManaged: true,
 			}
 
-			if savedRole, err := s.Store().Role().Save(channelGuestRole); err != nil {
-				multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new guest role for custom scheme: %w", err))
+			if savedRole, err := s.Store().Role().Save(channelPartnerRole); err != nil {
+				multiErr = multierror.Append(multiErr, fmt.Errorf("failed to create new partner role for custom scheme: %w", err))
 			} else {
-				scheme.DefaultChannelGuestRole = savedRole.Name
+				scheme.DefaultChannelPartnerRole = savedRole.Name
 			}
 
 			_, err := s.Store().Scheme().Save(scheme)
@@ -264,12 +264,12 @@ func (s *Server) doGuestRolesCreationMigration() error {
 	}
 
 	system := model.System{
-		Name:  GuestRolesCreationMigrationKey,
+		Name:  PartnerRolesCreationMigrationKey,
 		Value: "true",
 	}
 
 	if err := s.Store().System().Save(&system); err != nil {
-		return fmt.Errorf("failed to mark guest roles creation migration as completed: %w", err)
+		return fmt.Errorf("failed to mark partner roles creation migration as completed: %w", err)
 	}
 
 	return nil
@@ -832,10 +832,10 @@ func (s *Server) doAppMigrations() {
 	m1 := []migration{
 		{"Advanced Permissions Migration", s.doAdvancedPermissionsMigration},
 		{"Emojis Permissions Migration", s.doEmojisPermissionsMigration},
-		{"GuestRolesCreationMigration", s.doGuestRolesCreationMigration},
+		{"PartnerRolesCreationMigration", s.doPartnerRolesCreationMigration},
 		{"System Console Roles Creation Migration", s.doSystemConsoleRolesCreationMigration},
 		{"Custom Group Admin Role Creation Migration", s.doCustomGroupAdminRoleCreationMigration},
-		// This migration always run after dependent migrations such as the guest roles migration.
+		// This migration always run after dependent migrations such as the partner roles migration.
 		{"Permissions Migrations", s.doPermissionsMigrations},
 		{"Content Extraction Config Default True Migration", s.doContentExtractionConfigDefaultTrueMigration},
 		{"Playbooks Roles Creation Migration", s.doPlaybooksRolesCreationMigration},

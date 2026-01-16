@@ -8,7 +8,7 @@ import type {Team, TeamMembership} from '@mattermost/types/teams';
 import type {UserProfile} from '@mattermost/types/users';
 
 import type {ActionResult} from 'mattermost-redux/types/actions';
-import {isAdmin, isSystemAdmin, isGuest} from 'mattermost-redux/utils/user_utils';
+import {isAdmin, isSystemAdmin, isPartner} from 'mattermost-redux/utils/user_utils';
 
 import Menu from 'components/widgets/menu/menu';
 import MenuWrapper from 'components/widgets/menu/menu_wrapper';
@@ -57,7 +57,7 @@ const ManageTeamsDropdown = (props: Props) => {
 
     const isTeamAdmin = isAdmin(props.teamMember.roles) || props.teamMember.scheme_admin;
     const isSysAdmin = isSystemAdmin(props.user.roles);
-    const isGuestUser = isGuest(props.user.roles);
+    const isPartnerUser = isPartner(props.user.roles);
 
     const {team} = props;
     let title;
@@ -65,8 +65,8 @@ const ManageTeamsDropdown = (props: Props) => {
         title = formatMessage({id: 'admin.user_item.sysAdmin', defaultMessage: 'System Admin'});
     } else if (isTeamAdmin) {
         title = formatMessage({id: 'admin.user_item.teamAdmin', defaultMessage: 'Team Admin'});
-    } else if (isGuestUser) {
-        title = formatMessage({id: 'admin.user_item.guest', defaultMessage: 'Guest'});
+    } else if (isPartnerUser) {
+        title = formatMessage({id: 'admin.user_item.partner', defaultMessage: 'Partner'});
     } else {
         title = formatMessage({id: 'admin.user_item.teamMember', defaultMessage: 'Team Member'});
     }
@@ -82,7 +82,7 @@ const ManageTeamsDropdown = (props: Props) => {
                 ariaLabel={formatMessage({id: 'team_members_dropdown.menuAriaLabel', defaultMessage: 'Change the role of a team member'})}
             >
                 <Menu.ItemAction
-                    show={!isTeamAdmin && !isGuestUser}
+                    show={!isTeamAdmin && !isPartnerUser}
                     onClick={makeTeamAdmin}
                     text={formatMessage({id: 'admin.user_item.makeTeamAdmin', defaultMessage: 'Make Team Admin'})}
                 />

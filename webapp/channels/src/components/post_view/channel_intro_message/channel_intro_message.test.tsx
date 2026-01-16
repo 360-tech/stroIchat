@@ -31,7 +31,7 @@ describe('components/post_view/ChannelIntroMessages', () => {
     const user1 = {id: 'user1', roles: 'system_user'};
     const users = [
         {id: 'user1', roles: 'system_user'},
-        {id: 'guest1', roles: 'system_guest'},
+        {id: 'partner1', roles: 'system_partner'},
         {id: 'test-user-id', roles: 'system_user'},
     ] as UserProfile[];
 
@@ -145,14 +145,14 @@ describe('components/post_view/ChannelIntroMessages', () => {
             expect(headerDialog).toHaveTextContent('Set header');
             expect(headerDialog).toHaveClass('action-button');
 
-            // one for user1 and one for guest
+            // one for user1 and one for partner
 
             const image = screen.getAllByAltText('user profile image');
             expect(image).toHaveLength(2);
             expect(image[0]).toHaveAttribute('src', '/api/v4/users/user1/image?_=0');
             expect(image[0]).toHaveAttribute('loading', 'lazy');
 
-            expect(image[1]).toHaveAttribute('src', '/api/v4/users/guest1/image?_=0');
+            expect(image[1]).toHaveAttribute('src', '/api/v4/users/partner1/image?_=0');
             expect(image[1]).toHaveAttribute('loading', 'lazy');
 
             const notificationPreferencesButton = screen.getByText('Notifications');

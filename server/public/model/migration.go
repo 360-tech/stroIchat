@@ -15,7 +15,7 @@ const (
 	MigrationKeyApplyChannelManageDeleteToChannelUser  = "apply_channel_manage_delete_to_channel_user"
 	MigrationKeyRemoveChannelManageDeleteFromTeamUser  = "remove_channel_manage_delete_from_team_user"
 	MigrationKeyViewMembersNewPermission               = "view_members_new_permission"
-	MigrationKeyAddManageGuestsPermissions             = "add_manage_guests_permissions"
+	MigrationKeyAddManagePartnersPermissions             = "add_manage_partners_permissions"
 	MigrationKeyChannelModerationsPermissions          = "channel_moderations_permissions"
 	MigrationKeyAddUseGroupMentionsPermission          = "add_use_group_mentions_permission"
 	MigrationKeyAddSystemConsolePermissions            = "add_system_console_permissions"

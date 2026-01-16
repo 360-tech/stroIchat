@@ -207,10 +207,10 @@ func (th *TestHelper) CreateTeam(tb testing.TB) *model.Team {
 
 func (th *TestHelper) CreateUser(tb testing.TB) *model.User {
 	tb.Helper()
-	return th.CreateUserOrGuest(tb, false)
+	return th.CreateUserOrPartner(tb, false)
 }
 
-func (th *TestHelper) CreateUserOrGuest(tb testing.TB, guest bool) *model.User {
+func (th *TestHelper) CreateUserOrPartner(tb testing.TB, partner bool) *model.User {
 	tb.Helper()
 	id := model.NewId()
 
@@ -223,8 +223,8 @@ func (th *TestHelper) CreateUserOrGuest(tb testing.TB, guest bool) *model.User {
 	}
 
 	var err *model.AppError
-	if guest {
-		user, err = th.App.CreateGuest(th.Context, user)
+	if partner {
+		user, err = th.App.CreatePartner(th.Context, user)
 	} else {
 		user, err = th.App.CreateUser(th.Context, user)
 	}

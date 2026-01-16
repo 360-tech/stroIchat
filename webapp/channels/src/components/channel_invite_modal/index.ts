@@ -79,10 +79,10 @@ function makeMapStateToProps(initialState: GlobalState, initialProps: OwnProps) 
 
         const currentTeam = props.teamId ? getTeam(state, props.teamId) : getCurrentTeam(state);
 
-        const guestAccountsEnabled = config.EnableGuestAccounts === 'true';
+        const partnerAccountsEnabled = config.EnablePartnerAccounts === 'true';
         const emailInvitationsEnabled = config.EnableEmailInvitations === 'true';
         const isGroupConstrained = Boolean(currentTeam?.group_constrained);
-        const canInviteGuests = !isGroupConstrained && guestAccountsEnabled && haveICurrentTeamPermission(state, Permissions.INVITE_GUEST);
+        const canInvitePartners = !isGroupConstrained && partnerAccountsEnabled && haveICurrentTeamPermission(state, Permissions.INVITE_PARTNER);
         const enableCustomUserGroups = isCustomGroupsEnabled(state);
 
         const isGroupsEnabled = enableCustomUserGroups || (license?.IsLicensed === 'true' && license?.LDAPGroups === 'true');
@@ -100,7 +100,7 @@ function makeMapStateToProps(initialState: GlobalState, initialProps: OwnProps) 
             teammateNameDisplaySetting,
             profilesFromRecentDMs,
             userStatuses,
-            canInviteGuests,
+            canInvitePartners,
             emailInvitationsEnabled,
             groups,
             isGroupsEnabled,

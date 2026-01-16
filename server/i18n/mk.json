@@ -12,7 +12,7 @@
     "translation": "%v додаден во каналот од %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v додаден во каналот како гостин од %v."
   },
   {
@@ -184,7 +184,7 @@
     "translation": "Неможеше да се приземе метадата од Идентитет Провајдер УРЛ."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Невалидни канали."
   },
   {
@@ -276,7 +276,7 @@
     "translation": "приклучи се"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Невалиден канал."
   },
   {
@@ -404,7 +404,7 @@
     "translation": "Немате соодветни дозволи."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v се приклучи во каналот како гостин."
   },
   {
@@ -512,7 +512,7 @@
     "translation": "Не можете да отстраните потврда во архириван канал."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Невалиден членска промена на каналот. Неможете да ја додавате или отстраните гостинската улога."
   },
   {
@@ -556,7 +556,7 @@
     "translation": "Наведената улога е управувана од шема и затоа не може да се примени директно на членот на каналот."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Невалидена промена на членовите на каналот: Корисникот мора да биде или гостин или корисник, но не двете."
   },
   {
@@ -584,7 +584,7 @@
     "translation": "Наведената улога е менаџирана од Шема и поради тоа неможе да се аплицира директно на Член на Тимот."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Невалидно ажурирање на член на тимот: Не можете да додадете или отстранете гостинската улога рачно."
   },
   {

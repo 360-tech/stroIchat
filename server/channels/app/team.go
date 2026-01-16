@@ -386,10 +386,10 @@ func (a *App) GetSchemeRolesForTeam(teamID string) (string, string, string, *mod
 		if err != nil {
 			return "", "", "", err
 		}
-		return scheme.DefaultTeamGuestRole, scheme.DefaultTeamUserRole, scheme.DefaultTeamAdminRole, nil
+		return scheme.DefaultTeamPartnerRole, scheme.DefaultTeamUserRole, scheme.DefaultTeamAdminRole, nil
 	}
 
-	return model.TeamGuestRoleId, model.TeamUserRoleId, model.TeamAdminRoleId, nil
+	return model.TeamPartnerRoleId, model.TeamUserRoleId, model.TeamAdminRoleId, nil
 }
 
 func (a *App) UpdateTeamMemberRoles(rctx request.CTX, teamID string, userID string, newRoles string) (*model.TeamMember, *model.AppError) {
@@ -408,15 +408,15 @@ func (a *App) UpdateTeamMemberRoles(rctx request.CTX, teamID string, userID stri
 		return nil, model.NewAppError("UpdateTeamMemberRoles", "api.team.update_member_roles.not_a_member", nil, "userId="+userID+" teamId="+teamID, http.StatusBadRequest)
 	}
 
-	schemeGuestRole, schemeUserRole, schemeAdminRole, err := a.GetSchemeRolesForTeam(teamID)
+	schemePartnerRole, schemeUserRole, schemeAdminRole, err := a.GetSchemeRolesForTeam(teamID)
 	if err != nil {
 		return nil, err
 	}
 
-	prevSchemeGuestValue := member.SchemeGuest
+	prevSchemePartnerValue := member.SchemePartner
 
 	var newExplicitRoles []string
-	member.SchemeGuest = false
+	member.SchemePartner = false
 	member.SchemeUser = false
 	member.SchemeAdmin = false
 
@@ -437,8 +437,8 @@ func (a *App) UpdateTeamMemberRoles(rctx request.CTX, teamID string, userID stri
 				member.SchemeAdmin = true
 			case schemeUserRole:
 				member.SchemeUser = true
-			case schemeGuestRole:
-				member.SchemeGuest = true
+			case schemePartnerRole:
+				member.SchemePartner = true
 			default:
 				// If not part of the scheme for this team, then it is not allowed to apply it as an explicit role.
 				return nil, model.NewAppError("UpdateTeamMemberRoles", "api.channel.update_team_member_roles.scheme_role.app_error", nil, "role_name="+roleName, http.StatusBadRequest)
@@ -446,12 +446,12 @@ func (a *App) UpdateTeamMemberRoles(rctx request.CTX, teamID string, userID stri
 		}
 	}
 
-	if member.SchemeGuest && member.SchemeUser {
-		return nil, model.NewAppError("UpdateTeamMemberRoles", "api.team.update_team_member_roles.guest_and_user.app_error", nil, "", http.StatusBadRequest)
+	if member.SchemePartner && member.SchemeUser {
+		return nil, model.NewAppError("UpdateTeamMemberRoles", "api.team.update_team_member_roles.partner_and_user.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if prevSchemeGuestValue != member.SchemeGuest {
-		return nil, model.NewAppError("UpdateTeamMemberRoles", "api.channel.update_team_member_roles.changing_guest_role.app_error", nil, "", http.StatusBadRequest)
+	if prevSchemePartnerValue != member.SchemePartner {
+		return nil, model.NewAppError("UpdateTeamMemberRoles", "api.channel.update_team_member_roles.changing_partner_role.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	member.ExplicitRoles = strings.Join(newExplicitRoles, " ")
@@ -476,18 +476,18 @@ func (a *App) UpdateTeamMemberRoles(rctx request.CTX, teamID string, userID stri
 	return member, nil
 }
 
-func (a *App) UpdateTeamMemberSchemeRoles(rctx request.CTX, teamID string, userID string, isSchemeGuest bool, isSchemeUser bool, isSchemeAdmin bool) (*model.TeamMember, *model.AppError) {
+func (a *App) UpdateTeamMemberSchemeRoles(rctx request.CTX, teamID string, userID string, isSchemePartner bool, isSchemeUser bool, isSchemeAdmin bool) (*model.TeamMember, *model.AppError) {
 	member, err := a.GetTeamMember(rctx, teamID, userID)
 	if err != nil {
 		return nil, err
 	}
 
-	if member.SchemeGuest {
-		return nil, model.NewAppError("UpdateTeamMemberSchemeRoles", "api.team.update_team_member_roles.guest.app_error", nil, "", http.StatusBadRequest)
+	if member.SchemePartner {
+		return nil, model.NewAppError("UpdateTeamMemberSchemeRoles", "api.team.update_team_member_roles.partner.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if isSchemeGuest {
-		return nil, model.NewAppError("UpdateTeamMemberSchemeRoles", "api.team.update_team_member_roles.user_and_guest.app_error", nil, "", http.StatusBadRequest)
+	if isSchemePartner {
+		return nil, model.NewAppError("UpdateTeamMemberSchemeRoles", "api.team.update_team_member_roles.user_and_partner.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if !isSchemeUser {
@@ -496,11 +496,11 @@ func (a *App) UpdateTeamMemberSchemeRoles(rctx request.CTX, teamID string, userI
 
 	member.SchemeAdmin = isSchemeAdmin
 	member.SchemeUser = isSchemeUser
-	member.SchemeGuest = isSchemeGuest
+	member.SchemePartner = isSchemePartner
 
 	// If the migration is not completed, we also need to check the default team_admin/team_user roles are not present in the roles field.
 	if err = a.IsPhase2MigrationCompleted(); err != nil {
-		member.ExplicitRoles = removeRoles([]string{model.TeamGuestRoleId, model.TeamUserRoleId, model.TeamAdminRoleId}, member.ExplicitRoles)
+		member.ExplicitRoles = removeRoles([]string{model.TeamPartnerRoleId, model.TeamUserRoleId, model.TeamAdminRoleId}, member.ExplicitRoles)
 	}
 
 	member, nErr := a.Srv().Store().Team().UpdateMember(rctx, member)
@@ -605,7 +605,7 @@ func (a *App) AddUserToTeamByToken(rctx request.CTX, userID string, tokenID stri
 		return nil, nil, model.NewAppError("AddUserToTeamByToken", "api.user.create_user.signup_link_invalid.app_error", nil, "", http.StatusBadRequest).Wrap(err)
 	}
 
-	if token.Type != TokenTypeTeamInvitation && token.Type != TokenTypeGuestInvitation {
+	if token.Type != TokenTypeTeamInvitation && token.Type != TokenTypePartnerInvitation {
 		return nil, nil, model.NewAppError("AddUserToTeamByToken", "api.user.create_user.signup_link_invalid.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -660,10 +660,10 @@ func (a *App) AddUserToTeamByToken(rctx request.CTX, userID string, tokenID stri
 	}
 	user := userChanResult.Data
 
-	if user.IsGuest() && token.Type == TokenTypeTeamInvitation {
+	if user.IsPartner() && token.Type == TokenTypeTeamInvitation {
 		return nil, nil, model.NewAppError("AddUserToTeamByToken", "api.user.create_user.invalid_invitation_type.app_error", nil, "", http.StatusBadRequest)
 	}
-	if !user.IsGuest() && token.Type == TokenTypeGuestInvitation {
+	if !user.IsPartner() && token.Type == TokenTypePartnerInvitation {
 		return nil, nil, model.NewAppError("AddUserToTeamByToken", "api.user.create_user.invalid_invitation_type.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -672,7 +672,7 @@ func (a *App) AddUserToTeamByToken(rctx request.CTX, userID string, tokenID stri
 		return nil, nil, appErr
 	}
 
-	if token.Type == TokenTypeGuestInvitation {
+	if token.Type == TokenTypePartnerInvitation {
 		channels, err := a.Srv().Store().Channel().GetChannelsByIds(strings.Split(tokenData["channels"], " "), false)
 		if err != nil {
 			return nil, nil, model.NewAppError("AddUserToTeamByToken", "app.channel.get_channels_by_ids.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
@@ -786,7 +786,7 @@ func (a *App) JoinUserToTeam(rctx request.CTX, team *model.Team, user *model.Use
 
 	shouldBeAdmin := team.Email == user.Email
 
-	if !user.IsGuest() {
+	if !user.IsPartner() {
 		// Soft error if there is an issue joining the default channels
 		if err := a.JoinDefaultChannels(rctx, team.Id, user, shouldBeAdmin, userRequestorId); err != nil {
 			rctx.Logger().Warn(
@@ -1361,7 +1361,7 @@ func (a *App) prepareInviteNewUsersToTeam(teamID, senderId string, channelIds []
 
 	for _, channel := range channels {
 		if channel.TeamId != teamID {
-			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "api.team.invite_guests.channel_in_invalid_team.app_error", nil, "", http.StatusBadRequest)
+			return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", "api.team.invite_partners.channel_in_invalid_team.app_error", nil, "", http.StatusBadRequest)
 		}
 	}
 
@@ -1445,8 +1445,8 @@ func (a *App) InviteNewUsersToTeamGracefully(rctx request.CTX, memberInvite *mod
 	return inviteListWithErrors, nil
 }
 
-func (a *App) prepareInviteGuestsToChannels(teamID string, guestsInvite *model.GuestsInvite, senderId string) (*model.User, *model.Team, []*model.Channel, *model.AppError) {
-	if err := guestsInvite.IsValid(); err != nil {
+func (a *App) prepareInvitePartnersToChannels(teamID string, partnersInvite *model.PartnersInvite, senderId string) (*model.User, *model.Team, []*model.Channel, *model.AppError) {
+	if err := partnersInvite.IsValid(); err != nil {
 		return nil, nil, nil, err
 	}
 
@@ -1458,7 +1458,7 @@ func (a *App) prepareInviteGuestsToChannels(teamID string, guestsInvite *model.G
 	}()
 	cchan := make(chan store.StoreResult[[]*model.Channel], 1)
 	go func() {
-		channels, err := a.Srv().Store().Channel().GetChannelsByIds(guestsInvite.Channels, false)
+		channels, err := a.Srv().Store().Channel().GetChannelsByIds(partnersInvite.Channels, false)
 		cchan <- store.StoreResult[[]*model.Channel]{Data: channels, NErr: err}
 		close(cchan)
 	}()
@@ -1471,7 +1471,7 @@ func (a *App) prepareInviteGuestsToChannels(teamID string, guestsInvite *model.G
 
 	channelChanResult := <-cchan
 	if channelChanResult.NErr != nil {
-		return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "app.channel.get_channels_by_ids.app_error", nil, "", http.StatusInternalServerError).Wrap(channelChanResult.NErr)
+		return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", "app.channel.get_channels_by_ids.app_error", nil, "", http.StatusInternalServerError).Wrap(channelChanResult.NErr)
 	}
 	channels := channelChanResult.Data
 
@@ -1480,9 +1480,9 @@ func (a *App) prepareInviteGuestsToChannels(teamID string, guestsInvite *model.G
 		var nfErr *store.ErrNotFound
 		switch {
 		case errors.As(userChanResult.NErr, &nfErr):
-			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", MissingAccountError, nil, "", http.StatusNotFound).Wrap(userChanResult.NErr)
+			return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", MissingAccountError, nil, "", http.StatusNotFound).Wrap(userChanResult.NErr)
 		default:
-			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "app.user.get.app_error", nil, "", http.StatusInternalServerError).Wrap(userChanResult.NErr)
+			return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", "app.user.get.app_error", nil, "", http.StatusInternalServerError).Wrap(userChanResult.NErr)
 		}
 	}
 	user := userChanResult.Data
@@ -1492,66 +1492,66 @@ func (a *App) prepareInviteGuestsToChannels(teamID string, guestsInvite *model.G
 		var nfErr *store.ErrNotFound
 		switch {
 		case errors.As(teamChanResult.NErr, &nfErr):
-			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "app.team.get_by_invite_id.finding.app_error", nil, "", http.StatusNotFound).Wrap(teamChanResult.NErr)
+			return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", "app.team.get_by_invite_id.finding.app_error", nil, "", http.StatusNotFound).Wrap(teamChanResult.NErr)
 		default:
-			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "app.team.get_by_invite_id.finding.app_error", nil, "", http.StatusInternalServerError).Wrap(teamChanResult.NErr)
+			return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", "app.team.get_by_invite_id.finding.app_error", nil, "", http.StatusInternalServerError).Wrap(teamChanResult.NErr)
 		}
 	}
 	team := teamChanResult.Data
 
 	for _, channel := range channels {
 		if channel.TeamId != teamID {
-			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "api.team.invite_guests.channel_in_invalid_team.app_error", nil, "", http.StatusBadRequest)
+			return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", "api.team.invite_partners.channel_in_invalid_team.app_error", nil, "", http.StatusBadRequest)
 		}
 
 		// Check if the channel has access control policy enforcement
 		if channel.PolicyEnforced {
-			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "api.team.invite_guests.policy_enforced_channel.app_error", nil, "", http.StatusBadRequest)
+			return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", "api.team.invite_partners.policy_enforced_channel.app_error", nil, "", http.StatusBadRequest)
 		}
 	}
 
-	// Validate guest subtype if provided
-	if guestsInvite.GuestSubtype != "" {
+	// Validate partner subtype if provided
+	if partnersInvite.PartnerSubtype != "" {
 		validSubtypes := []string{
-			model.GuestSubtypeNotSpecified,
-			model.GuestSubtypeContractor,
-			model.GuestSubtypeCustomer,
-			model.GuestSubtypePartner,
+			model.PartnerSubtypeNotSpecified,
+			model.PartnerSubtypeContractor,
+			model.PartnerSubtypeCustomer,
+			model.PartnerSubtypePartner,
 		}
 		isValid := false
 		for _, validSubtype := range validSubtypes {
-			if guestsInvite.GuestSubtype == validSubtype {
+			if partnersInvite.PartnerSubtype == validSubtype {
 				isValid = true
 				break
 			}
 		}
 		if !isValid {
-			return nil, nil, nil, model.NewAppError("prepareInviteGuestsToChannels", "api.team.invite_guests.invalid_guest_subtype.app_error", nil, "", http.StatusBadRequest)
+			return nil, nil, nil, model.NewAppError("prepareInvitePartnersToChannels", "api.team.invite_partners.invalid_partner_subtype.app_error", nil, "", http.StatusBadRequest)
 		}
 	}
 
 	return user, team, channels, nil
 }
 
-func (a *App) InviteGuestsToChannelsGracefully(rctx request.CTX, teamID string, guestsInvite *model.GuestsInvite, senderId string) ([]*model.EmailInviteWithError, *model.AppError) {
+func (a *App) InvitePartnersToChannelsGracefully(rctx request.CTX, teamID string, partnersInvite *model.PartnersInvite, senderId string) ([]*model.EmailInviteWithError, *model.AppError) {
 	if !*a.Config().ServiceSettings.EnableEmailInvitations {
-		return nil, model.NewAppError("InviteGuestsToChannelsGracefully", "api.team.invite_members.disabled.app_error", nil, "", http.StatusNotImplemented)
+		return nil, model.NewAppError("InvitePartnersToChannelsGracefully", "api.team.invite_members.disabled.app_error", nil, "", http.StatusNotImplemented)
 	}
 
-	user, team, channels, err := a.prepareInviteGuestsToChannels(teamID, guestsInvite, senderId)
+	user, team, channels, err := a.prepareInvitePartnersToChannels(teamID, partnersInvite, senderId)
 	if err != nil {
 		return nil, err
 	}
 
 	var inviteListWithErrors []*model.EmailInviteWithError
 	var goodEmails []string
-	for _, email := range guestsInvite.Emails {
+	for _, email := range partnersInvite.Emails {
 		invite := &model.EmailInviteWithError{
 			Email: email,
 			Error: nil,
 		}
-		if !users.CheckEmailDomain(email, *a.Config().GuestAccountsSettings.RestrictCreationToDomains) {
-			invite.Error = model.NewAppError("InviteGuestsToChannelsGracefully", "api.team.invite_members.invalid_email.app_error", map[string]any{"Addresses": email}, "", http.StatusBadRequest)
+		if !users.CheckEmailDomain(email, *a.Config().PartnerAccountsSettings.RestrictCreationToDomains) {
+			invite.Error = model.NewAppError("InvitePartnersToChannelsGracefully", "api.team.invite_members.invalid_email.app_error", map[string]any{"Addresses": email}, "", http.StatusBadRequest)
 		} else {
 			goodEmails = append(goodEmails, email)
 		}
@@ -1565,20 +1565,20 @@ func (a *App) InviteGuestsToChannelsGracefully(rctx request.CTX, teamID string, 
 			rctx.Logger().Warn("Unable to get the sender user profile image.", mlog.String("user_id", user.Id), mlog.String("team_id", team.Id), mlog.Err(err))
 		}
 
-		guestSubtype := guestsInvite.GuestSubtype
-		if guestSubtype == "" {
-			guestSubtype = model.GuestSubtypeNotSpecified
+		partnerSubtype := partnersInvite.PartnerSubtype
+		if partnerSubtype == "" {
+			partnerSubtype = model.PartnerSubtypeNotSpecified
 		}
-		eErr := a.Srv().EmailService.SendGuestInviteEmails(team, channels, user.GetDisplayName(nameFormat), user.Id, senderProfileImage, goodEmails, a.GetSiteURL(), guestsInvite.Message, true, user.IsSystemAdmin(), a.UserIsFirstAdmin(rctx, user), guestSubtype)
+		eErr := a.Srv().EmailService.SendPartnerInviteEmails(team, channels, user.GetDisplayName(nameFormat), user.Id, senderProfileImage, goodEmails, a.GetSiteURL(), partnersInvite.Message, true, user.IsSystemAdmin(), a.UserIsFirstAdmin(rctx, user), partnerSubtype)
 		if eErr != nil {
 			switch {
 			case errors.Is(eErr, email.SendMailError):
 				for i := range inviteListWithErrors {
 					if inviteListWithErrors[i].Error == nil {
 						if *a.Config().EmailSettings.SMTPServer == model.EmailSMTPDefaultServer && *a.Config().EmailSettings.SMTPPort == model.EmailSMTPDefaultPort {
-							inviteListWithErrors[i].Error = model.NewAppError("InviteGuestsToChannelsGracefully", "api.team.invite_members.unable_to_send_email_with_defaults.app_error", nil, "", http.StatusInternalServerError)
+							inviteListWithErrors[i].Error = model.NewAppError("InvitePartnersToChannelsGracefully", "api.team.invite_members.unable_to_send_email_with_defaults.app_error", nil, "", http.StatusInternalServerError)
 						} else {
-							inviteListWithErrors[i].Error = model.NewAppError("InviteGuestsToChannelsGracefully", "api.team.invite_members.unable_to_send_email.app_error", nil, "", http.StatusInternalServerError)
+							inviteListWithErrors[i].Error = model.NewAppError("InvitePartnersToChannelsGracefully", "api.team.invite_members.unable_to_send_email.app_error", nil, "", http.StatusInternalServerError)
 						}
 					}
 				}
@@ -1640,26 +1640,26 @@ func (a *App) InviteNewUsersToTeam(rctx request.CTX, emailList []string, teamID,
 	return nil
 }
 
-func (a *App) InviteGuestsToChannels(rctx request.CTX, teamID string, guestsInvite *model.GuestsInvite, senderId string) *model.AppError {
+func (a *App) InvitePartnersToChannels(rctx request.CTX, teamID string, partnersInvite *model.PartnersInvite, senderId string) *model.AppError {
 	if !*a.Config().ServiceSettings.EnableEmailInvitations {
 		return model.NewAppError("InviteNewUsersToTeam", "api.team.invite_members.disabled.app_error", nil, "", http.StatusNotImplemented)
 	}
 
-	user, team, channels, err := a.prepareInviteGuestsToChannels(teamID, guestsInvite, senderId)
+	user, team, channels, err := a.prepareInvitePartnersToChannels(teamID, partnersInvite, senderId)
 	if err != nil {
 		return err
 	}
 
 	var invalidEmailList []string
-	for _, email := range guestsInvite.Emails {
-		if !users.CheckEmailDomain(email, *a.Config().GuestAccountsSettings.RestrictCreationToDomains) {
+	for _, email := range partnersInvite.Emails {
+		if !users.CheckEmailDomain(email, *a.Config().PartnerAccountsSettings.RestrictCreationToDomains) {
 			invalidEmailList = append(invalidEmailList, email)
 		}
 	}
 
 	if len(invalidEmailList) > 0 {
 		s := strings.Join(invalidEmailList, ", ")
-		return model.NewAppError("InviteGuestsToChannels", "api.team.invite_members.invalid_email.app_error", map[string]any{"Addresses": s}, "", http.StatusBadRequest)
+		return model.NewAppError("InvitePartnersToChannels", "api.team.invite_members.invalid_email.app_error", map[string]any{"Addresses": s}, "", http.StatusBadRequest)
 	}
 
 	nameFormat := *a.Config().TeamSettings.TeammateNameDisplay
@@ -1668,11 +1668,11 @@ func (a *App) InviteGuestsToChannels(rctx request.CTX, teamID string, guestsInvi
 		rctx.Logger().Warn("Unable to get the sender user profile image.", mlog.String("user_id", user.Id), mlog.String("team_id", team.Id), mlog.Err(err))
 	}
 
-	guestSubtype := guestsInvite.GuestSubtype
-	if guestSubtype == "" {
-		guestSubtype = model.GuestSubtypeNotSpecified
+	partnerSubtype := partnersInvite.PartnerSubtype
+	if partnerSubtype == "" {
+		partnerSubtype = model.PartnerSubtypeNotSpecified
 	}
-	eErr := a.Srv().EmailService.SendGuestInviteEmails(team, channels, user.GetDisplayName(nameFormat), user.Id, senderProfileImage, guestsInvite.Emails, a.GetSiteURL(), guestsInvite.Message, false, user.IsSystemAdmin(), a.UserIsFirstAdmin(rctx, user), guestSubtype)
+	eErr := a.Srv().EmailService.SendPartnerInviteEmails(team, channels, user.GetDisplayName(nameFormat), user.Id, senderProfileImage, partnersInvite.Emails, a.GetSiteURL(), partnersInvite.Message, false, user.IsSystemAdmin(), a.UserIsFirstAdmin(rctx, user), partnerSubtype)
 	if eErr != nil {
 		switch {
 		case errors.Is(eErr, email.NoRateLimiterError):
@@ -1915,7 +1915,7 @@ func (a *App) GetTeamIdFromQuery(rctx request.CTX, query url.Values) (string, *m
 			return "", model.NewAppError("GetTeamIdFromQuery", "api.oauth.singup_with_oauth.invalid_link.app_error", nil, "", http.StatusBadRequest).Wrap(err)
 		}
 
-		if token.Type != TokenTypeTeamInvitation && token.Type != TokenTypeGuestInvitation {
+		if token.Type != TokenTypeTeamInvitation && token.Type != TokenTypePartnerInvitation {
 			return "", model.NewAppError("GetTeamIdFromQuery", "api.oauth.singup_with_oauth.invalid_link.app_error", nil, "", http.StatusBadRequest)
 		}
 
@@ -2081,7 +2081,7 @@ func (a *App) InvalidateAllEmailInvites(rctx request.CTX) *model.AppError {
 	if err := a.Srv().Store().Token().RemoveAllTokensByType(TokenTypeTeamInvitation); err != nil {
 		return model.NewAppError("InvalidateAllEmailInvites", "api.team.invalidate_all_email_invites.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
-	if err := a.Srv().Store().Token().RemoveAllTokensByType(TokenTypeGuestInvitation); err != nil {
+	if err := a.Srv().Store().Token().RemoveAllTokensByType(TokenTypePartnerInvitation); err != nil {
 		return model.NewAppError("InvalidateAllEmailInvites", "api.team.invalidate_all_email_invites.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
 	if err := a.InvalidateAllResendInviteEmailJobs(rctx); err != nil {

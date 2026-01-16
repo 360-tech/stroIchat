@@ -734,7 +734,7 @@ func getChannelStats(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	guestCount, err := c.App.GetChannelGuestCount(c.AppContext, c.Params.ChannelId)
+	partnerCount, err := c.App.GetChannelPartnerCount(c.AppContext, c.Params.ChannelId)
 	if err != nil {
 		c.Err = err
 		return
@@ -758,7 +758,7 @@ func getChannelStats(c *Context, w http.ResponseWriter, r *http.Request) {
 	stats := model.ChannelStats{
 		ChannelId:       c.Params.ChannelId,
 		MemberCount:     memberCount,
-		GuestCount:      guestCount,
+		PartnerCount:      partnerCount,
 		PinnedPostCount: pinnedPostCount,
 		FilesCount:      filesCount,
 	}
@@ -1033,7 +1033,7 @@ func getPublicChannelsByIdsForTeam(c *Context, w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	if session := c.AppContext.Session(); session.IsGuest() {
+	if session := c.AppContext.Session(); session.IsPartner() {
 		for _, channel := range channels {
 			if !c.App.SessionHasPermissionToChannel(c.AppContext, *session, channel.Id, model.PermissionReadChannel) {
 				c.SetPermissionError(model.PermissionReadChannel)
@@ -1777,7 +1777,7 @@ func updateChannelMemberSchemeRoles(c *Context, w http.ResponseWriter, r *http.R
 		return
 	}
 
-	if _, err := c.App.UpdateChannelMemberSchemeRoles(c.AppContext, c.Params.ChannelId, c.Params.UserId, schemeRoles.SchemeGuest, schemeRoles.SchemeUser, schemeRoles.SchemeAdmin); err != nil {
+	if _, err := c.App.UpdateChannelMemberSchemeRoles(c.AppContext, c.Params.ChannelId, c.Params.UserId, schemeRoles.SchemePartner, schemeRoles.SchemeUser, schemeRoles.SchemeAdmin); err != nil {
 		c.Err = err
 		return
 	}
@@ -1880,9 +1880,9 @@ func addChannelMember(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Security check: if the user is a guest, they must have access to the channel
+	// Security check: if the user is a partner, they must have access to the channel
 	// to view its members
-	if c.AppContext.Session().IsGuest() {
+	if c.AppContext.Session().IsPartner() {
 		if !c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), c.Params.ChannelId, model.PermissionReadChannel) {
 			c.SetPermissionError(model.PermissionReadChannel)
 			return
@@ -2446,7 +2446,7 @@ func getDirectOrGroupMessageMembersCommonTeams(c *Context, w http.ResponseWriter
 		c.Err = err
 		return
 	}
-	if user.IsGuest() {
+	if user.IsPartner() {
 		c.Err = model.NewAppError("Api4.getDirectOrGroupMessageMembersCommonTeams", "api.channel.gm_to_channel_conversion.not_allowed_for_user.request_error", nil, "userId="+c.AppContext.Session().UserId, http.StatusForbidden)
 		return
 	}
@@ -2484,7 +2484,7 @@ func convertGroupMessageToChannel(c *Context, w http.ResponseWriter, r *http.Req
 		c.Err = err
 		return
 	}
-	if user.IsGuest() {
+	if user.IsPartner() {
 		c.Err = model.NewAppError("Api4.convertGroupMessageToChannel", "api.channel.gm_to_channel_conversion.not_allowed_for_user.request_error", nil, "userId="+c.AppContext.Session().UserId, http.StatusForbidden)
 		return
 	}

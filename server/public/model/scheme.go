@@ -33,8 +33,8 @@ type Scheme struct {
 	DefaultTeamUserRole       string `json:"default_team_user_role"`
 	DefaultChannelAdminRole   string `json:"default_channel_admin_role"`
 	DefaultChannelUserRole    string `json:"default_channel_user_role"`
-	DefaultTeamGuestRole      string `json:"default_team_guest_role"`
-	DefaultChannelGuestRole   string `json:"default_channel_guest_role"`
+	DefaultTeamPartnerRole      string `json:"default_team_partner_role"`
+	DefaultChannelPartnerRole   string `json:"default_channel_partner_role"`
 	DefaultPlaybookAdminRole  string `json:"default_playbook_admin_role"`
 	DefaultPlaybookMemberRole string `json:"default_playbook_member_role"`
 	DefaultRunAdminRole       string `json:"default_run_admin_role"`
@@ -55,8 +55,8 @@ func (scheme *Scheme) Auditable() map[string]any {
 		"default_team_user_role":       scheme.DefaultTeamUserRole,
 		"default_channel_admin_role":   scheme.DefaultChannelAdminRole,
 		"default_channel_user_role":    scheme.DefaultChannelUserRole,
-		"default_team_guest_role":      scheme.DefaultTeamGuestRole,
-		"default_channel_guest_role":   scheme.DefaultChannelGuestRole,
+		"default_team_partner_role":      scheme.DefaultTeamPartnerRole,
+		"default_channel_partner_role":   scheme.DefaultChannelPartnerRole,
 		"default_playbook_admin_role":  scheme.DefaultPlaybookAdminRole,
 		"default_playbook_member_role": scheme.DefaultPlaybookMemberRole,
 		"default_run_admin_role":       scheme.DefaultRunAdminRole,
@@ -84,8 +84,8 @@ func (scheme *Scheme) MarshalYAML() (any, error) {
 		DefaultTeamUserRole       string `yaml:"default_team_user_role"`
 		DefaultChannelAdminRole   string `yaml:"default_channel_admin_role"`
 		DefaultChannelUserRole    string `yaml:"default_channel_user_role"`
-		DefaultTeamGuestRole      string `yaml:"default_team_guest_role"`
-		DefaultChannelGuestRole   string `yaml:"default_channel_guest_role"`
+		DefaultTeamPartnerRole      string `yaml:"default_team_partner_role"`
+		DefaultChannelPartnerRole   string `yaml:"default_channel_partner_role"`
 		DefaultPlaybookAdminRole  string `yaml:"default_playbook_admin_role"`
 		DefaultPlaybookMemberRole string `yaml:"default_playbook_member_role"`
 		DefaultRunAdminRole       string `yaml:"default_run_admin_role"`
@@ -103,8 +103,8 @@ func (scheme *Scheme) MarshalYAML() (any, error) {
 		DefaultTeamUserRole:       scheme.DefaultTeamUserRole,
 		DefaultChannelAdminRole:   scheme.DefaultChannelAdminRole,
 		DefaultChannelUserRole:    scheme.DefaultChannelUserRole,
-		DefaultTeamGuestRole:      scheme.DefaultTeamGuestRole,
-		DefaultChannelGuestRole:   scheme.DefaultChannelGuestRole,
+		DefaultTeamPartnerRole:      scheme.DefaultTeamPartnerRole,
+		DefaultChannelPartnerRole:   scheme.DefaultChannelPartnerRole,
 		DefaultPlaybookAdminRole:  scheme.DefaultPlaybookAdminRole,
 		DefaultPlaybookMemberRole: scheme.DefaultPlaybookMemberRole,
 		DefaultRunAdminRole:       scheme.DefaultRunAdminRole,
@@ -126,8 +126,8 @@ func (scheme *Scheme) UnmarshalYAML(unmarshal func(any) error) error {
 		DefaultTeamUserRole       string `yaml:"default_team_user_role"`
 		DefaultChannelAdminRole   string `yaml:"default_channel_admin_role"`
 		DefaultChannelUserRole    string `yaml:"default_channel_user_role"`
-		DefaultTeamGuestRole      string `yaml:"default_team_guest_role"`
-		DefaultChannelGuestRole   string `yaml:"default_channel_guest_role"`
+		DefaultTeamPartnerRole      string `yaml:"default_team_partner_role"`
+		DefaultChannelPartnerRole   string `yaml:"default_channel_partner_role"`
 		DefaultPlaybookAdminRole  string `yaml:"default_playbook_admin_role"`
 		DefaultPlaybookMemberRole string `yaml:"default_playbook_member_role"`
 		DefaultRunAdminRole       string `yaml:"default_run_admin_role"`
@@ -165,8 +165,8 @@ func (scheme *Scheme) UnmarshalYAML(unmarshal func(any) error) error {
 		DefaultTeamUserRole:       out.DefaultTeamUserRole,
 		DefaultChannelAdminRole:   out.DefaultChannelAdminRole,
 		DefaultChannelUserRole:    out.DefaultChannelUserRole,
-		DefaultTeamGuestRole:      out.DefaultTeamGuestRole,
-		DefaultChannelGuestRole:   out.DefaultChannelGuestRole,
+		DefaultTeamPartnerRole:      out.DefaultTeamPartnerRole,
+		DefaultChannelPartnerRole:   out.DefaultChannelPartnerRole,
 		DefaultPlaybookAdminRole:  out.DefaultPlaybookAdminRole,
 		DefaultPlaybookMemberRole: out.DefaultPlaybookMemberRole,
 		DefaultRunAdminRole:       out.DefaultRunAdminRole,
@@ -207,10 +207,10 @@ type SchemeConveyor struct {
 	Scope          string  `json:"scope"`
 	TeamAdmin      string  `json:"default_team_admin_role"`
 	TeamUser       string  `json:"default_team_user_role"`
-	TeamGuest      string  `json:"default_team_guest_role"`
+	TeamPartner      string  `json:"default_team_partner_role"`
 	ChannelAdmin   string  `json:"default_channel_admin_role"`
 	ChannelUser    string  `json:"default_channel_user_role"`
-	ChannelGuest   string  `json:"default_channel_guest_role"`
+	ChannelPartner   string  `json:"default_channel_partner_role"`
 	PlaybookAdmin  string  `json:"default_playbook_admin_role"`
 	PlaybookMember string  `json:"default_playbook_member_role"`
 	RunAdmin       string  `json:"default_run_admin_role"`
@@ -226,10 +226,10 @@ func (sc *SchemeConveyor) Scheme() *Scheme {
 		Scope:                     sc.Scope,
 		DefaultTeamAdminRole:      sc.TeamAdmin,
 		DefaultTeamUserRole:       sc.TeamUser,
-		DefaultTeamGuestRole:      sc.TeamGuest,
+		DefaultTeamPartnerRole:      sc.TeamPartner,
 		DefaultChannelAdminRole:   sc.ChannelAdmin,
 		DefaultChannelUserRole:    sc.ChannelUser,
-		DefaultChannelGuestRole:   sc.ChannelGuest,
+		DefaultChannelPartnerRole:   sc.ChannelPartner,
 		DefaultPlaybookAdminRole:  sc.PlaybookAdmin,
 		DefaultPlaybookMemberRole: sc.PlaybookMember,
 		DefaultRunAdminRole:       sc.RunAdmin,
@@ -240,7 +240,7 @@ func (sc *SchemeConveyor) Scheme() *Scheme {
 type SchemeRoles struct {
 	SchemeAdmin bool `json:"scheme_admin"`
 	SchemeUser  bool `json:"scheme_user"`
-	SchemeGuest bool `json:"scheme_guest"`
+	SchemePartner bool `json:"scheme_partner"`
 }
 
 func (s *SchemeRoles) Auditable() map[string]any {
@@ -282,7 +282,7 @@ func (scheme *Scheme) IsValidForCreate() bool {
 		return false
 	}
 
-	if !IsValidRoleName(scheme.DefaultChannelGuestRole) {
+	if !IsValidRoleName(scheme.DefaultChannelPartnerRole) {
 		return false
 	}
 
@@ -295,7 +295,7 @@ func (scheme *Scheme) IsValidForCreate() bool {
 			return false
 		}
 
-		if !IsValidRoleName(scheme.DefaultTeamGuestRole) {
+		if !IsValidRoleName(scheme.DefaultTeamPartnerRole) {
 			return false
 		}
 
@@ -325,7 +325,7 @@ func (scheme *Scheme) IsValidForCreate() bool {
 			return false
 		}
 
-		if scheme.DefaultTeamGuestRole != "" {
+		if scheme.DefaultTeamPartnerRole != "" {
 			return false
 		}
 	}

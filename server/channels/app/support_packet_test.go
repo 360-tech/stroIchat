@@ -364,7 +364,7 @@ func TestGetSupportPacketStats(t *testing.T) {
 		assert.Equal(t, int64(0), sp.DailyActiveUsers)
 		assert.Equal(t, int64(0), sp.MonthlyActiveUsers)
 		assert.Equal(t, int64(0), sp.DeactivatedUsers)
-		assert.Equal(t, int64(0), sp.Guests)
+		assert.Equal(t, int64(0), sp.Partners)
 		assert.Equal(t, int64(0), sp.BotAccounts)
 		assert.Equal(t, int64(0), sp.Posts)
 		assert.Equal(t, int64(0), sp.Channels)
@@ -389,8 +389,8 @@ func TestGetSupportPacketStats(t *testing.T) {
 		}
 
 		for range 2 {
-			guest := th.CreateGuest()
-			require.NotNil(t, guest)
+			partner := th.CreatePartner()
+			require.NotNil(t, partner)
 		}
 
 		th.CreateBot()
@@ -433,7 +433,7 @@ func TestGetSupportPacketStats(t *testing.T) {
 		assert.Equal(t, int64(0), sp.DailyActiveUsers)
 		assert.Equal(t, int64(0), sp.MonthlyActiveUsers)
 		assert.Equal(t, int64(3), sp.DeactivatedUsers)
-		assert.Equal(t, int64(2), sp.Guests)
+		assert.Equal(t, int64(2), sp.Partners)
 		assert.Equal(t, int64(1), sp.BotAccounts)
 		assert.Equal(t, int64(4), sp.Posts)    // 1 from the bot creation and 3 created directly
 		assert.Equal(t, int64(3), sp.Channels) // 2 from the team creation and 1 created directly

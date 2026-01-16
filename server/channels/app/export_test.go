@@ -1427,7 +1427,7 @@ func TestExportSchemes(t *testing.T) {
 		require.Nil(t, appErr)
 		customChannelUserRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultChannelUserRole)
 		require.Nil(t, appErr)
-		customChannelGuestRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultChannelGuestRole)
+		customChannelPartnerRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultChannelPartnerRole)
 		require.Nil(t, appErr)
 
 		var b bytes.Buffer
@@ -1482,13 +1482,13 @@ func TestExportSchemes(t *testing.T) {
 		require.Equal(t, customChannelUserRole.SchemeManaged, importedChannelUserRole.SchemeManaged)
 		require.Equal(t, customChannelUserRole.BuiltIn, importedChannelUserRole.BuiltIn)
 
-		importedChannelGuestRole, appErr := th2.App.GetRoleByName(th2.Context, importedScheme.DefaultChannelGuestRole)
+		importedChannelPartnerRole, appErr := th2.App.GetRoleByName(th2.Context, importedScheme.DefaultChannelPartnerRole)
 		require.Nil(t, appErr)
-		require.Equal(t, customChannelGuestRole.DisplayName, importedChannelGuestRole.DisplayName)
-		require.Equal(t, customChannelGuestRole.Description, importedChannelGuestRole.Description)
-		require.Equal(t, customChannelGuestRole.Permissions, importedChannelGuestRole.Permissions)
-		require.Equal(t, customChannelGuestRole.SchemeManaged, importedChannelGuestRole.SchemeManaged)
-		require.Equal(t, customChannelGuestRole.BuiltIn, importedChannelGuestRole.BuiltIn)
+		require.Equal(t, customChannelPartnerRole.DisplayName, importedChannelPartnerRole.DisplayName)
+		require.Equal(t, customChannelPartnerRole.Description, importedChannelPartnerRole.Description)
+		require.Equal(t, customChannelPartnerRole.Permissions, importedChannelPartnerRole.Permissions)
+		require.Equal(t, customChannelPartnerRole.SchemeManaged, importedChannelPartnerRole.SchemeManaged)
+		require.Equal(t, customChannelPartnerRole.BuiltIn, importedChannelPartnerRole.BuiltIn)
 	})
 
 	t.Run("export team scheme", func(t *testing.T) {
@@ -1526,7 +1526,7 @@ func TestExportSchemes(t *testing.T) {
 		customChannelUserRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultChannelUserRole)
 		require.Nil(t, appErr)
 
-		customChannelGuestRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultChannelGuestRole)
+		customChannelPartnerRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultChannelPartnerRole)
 		require.Nil(t, appErr)
 
 		customTeamAdminRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultTeamAdminRole)
@@ -1535,7 +1535,7 @@ func TestExportSchemes(t *testing.T) {
 		customTeamUserRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultTeamUserRole)
 		require.Nil(t, appErr)
 
-		customTeamGuestRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultTeamGuestRole)
+		customTeamPartnerRole, appErr := th1.App.GetRoleByName(th1.Context, customScheme.DefaultTeamPartnerRole)
 		require.Nil(t, appErr)
 
 		var b bytes.Buffer
@@ -1590,13 +1590,13 @@ func TestExportSchemes(t *testing.T) {
 		require.Equal(t, customChannelUserRole.SchemeManaged, importedChannelUserRole.SchemeManaged)
 		require.Equal(t, customChannelUserRole.BuiltIn, importedChannelUserRole.BuiltIn)
 
-		importedChannelGuestRole, appErr := th2.App.GetRoleByName(th2.Context, importedScheme.DefaultChannelGuestRole)
+		importedChannelPartnerRole, appErr := th2.App.GetRoleByName(th2.Context, importedScheme.DefaultChannelPartnerRole)
 		require.Nil(t, appErr)
-		require.Equal(t, customChannelGuestRole.DisplayName, importedChannelGuestRole.DisplayName)
-		require.Equal(t, customChannelGuestRole.Description, importedChannelGuestRole.Description)
-		require.Equal(t, customChannelGuestRole.Permissions, importedChannelGuestRole.Permissions)
-		require.Equal(t, customChannelGuestRole.SchemeManaged, importedChannelGuestRole.SchemeManaged)
-		require.Equal(t, customChannelGuestRole.BuiltIn, importedChannelGuestRole.BuiltIn)
+		require.Equal(t, customChannelPartnerRole.DisplayName, importedChannelPartnerRole.DisplayName)
+		require.Equal(t, customChannelPartnerRole.Description, importedChannelPartnerRole.Description)
+		require.Equal(t, customChannelPartnerRole.Permissions, importedChannelPartnerRole.Permissions)
+		require.Equal(t, customChannelPartnerRole.SchemeManaged, importedChannelPartnerRole.SchemeManaged)
+		require.Equal(t, customChannelPartnerRole.BuiltIn, importedChannelPartnerRole.BuiltIn)
 
 		importedTeamAdminRole, appErr := th2.App.GetRoleByName(th2.Context, importedScheme.DefaultTeamAdminRole)
 		require.Nil(t, appErr)
@@ -1614,13 +1614,13 @@ func TestExportSchemes(t *testing.T) {
 		require.Equal(t, customTeamUserRole.SchemeManaged, importedTeamUserRole.SchemeManaged)
 		require.Equal(t, customTeamUserRole.BuiltIn, importedTeamUserRole.BuiltIn)
 
-		importedTeamGuestRole, appErr := th2.App.GetRoleByName(th2.Context, importedScheme.DefaultTeamGuestRole)
+		importedTeamPartnerRole, appErr := th2.App.GetRoleByName(th2.Context, importedScheme.DefaultTeamPartnerRole)
 		require.Nil(t, appErr)
-		require.Equal(t, customTeamGuestRole.DisplayName, importedTeamGuestRole.DisplayName)
-		require.Equal(t, customTeamGuestRole.Description, importedTeamGuestRole.Description)
-		require.Equal(t, customTeamGuestRole.Permissions, importedTeamGuestRole.Permissions)
-		require.Equal(t, customTeamGuestRole.SchemeManaged, importedTeamGuestRole.SchemeManaged)
-		require.Equal(t, customTeamGuestRole.BuiltIn, importedTeamGuestRole.BuiltIn)
+		require.Equal(t, customTeamPartnerRole.DisplayName, importedTeamPartnerRole.DisplayName)
+		require.Equal(t, customTeamPartnerRole.Description, importedTeamPartnerRole.Description)
+		require.Equal(t, customTeamPartnerRole.Permissions, importedTeamPartnerRole.Permissions)
+		require.Equal(t, customTeamPartnerRole.SchemeManaged, importedTeamPartnerRole.SchemeManaged)
+		require.Equal(t, customTeamPartnerRole.BuiltIn, importedTeamPartnerRole.BuiltIn)
 	})
 }
 

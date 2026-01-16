@@ -54,17 +54,17 @@ export const SettingsTypes = {
 
 export const InviteTypes = {
     INVITE_MEMBER: 'member',
-    INVITE_GUEST: 'guest',
+    INVITE_PARTNER: 'partner',
 };
 
-export const GuestSubtype = {
+export const PartnerSubtype = {
     NOT_SPECIFIED: 'not_specified',
     CONTRACTOR: 'contractor',
     CUSTOMER: 'customer',
     PARTNER: 'partner',
 } as const;
 
-export type GuestSubtype = typeof GuestSubtype[keyof typeof GuestSubtype];
+export type PartnerSubtype = typeof PartnerSubtype[keyof typeof PartnerSubtype];
 
 export const PreviousViewedTypes = {
     CHANNELS: 'channels',
@@ -425,7 +425,7 @@ export const ModalIdentifiers = {
     RESET_EMAIL_MODAL: 'reset_email_modal',
     DEACTIVATE_MEMBER_MODAL: 'deactivate_member_modal',
     PROMOTE_TO_MEMBER_MODAL: 'promote_to_member_modal',
-    DEMOTE_TO_GUEST_MODAL: 'demote_to_guest_modal',
+    DEMOTE_TO_PARTNER_MODAL: 'demote_to_partner_modal',
     REVOKE_SESSIONS_MODAL: 'revoke_sessions_modal',
     CREATE_GROUP_SYNCABLES_MEMBERSHIP_MODAL: 'create_group_syncables_membership_modal',
     EXPORT_USER_DATA_MODAL: 'export_user_data_modal',
@@ -473,7 +473,7 @@ export const EventTypes = Object.assign(
 );
 
 export const MattermostFeatures = {
-    GUEST_ACCOUNTS: 'mattermost.feature.guest_accounts',
+    Partner_ACCOUNTS: 'mattermost.feature.partner_accounts',
     CUSTOM_USER_GROUPS: 'mattermost.feature.custom_user_groups',
     CREATE_MULTIPLE_TEAMS: 'mattermost.feature.create_multiple_teams',
     START_CALL: 'mattermost.feature.start_call',
@@ -1004,7 +1004,7 @@ export const RecurringIntervals = {
 
 export const PermissionsScope = {
     [Permissions.INVITE_USER]: 'team_scope',
-    [Permissions.INVITE_GUEST]: 'team_scope',
+    [Permissions.INVITE_PARTNER]: 'team_scope',
     [Permissions.ADD_USER_TO_TEAM]: 'team_scope',
     [Permissions.MANAGE_SLASH_COMMANDS]: 'team_scope',
     [Permissions.MANAGE_OTHERS_SLASH_COMMANDS]: 'team_scope',
@@ -1150,7 +1150,7 @@ export const DefaultRolePermissions = {
         Permissions.RUN_CREATE,
         Permissions.USE_SLASH_COMMANDS,
         Permissions.DELETE_EMOJIS,
-        Permissions.INVITE_GUEST,
+        Permissions.INVITE_PARTNER,
         Permissions.CREATE_EMOJIS,
         Permissions.RUN_VIEW,
         Permissions.RESTORE_CUSTOM_GROUP,
@@ -1224,7 +1224,7 @@ export const DefaultRolePermissions = {
         Permissions.MANAGE_PRIVATE_CHANNEL_BANNER,
         Permissions.MANAGE_CHANNEL_ACCESS_RULES,
     ],
-    guests: [
+    partners: [
         Permissions.EDIT_POST,
         Permissions.ADD_REACTION,
         Permissions.REMOVE_REACTION,
@@ -1235,7 +1235,7 @@ export const DefaultRolePermissions = {
     ],
 };
 
-// ModeratedPermissions are permissions that can be turned off for members and guests
+// ModeratedPermissions are permissions that can be turned off for members and partners
 // on a per channel basis. These permissions are on by default for team/channel admins.
 export const ModeratedPermissions = [
     Permissions.CREATE_POST,
@@ -1942,7 +1942,6 @@ export const ConsolePages = {
     CUSTOM_TERMS: '/admin_console/compliance/custom_terms_of_service',
     DATA_RETENTION: '/admin_console/compliance/data_retention_settings',
     ELASTICSEARCH: '/admin_console/environment/elasticsearch',
-    GUEST_ACCOUNTS: '/admin_console/authentication/guest_access',
     LICENSE: '/admin_console/about/license',
     SAML: '/admin_console/authentication/saml',
     FILE_STORAGE: '/admin_console/environment/file_storage',

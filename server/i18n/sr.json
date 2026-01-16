@@ -856,7 +856,7 @@
     "translation": "Подразумевани канал не може бити промењен у приватни."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Неисправна промена члана канала: Корисник мора бити гост или корисник али не обоје."
   },
   {
@@ -908,7 +908,7 @@
     "translation": "%v је приступио каналу."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "Корисник %v се прикључио каналу као гост."
   },
   {
@@ -952,7 +952,7 @@
     "translation": "%vдодат на канал од %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v додат на канал као гост од стране %v."
   },
   {

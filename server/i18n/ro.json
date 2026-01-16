@@ -4716,19 +4716,19 @@
     "translation": "Valoare veche invalidă, nu trebuie setată atunci când operațiunea nu este atomică."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "E-mailuri invalide."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "E-mail invalid."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Canale invalide."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Canal invalid."
   },
   {
@@ -4740,7 +4740,7 @@
     "translation": "Algoritm de semnătură invalid."
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Atribut invitat nevalid. Trebuie să fie sub forma 'câmp=valoare'."
   },
   {
@@ -4776,7 +4776,7 @@
     "translation": "Grupul nu poate fi asociat canalului până când nu este asociat prima dată cu echipa sincronizată de grupul părinte."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Filtrul invitat AD/LDAP invalid."
   },
   {
@@ -5168,7 +5168,7 @@
     "translation": "Serverul este ocupat, serviciile non-critice nu sunt disponibile temporar."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "E-mailul furnizat nu aparține unui domeniu acceptat pentru conturile de invitați. Vă rugăm să contactați administratorul sau să vă înscrieți cu un e-mail diferit."
   },
   {
@@ -5176,7 +5176,7 @@
     "translation": "E-mail pe care aţi furnizat nu aparţin unui domeniu acceptat. Vă rugăm să contactați administratorul sau Înscrieţi-vă cu un e-mail diferit."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Nu puteți activa un cont de invitat, deoarece funcția Acces de invitat nu este activată."
   },
   {
@@ -5184,7 +5184,7 @@
     "translation": "Nu s-a putut parsa resetarea parolei"
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Nu se poate converti invitatul în utilizator obișnuit, deoarece nu este invitat."
   },
   {
@@ -5204,15 +5204,15 @@
     "translation": "Introduceți un e-mail valid și/sau o parolă"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Licența dvs. nu acceptă conturile de invitați"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Conturile oaspeților sunt dezactivate"
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Imposibil de convertit utilizatorul în invitat, deoarece este deja invitat."
   },
   {
@@ -5220,11 +5220,11 @@
     "translation": "Imposibil de creat utilizatorul, invitație nevalidă."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Licența dvs. nu acceptă conturile de invitați."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Conturile oaspeților sunt dezactivate."
   },
   {
@@ -5240,11 +5240,11 @@
     "translation": "Licența dvs. Enterprise Edition a expirat și este posibil ca unele funcții să fie dezactivate. Vă rugăm să vă reînnoiți licența acum."
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{.SiteName}}] {{.SenderName}} v-a invitat să vă alăturați echipei {{.TeamDisplayName}} ca oaspete"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Actualizare nevalidă a unui membru al echipei: Un utilizator trebuie să fie un invitat sau un utilizator, dar nu ambii."
   },
   {
@@ -5260,7 +5260,7 @@
     "translation": "Nu este posibil să eliminați un utilizator dintr-o echipă cu constrângeri de grup."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Canalele invitației trebuie să facă parte din echipa invitației."
   },
   {
@@ -5272,15 +5272,15 @@
     "translation": "Nu aveți permisiunile corespunzătoare pentru a enumera toate echipele"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Licența dvs. nu acceptă conturile de invitați"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Conturile oaspeților sunt dezactivate."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Oaspeții sunt restricționați să se alăture echipei printr-un link de invitație. Vă rugăm să solicitați o invitație de e-mail invitat către echipă."
   },
   {
@@ -5388,7 +5388,7 @@
     "translation": "Cuvântul declanșator al comenzii lipsește caracterul principal al barelor"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Actualizare invalidă a membrilor echipei: Nu puteți adăuga sau elimina manual rolul invitat."
   },
   {
@@ -5396,11 +5396,11 @@
     "translation": "Canalul implicit nu poate fi făcut privat."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Actualizare membru nevalid al unui canal: Un utilizator trebuie să fie un invitat sau un utilizator, dar nu ambii."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Actualizare membru al canalului nevalid: Nu puteți adăuga sau elimina manual rolul de invitat."
   },
   {
@@ -5432,7 +5432,7 @@
     "translation": "Licența dvs. nu acceptă moderarea canalului"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v s-a alăturat canalului ca invitat."
   },
   {
@@ -5452,7 +5452,7 @@
     "translation": "Eroare la adăugarea membrilor canalului."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v adăugat la canal ca invitat de %v."
   },
   {
@@ -6948,7 +6948,7 @@
     "translation": "Nu se poate procesa importul: fișierul nu există."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Actualizarea utilizatorului nu a reușit."
   },
   {
@@ -6968,7 +6968,7 @@
     "translation": "Nu se poate procesa importul: fișierul JSONL lipsește."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Actualizarea utilizatorului nu a reușit."
   },
   {
@@ -7460,7 +7460,7 @@
     "translation": "Linkul de resetare a parolei expiră în 24 de ore."
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Ați fost invitat ca oaspete pentru a colabora cu echipa"
   },
   {
@@ -7548,7 +7548,7 @@
     "translation": "Adăugați aplicații în spațiul de lucru"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Corpul solicitării nu este valid sau lipsește."
   },
   {

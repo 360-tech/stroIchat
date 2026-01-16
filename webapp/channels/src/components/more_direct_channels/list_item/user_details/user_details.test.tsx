@@ -225,16 +225,16 @@ describe('components/more_direct_channels/list_item/user_details/UserDetails', (
         expect(screen.queryByText('test@example.com')).not.toBeInTheDocument();
     });
 
-    test('should render guest user with guest tag', () => {
-        const guestUser = {
+    test('should render partner user with partner tag', () => {
+        const partnerUser = {
             ...mockUser,
-            roles: 'system_guest',
+            roles: 'system_partner',
         };
 
         renderWithContext(
             <UserDetails
                 {...baseProps}
-                option={guestUser}
+                option={partnerUser}
             />,
             initialState,
         );

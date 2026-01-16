@@ -101,19 +101,19 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 			baseModeratedPermissions,
 		},
 		{
-			"Patch to member role with moderation patch for guest role",
+			"Patch to member role with moderation patch for partner role",
 			basePermissions,
 			[]*ChannelModerationPatch{
 				{
 					Name:  &createReactions,
-					Roles: &ChannelModeratedRolesPatch{Guests: NewPointer(true)},
+					Roles: &ChannelModeratedRolesPatch{Partners: NewPointer(true)},
 				},
 			},
 			"members",
 			baseModeratedPermissions,
 		},
 		{
-			"Patch to guest role with moderation patch for member role",
+			"Patch to partner role with moderation patch for member role",
 			basePermissions,
 			[]*ChannelModerationPatch{
 				{
@@ -121,7 +121,7 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 					Roles: &ChannelModeratedRolesPatch{Members: NewPointer(true)},
 				},
 			},
-			"guests",
+			"partners",
 			baseModeratedPermissions,
 		},
 		{
@@ -145,23 +145,23 @@ func TestRolePatchFromChannelModerationsPatch(t *testing.T) {
 			[]string{PermissionCreatePost.Id},
 		},
 		{
-			"Patch to guest role removing multiple channel moderated permissions",
+			"Patch to partner role removing multiple channel moderated permissions",
 			basePermissions,
 			[]*ChannelModerationPatch{
 				{
 					Name:  &createReactions,
-					Roles: &ChannelModeratedRolesPatch{Guests: NewPointer(false)},
+					Roles: &ChannelModeratedRolesPatch{Partners: NewPointer(false)},
 				},
 				{
 					Name:  &manageMembers,
-					Roles: &ChannelModeratedRolesPatch{Guests: NewPointer(false)},
+					Roles: &ChannelModeratedRolesPatch{Partners: NewPointer(false)},
 				},
 				{
 					Name:  &channelMentions,
-					Roles: &ChannelModeratedRolesPatch{Guests: NewPointer(false)},
+					Roles: &ChannelModeratedRolesPatch{Partners: NewPointer(false)},
 				},
 			},
-			"guests",
+			"partners",
 			[]string{PermissionCreatePost.Id},
 		},
 		{

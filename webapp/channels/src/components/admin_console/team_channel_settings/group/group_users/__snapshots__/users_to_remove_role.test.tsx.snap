@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/admin_console/team_channel_settings/group/UsersToRemoveRole should match snapshot guest 1`] = `
+exports[`components/admin_console/team_channel_settings/group/UsersToRemoveRole should match snapshot partner 1`] = `
 <UsersToRemoveRole
   membership={
     Object {
@@ -11,7 +11,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemoveRole 
       "msg_count_root": 0,
       "roles": "team_user",
       "scheme_admin": false,
-      "scheme_guest": false,
+      "scheme_partner": false,
       "scheme_user": false,
       "team_id": "team_id",
       "user_id": "user_id",
@@ -69,7 +69,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemoveRole 
       "password": "",
       "position": "",
       "props": Object {},
-      "roles": "system_guest",
+      "roles": "system_partner",
       "terms_of_service_create_at": 0,
       "terms_of_service_id": "",
       "update_at": 0,
@@ -80,7 +80,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemoveRole 
   <div
     className="UsersToRemoveRole"
   >
-    Guest
+    Partner
   </div>
 </UsersToRemoveRole>
 `;
@@ -378,7 +378,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemoveRole 
       "msg_count_root": 0,
       "roles": "team_user",
       "scheme_admin": true,
-      "scheme_guest": false,
+      "scheme_partner": false,
       "scheme_user": true,
       "team_id": "team_id",
       "user_id": "user_id",
@@ -463,7 +463,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemoveRole 
       "msg_count_root": 0,
       "roles": "team_user",
       "scheme_admin": false,
-      "scheme_guest": false,
+      "scheme_partner": false,
       "scheme_user": true,
       "team_id": "team_id",
       "user_id": "user_id",

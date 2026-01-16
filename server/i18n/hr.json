@@ -308,7 +308,7 @@
     "translation": "%v je dodan/a u kanal od %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v je dodan/a u kanal kao gost od %v."
   },
   {
@@ -540,7 +540,7 @@
     "translation": "Nemaš odgovarajuće dozvole."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v se pridružio/la kanalu kao gost."
   },
   {

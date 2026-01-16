@@ -19,7 +19,7 @@ import (
 )
 
 type UserCreateOptions struct {
-	Guest      bool
+	Partner      bool
 	FromImport bool
 }
 
@@ -30,27 +30,27 @@ func (us *UserService) CreateUser(rctx request.CTX, user *model.User, opts UserC
 	}
 
 	user.Roles = model.SystemUserRoleId
-	if opts.Guest {
-		user.Roles = model.SystemGuestRoleId
+	if opts.Partner {
+		user.Roles = model.SystemPartnerRoleId
 	}
 
-	if !user.IsLDAPUser() && !user.IsSAMLUser() && !user.IsGuest() && !CheckUserDomain(user, *us.config().TeamSettings.RestrictCreationToDomains) {
+	if !user.IsLDAPUser() && !user.IsSAMLUser() && !user.IsPartner() && !CheckUserDomain(user, *us.config().TeamSettings.RestrictCreationToDomains) {
 		return nil, AcceptedDomainError
 	}
 
-	if !user.IsLDAPUser() && !user.IsSAMLUser() && user.IsGuest() && !CheckUserDomain(user, *us.config().GuestAccountsSettings.RestrictCreationToDomains) {
+	if !user.IsLDAPUser() && !user.IsSAMLUser() && user.IsPartner() && !CheckUserDomain(user, *us.config().PartnerAccountsSettings.RestrictCreationToDomains) {
 		return nil, AcceptedDomainError
 	}
 
 	// Below is a special case where the first user in the entire
 	// system is granted the system_admin role
-	// But preserve guest role if user is a guest
+	// But preserve partner role if user is a partner
 	if ok, err := us.store.IsEmpty(true); err != nil {
 		return nil, errors.Wrap(UserStoreIsEmptyError, err.Error())
 	} else if ok {
-		if opts.Guest {
-			// First user is a guest, give them admin + guest roles
-			user.Roles = model.SystemAdminRoleId + " " + model.SystemGuestRoleId
+		if opts.Partner {
+			// First user is a partner, give them admin + partner roles
+			user.Roles = model.SystemAdminRoleId + " " + model.SystemPartnerRoleId
 		} else {
 			user.Roles = model.SystemAdminRoleId + " " + model.SystemUserRoleId
 		}
@@ -212,8 +212,8 @@ func (us *UserService) UpdateUserNotifyProps(userID string, props map[string]str
 	return us.store.UpdateNotifyProps(userID, props)
 }
 
-func (us *UserService) DeactivateAllGuests() ([]string, error) {
-	users, err := us.store.DeactivateGuests()
+func (us *UserService) DeactivateAllPartners() ([]string, error) {
+	users, err := us.store.DeactivatePartners()
 	if err != nil {
 		return nil, err
 	}
@@ -256,10 +256,10 @@ func (us *UserService) DeactivateMfa(user *model.User) error {
 	return mfa.New(us.store).Deactivate(user.Id)
 }
 
-func (us *UserService) PromoteGuestToUser(user *model.User) error {
-	return us.store.PromoteGuestToUser(user.Id)
+func (us *UserService) PromotePartnerToUser(user *model.User) error {
+	return us.store.PromotePartnerToUser(user.Id)
 }
 
-func (us *UserService) DemoteUserToGuest(user *model.User) (*model.User, error) {
-	return us.store.DemoteUserToGuest(user.Id)
+func (us *UserService) DemoteUserToPartner(user *model.User) (*model.User, error) {
+	return us.store.DemoteUserToPartner(user.Id)
 }

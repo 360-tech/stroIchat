@@ -172,10 +172,10 @@ func (a *App) DoLogin(rctx request.CTX, w http.ResponseWriter, r *http.Request, 
 	session.AddProp(model.SessionPropPlatform, plat)
 	session.AddProp(model.SessionPropOs, os)
 	session.AddProp(model.SessionPropBrowser, fmt.Sprintf("%v/%v", bname, bversion))
-	if user.IsGuest() {
-		session.AddProp(model.SessionPropIsGuest, "true")
+	if user.IsPartner() {
+		session.AddProp(model.SessionPropIsPartner, "true")
 	} else {
-		session.AddProp(model.SessionPropIsGuest, "false")
+		session.AddProp(model.SessionPropIsPartner, "false")
 	}
 
 	var err *model.AppError

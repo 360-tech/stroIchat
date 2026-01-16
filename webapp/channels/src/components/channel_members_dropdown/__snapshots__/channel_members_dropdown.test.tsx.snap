@@ -37,7 +37,7 @@ exports[`components/channel_members_dropdown should match snapshot for channel_m
 </MenuWrapper>
 `;
 
-exports[`components/channel_members_dropdown should match snapshot for dropdown with guest user 1`] = `
+exports[`components/channel_members_dropdown should match snapshot for dropdown with partner user 1`] = `
 <MenuWrapper
   animationComponent={[Function]}
   className=""
@@ -91,7 +91,7 @@ exports[`components/channel_members_dropdown should match snapshot for group_con
 </div>
 `;
 
-exports[`components/channel_members_dropdown should match snapshot for not dropdown with guest user 1`] = `
+exports[`components/channel_members_dropdown should match snapshot for not dropdown with partner user 1`] = `
 <MenuWrapper
   animationComponent={[Function]}
   className=""

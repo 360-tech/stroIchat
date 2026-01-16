@@ -68,7 +68,7 @@ func (api *API) InitTeam() {
 	api.BaseRoutes.TeamMember.Handle("/schemeRoles", api.APISessionRequired(updateTeamMemberSchemeRoles)).Methods(http.MethodPut)
 	api.BaseRoutes.Team.Handle("/import", api.APISessionRequired(importTeam)).Methods(http.MethodPost)
 	api.BaseRoutes.Team.Handle("/invite/email", api.APISessionRequired(inviteUsersToTeam)).Methods(http.MethodPost)
-	api.BaseRoutes.Team.Handle("/invite-guests/email", api.APISessionRequired(inviteGuestsToChannels)).Methods(http.MethodPost)
+	api.BaseRoutes.Team.Handle("/invite-partners/email", api.APISessionRequired(invitePartnersToChannels)).Methods(http.MethodPost)
 	api.BaseRoutes.Teams.Handle("/invites/email", api.APISessionRequired(invalidateAllEmailInvites)).Methods(http.MethodDelete)
 	api.BaseRoutes.Teams.Handle("/invite/{invite_id:[A-Za-z0-9]+}", api.APIHandler(getInviteInfo)).Methods(http.MethodGet)
 
@@ -803,15 +803,15 @@ func addTeamMember(c *Context, w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		canInviteGuests := c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), c.Params.TeamId, model.PermissionInviteGuest)
-		if !canInviteGuests {
+		canInvitePartners := c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), c.Params.TeamId, model.PermissionInvitePartner)
+		if !canInvitePartners {
 			user, err := c.App.GetUser(member.UserId)
 			if err != nil {
 				c.Err = model.NewAppError("addTeamMembers", "api.team.user.missing_account", nil, "", http.StatusNotFound).Wrap(err)
 				return
 			}
-			if user.IsGuest() {
-				c.SetPermissionError(model.PermissionInviteGuest)
+			if user.IsPartner() {
+				c.SetPermissionError(model.PermissionInvitePartner)
 				return
 			}
 		}
@@ -871,8 +871,8 @@ func addUserToTeamFromInvite(c *Context, w http.ResponseWriter, r *http.Request)
 	if tokenId != "" {
 		member, err = c.App.AddTeamMemberByToken(c.AppContext, c.AppContext.Session().UserId, tokenId)
 	} else if inviteId != "" {
-		if c.AppContext.Session().Props[model.SessionPropIsGuest] == "true" {
-			c.Err = model.NewAppError("addUserToTeamFromInvite", "api.team.add_user_to_team_from_invite.guest.app_error", nil, "", http.StatusForbidden)
+		if c.AppContext.Session().Props[model.SessionPropIsPartner] == "true" {
+			c.Err = model.NewAppError("addUserToTeamFromInvite", "api.team.add_user_to_team_from_invite.partner.app_error", nil, "", http.StatusForbidden)
 			return
 		}
 
@@ -961,7 +961,7 @@ func addTeamMembers(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	canInviteGuests := c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), c.Params.TeamId, model.PermissionInviteGuest)
+	canInvitePartners := c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), c.Params.TeamId, model.PermissionInvitePartner)
 	var userIDs []string
 	for _, member := range members {
 		if member.TeamId != c.Params.TeamId {
@@ -974,15 +974,15 @@ func addTeamMembers(c *Context, w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// if user cannot invite guests, check if any users are guest users.
-		if !canInviteGuests {
+		// if user cannot invite partners, check if any users are partner users.
+		if !canInvitePartners {
 			user, err := c.App.GetUser(member.UserId)
 			if err != nil {
 				c.Err = model.NewAppError("addTeamMembers", "api.team.user.missing_account", nil, "", http.StatusNotFound).Wrap(err)
 				return
 			}
-			if user.IsGuest() {
-				c.SetPermissionError(model.PermissionInviteGuest)
+			if user.IsPartner() {
+				c.SetPermissionError(model.PermissionInvitePartner)
 				return
 			}
 		}
@@ -1187,7 +1187,7 @@ func updateTeamMemberSchemeRoles(c *Context, w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	teamMember, err := c.App.UpdateTeamMemberSchemeRoles(c.AppContext, c.Params.TeamId, c.Params.UserId, schemeRoles.SchemeGuest, schemeRoles.SchemeUser, schemeRoles.SchemeAdmin)
+	teamMember, err := c.App.UpdateTeamMemberSchemeRoles(c.AppContext, c.Params.TeamId, c.Params.UserId, schemeRoles.SchemePartner, schemeRoles.SchemeUser, schemeRoles.SchemeAdmin)
 	if err != nil {
 		c.Err = err
 		return
@@ -1569,7 +1569,7 @@ func inviteUsersToTeam(c *Context, w http.ResponseWriter, r *http.Request) {
 	auditRec.Success()
 }
 
-func inviteGuestsToChannels(c *Context, w http.ResponseWriter, r *http.Request) {
+func invitePartnersToChannels(c *Context, w http.ResponseWriter, r *http.Request) {
 	graceful := r.URL.Query().Get("graceful") != ""
 
 	c.RequireTeamId()
@@ -1577,43 +1577,43 @@ func inviteGuestsToChannels(c *Context, w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	auditRec := c.MakeAuditRecord(model.AuditEventInviteGuestsToChannels, model.AuditStatusFail)
+	auditRec := c.MakeAuditRecord(model.AuditEventInvitePartnersToChannels, model.AuditStatusFail)
 	defer c.LogAuditRec(auditRec)
 	model.AddEventParameterToAuditRec(auditRec, "team_id", c.Params.TeamId)
 
-	if !c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), c.Params.TeamId, model.PermissionInviteGuest) {
-		c.SetPermissionError(model.PermissionInviteGuest)
+	if !c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), c.Params.TeamId, model.PermissionInvitePartner) {
+		c.SetPermissionError(model.PermissionInvitePartner)
 		return
 	}
 
-	var guestsInvite model.GuestsInvite
-	if err := json.NewDecoder(r.Body).Decode(&guestsInvite); err != nil {
-		c.Err = model.NewAppError("Api4.inviteGuestsToChannels", "api.team.invite_guests_to_channels.invalid_body.app_error", nil, "", http.StatusBadRequest).Wrap(err)
+	var partnersInvite model.PartnersInvite
+	if err := json.NewDecoder(r.Body).Decode(&partnersInvite); err != nil {
+		c.Err = model.NewAppError("Api4.invitePartnersToChannels", "api.team.invite_partners_to_channels.invalid_body.app_error", nil, "", http.StatusBadRequest).Wrap(err)
 		return
 	}
-	model.AddEventParameterAuditableToAuditRec(auditRec, "guests_invite", &guestsInvite)
+	model.AddEventParameterAuditableToAuditRec(auditRec, "partners_invite", &partnersInvite)
 
-	for i, email := range guestsInvite.Emails {
-		guestsInvite.Emails[i] = strings.ToLower(email)
+	for i, email := range partnersInvite.Emails {
+		partnersInvite.Emails[i] = strings.ToLower(email)
 	}
-	if appErr := guestsInvite.IsValid(); appErr != nil {
+	if appErr := partnersInvite.IsValid(); appErr != nil {
 		c.Err = appErr
 		return
 	}
-	auditRec.AddMeta("email_count", len(guestsInvite.Emails))
-	auditRec.AddMeta("emails", guestsInvite.Emails)
-	auditRec.AddMeta("channel_count", len(guestsInvite.Channels))
-	auditRec.AddMeta("channels", guestsInvite.Channels)
+	auditRec.AddMeta("email_count", len(partnersInvite.Emails))
+	auditRec.AddMeta("emails", partnersInvite.Emails)
+	auditRec.AddMeta("channel_count", len(partnersInvite.Channels))
+	auditRec.AddMeta("channels", partnersInvite.Channels)
 
 	// Check if the user sending the invitation has access to the channels where the invitation is being sent
-	guestsInvite.Channels = c.App.ValidateUserPermissionsOnChannels(c.AppContext, c.AppContext.Session().UserId, guestsInvite.Channels)
+	partnersInvite.Channels = c.App.ValidateUserPermissionsOnChannels(c.AppContext, c.AppContext.Session().UserId, partnersInvite.Channels)
 
 	if graceful {
 		var invitesWithError []*model.EmailInviteWithError
 		var appErr *model.AppError
 
-		if guestsInvite.Emails != nil {
-			invitesWithError, appErr = c.App.InviteGuestsToChannelsGracefully(c.AppContext, c.Params.TeamId, &guestsInvite, c.AppContext.Session().UserId)
+		if partnersInvite.Emails != nil {
+			invitesWithError, appErr = c.App.InvitePartnersToChannelsGracefully(c.AppContext, c.Params.TeamId, &partnersInvite, c.AppContext.Session().UserId)
 		}
 
 		if appErr != nil {
@@ -1628,7 +1628,7 @@ func inviteGuestsToChannels(c *Context, w http.ResponseWriter, r *http.Request) 
 		// in graceful mode we return both the successful ones and the failed ones
 		js, err := json.Marshal(invitesWithError)
 		if err != nil {
-			c.Err = model.NewAppError("inviteGuestsToChannel", "api.marshal_error", nil, "", http.StatusInternalServerError).Wrap(err)
+			c.Err = model.NewAppError("invitePartnersToChannel", "api.marshal_error", nil, "", http.StatusInternalServerError).Wrap(err)
 			return
 		}
 
@@ -1636,7 +1636,7 @@ func inviteGuestsToChannels(c *Context, w http.ResponseWriter, r *http.Request) 
 			c.Logger.Warn("Error while writing response", mlog.Err(err))
 		}
 	} else {
-		appErr := c.App.InviteGuestsToChannels(c.AppContext, c.Params.TeamId, &guestsInvite, c.AppContext.Session().UserId)
+		appErr := c.App.InvitePartnersToChannels(c.AppContext, c.Params.TeamId, &partnersInvite, c.AppContext.Session().UserId)
 		if appErr != nil {
 			c.Err = appErr
 			return

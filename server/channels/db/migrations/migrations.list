@@ -283,5 +283,9 @@ channels/db/migrations/postgres/000142_create_content_flagging_tables.down.sql
 channels/db/migrations/postgres/000142_create_content_flagging_tables.up.sql
 channels/db/migrations/postgres/000143_content_flagging_table_index.down.sql
 channels/db/migrations/postgres/000143_content_flagging_table_index.up.sql
-channels/db/migrations/postgres/000146_add_guest_subtype.down.sql
-channels/db/migrations/postgres/000146_add_guest_subtype.up.sql
+channels/db/migrations/postgres/000146_remove_guest_data.down.sql
+channels/db/migrations/postgres/000146_remove_guest_data.up.sql
+channels/db/migrations/postgres/000147_create_partner_data.down.sql
+channels/db/migrations/postgres/000147_create_partner_data.up.sql
+channels/db/migrations/postgres/000148_add_partner_subtype.down.sql
+channels/db/migrations/postgres/000148_add_partner_subtype.up.sql

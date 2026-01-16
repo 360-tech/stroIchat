@@ -26,7 +26,7 @@ describe('components/sidebar/sidebar_header/sidebar_team_menu', () => {
         entities: {
             general: {
                 config: {
-                    EnableGuestAccounts: 'true',
+                    EnablePartnerAccounts: 'true',
                 },
                 license: {
                     IsLicensed: 'true',
@@ -61,7 +61,7 @@ describe('components/sidebar/sidebar_header/sidebar_team_menu', () => {
                     team_user: {
                         permissions: [
                             Permissions.ADD_USER_TO_TEAM,
-                            Permissions.INVITE_GUEST,
+                            Permissions.INVITE_PARTNER,
                             Permissions.MANAGE_TEAM,
                             Permissions.REMOVE_USER_FROM_TEAM,
                             Permissions.MANAGE_TEAM_ROLES,

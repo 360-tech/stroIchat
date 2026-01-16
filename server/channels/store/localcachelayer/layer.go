@@ -27,8 +27,8 @@ const (
 	FileInfoCacheSize = 25000
 	FileInfoCacheSec  = 30 * 60
 
-	ChannelGuestCountCacheSize = model.ChannelCacheSize
-	ChannelGuestCountCacheSec  = 30 * 60
+	ChannelPartnerCountCacheSize = model.ChannelCacheSize
+	ChannelPartnerCountCacheSec  = 30 * 60
 
 	WebhookCacheSize = 25000
 	WebhookCacheSec  = 15 * 60
@@ -101,7 +101,7 @@ type LocalCacheStore struct {
 
 	channel                        LocalCacheChannelStore
 	channelMemberCountsCache       cache.Cache
-	channelGuestCountCache         cache.Cache
+	channelPartnerCountCache         cache.Cache
 	channelPinnedPostCountsCache   cache.Cache
 	channelByIdCache               cache.Cache
 	channelMembersForUserCache     cache.Cache
@@ -245,11 +245,11 @@ func NewLocalCacheLayer(baseStore store.Store, metrics einterfaces.MetricsInterf
 	}); err != nil {
 		return
 	}
-	if localCacheStore.channelGuestCountCache, err = cacheProvider.NewCache(&cache.CacheOptions{
-		Size:                   ChannelGuestCountCacheSize,
-		Name:                   "ChannelGuestsCount",
-		DefaultExpiry:          ChannelGuestCountCacheSec * time.Second,
-		InvalidateClusterEvent: model.ClusterEventInvalidateCacheForChannelGuestCount,
+	if localCacheStore.channelPartnerCountCache, err = cacheProvider.NewCache(&cache.CacheOptions{
+		Size:                   ChannelPartnerCountCacheSize,
+		Name:                   "ChannelPartnersCount",
+		DefaultExpiry:          ChannelPartnerCountCacheSec * time.Second,
+		InvalidateClusterEvent: model.ClusterEventInvalidateCacheForChannelPartnerCount,
 	}); err != nil {
 		return
 	}
@@ -393,7 +393,7 @@ func NewLocalCacheLayer(baseStore store.Store, metrics einterfaces.MetricsInterf
 		cluster.RegisterClusterMessageHandler(model.ClusterEventInvalidateCacheForEmojisIdByName, localCacheStore.emoji.handleClusterInvalidateEmojiIdByName)
 		cluster.RegisterClusterMessageHandler(model.ClusterEventInvalidateCacheForChannelPinnedpostsCounts, localCacheStore.channel.handleClusterInvalidateChannelPinnedPostCount)
 		cluster.RegisterClusterMessageHandler(model.ClusterEventInvalidateCacheForChannelMemberCounts, localCacheStore.channel.handleClusterInvalidateChannelMemberCounts)
-		cluster.RegisterClusterMessageHandler(model.ClusterEventInvalidateCacheForChannelGuestCount, localCacheStore.channel.handleClusterInvalidateChannelGuestCounts)
+		cluster.RegisterClusterMessageHandler(model.ClusterEventInvalidateCacheForChannelPartnerCount, localCacheStore.channel.handleClusterInvalidateChannelPartnerCounts)
 		cluster.RegisterClusterMessageHandler(model.ClusterEventInvalidateCacheForChannel, localCacheStore.channel.handleClusterInvalidateChannelById)
 		cluster.RegisterClusterMessageHandler(model.ClusterEventInvalidateCacheForUser, localCacheStore.channel.handleClusterInvalidateChannelForUser)
 		cluster.RegisterClusterMessageHandler(model.ClusterEventInvalidateCacheForChannelMembersNotifyProps, localCacheStore.channel.handleClusterInvalidateChannelMembersNotifyProps)
@@ -577,7 +577,7 @@ func (s *LocalCacheStore) Invalidate() {
 	s.doClearCacheCluster(s.emojiIdCacheByName)
 	s.doClearCacheCluster(s.channelMemberCountsCache)
 	s.doClearCacheCluster(s.channelPinnedPostCountsCache)
-	s.doClearCacheCluster(s.channelGuestCountCache)
+	s.doClearCacheCluster(s.channelPartnerCountCache)
 	s.doClearCacheCluster(s.channelByIdCache)
 	s.doClearCacheCluster(s.channelMembersForUserCache)
 	s.doClearCacheCluster(s.channelMembersNotifyPropsCache)

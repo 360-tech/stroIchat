@@ -704,13 +704,13 @@ func TestCreateUserWithToken(t *testing.T) {
 		require.Len(t, channelList, 3)
 	})
 
-	t.Run("Validate inviterUser permissions on channels he is inviting, when inviting guests", func(t *testing.T) {
-		user := model.User{Email: th.GenerateTestEmail(), Nickname: "Guest User", Password: "hello1", Username: GenerateTestUsername(), Roles: model.SystemUserRoleId}
+	t.Run("Validate inviterUser permissions on channels he is inviting, when inviting partners", func(t *testing.T) {
+		user := model.User{Email: th.GenerateTestEmail(), Nickname: "Partner User", Password: "hello1", Username: GenerateTestUsername(), Roles: model.SystemUserRoleId}
 		channelIdWithoutPermissions := th.BasicPrivateChannel2.Id
 		channelIds := th.BasicChannel.Id + " " + channelIdWithoutPermissions
 		token := model.NewToken(
 			app.TokenTypeTeamInvitation,
-			model.MapToJSON(map[string]string{"guest": "true", "teamId": th.BasicTeam.Id, "email": user.Email, "senderId": th.BasicUser.Id, "channels": channelIds}),
+			model.MapToJSON(map[string]string{"partner": "true", "teamId": th.BasicTeam.Id, "email": user.Email, "senderId": th.BasicUser.Id, "channels": channelIds}),
 		)
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
 
@@ -728,17 +728,17 @@ func TestCreateUserWithToken(t *testing.T) {
 
 		teams, appErr := th.App.GetTeamsForUser(ruser.Id)
 		require.Nil(t, appErr)
-		require.NotEmpty(t, teams, "The guest must have teams")
-		require.Equal(t, th.BasicTeam.Id, teams[0].Id, "The guest joined team must be the team provided.")
+		require.NotEmpty(t, teams, "The partner must have teams")
+		require.Equal(t, th.BasicTeam.Id, teams[0].Id, "The partner joined team must be the team provided.")
 
-		// Now we get all the channels for the just created guest
+		// Now we get all the channels for the just created partner
 		channelList, cErr := th.App.GetChannelsForTeamForUser(th.Context, th.BasicTeam.Id, ruser.Id, &model.ChannelSearchOpts{
 			IncludeDeleted: false,
 			LastDeleteAt:   0,
 		})
 		require.Nil(t, cErr)
 
-		// basicUser has no permissions on BasicPrivateChannel2 so the new invited guest should be able to only access
+		// basicUser has no permissions on BasicPrivateChannel2 so the new invited partner should be able to only access
 		// one channel from the two he was invited (plus the two default channels)
 		require.Len(t, channelList, 3)
 	})
@@ -749,36 +749,36 @@ func TestCreateUserWebSocketEvent(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	t.Run("guest should not received new_user event but user should", func(t *testing.T) {
-		th.App.Srv().SetLicense(model.NewTestLicense("guests"))
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.AllowEmailAccounts = true })
+	t.Run("partner should not received new_user event but user should", func(t *testing.T) {
+		th.App.Srv().SetLicense(model.NewTestLicense("partners"))
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.AllowEmailAccounts = true })
 
 		id := model.NewId()
-		guestPassword := "Pa$$word11"
-		guest := &model.User{
+		partnerPassword := "Pa$$word11"
+		partner := &model.User{
 			Email:         "success+" + id + "@simulator.amazonses.com",
 			Username:      "un_" + id,
 			Nickname:      "nn_" + id,
-			Password:      guestPassword,
+			Password:      partnerPassword,
 			EmailVerified: true,
 		}
 
-		guest, errr := th.App.CreateGuest(th.Context, guest)
+		partner, errr := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, errr)
 
-		_, _, errr = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, guest.Id, "")
+		_, _, errr = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, partner.Id, "")
 		require.Nil(t, errr)
 
-		_, errr = th.App.AddUserToChannel(th.Context, guest, th.BasicChannel, false)
+		_, errr = th.App.AddUserToChannel(th.Context, partner, th.BasicChannel, false)
 		require.Nil(t, errr)
 
-		guestClient := th.CreateClient()
+		partnerClient := th.CreateClient()
 
-		_, _, err := guestClient.Login(context.Background(), guest.Email, guestPassword)
+		_, _, err := partnerClient.Login(context.Background(), partner.Email, partnerPassword)
 		require.NoError(t, err)
 
-		guestWSClient := th.CreateConnectedWebSocketClientWithClient(t, guestClient)
+		partnerWSClient := th.CreateConnectedWebSocketClientWithClient(t, partnerClient)
 		userWSClient := th.CreateConnectedWebSocketClient(t)
 
 		user := model.User{Email: th.GenerateTestEmail(), Nickname: "Corey Hulen", Password: "hello1", Username: GenerateTestUsername(), Roles: model.SystemAdminRoleId + " " + model.SystemUserRoleId}
@@ -790,7 +790,7 @@ func TestCreateUserWebSocketEvent(t *testing.T) {
 		CheckCreatedStatus(t, resp)
 
 		var userHasReceived bool
-		var guestHasReceived bool
+		var partnerHasReceived bool
 
 		func() {
 			for {
@@ -799,9 +799,9 @@ func TestCreateUserWebSocketEvent(t *testing.T) {
 					if ev.EventType() == model.WebsocketEventNewUser {
 						userHasReceived = true
 					}
-				case ev := <-guestWSClient.EventChannel:
+				case ev := <-partnerWSClient.EventChannel:
 					if ev.EventType() == model.WebsocketEventNewUser {
-						guestHasReceived = true
+						partnerHasReceived = true
 					}
 				case <-time.After(2 * time.Second):
 					return
@@ -810,7 +810,7 @@ func TestCreateUserWebSocketEvent(t *testing.T) {
 		}()
 
 		require.Truef(t, userHasReceived, "User should have received %s event", model.WebsocketEventNewUser)
-		require.Falsef(t, guestHasReceived, "Guest should not have received %s event", model.WebsocketEventNewUser)
+		require.Falsef(t, partnerHasReceived, "Partner should not have received %s event", model.WebsocketEventNewUser)
 	})
 }
 
@@ -1782,17 +1782,17 @@ func TestAutocompleteUsersInChannel(t *testing.T) {
 	t.Run("Check OutOfChannel results with/without VIEW_MEMBERS permissions", func(t *testing.T) {
 		t.Skip("https://mattermost.atlassian.net/browse/MM-61041")
 
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 		th.App.Srv().SetLicense(model.NewTestLicense())
 		defer func() {
 			appErr := th.App.Srv().RemoveLicense()
 			require.Nil(t, appErr)
-			th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = false })
+			th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = false })
 		}()
 		permissionsUser := th.CreateUser()
-		_, err := th.SystemAdminClient.DemoteUserToGuest(context.Background(), permissionsUser.Id)
+		_, err := th.SystemAdminClient.DemoteUserToPartner(context.Background(), permissionsUser.Id)
 		require.NoError(t, err)
-		permissionsUser.Roles = "system_guest"
+		permissionsUser.Roles = "system_partner"
 		th.LinkUserToTeam(permissionsUser, th.BasicTeam)
 		th.AddUserToChannel(permissionsUser, th.BasicChannel)
 
@@ -2904,26 +2904,26 @@ func TestUpdateUserActive(t *testing.T) {
 		})
 	})
 
-	t.Run("activate guest should fail when guests feature is disable", func(t *testing.T) {
+	t.Run("activate partner should fail when partners feature is disable", func(t *testing.T) {
 		mainHelper.Parallel(t)
 		th := Setup(t).InitBasic()
 		defer th.TearDown()
 
 		id := model.NewId()
-		guest := &model.User{
+		partner := &model.User{
 			Email:         "success+" + id + "@simulator.amazonses.com",
 			Username:      "un_" + id,
 			Nickname:      "nn_" + id,
 			Password:      "Password1",
 			EmailVerified: true,
 		}
-		user, err := th.App.CreateGuest(th.Context, guest)
+		user, err := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, err)
 		_, appErr := th.App.UpdateActive(th.Context, user, false)
 		require.Nil(t, appErr)
 
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = false })
-		defer th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = false })
+		defer th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 
 		th.TestForSystemAdminAndLocal(t, func(t *testing.T, client *model.Client4) {
 			resp, err := client.UpdateUserActive(context.Background(), user.Id, true)
@@ -2932,25 +2932,25 @@ func TestUpdateUserActive(t *testing.T) {
 		})
 	})
 
-	t.Run("activate guest should work when guests feature is enabled", func(t *testing.T) {
+	t.Run("activate partner should work when partners feature is enabled", func(t *testing.T) {
 		mainHelper.Parallel(t)
 		th := Setup(t).InitBasic()
 		defer th.TearDown()
 
 		id := model.NewId()
-		guest := &model.User{
+		partner := &model.User{
 			Email:         "success+" + id + "@simulator.amazonses.com",
 			Username:      "un_" + id,
 			Nickname:      "nn_" + id,
 			Password:      "Password1",
 			EmailVerified: true,
 		}
-		user, appErr := th.App.CreateGuest(th.Context, guest)
+		user, appErr := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, appErr)
 		_, appErr = th.App.UpdateActive(th.Context, user, false)
 		require.Nil(t, appErr)
 
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 		th.TestForSystemAdminAndLocal(t, func(t *testing.T, client *model.Client4) {
 			_, err := client.UpdateUserActive(context.Background(), user.Id, true)
 			require.NoError(t, err)
@@ -3457,10 +3457,10 @@ func TestGetUsersInGroup(t *testing.T) {
 		assert.Equal(t, users[0].Id, user1.Id)
 	})
 
-	t.Run("Returns no users in custom group when called by guest user", func(t *testing.T) {
+	t.Run("Returns no users in custom group when called by partner user", func(t *testing.T) {
 		_, _, err := th.Client.Login(context.Background(), th.BasicUser.Email, th.BasicUser.Password)
 		require.NoError(t, err)
-		appErr := th.App.DemoteUserToGuest(th.Context, th.BasicUser)
+		appErr := th.App.DemoteUserToPartner(th.Context, th.BasicUser)
 		require.Nil(t, appErr)
 
 		users, _, err := th.Client.GetUsersInGroup(context.Background(), customGroup.Id, 0, 60, "")
@@ -6272,36 +6272,36 @@ func TestLoginLockout(t *testing.T) {
 	CheckErrorID(t, err, "api.user.check_user_login_attempts.too_many.app_error")
 }
 
-func TestDemoteUserToGuest(t *testing.T) {
+func TestDemoteUserToPartner(t *testing.T) {
 	mainHelper.Parallel(t)
 
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
 	user := th.BasicUser
 	user2 := th.BasicUser2
 
-	t.Run("Guest Account not available in license returns forbidden", func(t *testing.T) {
-		th.App.Srv().SetLicense(model.NewTestLicenseWithFalseDefaults("guest_accounts"))
+	t.Run("Partner Account not available in license returns forbidden", func(t *testing.T) {
+		th.App.Srv().SetLicense(model.NewTestLicenseWithFalseDefaults("partner_accounts"))
 
 		res, err := th.SystemAdminClient.DoAPIPost(context.Background(), "/users/"+user2.Id+"/demote", "")
 
 		require.Equal(t, http.StatusForbidden, res.StatusCode)
-		require.True(t, strings.Contains(err.Error(), "Guest accounts are disabled"))
+		require.True(t, strings.Contains(err.Error(), "Partner accounts are disabled"))
 		require.Error(t, err)
 	})
 
-	t.Run("Guest Account available in license returns OK", func(t *testing.T) {
-		th.App.Srv().SetLicense(model.NewTestLicense("guest_accounts"))
+	t.Run("Partner Account available in license returns OK", func(t *testing.T) {
+		th.App.Srv().SetLicense(model.NewTestLicense("partner_accounts"))
 
 		res, err := th.SystemAdminClient.DoAPIPost(context.Background(), "/users/"+user2.Id+"/demote", "")
 
@@ -6313,11 +6313,11 @@ func TestDemoteUserToGuest(t *testing.T) {
 		_, _, err := c.GetUser(context.Background(), user.Id, "")
 		require.NoError(t, err)
 
-		_, err = c.DemoteUserToGuest(context.Background(), user.Id)
+		_, err = c.DemoteUserToPartner(context.Background(), user.Id)
 		require.NoError(t, err)
 
-		defer require.Nil(t, th.App.PromoteGuestToUser(th.Context, user, ""))
-	}, "demote a user to guest")
+		defer require.Nil(t, th.App.PromotePartnerToUser(th.Context, user, ""))
+	}, "demote a user to partner")
 
 	t.Run("websocket update user event", func(t *testing.T) {
 		webSocketClient := th.CreateConnectedWebSocketClient(t)
@@ -6328,52 +6328,52 @@ func TestDemoteUserToGuest(t *testing.T) {
 
 		_, _, err := th.SystemAdminClient.GetUser(context.Background(), user.Id, "")
 		require.NoError(t, err)
-		_, err = th.SystemAdminClient.DemoteUserToGuest(context.Background(), user.Id)
+		_, err = th.SystemAdminClient.DemoteUserToPartner(context.Background(), user.Id)
 		require.NoError(t, err)
 		defer func() {
-			_, err = th.SystemAdminClient.PromoteGuestToUser(context.Background(), user.Id)
+			_, err = th.SystemAdminClient.PromotePartnerToUser(context.Background(), user.Id)
 			require.NoError(t, err)
 		}()
 
 		assertExpectedWebsocketEvent(t, webSocketClient, model.WebsocketEventUserUpdated, func(event *model.WebSocketEvent) {
 			eventUser, ok := event.GetData()["user"].(*model.User)
 			require.True(t, ok, "expected user")
-			assert.Equal(t, "system_guest", eventUser.Roles)
+			assert.Equal(t, "system_partner", eventUser.Roles)
 		})
 		assertExpectedWebsocketEvent(t, adminWebSocketClient, model.WebsocketEventUserUpdated, func(event *model.WebSocketEvent) {
 			eventUser, ok := event.GetData()["user"].(*model.User)
 			require.True(t, ok, "expected user")
-			assert.Equal(t, "system_guest", eventUser.Roles)
+			assert.Equal(t, "system_partner", eventUser.Roles)
 		})
 	})
 }
 
-func TestPromoteGuestToUser(t *testing.T) {
+func TestPromotePartnerToUser(t *testing.T) {
 	mainHelper.Parallel(t)
 
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
-	user := th.CreateGuestUser(t)
+	user := th.CreatePartnerUser(t)
 
 	th.TestForSystemAdminAndLocal(t, func(t *testing.T, c *model.Client4) {
 		_, _, err := c.GetUser(context.Background(), user.Id, "")
 		require.NoError(t, err)
 
-		_, err = c.PromoteGuestToUser(context.Background(), user.Id)
+		_, err = c.PromotePartnerToUser(context.Background(), user.Id)
 		require.NoError(t, err)
 
-		defer require.Nil(t, th.App.DemoteUserToGuest(th.Context, user))
-	}, "promote a guest to user")
+		defer require.Nil(t, th.App.DemoteUserToPartner(th.Context, user))
+	}, "promote a partner to user")
 
 	t.Run("websocket update user event", func(t *testing.T) {
 		webSocketClient := th.CreateConnectedWebSocketClient(t)
@@ -6385,10 +6385,10 @@ func TestPromoteGuestToUser(t *testing.T) {
 
 		_, _, err := th.SystemAdminClient.GetUser(context.Background(), user.Id, "")
 		require.NoError(t, err)
-		_, err = th.SystemAdminClient.PromoteGuestToUser(context.Background(), user.Id)
+		_, err = th.SystemAdminClient.PromotePartnerToUser(context.Background(), user.Id)
 		require.NoError(t, err)
 		defer func() {
-			_, err = th.SystemAdminClient.DemoteUserToGuest(context.Background(), user.Id)
+			_, err = th.SystemAdminClient.DemoteUserToPartner(context.Background(), user.Id)
 			require.NoError(t, err)
 		}()
 

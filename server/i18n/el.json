@@ -1175,7 +1175,7 @@
     "translation": "%v προστέθηκε στο κανάλι από τον/τη %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v προστέθηκε στο κανάλι από τον/τη %v."
   },
   {
@@ -1751,7 +1751,7 @@
     "translation": "Εσωτερικό σφάλμα κατά τη διάρκεια αιτήματος του cloud api."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Μη έγκυρη ενημέρωση μέλους ομάδας: Δεν μπορείτε να προσθέσετε ή να καταργήσετε τον ρόλο επισκέπτη χειροκίνητα."
   },
   {
@@ -1759,11 +1759,11 @@
     "translation": "Το προεπιλεγμένο κανάλι δεν μπορεί να γίνει ιδιωτικό."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Μη έγκυρη ενημέρωση μέλους καναλιού: Ένας χρήστης πρέπει να είναι είτε επισκέπτης είτε χρήστης, αλλά όχι και τα δύο."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Μη έγκυρη ενημέρωση μέλους καναλιού: Δεν μπορείτε να προσθέσετε ή να καταργήσετε τον ρόλο επισκέπτη χειροκίνητα."
   },
   {
@@ -1803,7 +1803,7 @@
     "translation": "Δεν είναι δυνατή η μετακίνηση άμεσων ή ομαδικών μηνυμάτων σε κανάλια"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v μπήκε στο κανάλι ως επισκέπτης."
   },
   {
@@ -1971,15 +1971,15 @@
     "translation": "Έγινε εισαγωγή του χρήστη Integration/Slack Bot με email {{.Email}} και κωδικό πρόσβασης {{.Password}}.\n"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Η άδειά σας δεν υποστηρίζει λογαριασμούς επισκεπτών"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Οι λογαριασμοί επισκεπτών είναι απενεργοποιημένοι."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Οι επισκέπτες δεν επιτρέπεται να συμμετέχουν σε μια ομάδα μέσω ενός συνδέσμου πρόσκλησης. Ζητήστε από την ομάδα να σας στείλει μέσω email μια πρόσκληση επισκεπτών."
   },
   {
@@ -2721,11 +2721,11 @@
     "translation": "Οι προσκλήσεις μέσω email είναι απενεργοποιημένες."
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Μη έγκυρο ή ελλιπές κυρίως σώμα της αίτησης."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Τα κανάλια της πρόσκλησης πρέπει να είναι μέρος της ομάδας της πρόσκλησης."
   },
   {
@@ -2895,11 +2895,11 @@
     "translation": "[{{.SiteName}}] Ο χρήστης {{.SenderName}} σας προσκάλεσε να συμμετάσχετε στην ομάδα {{.TeamDisplayName}}"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{.SiteName}}] Ο χρήστης {{.SenderName}} σας προσκάλεσε να συμμετάσχετε στην ομάδα {{.TeamDisplayName}} ως επισκέπτης"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Έχετε προσκληθεί ως επισκέπτης για να συνεργαστείτε με την ομάδα"
   },
   {
@@ -3059,7 +3059,7 @@
     "translation": "Προσθέστε εφαρμογές στον χώρο εργασίας σας"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Μη έγκυρη ενημέρωση μέλους ομάδας: Ένας χρήστης πρέπει να είναι είτε επισκέπτης είτε χρήστης, όχι και τα δύο."
   },
   {
@@ -3211,7 +3211,7 @@
     "translation": "Αποτυχία επεξεργασίας των δεδομένων πολλαπλών τμημάτων."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Δεν είναι δυνατή η μετατροπή του χρήστη σε επισκέπτη επειδή είναι ήδη επισκέπτης."
   },
   {
@@ -3247,11 +3247,11 @@
     "translation": "Δεν είναι δυνατή η δημιουργία του χρήστη, μη έγκυρη πρόσκληση."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Η άδειά σας δεν υποστηρίζει λογαριασμούς επισκεπτών."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Οι λογαριασμοί επισκεπτών είναι απενεργοποιημένοι."
   },
   {

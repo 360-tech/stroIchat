@@ -43,7 +43,7 @@ const defaultProps: Props = deepFreeze({
     onUsersInputChange: jest.fn(),
     headerClass: '',
     footerClass: '',
-    canInviteGuests: true,
+    canInvitePartners: true,
     canAddUsers: true,
 
     customMessage: {
@@ -124,7 +124,7 @@ describe('InviteView', () => {
         props = defaultProps;
     });
 
-    it('shows InviteAs component when user can choose to invite guests or users', async () => {
+    it('shows InviteAs component when user can choose to invite partners or users', async () => {
         const wrapper = mountWithIntl(
             <Provider store={store}>
                 <InviteView {...props}/>
@@ -148,10 +148,10 @@ describe('InviteView', () => {
         expect(wrapper.find(InviteAs).length).toBe(0);
     });
 
-    it('hides InviteAs component when user can not choose guests option', async () => {
+    it('hides InviteAs component when user can not choose partners option', async () => {
         props = {
             ...defaultProps,
-            canInviteGuests: false,
+            canInvitePartners: false,
         };
 
         const wrapper = mountWithIntl(

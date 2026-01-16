@@ -15,7 +15,7 @@ import {getChannel, makeGetChannel, getDirectChannel} from 'mattermost-redux/sel
 import {getConfig, getFeatureFlagValue} from 'mattermost-redux/selectors/entities/general';
 import {get, getBool, getInt} from 'mattermost-redux/selectors/entities/preferences';
 import {haveIChannelPermission} from 'mattermost-redux/selectors/entities/roles';
-import {getCurrentUserId, isCurrentUserGuestUser, getStatusForUserId, makeGetDisplayName} from 'mattermost-redux/selectors/entities/users';
+import {getCurrentUserId, isCurrentUserPartnerUser, getStatusForUserId, makeGetDisplayName} from 'mattermost-redux/selectors/entities/users';
 
 import * as GlobalActions from 'actions/global_actions';
 import type {CreatePostOptions} from 'actions/post_actions';
@@ -42,7 +42,7 @@ import SuggestionList from 'components/suggestion/suggestion_list';
 import Textbox from 'components/textbox';
 import type {TextboxElement} from 'components/textbox';
 import type TextboxClass from 'components/textbox/textbox';
-import {OnboardingTourSteps, OnboardingTourStepsForGuestUsers, TutorialTourName} from 'components/tours/constant';
+import {OnboardingTourSteps, OnboardingTourStepsForPartnerUsers, TutorialTourName} from 'components/tours/constant';
 import {SendMessageTour} from 'components/tours/onboarding_tour';
 import {getIsMobileView} from 'selectors/views/browser';
 import Constants, {
@@ -195,9 +195,9 @@ const AdvancedTextEditor = ({
 
         const tutorialStep = getInt(state, TutorialTourName.ONBOARDING_TUTORIAL_STEP, currentUserId, 0);
 
-        // guest validation to see which point the messaging tour tip starts
-        const isGuestUser = isCurrentUserGuestUser(state);
-        const tourStep = isGuestUser ? OnboardingTourStepsForGuestUsers.SEND_MESSAGE : OnboardingTourSteps.SEND_MESSAGE;
+        // partner validation to see which point the messaging tour tip starts
+        const isPartnerUser = isCurrentUserPartnerUser(state);
+        const tourStep = isPartnerUser ? OnboardingTourStepsForPartnerUsers.SEND_MESSAGE : OnboardingTourSteps.SEND_MESSAGE;
 
         return enableTutorial && (tutorialStep === tourStep);
     });

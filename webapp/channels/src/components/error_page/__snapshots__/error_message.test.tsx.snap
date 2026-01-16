@@ -12,8 +12,8 @@ exports[`components/error_page/ErrorMessage should match snapshot, channel_not_f
 exports[`components/error_page/ErrorMessage should match snapshot, channel_not_found type 2`] = `
 <p>
   <MemoizedFormattedMessage
-    defaultMessage="Your guest account has no channels assigned. Please contact an administrator."
-    id="error.channel_not_found.message_guest"
+    defaultMessage="Your partner account has no channels assigned. Please contact an administrator."
+    id="error.channel_not_found.message_partner"
   />
 </p>
 `;

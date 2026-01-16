@@ -8,7 +8,7 @@ Object {
   "openRoles": Object {
     "all_users": true,
     "channel_admin": true,
-    "guests": true,
+    "partners": true,
     "playbook_admin": true,
     "playbook_member": true,
     "run_admin": true,
@@ -31,7 +31,7 @@ Object {
   "openRoles": Object {
     "all_users": true,
     "channel_admin": true,
-    "guests": true,
+    "partners": true,
     "playbook_admin": true,
     "playbook_member": true,
     "run_admin": true,
@@ -57,9 +57,9 @@ Object {
       "scheme_managed": false,
       "update_at": 0,
     },
-    "guests": Object {
-      "display_name": "Guests",
-      "name": "guests",
+    "partners": Object {
+      "display_name": "Partners",
+      "name": "partners",
       "permissions": Array [],
     },
     "playbook_admin": Object {
@@ -193,24 +193,24 @@ exports[`components/admin_console/permission_schemes_settings/permission_system_
         open={true}
         subtitle={
           Object {
-            "defaultMessage": "Permissions granted to guest users.",
-            "id": "admin.permissions.systemScheme.GuestsDescription",
+            "defaultMessage": "Permissions granted to partner users.",
+            "id": "admin.permissions.systemScheme.PartnersDescription",
           }
         }
         title={
           Object {
-            "defaultMessage": "Guests",
-            "id": "admin.permissions.systemScheme.GuestsTitle",
+            "defaultMessage": "Partners",
+            "id": "admin.permissions.systemScheme.PartnersTitle",
           }
         }
       >
-        <Connect(GuestPermissionsTree)
+        <Connect(PartnerPermissionsTree)
           onToggle={[Function]}
           readOnly={true}
           role={
             Object {
-              "display_name": "Guests",
-              "name": "guests",
+              "display_name": "Partners",
+              "name": "partners",
               "permissions": Array [],
             }
           }
@@ -543,24 +543,24 @@ exports[`components/admin_console/permission_schemes_settings/permission_system_
         open={true}
         subtitle={
           Object {
-            "defaultMessage": "Permissions granted to guest users.",
-            "id": "admin.permissions.systemScheme.GuestsDescription",
+            "defaultMessage": "Permissions granted to partner users.",
+            "id": "admin.permissions.systemScheme.PartnersDescription",
           }
         }
         title={
           Object {
-            "defaultMessage": "Guests",
-            "id": "admin.permissions.systemScheme.GuestsTitle",
+            "defaultMessage": "Partners",
+            "id": "admin.permissions.systemScheme.PartnersTitle",
           }
         }
       >
-        <Connect(GuestPermissionsTree)
+        <Connect(PartnerPermissionsTree)
           onToggle={[Function]}
           readOnly={false}
           role={
             Object {
-              "display_name": "Guests",
-              "name": "guests",
+              "display_name": "Partners",
+              "name": "partners",
               "permissions": Array [],
             }
           }
@@ -664,7 +664,7 @@ exports[`components/admin_console/permission_schemes_settings/permission_system_
           license={
             Object {
               "CustomPermissionsSchemes": "true",
-              "GuestAccountsPermissions": "true",
+              "PartnerAccountsPermissions": "true",
               "IsLicensed": "true",
             }
           }
@@ -894,24 +894,24 @@ exports[`components/admin_console/permission_schemes_settings/permission_system_
         open={true}
         subtitle={
           Object {
-            "defaultMessage": "Permissions granted to guest users.",
-            "id": "admin.permissions.systemScheme.GuestsDescription",
+            "defaultMessage": "Permissions granted to partner users.",
+            "id": "admin.permissions.systemScheme.PartnersDescription",
           }
         }
         title={
           Object {
-            "defaultMessage": "Guests",
-            "id": "admin.permissions.systemScheme.GuestsTitle",
+            "defaultMessage": "Partners",
+            "id": "admin.permissions.systemScheme.PartnersTitle",
           }
         }
       >
-        <Connect(GuestPermissionsTree)
+        <Connect(PartnerPermissionsTree)
           onToggle={[Function]}
           readOnly={true}
           role={
             Object {
-              "display_name": "Guests",
-              "name": "guests",
+              "display_name": "Partners",
+              "name": "partners",
               "permissions": Array [],
             }
           }
@@ -1015,7 +1015,7 @@ exports[`components/admin_console/permission_schemes_settings/permission_system_
           license={
             Object {
               "CustomPermissionsSchemes": "false",
-              "GuestAccountsPermissions": "false",
+              "PartnerAccountsPermissions": "false",
               "IsLicensed": "true",
             }
           }
@@ -1245,24 +1245,24 @@ exports[`components/admin_console/permission_schemes_settings/permission_system_
         open={true}
         subtitle={
           Object {
-            "defaultMessage": "Permissions granted to guest users.",
-            "id": "admin.permissions.systemScheme.GuestsDescription",
+            "defaultMessage": "Permissions granted to partner users.",
+            "id": "admin.permissions.systemScheme.PartnersDescription",
           }
         }
         title={
           Object {
-            "defaultMessage": "Guests",
-            "id": "admin.permissions.systemScheme.GuestsTitle",
+            "defaultMessage": "Partners",
+            "id": "admin.permissions.systemScheme.PartnersTitle",
           }
         }
       >
-        <Connect(GuestPermissionsTree)
+        <Connect(PartnerPermissionsTree)
           onToggle={[Function]}
           readOnly={false}
           role={
             Object {
-              "display_name": "Guests",
-              "name": "guests",
+              "display_name": "Partners",
+              "name": "partners",
               "permissions": Array [],
             }
           }
@@ -1366,7 +1366,7 @@ exports[`components/admin_console/permission_schemes_settings/permission_system_
           license={
             Object {
               "CustomPermissionsSchemes": "false",
-              "GuestAccountsPermissions": "true",
+              "PartnerAccountsPermissions": "true",
               "IsLicensed": "true",
             }
           }

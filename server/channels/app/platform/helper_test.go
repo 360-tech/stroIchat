@@ -104,10 +104,10 @@ func (th *TestHelper) InitBasic() *TestHelper {
 		th.SystemAdminUser = th.CreateAdmin()
 		userCache.SystemAdminUser = th.SystemAdminUser.DeepCopy()
 
-		th.BasicUser = th.CreateUserOrGuest(false)
+		th.BasicUser = th.CreateUserOrPartner(false)
 		userCache.BasicUser = th.BasicUser.DeepCopy()
 
-		th.BasicUser2 = th.CreateUserOrGuest(false)
+		th.BasicUser2 = th.CreateUserOrPartner(false)
 		userCache.BasicUser2 = th.BasicUser2.DeepCopy()
 	})
 	// restore cached users
@@ -251,7 +251,7 @@ func (th *TestHelper) CreateTeam() *model.Team {
 	return team
 }
 
-func (th *TestHelper) CreateUserOrGuest(guest bool) *model.User {
+func (th *TestHelper) CreateUserOrPartner(partner bool) *model.User {
 	id := model.NewId()
 
 	user := &model.User{

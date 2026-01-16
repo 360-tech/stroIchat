@@ -3,13 +3,13 @@
 mmctl user demote
 -----------------
 
-Demote users to guests
+Demote users to partners
 
 Synopsis
 ~~~~~~~~
 
 
-Convert a regular user into a guest.
+Convert a regular user into a partner.
 
 ::
 

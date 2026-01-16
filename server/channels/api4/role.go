@@ -164,9 +164,9 @@ func patchRole(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	isGuest := oldRole.Name == model.SystemGuestRoleId || oldRole.Name == model.TeamGuestRoleId || oldRole.Name == model.ChannelGuestRoleId
+	isPartner := oldRole.Name == model.SystemPartnerRoleId || oldRole.Name == model.TeamPartnerRoleId || oldRole.Name == model.ChannelPartnerRoleId
 	if c.App.Channels().License() == nil && patch.Permissions != nil {
-		if isGuest {
+		if isPartner {
 			c.Err = model.NewAppError("Api4.PatchRoles", "api.roles.patch_roles.license.error", nil, "", http.StatusNotImplemented)
 			return
 		}
@@ -198,9 +198,9 @@ func patchRole(c *Context, w http.ResponseWriter, r *http.Request) {
 		oldRole.Name == model.SystemUserRoleId ||
 		oldRole.Name == model.TeamUserRoleId ||
 		oldRole.Name == model.ChannelUserRoleId ||
-		oldRole.Name == model.SystemGuestRoleId ||
-		oldRole.Name == model.TeamGuestRoleId ||
-		oldRole.Name == model.ChannelGuestRoleId ||
+		oldRole.Name == model.SystemPartnerRoleId ||
+		oldRole.Name == model.TeamPartnerRoleId ||
+		oldRole.Name == model.ChannelPartnerRoleId ||
 		oldRole.Name == model.PlaybookAdminRoleId ||
 		oldRole.Name == model.PlaybookMemberRoleId ||
 		oldRole.Name == model.RunAdminRoleId ||

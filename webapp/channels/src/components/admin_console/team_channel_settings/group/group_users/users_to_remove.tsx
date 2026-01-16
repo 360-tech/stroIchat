@@ -39,7 +39,7 @@ export interface Props {
     searchTerm: string;
     scope: 'team' | 'channel';
     scopeId: string;
-    enableGuestAccounts: boolean;
+    enablePartnerAccounts: boolean;
     filters: Filters;
     actions: {
         loadTeamMembersForProfilesList: (profiles: UserProfile[], teamId: string) => Promise<ActionResult>;
@@ -246,11 +246,11 @@ export default class UsersToRemove extends React.PureComponent<Props, State> {
                     />
                 ),
                 values: {
-                    [GeneralConstants.SYSTEM_GUEST_ROLE]: {
+                    [GeneralConstants.SYSTEM_PARTNER_ROLE]: {
                         name: (
                             <FormattedMessage
-                                id='admin.user_grid.guest'
-                                defaultMessage='Guest'
+                                id='admin.user_grid.partner'
+                                defaultMessage='Partner'
                             />
                         ),
                         value: false,
@@ -265,7 +265,7 @@ export default class UsersToRemove extends React.PureComponent<Props, State> {
                         value: false,
                     },
                 },
-                keys: [GeneralConstants.SYSTEM_GUEST_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE],
+                keys: [GeneralConstants.SYSTEM_PARTNER_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE],
             },
         };
 
@@ -291,7 +291,7 @@ export default class UsersToRemove extends React.PureComponent<Props, State> {
                     value: false,
                 },
             };
-            filterOptions.role.keys = [GeneralConstants.SYSTEM_GUEST_ROLE, GeneralConstants.CHANNEL_USER_ROLE, GeneralConstants.CHANNEL_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE];
+            filterOptions.role.keys = [GeneralConstants.SYSTEM_PARTNER_ROLE, GeneralConstants.CHANNEL_USER_ROLE, GeneralConstants.CHANNEL_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE];
         } else if (this.props.scope === 'team') {
             filterOptions.role.values = {
                 ...filterOptions.role.values,
@@ -314,11 +314,11 @@ export default class UsersToRemove extends React.PureComponent<Props, State> {
                     value: false,
                 },
             };
-            filterOptions.role.keys = [GeneralConstants.SYSTEM_GUEST_ROLE, GeneralConstants.TEAM_USER_ROLE, GeneralConstants.TEAM_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE];
+            filterOptions.role.keys = [GeneralConstants.SYSTEM_PARTNER_ROLE, GeneralConstants.TEAM_USER_ROLE, GeneralConstants.TEAM_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE];
         }
 
-        if (!this.props.enableGuestAccounts) {
-            delete filterOptions.role.values[GeneralConstants.SYSTEM_GUEST_ROLE];
+        if (!this.props.enablePartnerAccounts) {
+            delete filterOptions.role.values[GeneralConstants.SYSTEM_PARTNER_ROLE];
             filterOptions.role.keys.splice(0, 1);
         }
 

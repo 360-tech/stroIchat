@@ -144,7 +144,7 @@ func GenerateClientConfig(c *model.Config, telemetryID string, license *model.Li
 	props["EnableCustomGroups"] = "false"
 	props["PostPriority"] = strconv.FormatBool(*c.ServiceSettings.PostPriority)
 	props["AllowPersistentNotifications"] = strconv.FormatBool(*c.ServiceSettings.AllowPersistentNotifications)
-	props["AllowPersistentNotificationsForGuests"] = strconv.FormatBool(*c.ServiceSettings.AllowPersistentNotificationsForGuests)
+	props["AllowPersistentNotificationsForPartners"] = strconv.FormatBool(*c.ServiceSettings.AllowPersistentNotificationsForPartners)
 	props["PersistentNotificationMaxCount"] = strconv.FormatInt(int64(*c.ServiceSettings.PersistentNotificationMaxCount), 10)
 	props["PersistentNotificationIntervalMinutes"] = strconv.FormatInt(int64(*c.ServiceSettings.PersistentNotificationIntervalMinutes), 10)
 	props["PersistentNotificationMaxRecipients"] = strconv.FormatInt(int64(*c.ServiceSettings.PersistentNotificationMaxRecipients), 10)
@@ -356,9 +356,9 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 	props["CustomDescriptionText"] = *c.TeamSettings.CustomDescriptionText
 	props["EnableMultifactorAuthentication"] = strconv.FormatBool(*c.ServiceSettings.EnableMultifactorAuthentication)
 	props["EnforceMultifactorAuthentication"] = "false"
-	props["EnableGuestAccounts"] = strconv.FormatBool(*c.GuestAccountsSettings.Enable)
-	props["HideGuestTags"] = strconv.FormatBool(*c.GuestAccountsSettings.HideTags)
-	props["GuestAccountsEnforceMultifactorAuthentication"] = strconv.FormatBool(*c.GuestAccountsSettings.EnforceMultifactorAuthentication)
+	props["EnablePartnerAccounts"] = strconv.FormatBool(*c.PartnerAccountsSettings.Enable)
+	props["HidePartnerTags"] = strconv.FormatBool(*c.PartnerAccountsSettings.HideTags)
+	props["PartnerAccountsEnforceMultifactorAuthentication"] = strconv.FormatBool(*c.PartnerAccountsSettings.EnforceMultifactorAuthentication)
 
 	if license != nil {
 		if *license.Features.LDAP {

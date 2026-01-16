@@ -33,7 +33,7 @@ func TestSaveScheduledPost(t *testing.T) {
 			ChannelId:   channel.Id,
 			UserId:      userId,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 			SchemeUser:  true,
 		})
 		require.NoError(t, err)
@@ -116,7 +116,7 @@ func TestSaveScheduledPost(t *testing.T) {
 			ChannelId:   channel.Id,
 			UserId:      userId,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 			SchemeUser:  true,
 		})
 		require.NoError(t, err)
@@ -157,7 +157,7 @@ func TestSaveScheduledPost(t *testing.T) {
 			ChannelId:   channel.Id,
 			UserId:      userId,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 			SchemeUser:  true,
 		})
 		require.NoError(t, err)
@@ -201,7 +201,7 @@ func TestSaveScheduledPost(t *testing.T) {
 			ChannelId:   channel.Id,
 			UserId:      userId,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 			SchemeUser:  true,
 		})
 		require.NoError(t, err)
@@ -530,7 +530,7 @@ func TestUpdateScheduledPost(t *testing.T) {
 			ChannelId:   channel.Id,
 			UserId:      userId,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 			SchemeUser:  true,
 		})
 		require.NoError(t, err)
@@ -582,7 +582,7 @@ func TestUpdateScheduledPost(t *testing.T) {
 			ChannelId:   channel.Id,
 			UserId:      userId,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 			SchemeUser:  true,
 		})
 		require.NoError(t, err)
@@ -630,7 +630,7 @@ func TestUpdateScheduledPost(t *testing.T) {
 			ChannelId:   channel.Id,
 			UserId:      userId,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 			SchemeUser:  true,
 		})
 		require.NoError(t, err)

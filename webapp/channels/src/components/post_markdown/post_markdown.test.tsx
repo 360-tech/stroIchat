@@ -37,7 +37,7 @@ describe('components/PostMarkdown', () => {
         channelId: 'channel-id',
         channel: TestHelper.getChannelMock(),
         currentTeam: TestHelper.getTeamMock(),
-        hideGuestTags: false,
+        hidePartnerTags: false,
         isMilitaryTime: false,
         timezone: '',
         highlightKeys: [],

@@ -95,7 +95,7 @@ function makeMapStateToProps() {
             remoteNames,
             rhsState: getRhsState(state),
             isChannelMuted: isCurrentChannelMuted(state),
-            hasGuests: stats ? stats.guest_count > 0 : false,
+            hasPartners: stats ? stats.partner_count > 0 : false,
             pinnedPostsCount: stats?.pinnedpost_count || 0,
             customStatus,
             isCustomStatusEnabled: isCustomStatusEnabled(state),
@@ -104,7 +104,7 @@ function makeMapStateToProps() {
             isFileAttachmentsEnabled: isFileAttachmentsEnabled(config),
             isLastActiveEnabled,
             timestampUnits,
-            hideGuestTags: config.HideGuestTags === 'true',
+            hidePartnerTags: config.HidePartnerTags === 'true',
             sharedChannelsPluginsEnabled,
         };
     };

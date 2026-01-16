@@ -9,7 +9,7 @@ function uiInviteMemberToCurrentTeam(username: string) {
     // # Open member invite screen
     cy.uiOpenTeamMenu('Invite people');
 
-    // # Open members section if licensed for guest accounts
+    // # Open members section if licensed for partner accounts
     cy.findByTestId('invitationModal').
         then((container) => container.find('[data-testid="inviteMembersLink"]')).
         then((link) => link?.click());

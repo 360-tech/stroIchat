@@ -9,9 +9,9 @@ import type {UserProfile} from '@mattermost/types/users';
 import {getCurrentChannel} from 'mattermost-redux/selectors/entities/channels';
 import {getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
-import {displayUsername, isGuest} from 'mattermost-redux/utils/user_utils';
+import {displayUsername, isPartner} from 'mattermost-redux/utils/user_utils';
 
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 
 type Props = {
     gmMembers?: UserProfile[];
@@ -60,7 +60,7 @@ const ChannelHeaderTitleGroup = ({
                     <React.Fragment key={user?.id}>
                         {index > 0 && ', '}
                         {displayName}
-                        {isGuest(user?.roles ?? '') && <GuestTag/>}
+                        {isPartner(user?.roles ?? '') && <PartnerTag/>}
                     </React.Fragment>
                 );
             })}

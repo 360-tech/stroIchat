@@ -20,8 +20,8 @@ describe('Verify Accessibility Support in different input fields', () => {
     let testChannel: Channel;
 
     before(() => {
-        // * Check if server has license for Guest Accounts
-        cy.apiRequireLicenseForFeature('GuestAccounts');
+        // * Check if server has license for Partner Accounts
+        cy.apiRequireLicenseForFeature('PartnerAccounts');
 
         cy.apiInitSetup().then(({team}) => {
             testTeam = team;
@@ -53,8 +53,8 @@ describe('Verify Accessibility Support in different input fields', () => {
             cy.get('.users-emails-input__placeholder').should('have.text', 'Enter a name or email address');
         });
 
-        // # Click on Invite Guests link
-        cy.findByTestId('inviteGuestLink').should('be.visible').click();
+        // # Click on Invite Partners link
+        cy.findByTestId('invitePartnerLink').should('be.visible').click();
 
         // * Verify Accessibility Support in Invite People input field
         cy.get('.users-emails-input__control').should('be.visible').within(() => {

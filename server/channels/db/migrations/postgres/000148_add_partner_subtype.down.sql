@@ -1,0 +1,7 @@
+-- Remove partner subtype from existing users (optional rollback)
+-- This migration does not require a rollback as it only sets default values
+-- If rollback is needed, uncomment the following:
+-- UPDATE users 
+-- SET props = props - 'partner_subtype'
+-- WHERE roles LIKE '%system_partner%' 
+--   AND props->>'partner_subtype' IS NOT NULL;

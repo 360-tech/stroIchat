@@ -445,14 +445,14 @@ export const permissionRolesStrings: Record<string, Record<string, MessageDescri
             defaultMessage: 'Allow users to edit others\' posts.',
         },
     }),
-    invite_guest: defineMessages({
+    invite_partner: defineMessages({
         name: {
-            id: 'admin.permissions.permission.invite_guest.name',
-            defaultMessage: 'Invite guests',
+            id: 'admin.permissions.permission.invite_partner.name',
+            defaultMessage: 'Invite partners',
         },
         description: {
-            id: 'admin.permissions.permission.invite_guest.description',
-            defaultMessage: 'Invite guests to channels and send guest email invites.',
+            id: 'admin.permissions.permission.invite_partner.description',
+            defaultMessage: 'Invite partners to channels and send partner email invites.',
         },
     }),
     manage_shared_channels: defineMessages({

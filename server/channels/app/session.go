@@ -469,10 +469,10 @@ func (a *App) createSessionForUserAccessToken(rctx request.CTX, tokenString stri
 	if user.IsBot {
 		session.AddProp(model.SessionPropIsBot, model.SessionPropIsBotValue)
 	}
-	if user.IsGuest() {
-		session.AddProp(model.SessionPropIsGuest, "true")
+	if user.IsPartner() {
+		session.AddProp(model.SessionPropIsPartner, "true")
 	} else {
-		session.AddProp(model.SessionPropIsGuest, "false")
+		session.AddProp(model.SessionPropIsPartner, "false")
 	}
 	a.ch.srv.platform.SetSessionExpireInHours(session, model.SessionUserAccessTokenExpiryHours)
 

@@ -608,19 +608,19 @@
     "translation": "Neveljaven ID kanala"
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Neveljavna e-pošta"
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Neveljavna e-pošta"
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Neveljaven ID kanala"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Neveljaven ID kanala"
   },
   {
@@ -788,7 +788,7 @@
     "translation": "napaka pri pridobivanju skupine ldap"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Neveljaven filter AD / LDAP"
   },
   {
@@ -1452,7 +1452,7 @@
     "translation": "Prazen seznam v polju 'image' v zahtevi"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Vneseno e-poštno sporočilo ne pripada sprejeti domeni. Obrnite se na skrbnika ali se prijavite z drugim naslovom e-pošte."
   },
   {
@@ -1576,7 +1576,7 @@
     "translation": "Prijava ni uspela, ker je bil vaš račun deaktiviran. Obrnite se na skrbnika."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "vaša licenca ne podpira skupin ldap"
   },
   {
@@ -1620,7 +1620,7 @@
     "translation": "Ta strežnik ne dovoljuje odprtih prijav. Če želite prejeti vabilo, se pogovorite z vašim skrbnikom."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "vaša licenca ne podpira skupin ldap"
   },
   {
@@ -2364,7 +2364,7 @@
     "translation": "[{{.SiteName}}] {{.SenderName}} vas je povabil, da se pridružite ekipi {{.TeamDisplayName}}"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{.SiteName}}] {{.SenderName}} vas je povabil, da se pridružite ekipi {{.TeamDisplayName}}"
   },
   {
@@ -4092,7 +4092,7 @@
     "translation": "Nimate ustreznih pravic za urejanje teme kanala."
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "vaša licenca ne podpira skupin ldap"
   },
   {
@@ -4340,7 +4340,7 @@
     "translation": "%v dodan v kanal - %v"
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v dodan v kanal - %v"
   },
   {

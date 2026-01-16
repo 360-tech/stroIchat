@@ -8,7 +8,7 @@ import {CogOutlineIcon} from '@mattermost/compass-icons/components';
 import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
 
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import ChannelMoveToSubMenu from 'components/channel_move_to_sub_menu';
 import * as Menu from 'components/menu';
@@ -60,7 +60,7 @@ const ChannelHeaderDirectMenu = ({channel, user, isMuted, isMobile, isFavorite, 
                 channel={channel}
             />
             <Menu.Separator/>
-            {!isGuest(user.roles) && isChannelBookmarksEnabled && (
+            {!isPartner(user.roles) && isChannelBookmarksEnabled && (
                 <MenuItemChannelBookmarks
                     channel={channel}
                 />

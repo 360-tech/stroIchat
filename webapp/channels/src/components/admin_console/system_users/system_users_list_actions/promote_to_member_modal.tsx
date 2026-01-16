@@ -8,7 +8,7 @@ import {useDispatch} from 'react-redux';
 import type {ServerError} from '@mattermost/types/errors';
 import type {UserProfile} from '@mattermost/types/users';
 
-import {promoteGuestToUser} from 'mattermost-redux/actions/users';
+import {promotePartnerToUser} from 'mattermost-redux/actions/users';
 
 import ConfirmModalRedux from 'components/confirm_modal_redux';
 
@@ -23,7 +23,7 @@ export default function PromoteToMemberModal({user, onExited, onSuccess, onError
     const dispatch = useDispatch();
 
     async function confirm() {
-        const {error} = await dispatch(promoteGuestToUser(user.id));
+        const {error} = await dispatch(promotePartnerToUser(user.id));
         if (error) {
             onError(error);
         } else {
@@ -34,7 +34,7 @@ export default function PromoteToMemberModal({user, onExited, onSuccess, onError
     const title = (
         <FormattedMessage
             id='promote_to_user_modal.title'
-            defaultMessage='Promote guest {username} to member'
+            defaultMessage='Promote partner {username} to member'
             values={{
                 username: user.username,
             }}
@@ -44,7 +44,7 @@ export default function PromoteToMemberModal({user, onExited, onSuccess, onError
     const message = (
         <FormattedMessage
             id='promote_to_user_modal.desc'
-            defaultMessage='This action promotes the guest {username} to a member. It will allow the user to join public channels and interact with users outside of the channels they are currently members of. Are you sure you want to promote guest {username} to member?'
+            defaultMessage='This action promotes the partner {username} to a member. It will allow the user to join public channels and interact with users outside of the channels they are currently members of. Are you sure you want to promote partner {username} to member?'
             values={{
                 username: user.username,
             }}

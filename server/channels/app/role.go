@@ -197,7 +197,7 @@ func (a *App) UpdateRole(role *model.Role) (*model.Role, *model.AppError) {
 	}
 
 	builtInChannelRoles := []string{
-		model.ChannelGuestRoleId,
+		model.ChannelPartnerRoleId,
 		model.ChannelUserRoleId,
 		model.ChannelAdminRoleId,
 	}

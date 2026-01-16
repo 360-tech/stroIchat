@@ -36,7 +36,7 @@ const (
 	TokenTypePasswordRecovery  = "password_recovery"
 	TokenTypeVerifyEmail       = "verify_email"
 	TokenTypeTeamInvitation    = "team_invitation"
-	TokenTypeGuestInvitation   = "guest_invitation"
+	TokenTypePartnerInvitation   = "partner_invitation"
 	TokenTypeCWSAccess         = "cws_access_token"
 	PasswordRecoverExpiryTime  = 1000 * 60 * 60 * 24 // 24 hours
 	InvitationExpiryTime       = 1000 * 60 * 60 * 48 // 48 hours
@@ -48,7 +48,7 @@ func (a *App) CreateUserWithToken(rctx request.CTX, user *model.User, token *mod
 		return nil, err
 	}
 
-	if token.Type != TokenTypeTeamInvitation && token.Type != TokenTypeGuestInvitation {
+	if token.Type != TokenTypeTeamInvitation && token.Type != TokenTypePartnerInvitation {
 		return nil, model.NewAppError("CreateUserWithToken", "api.user.create_user.signup_link_invalid.app_error", nil, "", http.StatusBadRequest)
 	}
 
@@ -93,12 +93,12 @@ func (a *App) CreateUserWithToken(rctx request.CTX, user *model.User, token *mod
 	user.Email = tokenData["email"]
 	user.EmailVerified = true
 
-	// Extract guest subtype from token if present
-	if token.Type == TokenTypeGuestInvitation {
-		if guestSubtype, exists := tokenData["guest_subtype"]; exists && guestSubtype != "" {
-			user.SetGuestSubtype(guestSubtype)
+	// Extract partner subtype from token if present
+	if token.Type == TokenTypePartnerInvitation {
+		if partnerSubtype, exists := tokenData["partner_subtype"]; exists && partnerSubtype != "" {
+			user.SetPartnerSubtype(partnerSubtype)
 		}
-		// Note: CreateGuest will set default subtype if not set
+		// Note: CreatePartner will set default subtype if not set
 	}
 
 	var ruser *model.User
@@ -106,7 +106,7 @@ func (a *App) CreateUserWithToken(rctx request.CTX, user *model.User, token *mod
 	if token.Type == TokenTypeTeamInvitation {
 		ruser, err = a.CreateUser(rctx, user)
 	} else {
-		ruser, err = a.CreateGuest(rctx, user)
+		ruser, err = a.CreatePartner(rctx, user)
 	}
 	if err != nil {
 		return nil, err
@@ -120,7 +120,7 @@ func (a *App) CreateUserWithToken(rctx request.CTX, user *model.User, token *mod
 		return nil, appErr
 	}
 
-	if token.Type == TokenTypeGuestInvitation || (token.Type == TokenTypeTeamInvitation && len(channels) > 0) {
+	if token.Type == TokenTypePartnerInvitation || (token.Type == TokenTypeTeamInvitation && len(channels) > 0) {
 		for _, channel := range channels {
 			_, err := a.AddChannelMember(rctx, ruser.Id, channel, ChannelMemberOpts{})
 			if err != nil {
@@ -234,23 +234,23 @@ func (a *App) IsFirstUserAccount() bool {
 // CreateUser creates a user and sets several fields of the returned User struct to
 // their zero values.
 func (a *App) CreateUser(rctx request.CTX, user *model.User) (*model.User, *model.AppError) {
-	return a.createUserOrGuest(rctx, user, false)
+	return a.createUserOrPartner(rctx, user, false)
 }
 
-// CreateGuest creates a guest and sets several fields of the returned User struct to
+// CreatePartner creates a partner and sets several fields of the returned User struct to
 // their zero values.
-func (a *App) CreateGuest(rctx request.CTX, user *model.User) (*model.User, *model.AppError) {
-	// Set default guest subtype if not specified
-	// Check if Props is nil or guest_subtype is not set
+func (a *App) CreatePartner(rctx request.CTX, user *model.User) (*model.User, *model.AppError) {
+	// Set default partner subtype if not specified
+	// Check if Props is nil or partner_subtype is not set
 	if user.Props == nil {
-		user.SetGuestSubtype(model.GuestSubtypeNotSpecified)
-	} else if _, exists := user.Props[model.UserPropsKeyGuestSubtype]; !exists {
-		user.SetGuestSubtype(model.GuestSubtypeNotSpecified)
+		user.SetPartnerSubtype(model.PartnerSubtypeNotSpecified)
+	} else if _, exists := user.Props[model.UserPropsKeyPartnerSubtype]; !exists {
+		user.SetPartnerSubtype(model.PartnerSubtypeNotSpecified)
 	}
-	return a.createUserOrGuest(rctx, user, true)
+	return a.createUserOrPartner(rctx, user, true)
 }
 
-func (a *App) createUserOrGuest(rctx request.CTX, user *model.User, guest bool) (*model.User, *model.AppError) {
+func (a *App) createUserOrPartner(rctx request.CTX, user *model.User, partner bool) (*model.User, *model.AppError) {
 	atUserLimit, limitErr := a.isAtUserLimit()
 	if limitErr != nil {
 		return nil, limitErr
@@ -259,17 +259,17 @@ func (a *App) createUserOrGuest(rctx request.CTX, user *model.User, guest bool) 
 	if atUserLimit {
 		// Use different error messages based on whether server is licensed
 		if a.License() != nil {
-			return nil, model.NewAppError("createUserOrGuest", "api.user.create_user.license_user_limits.exceeded", nil, "", http.StatusBadRequest)
+			return nil, model.NewAppError("createUserOrPartner", "api.user.create_user.license_user_limits.exceeded", nil, "", http.StatusBadRequest)
 		}
-		return nil, model.NewAppError("createUserOrGuest", "api.user.create_user.user_limits.exceeded", nil, "", http.StatusBadRequest)
+		return nil, model.NewAppError("createUserOrPartner", "api.user.create_user.user_limits.exceeded", nil, "", http.StatusBadRequest)
 	}
 
 	if err := a.isUniqueToGroupNames(user.Username); err != nil {
-		err.Where = "createUserOrGuest"
+		err.Where = "createUserOrPartner"
 		return nil, err
 	}
 
-	ruser, nErr := a.ch.srv.userService.CreateUser(rctx, user, users.UserCreateOptions{Guest: guest})
+	ruser, nErr := a.ch.srv.userService.CreateUser(rctx, user, users.UserCreateOptions{Partner: partner})
 	if nErr != nil {
 		var appErr *model.AppError
 		var invErr *store.ErrInvalidInput
@@ -278,22 +278,22 @@ func (a *App) createUserOrGuest(rctx request.CTX, user *model.User, guest bool) 
 		case errors.As(nErr, &appErr):
 			return nil, appErr
 		case errors.Is(nErr, users.AcceptedDomainError):
-			return nil, model.NewAppError("createUserOrGuest", "api.user.create_user.accepted_domain.app_error", nil, "", http.StatusBadRequest).Wrap(nErr)
+			return nil, model.NewAppError("createUserOrPartner", "api.user.create_user.accepted_domain.app_error", nil, "", http.StatusBadRequest).Wrap(nErr)
 		case errors.As(nErr, &nfErr):
-			return nil, model.NewAppError("createUserOrGuest", nfErr.Id(), map[string]any{"Min": *a.Config().PasswordSettings.MinimumLength}, "", http.StatusBadRequest)
+			return nil, model.NewAppError("createUserOrPartner", nfErr.Id(), map[string]any{"Min": *a.Config().PasswordSettings.MinimumLength}, "", http.StatusBadRequest)
 		case errors.Is(nErr, users.UserStoreIsEmptyError):
-			return nil, model.NewAppError("createUserOrGuest", "app.user.store_is_empty.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
+			return nil, model.NewAppError("createUserOrPartner", "app.user.store_is_empty.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
 		case errors.As(nErr, &invErr):
 			switch invErr.Field {
 			case "email":
-				return nil, model.NewAppError("createUserOrGuest", "app.user.save.email_exists.app_error", nil, "", http.StatusBadRequest).Wrap(nErr)
+				return nil, model.NewAppError("createUserOrPartner", "app.user.save.email_exists.app_error", nil, "", http.StatusBadRequest).Wrap(nErr)
 			case "username":
-				return nil, model.NewAppError("createUserOrGuest", "app.user.save.username_exists.app_error", nil, "", http.StatusBadRequest).Wrap(nErr)
+				return nil, model.NewAppError("createUserOrPartner", "app.user.save.username_exists.app_error", nil, "", http.StatusBadRequest).Wrap(nErr)
 			default:
-				return nil, model.NewAppError("createUserOrGuest", "app.user.save.existing.app_error", nil, "", http.StatusBadRequest).Wrap(nErr)
+				return nil, model.NewAppError("createUserOrPartner", "app.user.save.existing.app_error", nil, "", http.StatusBadRequest).Wrap(nErr)
 			}
 		default:
-			return nil, model.NewAppError("createUserOrGuest", "app.user.save.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
+			return nil, model.NewAppError("createUserOrPartner", "app.user.save.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
 		}
 	}
 
@@ -311,9 +311,9 @@ func (a *App) createUserOrGuest(rctx request.CTX, user *model.User, guest bool) 
 			var nfErr *store.ErrNotFound
 			switch {
 			case errors.As(err, &nfErr):
-				return nil, model.NewAppError("createUserOrGuest", MissingAccountError, nil, "", http.StatusNotFound).Wrap(err)
+				return nil, model.NewAppError("createUserOrPartner", MissingAccountError, nil, "", http.StatusNotFound).Wrap(err)
 			default:
-				return nil, model.NewAppError("createUserOrGuest", "app.user.get.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+				return nil, model.NewAppError("createUserOrPartner", "app.user.get.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 			}
 		}
 
@@ -348,7 +348,7 @@ func (a *App) createUserOrGuest(rctx request.CTX, user *model.User, guest bool) 
 	if limitErr != nil {
 		// we don't want to break the create user flow just because of this.
 		// So, we log the error, not return
-		rctx.Logger().Error("Error fetching user limits in createUserOrGuest", mlog.Err(limitErr))
+		rctx.Logger().Error("Error fetching user limits in createUserOrPartner", mlog.Err(limitErr))
 	} else {
 		if userLimits.MaxUsersLimit > 0 && userLimits.ActiveUserCount > userLimits.MaxUsersLimit {
 			// Use different warning messages based on whether server is licensed
@@ -1160,15 +1160,15 @@ func (a *App) UpdateActive(rctx request.CTX, user *model.User, active bool) (*mo
 	return ruser, nil
 }
 
-func (a *App) DeactivateGuests(rctx request.CTX) *model.AppError {
-	userIDs, err := a.ch.srv.userService.DeactivateAllGuests()
+func (a *App) DeactivatePartners(rctx request.CTX) *model.AppError {
+	userIDs, err := a.ch.srv.userService.DeactivateAllPartners()
 	if err != nil {
-		return model.NewAppError("DeactivateGuests", "app.user.update_active_for_multiple_users.updating.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+		return model.NewAppError("DeactivatePartners", "app.user.update_active_for_multiple_users.updating.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
 
 	for _, userID := range userIDs {
 		if err := a.Srv().Platform().RevokeAllSessions(rctx, userID); err != nil {
-			return model.NewAppError("DeactivateGuests", "app.user.update_active_for_multiple_users.updating.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+			return model.NewAppError("DeactivatePartners", "app.user.update_active_for_multiple_users.updating.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 		}
 	}
 
@@ -1181,7 +1181,7 @@ func (a *App) DeactivateGuests(rctx request.CTX) *model.AppError {
 	a.Srv().Store().Channel().ClearCaches()
 	a.Srv().Store().User().ClearCaches()
 
-	message := model.NewWebSocketEvent(model.WebsocketEventGuestsDeactivated, "", "", "", nil, "")
+	message := model.NewWebSocketEvent(model.WebsocketEventPartnersDeactivated, "", "", "", nil, "")
 	a.Publish(message)
 
 	return nil
@@ -1340,14 +1340,14 @@ func (a *App) UpdateUser(rctx request.CTX, user *model.User, sendNotifications b
 	var newEmail string
 	if user.Email != prev.Email {
 		if !users.CheckUserDomain(user, *a.Config().TeamSettings.RestrictCreationToDomains) {
-			if !prev.IsGuest() && !prev.IsLDAPUser() && !prev.IsSAMLUser() {
+			if !prev.IsPartner() && !prev.IsLDAPUser() && !prev.IsSAMLUser() {
 				return nil, model.NewAppError("UpdateUser", "api.user.update_user.accepted_domain.app_error", nil, "", http.StatusBadRequest)
 			}
 		}
 
-		if !users.CheckUserDomain(user, *a.Config().GuestAccountsSettings.RestrictCreationToDomains) {
-			if prev.IsGuest() && !prev.IsLDAPUser() && !prev.IsSAMLUser() {
-				return nil, model.NewAppError("UpdateUser", "api.user.update_user.accepted_guest_domain.app_error", nil, "", http.StatusBadRequest)
+		if !users.CheckUserDomain(user, *a.Config().PartnerAccountsSettings.RestrictCreationToDomains) {
+			if prev.IsPartner() && !prev.IsLDAPUser() && !prev.IsSAMLUser() {
+				return nil, model.NewAppError("UpdateUser", "api.user.update_user.accepted_partner_domain.app_error", nil, "", http.StatusBadRequest)
 			}
 		}
 
@@ -2518,17 +2518,17 @@ func (a *App) GetViewUsersRestrictions(rctx request.CTX, userID string) (*model.
 	return &model.ViewUsersRestrictions{Teams: teamIDsWithPermission, Channels: channelIDs}, nil
 }
 
-// PromoteGuestToUser Convert user's roles and all his membership's roles from
-// guest roles to regular user roles.
-func (a *App) PromoteGuestToUser(rctx request.CTX, user *model.User, requestorId string) *model.AppError {
-	nErr := a.ch.srv.userService.PromoteGuestToUser(user)
+// PromotePartnerToUser Convert user's roles and all his membership's roles from
+// partner roles to regular user roles.
+func (a *App) PromotePartnerToUser(rctx request.CTX, user *model.User, requestorId string) *model.AppError {
+	nErr := a.ch.srv.userService.PromotePartnerToUser(user)
 	a.InvalidateCacheForUser(user.Id)
 	if nErr != nil {
-		return model.NewAppError("PromoteGuestToUser", "app.user.promote_guest.user_update.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
+		return model.NewAppError("PromotePartnerToUser", "app.user.promote_partner.user_update.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
 	}
 	userTeams, nErr := a.Srv().Store().Team().GetTeamsByUserId(user.Id)
 	if nErr != nil {
-		return model.NewAppError("PromoteGuestToUser", "app.team.get_all.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
+		return model.NewAppError("PromotePartnerToUser", "app.team.get_all.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
 	}
 
 	for _, team := range userTeams {
@@ -2540,17 +2540,17 @@ func (a *App) PromoteGuestToUser(rctx request.CTX, user *model.User, requestorId
 
 	promotedUser, err := a.GetUser(user.Id)
 	if err != nil {
-		rctx.Logger().Warn("Failed to get user on promote guest to user", mlog.Err(err))
+		rctx.Logger().Warn("Failed to get user on promote partner to user", mlog.Err(err))
 	} else {
 		a.sendUpdatedUserEvent(promotedUser)
-		if uErr := a.ch.srv.platform.UpdateSessionsIsGuest(rctx, promotedUser, promotedUser.IsGuest()); uErr != nil {
+		if uErr := a.ch.srv.platform.UpdateSessionsIsPartner(rctx, promotedUser, promotedUser.IsPartner()); uErr != nil {
 			rctx.Logger().Warn("Unable to update user sessions", mlog.String("user_id", promotedUser.Id), mlog.Err(uErr))
 		}
 	}
 
 	teamMembers, err := a.GetTeamMembersForUser(rctx, user.Id, "", true)
 	if err != nil {
-		rctx.Logger().Warn("Failed to get team members for user on promote guest to user", mlog.Err(err))
+		rctx.Logger().Warn("Failed to get team members for user on promote partner to user", mlog.Err(err))
 	}
 
 	for _, member := range teamMembers {
@@ -2560,7 +2560,7 @@ func (a *App) PromoteGuestToUser(rctx request.CTX, user *model.User, requestorId
 
 		channelMembers, appErr := a.GetChannelMembersForUser(rctx, member.TeamId, user.Id)
 		if appErr != nil {
-			rctx.Logger().Warn("Failed to get channel members for user on promote guest to user", mlog.Err(appErr))
+			rctx.Logger().Warn("Failed to get channel members for user on promote partner to user", mlog.Err(appErr))
 		}
 
 		for _, member := range channelMembers {
@@ -2569,7 +2569,7 @@ func (a *App) PromoteGuestToUser(rctx request.CTX, user *model.User, requestorId
 			evt := model.NewWebSocketEvent(model.WebsocketEventChannelMemberUpdated, "", "", user.Id, nil, "")
 			memberJSON, jsonErr := json.Marshal(member)
 			if jsonErr != nil {
-				return model.NewAppError("PromoteGuestToUser", "api.marshal_error", nil, "", http.StatusInternalServerError).Wrap(jsonErr)
+				return model.NewAppError("PromotePartnerToUser", "api.marshal_error", nil, "", http.StatusInternalServerError).Wrap(jsonErr)
 			}
 			evt.Add("channelMember", string(memberJSON))
 			a.Publish(evt)
@@ -2580,23 +2580,23 @@ func (a *App) PromoteGuestToUser(rctx request.CTX, user *model.User, requestorId
 	return nil
 }
 
-// DemoteUserToGuest Convert user's roles and all his membership's roles from
-// regular user roles to guest roles.
-func (a *App) DemoteUserToGuest(rctx request.CTX, user *model.User) *model.AppError {
-	demotedUser, nErr := a.ch.srv.userService.DemoteUserToGuest(user)
+// DemoteUserToPartner Convert user's roles and all his membership's roles from
+// regular user roles to partner roles.
+func (a *App) DemoteUserToPartner(rctx request.CTX, user *model.User) *model.AppError {
+	demotedUser, nErr := a.ch.srv.userService.DemoteUserToPartner(user)
 	a.InvalidateCacheForUser(user.Id)
 	if nErr != nil {
-		return model.NewAppError("DemoteUserToGuest", "app.user.demote_user_to_guest.user_update.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
+		return model.NewAppError("DemoteUserToPartner", "app.user.demote_user_to_partner.user_update.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
 	}
 
 	a.sendUpdatedUserEvent(demotedUser)
-	if uErr := a.ch.srv.platform.UpdateSessionsIsGuest(rctx, demotedUser, demotedUser.IsGuest()); uErr != nil {
+	if uErr := a.ch.srv.platform.UpdateSessionsIsPartner(rctx, demotedUser, demotedUser.IsPartner()); uErr != nil {
 		rctx.Logger().Warn("Unable to update user sessions", mlog.String("user_id", demotedUser.Id), mlog.Err(uErr))
 	}
 
 	teamMembers, err := a.GetTeamMembersForUser(rctx, user.Id, "", true)
 	if err != nil {
-		rctx.Logger().Warn("Failed to get team members for users on demote user to guest", mlog.Err(err))
+		rctx.Logger().Warn("Failed to get team members for users on demote user to partner", mlog.Err(err))
 	}
 
 	for _, member := range teamMembers {
@@ -2606,7 +2606,7 @@ func (a *App) DemoteUserToGuest(rctx request.CTX, user *model.User) *model.AppEr
 
 		channelMembers, appErr := a.GetChannelMembersForUser(rctx, member.TeamId, user.Id)
 		if appErr != nil {
-			rctx.Logger().Warn("Failed to get channel members for users on demote user to guest", mlog.Err(appErr))
+			rctx.Logger().Warn("Failed to get channel members for users on demote user to partner", mlog.Err(appErr))
 			continue
 		}
 
@@ -2616,7 +2616,7 @@ func (a *App) DemoteUserToGuest(rctx request.CTX, user *model.User) *model.AppEr
 			evt := model.NewWebSocketEvent(model.WebsocketEventChannelMemberUpdated, "", "", user.Id, nil, "")
 			memberJSON, jsonErr := json.Marshal(member)
 			if jsonErr != nil {
-				return model.NewAppError("DemoteUserToGuest", "api.marshal_error", nil, "", http.StatusInternalServerError).Wrap(jsonErr)
+				return model.NewAppError("DemoteUserToPartner", "api.marshal_error", nil, "", http.StatusInternalServerError).Wrap(jsonErr)
 			}
 			evt.Add("channelMember", string(memberJSON))
 			a.Publish(evt)

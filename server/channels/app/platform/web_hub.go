@@ -204,7 +204,7 @@ func (ps *PlatformService) InvalidateCacheForChannel(channel *model.Channel) {
 func (ps *PlatformService) InvalidateCacheForChannelMembers(channelID string) {
 	ps.Store.User().InvalidateProfilesInChannelCache(channelID)
 	ps.Store.Channel().InvalidateMemberCount(channelID)
-	ps.Store.Channel().InvalidateGuestCount(channelID)
+	ps.Store.Channel().InvalidatePartnerCount(channelID)
 }
 
 func (ps *PlatformService) InvalidateCacheForChannelMembersNotifyProps(channelID string) {

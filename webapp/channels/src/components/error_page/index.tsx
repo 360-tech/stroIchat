@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/common';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import type {GlobalState} from 'types/store';
 
@@ -18,7 +18,7 @@ function mapStateToProps(state: GlobalState) {
     return {
         siteName: config.SiteName,
         asymmetricSigningPublicKey: config.AsymmetricSigningPublicKey,
-        isGuest: Boolean(user && isGuest(user.roles)),
+        isPartner: Boolean(user && isPartner(user.roles)),
     };
 }
 

@@ -186,14 +186,14 @@ func (c *SearchChannelStore) SaveDirectChannel(rctx request.CTX, directchannel *
 	return channel, err
 }
 
-func (c *SearchChannelStore) Autocomplete(rctx request.CTX, userID, term string, includeDeleted, isGuest bool) (model.ChannelListWithTeamData, error) {
+func (c *SearchChannelStore) Autocomplete(rctx request.CTX, userID, term string, includeDeleted, isPartner bool) (model.ChannelListWithTeamData, error) {
 	var channelList model.ChannelListWithTeamData
 	var err error
 
 	allFailed := true
 	for _, engine := range c.rootStore.searchEngine.GetActiveEngines() {
 		if engine.IsAutocompletionEnabled() {
-			channelList, err = c.searchAutocompleteChannelsAllTeams(engine, userID, term, includeDeleted, isGuest)
+			channelList, err = c.searchAutocompleteChannelsAllTeams(engine, userID, term, includeDeleted, isPartner)
 			if err != nil {
 				rctx.Logger().Warn("Encountered error on AutocompleteChannels through SearchEngine. Falling back to default autocompletion.", mlog.String("search_engine", engine.GetName()), mlog.Err(err))
 				continue
@@ -206,7 +206,7 @@ func (c *SearchChannelStore) Autocomplete(rctx request.CTX, userID, term string,
 
 	if allFailed {
 		rctx.Logger().Debug("Using database search because no other search engine is available")
-		channelList, err = c.ChannelStore.Autocomplete(rctx, userID, term, includeDeleted, isGuest)
+		channelList, err = c.ChannelStore.Autocomplete(rctx, userID, term, includeDeleted, isPartner)
 		if err != nil {
 			return nil, errors.Wrap(err, "Failed to autocomplete channels in team")
 		}
@@ -219,14 +219,14 @@ func (c *SearchChannelStore) Autocomplete(rctx request.CTX, userID, term string,
 	return channelList, nil
 }
 
-func (c *SearchChannelStore) AutocompleteInTeam(rctx request.CTX, teamID, userID, term string, includeDeleted, isGuest bool) (model.ChannelList, error) {
+func (c *SearchChannelStore) AutocompleteInTeam(rctx request.CTX, teamID, userID, term string, includeDeleted, isPartner bool) (model.ChannelList, error) {
 	var channelList model.ChannelList
 	var err error
 
 	allFailed := true
 	for _, engine := range c.rootStore.searchEngine.GetActiveEngines() {
 		if engine.IsAutocompletionEnabled() {
-			channelList, err = c.searchAutocompleteChannels(engine, teamID, userID, term, includeDeleted, isGuest)
+			channelList, err = c.searchAutocompleteChannels(engine, teamID, userID, term, includeDeleted, isPartner)
 			if err != nil {
 				rctx.Logger().Warn("Encountered error on AutocompleteChannels through SearchEngine. Falling back to default autocompletion.", mlog.String("search_engine", engine.GetName()), mlog.Err(err))
 				continue
@@ -239,7 +239,7 @@ func (c *SearchChannelStore) AutocompleteInTeam(rctx request.CTX, teamID, userID
 
 	if allFailed {
 		rctx.Logger().Debug("Using database search because no other search engine is available")
-		channelList, err = c.ChannelStore.AutocompleteInTeam(rctx, teamID, userID, term, includeDeleted, isGuest)
+		channelList, err = c.ChannelStore.AutocompleteInTeam(rctx, teamID, userID, term, includeDeleted, isPartner)
 		if err != nil {
 			return nil, errors.Wrap(err, "Failed to autocomplete channels in team")
 		}
@@ -252,8 +252,8 @@ func (c *SearchChannelStore) AutocompleteInTeam(rctx request.CTX, teamID, userID
 	return channelList, nil
 }
 
-func (c *SearchChannelStore) searchAutocompleteChannels(engine searchengine.SearchEngineInterface, teamId, userID, term string, includeDeleted, isGuest bool) (model.ChannelList, error) {
-	channelIds, err := engine.SearchChannels(teamId, userID, term, isGuest, includeDeleted)
+func (c *SearchChannelStore) searchAutocompleteChannels(engine searchengine.SearchEngineInterface, teamId, userID, term string, includeDeleted, isPartner bool) (model.ChannelList, error) {
+	channelIds, err := engine.SearchChannels(teamId, userID, term, isPartner, includeDeleted)
 	if err != nil {
 		return nil, err
 	}
@@ -270,8 +270,8 @@ func (c *SearchChannelStore) searchAutocompleteChannels(engine searchengine.Sear
 	return channelList, nil
 }
 
-func (c *SearchChannelStore) searchAutocompleteChannelsAllTeams(engine searchengine.SearchEngineInterface, userID, term string, includeDeleted, isGuest bool) (model.ChannelListWithTeamData, error) {
-	channelIds, err := engine.SearchChannels("", userID, term, isGuest, includeDeleted)
+func (c *SearchChannelStore) searchAutocompleteChannelsAllTeams(engine searchengine.SearchEngineInterface, userID, term string, includeDeleted, isPartner bool) (model.ChannelListWithTeamData, error) {
+	channelIds, err := engine.SearchChannels("", userID, term, isPartner, includeDeleted)
 	if err != nil {
 		return nil, err
 	}

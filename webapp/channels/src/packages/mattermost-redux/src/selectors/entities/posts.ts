@@ -35,7 +35,7 @@ import {
     isPostPendingOrFailed,
     isPostCommentMention,
 } from 'mattermost-redux/utils/post_utils';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 export function getAllPosts(state: GlobalState) {
     return state.entities.posts.posts;
@@ -623,10 +623,10 @@ export function getPersistentNotificationIntervalMinutes(state: GlobalState) {
     return getConfig(state).PersistentNotificationIntervalMinutes;
 }
 
-export function getAllowPersistentNotificationsForGuests(state: GlobalState) {
+export function getAllowPersistentNotificationsForPartners(state: GlobalState) {
     return (
         isPostPriorityEnabled(state) &&
-        getConfig(state).AllowPersistentNotificationsForGuests === 'true'
+        getConfig(state).AllowPersistentNotificationsForPartners === 'true'
     );
 }
 
@@ -638,8 +638,8 @@ export const isPersistentNotificationsEnabled = createSelector(
     'getPersistentNotificationsEnabled',
     getCurrentUser,
     getAllowPersistentNotifications,
-    getAllowPersistentNotificationsForGuests,
-    (user, forAll, forGuests) => (isGuest(user.roles) ? (forAll && forGuests) : forAll),
+    getAllowPersistentNotificationsForPartners,
+    (user, forAll, forPartners) => (isPartner(user.roles) ? (forAll && forPartners) : forAll),
 );
 
 export function makeGetPostAcknowledgementsWithProfiles(): (state: GlobalState, postId: Post['id']) => Array<{user: UserProfile; acknowledgedAt: PostAcknowledgement['acknowledged_at']}> {

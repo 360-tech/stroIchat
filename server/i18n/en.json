@@ -224,8 +224,8 @@
     "translation": "Please add me to teams and channels you want me to interact in. To do this, use the browser or Mattermost Desktop App."
   },
   {
-    "id": "api.channel.add_guest.added",
-    "translation": "%v added to the channel as guest by %v."
+    "id": "api.channel.add_partner.added",
+    "translation": "%v added to the channel as partner by %v."
   },
   {
     "id": "api.channel.add_member.added",
@@ -268,7 +268,7 @@
     "translation": "User is not allowed to create a channel bookmark."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Failed to create the channel bookmark."
   },
   {
@@ -284,7 +284,7 @@
     "translation": "Failed to delete the channel bookmark."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Failed to delete the channel bookmark."
   },
   {
@@ -300,7 +300,7 @@
     "translation": "Failed to update the channel bookmark."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Failed to update the channel bookmark."
   },
   {
@@ -316,7 +316,7 @@
     "translation": "Failed to update the channel bookmark's sort order."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Failed to update the channel bookmark's sort order."
   },
   {
@@ -416,8 +416,8 @@
     "translation": "{{.ConvertedByUsername}} created this channel from a group message with {{.GMMembers}}."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
-    "translation": "%v joined the channel as guest."
+    "id": "api.channel.partner_join_channel.post_and_forget",
+    "translation": "%v joined the channel as partner."
   },
   {
     "id": "api.channel.join_channel.permissions.app_error",
@@ -572,16 +572,16 @@
     "translation": "You are not allowed to update the name, display_name, and purpose of direct or group messages."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
-    "translation": "Invalid channel member update: You can't add or remove the guest role manually."
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
+    "translation": "Invalid channel member update: You can't add or remove the partner role manually."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
-    "translation": "Invalid channel member update: A guest cannot be made team member or team admin, please promote as a user first."
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
+    "translation": "Invalid channel member update: A partner cannot be made team member or team admin, please promote as a user first."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
-    "translation": "Invalid channel member update: A user must be a guest or a user but not both."
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
+    "translation": "Invalid channel member update: A user must be a partner or a user but not both."
   },
   {
     "id": "api.channel.update_channel_member_roles.scheme_role.app_error",
@@ -592,8 +592,8 @@
     "translation": "Invalid channel member update: A channel member always has a user scheme."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
-    "translation": "Invalid channel member update: A guest cannot be set for a single channel, a System Admin must promote or demote users to/from guests."
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
+    "translation": "Invalid channel member update: A partner cannot be set for a single channel, a System Admin must promote or demote users to/from partners."
   },
   {
     "id": "api.channel.update_channel_privacy.default_channel_error",
@@ -608,8 +608,8 @@
     "translation": "Unable to set the scheme to the channel because the supplied scheme is not a channel scheme."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
-    "translation": "Invalid team member update: You can't add or remove the guest role manually."
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
+    "translation": "Invalid team member update: You can't add or remove the partner role manually."
   },
   {
     "id": "api.channel.update_team_member_roles.scheme_role.app_error",
@@ -3251,16 +3251,16 @@
     "translation": "Parameter required to add user to team."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
-    "translation": "Guests are restricted from joining a team via an invite link. Please request a guest email invitation to the team."
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
+    "translation": "Partners are restricted from joining a team via an invite link. Please request a partner email invitation to the team."
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
-    "translation": "Guest accounts are disabled."
+    "id": "api.team.demote_user_to_partner.disabled.error",
+    "translation": "Partner accounts are disabled."
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
-    "translation": "Your license does not support guest accounts"
+    "id": "api.team.demote_user_to_partner.license.error",
+    "translation": "Your license does not support partner accounts"
   },
   {
     "id": "api.team.get_all_teams.insufficient_permissions",
@@ -3319,28 +3319,28 @@
     "translation": "Error invalidating email invites."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "The channels of the invite must be part of the team of the invite."
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
-    "translation": "Cannot invite guests users to this channel because it has access restrictions based on user attributes."
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
+    "translation": "Cannot invite partners users to this channel because it has access restrictions based on user attributes."
   },
   {
-    "id": "api.team.invite_guests.invalid_guest_subtype.app_error",
-    "translation": "Invalid guest subtype provided."
+    "id": "api.team.invite_partners.invalid_partner_subtype.app_error",
+    "translation": "Invalid partner subtype provided."
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
-    "translation": "Guest accounts are disabled"
+    "id": "api.team.invite_partners_to_channels.disabled.error",
+    "translation": "Partner accounts are disabled"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Invalid or missing request body."
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
-    "translation": "Your license does not support guest accounts"
+    "id": "api.team.invite_partners_to_channels.license.error",
+    "translation": "Your license does not support partner accounts"
   },
   {
     "id": "api.team.invite_members.disabled.app_error",
@@ -3475,20 +3475,20 @@
     "translation": "Restricting team to {{ .Domain }} is not allowed by the system config. Please contact your system administrator."
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
-    "translation": "Invalid team member update: A guest cannot be made team member or team admin, please promote as a user first."
+    "id": "api.team.update_team_member_roles.partner.app_error",
+    "translation": "Invalid team member update: A partner cannot be made team member or team admin, please promote as a user first."
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
-    "translation": "Invalid team member update: A user must be a guest or a user but not both."
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
+    "translation": "Invalid team member update: A user must be a partner or a user but not both."
   },
   {
     "id": "api.team.update_team_member_roles.unset_user_scheme.app_error",
     "translation": "Invalid team member update: A team member always has a user scheme."
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
-    "translation": "Invalid team member update: A guest cannot be set for a single team, a System Admin must promote or demote users to/from guests."
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
+    "translation": "Invalid team member update: A partner cannot be set for a single team, a System Admin must promote or demote users to/from partners."
   },
   {
     "id": "api.team.update_team_scheme.license.error",
@@ -3675,12 +3675,12 @@
     "translation": "What is Mattermost?"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
-    "translation": "You were invited as a guest to collaborate with the team"
+    "id": "api.templates.invite_body_partner.subTitle",
+    "translation": "You were invited as a partner to collaborate with the team"
   },
   {
-    "id": "api.templates.invite_guest_subject",
-    "translation": "[{{ .SiteName }}] {{ .SenderName }} invited you to join the team {{ .TeamDisplayName }} as a guest"
+    "id": "api.templates.invite_partner_subject",
+    "translation": "[{{ .SiteName }}] {{ .SenderName }} invited you to join the team {{ .TeamDisplayName }} as a partner"
   },
   {
     "id": "api.templates.invite_subject",
@@ -4147,12 +4147,12 @@
     "translation": "User creation is disabled."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
-    "translation": "Guest accounts are disabled."
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
+    "translation": "Partner accounts are disabled."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
-    "translation": "Your license does not support guest accounts."
+    "id": "api.user.create_user.partner_accounts.license.app_error",
+    "translation": "Your license does not support partner accounts."
   },
   {
     "id": "api.user.create_user.invalid_invitation_type.app_error",
@@ -4195,8 +4195,8 @@
     "translation": "Permanent user deletion feature is not enabled. Please contact your System Administrator."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
-    "translation": "Unable to convert the user to guest because is already a guest."
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
+    "translation": "Unable to convert the user to partner because is already a partner."
   },
   {
     "id": "api.user.email_to_ldap.not_available.app_error",
@@ -4271,12 +4271,12 @@
     "translation": "Bot login is forbidden."
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
-    "translation": "Guest accounts are disabled"
+    "id": "api.user.login.partner_accounts.disabled.error",
+    "translation": "Partner accounts are disabled"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
-    "translation": "Your license does not support guest accounts"
+    "id": "api.user.login.partner_accounts.license.error",
+    "translation": "Your license does not support partner accounts"
   },
   {
     "id": "api.user.login.inactive.app_error",
@@ -4351,8 +4351,8 @@
     "translation": "Field '{{.Field}}' must be set through user's login provider."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
-    "translation": "Unable to convert the guest to regular user because is not a guest."
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
+    "translation": "Unable to convert the partner to regular user because is not a partner."
   },
   {
     "id": "api.user.reset_password.broken_token.app_error",
@@ -4419,8 +4419,8 @@
     "translation": "Failed to send verification email successfully"
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
-    "translation": "You cannot activate a guest account because Guest Access feature is not enabled."
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
+    "translation": "You cannot activate a partner account because Partner Access feature is not enabled."
   },
   {
     "id": "api.user.update_active.cannot_modify_status_when_user_is_managed_by_ldap.app_error",
@@ -4475,8 +4475,8 @@
     "translation": "The email you provided does not belong to an accepted domain. Please contact your administrator or sign up with a different email."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
-    "translation": "The email you provided does not belong to an accepted domain for guest accounts. Please contact your administrator or sign up with a different email."
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
+    "translation": "The email you provided does not belong to an accepted domain for partner accounts. Please contact your administrator or sign up with a different email."
   },
   {
     "id": "api.user.update_user.login_provider_attribute_set.app_error",
@@ -6259,8 +6259,8 @@
     "translation": "User First Name is too long."
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
-    "translation": "User roles are not consistent with guest status."
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
+    "translation": "User roles are not consistent with partner status."
   },
   {
     "id": "app.import.validate_user_import_data.invalid_image_path.error",
@@ -7745,7 +7745,7 @@
     "translation": "Unable to convert bot to user."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Failed to update the user."
   },
   {
@@ -7833,7 +7833,7 @@
     "translation": "Unable to delete user."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Failed to update the user."
   },
   {
@@ -7898,7 +7898,7 @@
   },
   {
     "id": "app.user.update_active_for_multiple_users.updating.app_error",
-    "translation": "Unable to deactivate guests."
+    "translation": "Unable to deactivate partners."
   },
   {
     "id": "app.user.update_auth_data.app_error",
@@ -8537,8 +8537,8 @@
     "translation": "Invalid AD/LDAP Filter."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
-    "translation": "Invalid AD/LDAP Guest Filter."
+    "id": "ent.ldap.validate_partner_filter.app_error",
+    "translation": "Invalid AD/LDAP Partner Filter."
   },
   {
     "id": "ent.ldap_groups.group_search_error",
@@ -9781,8 +9781,8 @@
     "translation": "Invalid Email attribute. Must be set."
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
-    "translation": "Invalid Guest attribute. Must be in the form 'field=value'."
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
+    "translation": "Invalid Partner attribute. Must be in the form 'field=value'."
   },
   {
     "id": "model.config.is_valid.saml_idp_cert.app_error",
@@ -10037,19 +10037,19 @@
     "translation": "invalid syncable id for group syncable."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Invalid channel."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Invalid channels."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Invalid email."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Invalid emails."
   },
   {

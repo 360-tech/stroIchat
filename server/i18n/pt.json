@@ -120,7 +120,7 @@
     "translation": "O limite de obter campos não é válido."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v juntou-se ao canal como convidado."
   },
   {
@@ -608,7 +608,7 @@
     "translation": "Por favor, adicione-me às equipas e canais nos quais deseja que eu interaja. Para fazer isto, utilize o navegador ou Mattermost Desktop App."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v adicionou-o ao canal como convidado por %v."
   },
   {
@@ -656,7 +656,7 @@
     "translation": "O utilizador não tem permissão para criar um marcador de canal."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Não foi possível criar o marcador de canal."
   },
   {
@@ -672,7 +672,7 @@
     "translation": "Não foi possível eliminar o marcador de canal."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Não foi possível eliminar o marcador de canal."
   },
   {
@@ -688,7 +688,7 @@
     "translation": "Não foi possível atualizar o marcador de canal."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Não foi possível atualizar o marcador de canal."
   },
   {
@@ -704,7 +704,7 @@
     "translation": "Não foi possível atualizar a ordenação do marcador de canal."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Não foi possível atualizar a ordenação do marcador de canal."
   },
   {

@@ -112,7 +112,7 @@ const sectionsList: SystemSection[] = [
             {name: 'authentication_ldap'},
             {name: 'authentication_saml'},
             {name: 'authentication_openid'},
-            {name: 'authentication_guest_access'},
+            {name: 'authentication_partner_access'},
         ],
     },
     {

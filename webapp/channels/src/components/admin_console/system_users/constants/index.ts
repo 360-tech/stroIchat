@@ -24,7 +24,7 @@ export enum RoleFilters {
     Any = 'any',
     Admin = 'system_admin',
     Member = 'system_user',
-    Guest = 'system_guest',
+    Partner = 'system_partner',
 }
 
 export enum TeamFilters {

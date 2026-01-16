@@ -318,10 +318,10 @@ export const sectionStrings: Record<string, Record<string, MessageDescriptor>> =
             defaultMessage: 'OpenID Connect',
         },
     }),
-    authentication_guest_access: defineMessages({
+    authentication_partner_access: defineMessages({
         name: {
-            id: 'admin.permissions.sysconsole_section_authentication_guest_access.name',
-            defaultMessage: 'Guest Access',
+            id: 'admin.permissions.sysconsole_section_authentication_partner_access.name',
+            defaultMessage: 'Partner Access',
         },
     }),
     plugins: defineMessages({

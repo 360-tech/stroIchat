@@ -3010,18 +3010,18 @@ func TestSanitizePostMetadataForUserAndChannel(t *testing.T) {
 		actual := th.App.sanitizePostMetadataForUserAndChannel(th.Context, post, previewedPost, directChannel, th.BasicUser2.Id)
 		assert.NotNil(t, actual.Metadata.Embeds[0].Data)
 
-		guestID := model.NewId()
-		guest := &model.User{
-			Email:         "success+" + guestID + "@simulator.amazonses.com",
-			Username:      "un_" + guestID,
-			Nickname:      "nn_" + guestID,
+		partnerID := model.NewId()
+		partner := &model.User{
+			Email:         "success+" + partnerID + "@simulator.amazonses.com",
+			Username:      "un_" + partnerID,
+			Nickname:      "nn_" + partnerID,
 			Password:      "Password1",
 			EmailVerified: true,
 		}
-		guest, appErr := th.App.CreateGuest(th.Context, guest)
+		partner, appErr := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, appErr)
 
-		actual = th.App.sanitizePostMetadataForUserAndChannel(th.Context, post, previewedPost, directChannel, guest.Id)
+		actual = th.App.sanitizePostMetadataForUserAndChannel(th.Context, post, previewedPost, directChannel, partner.Id)
 		assert.Len(t, actual.Metadata.Embeds, 0)
 	})
 

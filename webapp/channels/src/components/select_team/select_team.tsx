@@ -41,7 +41,7 @@ type Actions = {
 type Props = {
     currentUserId: string;
     currentUserRoles: string;
-    currentUserIsGuest?: boolean;
+    currentUserIsPartner?: boolean;
     customDescriptionText?: string;
     isMemberOfTeam: boolean;
     listableTeams: Team[];
@@ -167,7 +167,7 @@ export default class SelectTeam extends React.PureComponent<Props, State> {
     render(): ReactNode {
         const {currentPage, currentListableTeams} = this.state;
         const {
-            currentUserIsGuest,
+            currentUserIsPartner,
             canManageSystem,
             customDescriptionText,
             isMemberOfTeam,
@@ -189,14 +189,14 @@ export default class SelectTeam extends React.PureComponent<Props, State> {
                     </div>
                 </div>
             );
-        } else if (currentUserIsGuest) {
+        } else if (currentUserIsPartner) {
             openContent = (
                 <div className='signup__content'>
                     <div className={'form-group has-error'}>
                         <div className='control-label'>
                             <FormattedMessage
-                                id='signup_team.guest_without_channels'
-                                defaultMessage='Your guest account has no channels assigned. Please contact an administrator.'
+                                id='signup_team.partner_without_channels'
+                                defaultMessage='Your partner account has no channels assigned. Please contact an administrator.'
                             />
                         </div>
                     </div>

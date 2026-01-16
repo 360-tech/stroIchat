@@ -453,7 +453,7 @@ describe('user utils', () => {
         const team = TestHelper.fakeTeamWithId();
         const adminUser = {...TestHelper.fakeUserWithId(), roles: `${General.SYSTEM_USER_ROLE} ${General.SYSTEM_ADMIN_ROLE}`};
         const nonAdminUser = {...TestHelper.fakeUserWithId(), roles: `${General.SYSTEM_USER_ROLE}`};
-        const guestUser = {...TestHelper.fakeUserWithId(), roles: `${General.SYSTEM_GUEST_ROLE}`};
+        const partnerUser = {...TestHelper.fakeUserWithId(), roles: `${General.SYSTEM_GUEST_ROLE}`};
 
         it('Non admin user with non admin membership', () => {
             const nonAdminMembership = {...TestHelper.fakeTeamMember(nonAdminUser.id, team.id), scheme_admin: false, scheme_user: true};
@@ -492,14 +492,14 @@ describe('user utils', () => {
             expect(applyRolesFilters(adminUser, [], [General.SYSTEM_USER_ROLE], nonAdminMembership)).toBe(true);
         });
 
-        it('Guest user with any membership', () => {
-            const nonAdminMembership = {...TestHelper.fakeTeamMember(guestUser.id, team.id), scheme_admin: false, scheme_user: true};
-            const adminMembership = {...TestHelper.fakeTeamMember(guestUser.id, team.id), scheme_admin: true, scheme_user: true};
-            expect(applyRolesFilters(guestUser, [General.SYSTEM_GUEST_ROLE], [], nonAdminMembership)).toBe(true);
-            expect(applyRolesFilters(guestUser, [General.SYSTEM_USER_ROLE, General.TEAM_USER_ROLE, General.TEAM_ADMIN_ROLE, General.CHANNEL_USER_ROLE, General.CHANNEL_ADMIN_ROLE], [], nonAdminMembership)).toBe(false);
-            expect(applyRolesFilters(guestUser, [General.SYSTEM_GUEST_ROLE], [], adminMembership)).toBe(true);
-            expect(applyRolesFilters(guestUser, [General.SYSTEM_USER_ROLE, General.TEAM_USER_ROLE, General.TEAM_ADMIN_ROLE, General.CHANNEL_USER_ROLE, General.CHANNEL_ADMIN_ROLE], [], adminMembership)).toBe(false);
-            expect(applyRolesFilters(guestUser, [], [General.SYSTEM_GUEST_ROLE], adminMembership)).toBe(false);
+        it('Partner user with any membership', () => {
+            const nonAdminMembership = {...TestHelper.fakeTeamMember(partnerUser.id, team.id), scheme_admin: false, scheme_user: true};
+            const adminMembership = {...TestHelper.fakeTeamMember(partnerUser.id, team.id), scheme_admin: true, scheme_user: true};
+            expect(applyRolesFilters(partnerUser, [General.SYSTEM_GUEST_ROLE], [], nonAdminMembership)).toBe(true);
+            expect(applyRolesFilters(partnerUser, [General.SYSTEM_USER_ROLE, General.TEAM_USER_ROLE, General.TEAM_ADMIN_ROLE, General.CHANNEL_USER_ROLE, General.CHANNEL_ADMIN_ROLE], [], nonAdminMembership)).toBe(false);
+            expect(applyRolesFilters(partnerUser, [General.SYSTEM_GUEST_ROLE], [], adminMembership)).toBe(true);
+            expect(applyRolesFilters(partnerUser, [General.SYSTEM_USER_ROLE, General.TEAM_USER_ROLE, General.TEAM_ADMIN_ROLE, General.CHANNEL_USER_ROLE, General.CHANNEL_ADMIN_ROLE], [], adminMembership)).toBe(false);
+            expect(applyRolesFilters(partnerUser, [], [General.SYSTEM_GUEST_ROLE], adminMembership)).toBe(false);
         });
     });
 

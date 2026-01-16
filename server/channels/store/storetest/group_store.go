@@ -1245,7 +1245,7 @@ func testGroupGetMemberUsersNotInChannel(t *testing.T, rctx request.CTX, ss stor
 	cm1 := &model.ChannelMember{
 		ChannelId:   channel.Id,
 		UserId:      user1.Id,
-		SchemeGuest: false,
+		SchemePartner: false,
 		SchemeUser:  true,
 		SchemeAdmin: false,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
@@ -1261,7 +1261,7 @@ func testGroupGetMemberUsersNotInChannel(t *testing.T, rctx request.CTX, ss stor
 	cm2 := &model.ChannelMember{
 		ChannelId:   channel.Id,
 		UserId:      user2.Id,
-		SchemeGuest: false,
+		SchemePartner: false,
 		SchemeUser:  true,
 		SchemeAdmin: false,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
@@ -1269,7 +1269,7 @@ func testGroupGetMemberUsersNotInChannel(t *testing.T, rctx request.CTX, ss stor
 	cm3 := &model.ChannelMember{
 		ChannelId:   channel.Id,
 		UserId:      user3.Id,
-		SchemeGuest: false,
+		SchemePartner: false,
 		SchemeUser:  true,
 		SchemeAdmin: false,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
@@ -5152,7 +5152,7 @@ func groupTestUpdateMembersRoleTeam(t *testing.T, rctx request.CTX, ss store.Sto
 		require.NoError(t, nErr)
 	}
 
-	_, nErr := ss.Team().SaveMember(rctx, &model.TeamMember{TeamId: team.Id, UserId: user4.Id, SchemeGuest: true}, 9999)
+	_, nErr := ss.Team().SaveMember(rctx, &model.TeamMember{TeamId: team.Id, UserId: user4.Id, SchemePartner: true}, 9999)
 	require.NoError(t, nErr)
 
 	tests := []struct {
@@ -5181,7 +5181,7 @@ func groupTestUpdateMembersRoleTeam(t *testing.T, rctx request.CTX, ss store.Sto
 			[]string{user3.Id},
 		},
 		{
-			"Guests never get promoted",
+			"Partners never get promoted",
 			[]string{user1.Id, user3.Id, user4.Id},
 			nil,
 		},
@@ -5195,7 +5195,7 @@ func groupTestUpdateMembersRoleTeam(t *testing.T, rctx request.CTX, ss store.Sto
 
 			var updatedUserIDs []string
 			for _, member := range updatedMembers {
-				assert.False(t, member.SchemeGuest, fmt.Sprintf("userID: %s", member.UserId))
+				assert.False(t, member.SchemePartner, fmt.Sprintf("userID: %s", member.UserId))
 
 				if slices.Contains(tt.newAdmins, member.UserId) {
 					assert.True(t, member.SchemeAdmin, fmt.Sprintf("userID: %s", member.UserId))
@@ -5212,11 +5212,11 @@ func groupTestUpdateMembersRoleTeam(t *testing.T, rctx request.CTX, ss store.Sto
 			assert.GreaterOrEqual(t, len(members), 4) // sanity check for team membership
 
 			for _, member := range members {
-				// Ensure guest account never changes.
+				// Ensure partner account never changes.
 				if member.UserId == user4.Id {
 					assert.False(t, member.SchemeUser, fmt.Sprintf("userID: %s", member.UserId))
 					assert.False(t, member.SchemeAdmin, fmt.Sprintf("userID: %s", member.UserId))
-					assert.True(t, member.SchemeGuest, fmt.Sprintf("userID: %s", member.UserId))
+					assert.True(t, member.SchemePartner, fmt.Sprintf("userID: %s", member.UserId))
 				} else {
 					if slices.Contains(tt.newAdmins, member.UserId) {
 						assert.True(t, member.SchemeAdmin, fmt.Sprintf("userID: %s", member.UserId))
@@ -5284,7 +5284,7 @@ func groupTestpUpdateMembersRoleChannel(t *testing.T, rctx request.CTX, ss store
 		ChannelId:   channel.Id,
 		UserId:      user4.Id,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
-		SchemeGuest: true,
+		SchemePartner: true,
 	})
 	require.NoError(t, err)
 
@@ -5314,7 +5314,7 @@ func groupTestpUpdateMembersRoleChannel(t *testing.T, rctx request.CTX, ss store
 			[]string{user3.Id},
 		},
 		{
-			"Guests never get promoted",
+			"Partners never get promoted",
 			[]string{user1.Id, user3.Id, user4.Id},
 			nil,
 		},
@@ -5328,7 +5328,7 @@ func groupTestpUpdateMembersRoleChannel(t *testing.T, rctx request.CTX, ss store
 
 			var updatedUserIDs []string
 			for _, member := range updatedMemmbers {
-				assert.False(t, member.SchemeGuest, fmt.Sprintf("userID: %s", member.UserId))
+				assert.False(t, member.SchemePartner, fmt.Sprintf("userID: %s", member.UserId))
 
 				if slices.Contains(tt.newAdmins, member.UserId) {
 					assert.True(t, member.SchemeAdmin, fmt.Sprintf("userID: %s", member.UserId))
@@ -5345,11 +5345,11 @@ func groupTestpUpdateMembersRoleChannel(t *testing.T, rctx request.CTX, ss store
 			assert.GreaterOrEqual(t, len(members), 4) // sanity check for channel membership
 
 			for _, member := range members {
-				// Ensure guest account never changes.
+				// Ensure partner account never changes.
 				if member.UserId == user4.Id {
 					assert.False(t, member.SchemeUser, fmt.Sprintf("userID: %s", member.UserId))
 					assert.False(t, member.SchemeAdmin, fmt.Sprintf("userID: %s", member.UserId))
-					assert.True(t, member.SchemeGuest, fmt.Sprintf("userID: %s", member.UserId))
+					assert.True(t, member.SchemePartner, fmt.Sprintf("userID: %s", member.UserId))
 				} else {
 					if slices.Contains(tt.newAdmins, member.UserId) {
 						assert.True(t, member.SchemeAdmin, fmt.Sprintf("userID: %s", member.UserId))

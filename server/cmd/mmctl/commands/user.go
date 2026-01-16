@@ -203,21 +203,21 @@ var VerifyUserEmailWithoutTokenCmd = &cobra.Command{
 	Args:    cobra.MinimumNArgs(1),
 }
 
-var PromoteGuestToUserCmd = &cobra.Command{
-	Use:     "promote [guests]",
-	Short:   "Promote guests to users",
-	Long:    "Convert a guest into a regular user.",
-	Example: "  user promote guest1 guest2",
-	RunE:    withClient(promoteGuestToUserCmdF),
+var PromotePartnerToUserCmd = &cobra.Command{
+	Use:     "promote [partners]",
+	Short:   "Promote partners to users",
+	Long:    "Convert a partner into a regular user.",
+	Example: "  user promote partner1 partner2",
+	RunE:    withClient(promotePartnerToUserCmdF),
 	Args:    cobra.MinimumNArgs(1),
 }
 
-var DemoteUserToGuestCmd = &cobra.Command{
+var DemoteUserToPartnerCmd = &cobra.Command{
 	Use:     "demote [users]",
-	Short:   "Demote users to guests",
-	Long:    "Convert a regular user into a guest.",
+	Short:   "Demote users to partners",
+	Long:    "Convert a regular user into a partner.",
 	Example: "  user demote user1 user2",
-	RunE:    withClient(demoteUserToGuestCmdF),
+	RunE:    withClient(demoteUserToPartnerCmdF),
 	Args:    cobra.MinimumNArgs(1),
 }
 
@@ -354,7 +354,7 @@ func init() {
 	UserCreateCmd.Flags().String("lastname", "", "Optional. The last name for the new user account")
 	UserCreateCmd.Flags().String("locale", "", "Optional. The locale (ex: en, fr) for the new user account")
 	UserCreateCmd.Flags().Bool("system-admin", false, "Optional. If supplied, the new user will be a system administrator. Defaults to false")
-	UserCreateCmd.Flags().Bool("guest", false, "Optional. If supplied, the new user will be a guest. Defaults to false")
+	UserCreateCmd.Flags().Bool("partner", false, "Optional. If supplied, the new user will be a partner. Defaults to false")
 	UserCreateCmd.Flags().Bool("email-verified", false, "Optional. If supplied, the new user will have the email verified. Defaults to false")
 	UserCreateCmd.Flags().Bool("disable-welcome-email", false, "Optional. If supplied, the new user will not receive a welcome email. Defaults to false")
 
@@ -432,8 +432,8 @@ Global Flags:
 		VerifyUserEmailWithoutTokenCmd,
 		UserConvertCmd,
 		MigrateAuthCmd,
-		PromoteGuestToUserCmd,
-		DemoteUserToGuestCmd,
+		PromotePartnerToUserCmd,
+		DemoteUserToPartnerCmd,
 		PreferenceCmd,
 	)
 	PreferenceCmd.AddCommand(
@@ -524,7 +524,7 @@ func userCreateCmdF(c client.Client, cmd *cobra.Command, args []string) error {
 	lastname, _ := cmd.Flags().GetString("lastname")
 	locale, _ := cmd.Flags().GetString("locale")
 	systemAdmin, _ := cmd.Flags().GetBool("system-admin")
-	guest, _ := cmd.Flags().GetBool("guest")
+	partner, _ := cmd.Flags().GetBool("partner")
 	emailVerified, _ := cmd.Flags().GetBool("email-verified")
 	disableWelcomeEmail, _ := cmd.Flags().GetBool("disable-welcome-email")
 
@@ -550,9 +550,9 @@ func userCreateCmdF(c client.Client, cmd *cobra.Command, args []string) error {
 		if _, err := c.UpdateUserRoles(context.TODO(), ruser.Id, "system_user system_admin"); err != nil {
 			return errors.New("Unable to update user roles. Error: " + err.Error())
 		}
-	} else if guest {
-		if _, err := c.DemoteUserToGuest(context.TODO(), ruser.Id); err != nil {
-			return errors.Wrapf(err, "Unable to demote use to guest")
+	} else if partner {
+		if _, err := c.DemoteUserToPartner(context.TODO(), ruser.Id); err != nil {
+			return errors.Wrapf(err, "Unable to demote use to partner")
 		}
 	}
 
@@ -1044,18 +1044,18 @@ func migrateAuthToLdapCmdF(c client.Client, cmd *cobra.Command, userArgs []strin
 	return nil
 }
 
-func promoteGuestToUserCmdF(c client.Client, _ *cobra.Command, userArgs []string) error {
+func promotePartnerToUserCmdF(c client.Client, _ *cobra.Command, userArgs []string) error {
 	var errs *multierror.Error
 	for i, user := range getUsersFromUserArgs(c, userArgs) {
 		if user == nil {
-			err := fmt.Errorf("can't find guest '%s'", userArgs[i])
+			err := fmt.Errorf("can't find partner '%s'", userArgs[i])
 			errs = multierror.Append(errs, err)
 			printer.PrintError(err.Error())
 			continue
 		}
 
-		if _, err := c.PromoteGuestToUser(context.TODO(), user.Id); err != nil {
-			err = fmt.Errorf("unable to promote guest %s: %w", userArgs[i], err)
+		if _, err := c.PromotePartnerToUser(context.TODO(), user.Id); err != nil {
+			err = fmt.Errorf("unable to promote partner %s: %w", userArgs[i], err)
 			errs = multierror.Append(errs, err)
 			printer.PrintError(err.Error())
 			continue
@@ -1067,7 +1067,7 @@ func promoteGuestToUserCmdF(c client.Client, _ *cobra.Command, userArgs []string
 	return errs.ErrorOrNil()
 }
 
-func demoteUserToGuestCmdF(c client.Client, _ *cobra.Command, userArgs []string) error {
+func demoteUserToPartnerCmdF(c client.Client, _ *cobra.Command, userArgs []string) error {
 	var errs *multierror.Error
 	for i, user := range getUsersFromUserArgs(c, userArgs) {
 		if user == nil {
@@ -1077,7 +1077,7 @@ func demoteUserToGuestCmdF(c client.Client, _ *cobra.Command, userArgs []string)
 			continue
 		}
 
-		if _, err := c.DemoteUserToGuest(context.TODO(), user.Id); err != nil {
+		if _, err := c.DemoteUserToPartner(context.TODO(), user.Id); err != nil {
 			err = fmt.Errorf("unable to demote user %s: %w", userArgs[i], err)
 			errs = multierror.Append(errs, err)
 			printer.PrintError(err.Error())

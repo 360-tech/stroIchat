@@ -673,21 +673,21 @@ func TestFilterOutOfChannelMentions(t *testing.T) {
 	user1 := th.BasicUser
 	user2 := th.BasicUser2
 	user3 := th.CreateUser()
-	guest := th.CreateGuest()
+	partner := th.CreatePartner()
 	user4 := th.CreateUser()
-	guestAndUser4Channel := th.CreateChannel(th.Context, th.BasicTeam)
+	partnerAndUser4Channel := th.CreateChannel(th.Context, th.BasicTeam)
 	defer func() {
-		appErr := th.App.PermanentDeleteUser(th.Context, guest)
+		appErr := th.App.PermanentDeleteUser(th.Context, partner)
 		require.Nil(t, appErr)
 	}()
 	th.LinkUserToTeam(user3, th.BasicTeam)
 	th.LinkUserToTeam(user4, th.BasicTeam)
-	th.LinkUserToTeam(guest, th.BasicTeam)
-	_, appErr := th.App.AddUserToChannel(th.Context, guest, channel, false)
+	th.LinkUserToTeam(partner, th.BasicTeam)
+	_, appErr := th.App.AddUserToChannel(th.Context, partner, channel, false)
 	require.Nil(t, appErr)
-	_, appErr = th.App.AddUserToChannel(th.Context, user4, guestAndUser4Channel, false)
+	_, appErr = th.App.AddUserToChannel(th.Context, user4, partnerAndUser4Channel, false)
 	require.Nil(t, appErr)
-	_, appErr = th.App.AddUserToChannel(th.Context, guest, guestAndUser4Channel, false)
+	_, appErr = th.App.AddUserToChannel(th.Context, partner, partnerAndUser4Channel, false)
 	require.Nil(t, appErr)
 
 	t.Run("should return users not in the channel", func(t *testing.T) {
@@ -720,11 +720,11 @@ func TestFilterOutOfChannelMentions(t *testing.T) {
 		assert.Nil(t, outOfGroupUsers)
 	})
 
-	t.Run("should return only visible users not in the channel (for guests)", func(t *testing.T) {
+	t.Run("should return only visible users not in the channel (for partners)", func(t *testing.T) {
 		post := &model.Post{}
 		potentialMentions := []string{user2.Username, user3.Username, user4.Username}
 
-		outOfTeamUsers, outOfChannelUsers, outOfGroupUsers, err := th.App.filterOutOfChannelMentions(th.Context, guest, post, channel, potentialMentions)
+		outOfTeamUsers, outOfChannelUsers, outOfGroupUsers, err := th.App.filterOutOfChannelMentions(th.Context, partner, post, channel, potentialMentions)
 
 		require.NoError(t, err)
 		assert.Len(t, outOfTeamUsers, 0)

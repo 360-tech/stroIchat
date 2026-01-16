@@ -115,14 +115,14 @@ func createUser(idx int, teamMemberships int, channelMemberships int, teamsAndCh
 	var email string
 
 	switch userType {
-	case guestUser:
+	case partnerUser:
 		password = fmt.Sprintf("SampleGu@st-%d", idx)
-		email = fmt.Sprintf("guest-%d@sample.mattermost.com", idx)
-		roles = "system_guest"
+		email = fmt.Sprintf("partner-%d@sample.mattermost.com", idx)
+		roles = "system_partner"
 		if idx == 0 {
-			username = "guest"
+			username = "partner"
 			password = "SampleGu@st1"
-			email = "guest@sample.mattermost.com"
+			email = "partner@sample.mattermost.com"
 		}
 	case deactivatedUser:
 		password = fmt.Sprintf("SampleDe@ctivated-%d", idx)
@@ -206,7 +206,7 @@ func createUser(idx int, teamMemberships int, channelMemberships int, teamsAndCh
 		team := possibleTeams[position]
 		possibleTeams = append(possibleTeams[:position], possibleTeams[position+1:]...)
 		if teamChannels, err := teamsAndChannels[team]; err {
-			teams = append(teams, createTeamMembership(channelMemberships, teamChannels, &team, userType == guestUser))
+			teams = append(teams, createTeamMembership(channelMemberships, teamChannels, &team, userType == partnerUser))
 		}
 	}
 
@@ -241,10 +241,10 @@ func createUser(idx int, teamMemberships int, channelMemberships int, teamsAndCh
 	}
 }
 
-func createTeamMembership(numOfchannels int, teamChannels []string, teamName *string, guest bool) imports.UserTeamImportData {
+func createTeamMembership(numOfchannels int, teamChannels []string, teamName *string, partner bool) imports.UserTeamImportData {
 	roles := "team_user"
-	if guest {
-		roles = "team_guest"
+	if partner {
+		roles = "team_partner"
 	} else if rand.Intn(5) == 0 {
 		roles = "team_user team_admin"
 	}
@@ -257,7 +257,7 @@ func createTeamMembership(numOfchannels int, teamChannels []string, teamName *st
 		position := rand.Intn(len(teamChannelsCopy))
 		channelName := teamChannelsCopy[position]
 		teamChannelsCopy = append(teamChannelsCopy[:position], teamChannelsCopy[position+1:]...)
-		channels = append(channels, createChannelMembership(channelName, guest))
+		channels = append(channels, createChannelMembership(channelName, partner))
 	}
 
 	return imports.UserTeamImportData{
@@ -267,10 +267,10 @@ func createTeamMembership(numOfchannels int, teamChannels []string, teamName *st
 	}
 }
 
-func createChannelMembership(channelName string, guest bool) imports.UserChannelImportData {
+func createChannelMembership(channelName string, partner bool) imports.UserChannelImportData {
 	roles := "channel_user"
-	if guest {
-		roles = "channel_guest"
+	if partner {
+		roles = "channel_partner"
 	} else if rand.Intn(5) == 0 {
 		roles = "channel_user channel_admin"
 	}

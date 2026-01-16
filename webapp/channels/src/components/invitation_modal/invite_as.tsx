@@ -10,7 +10,7 @@ import './invite_as.scss';
 
 export const InviteType = {
     MEMBER: 'MEMBER',
-    GUEST: 'GUEST',
+    PARTNER: 'PARTNER',
 } as const;
 
 export type InviteType = typeof InviteType[keyof typeof InviteType];
@@ -19,16 +19,16 @@ export type Props = {
     setInviteAs: (inviteType: InviteType) => void;
     inviteType: InviteType;
     titleClass?: string;
-    canInviteGuests?: boolean;
+    canInvitePartners?: boolean;
 }
 
 export default function InviteAs(props: Props) {
-    let guestDisabled = null;
+    let partnerDisabled = null;
 
     // disable the radio button logic (is disabled when is starter - pre and post trial)
-    if (!props.canInviteGuests) {
-        guestDisabled = (id: string) => {
-            return (id === InviteType.GUEST);
+    if (!props.canInvitePartners) {
+        partnerDisabled = (id: string) => {
+            return (id === InviteType.PARTNER);
         };
     }
 
@@ -60,23 +60,23 @@ export default function InviteAs(props: Props) {
                             key: (
                                 <span className='InviteAs__label'>
                                     <FormattedMessage
-                                        id='invite_modal.choose_guest_a'
-                                        defaultMessage='Guest'
+                                        id='invite_modal.choose_partner_a'
+                                        defaultMessage='Partner'
                                     />
                                     <span className='InviteAs__label--parenthetical'>
                                         {' - '}
                                         <FormattedMessage
-                                            id='invite_modal.choose_guest_b'
+                                            id='invite_modal.choose_partner_b'
                                             defaultMessage='limited to select channels and teams'
                                         />
                                     </span>
                                 </span>
                             ),
-                            value: InviteType.GUEST,
-                            testId: 'inviteGuestLink',
+                            value: InviteType.PARTNER,
+                            testId: 'invitePartnerLink',
                         },
                     ]}
-                    isDisabled={guestDisabled}
+                    isDisabled={partnerDisabled}
                 />
             </div>
         </div>

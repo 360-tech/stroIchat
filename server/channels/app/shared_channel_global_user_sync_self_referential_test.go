@@ -225,10 +225,10 @@ func TestSharedChannelGlobalUserSyncSelfReferential(t *testing.T) {
 		_, err = ss.User().Update(th.Context, systemAdmin, true)
 		require.NoError(t, err)
 
-		// Create guest user
-		guest := th.CreateGuest()
-		guest.UpdateAt = baseTime + 500
-		_, err = ss.User().Update(th.Context, guest, true)
+		// Create partner user
+		partner := th.CreatePartner()
+		partner.UpdateAt = baseTime + 500
+		_, err = ss.User().Update(th.Context, partner, true)
 		require.NoError(t, err)
 
 		// Create remote user (should NOT be synced)
@@ -271,14 +271,14 @@ func TestSharedChannelGlobalUserSyncSelfReferential(t *testing.T) {
 			}
 
 			// Check that our specific test users are synced
-			guestSynced := allSyncedUserIDs[guest.Id]
+			partnerSynced := allSyncedUserIDs[partner.Id]
 			botSynced := allSyncedUserIDs[bot.UserId]
 			systemAdminSynced := allSyncedUserIDs[systemAdmin.Id]
 			userWithOldTimestampSynced := allSyncedUserIDs[userWithOldTimestamp.Id]
 			remoteUserNotSynced := !allSyncedUserIDs[remoteUser.Id]
 			inactiveUserNotSynced := !allSyncedUserIDs[inactiveUser.Id]
 
-			return guestSynced && botSynced && systemAdminSynced && userWithOldTimestampSynced &&
+			return partnerSynced && botSynced && systemAdminSynced && userWithOldTimestampSynced &&
 				remoteUserNotSynced && inactiveUserNotSynced
 		}, 10*time.Second, 500*time.Millisecond, "Should sync expected users")
 
@@ -297,7 +297,7 @@ func TestSharedChannelGlobalUserSyncSelfReferential(t *testing.T) {
 		// Verify user type filtering
 		assert.Contains(t, allSyncedUserIDs, bot.UserId, "Bot should be synced")
 		assert.Contains(t, allSyncedUserIDs, systemAdmin.Id, "System admin should be synced")
-		assert.Contains(t, allSyncedUserIDs, guest.Id, "Guest user should be synced")
+		assert.Contains(t, allSyncedUserIDs, partner.Id, "Partner user should be synced")
 		assert.Contains(t, allSyncedUserIDs, userWithOldTimestamp.Id, "User with old timestamp should be synced")
 		assert.NotContains(t, allSyncedUserIDs, remoteUser.Id, "Remote user should NOT be synced")
 		assert.NotContains(t, allSyncedUserIDs, inactiveUser.Id, "Inactive user should NOT be synced")

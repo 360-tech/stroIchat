@@ -44,7 +44,7 @@ func TestImportImportScheme(t *testing.T) {
 	data := imports.SchemeImportData{
 		Name:  model.NewPointer(model.NewId()),
 		Scope: model.NewPointer("team"),
-		DefaultTeamGuestRole: &imports.RoleImportData{
+		DefaultTeamPartnerRole: &imports.RoleImportData{
 			Name:        model.NewPointer(model.NewId()),
 			DisplayName: model.NewPointer(model.NewId()),
 		},
@@ -56,7 +56,7 @@ func TestImportImportScheme(t *testing.T) {
 			Name:        model.NewPointer(model.NewId()),
 			DisplayName: model.NewPointer(model.NewId()),
 		},
-		DefaultChannelGuestRole: &imports.RoleImportData{
+		DefaultChannelPartnerRole: &imports.RoleImportData{
 			Name:        model.NewPointer(model.NewId()),
 			DisplayName: model.NewPointer(model.NewId()),
 		},
@@ -123,10 +123,10 @@ func TestImportImportScheme(t *testing.T) {
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
-	role, nErr = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultTeamGuestRole)
+	role, nErr = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultTeamPartnerRole)
 	require.NoError(t, nErr, "Should have found the imported role.")
 
-	assert.Equal(t, *data.DefaultTeamGuestRole.DisplayName, role.DisplayName)
+	assert.Equal(t, *data.DefaultTeamPartnerRole.DisplayName, role.DisplayName)
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
@@ -144,10 +144,10 @@ func TestImportImportScheme(t *testing.T) {
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
-	role, nErr = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultChannelGuestRole)
+	role, nErr = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultChannelPartnerRole)
 	require.NoError(t, nErr, "Should have found the imported role.")
 
-	assert.Equal(t, *data.DefaultChannelGuestRole.DisplayName, role.DisplayName)
+	assert.Equal(t, *data.DefaultChannelPartnerRole.DisplayName, role.DisplayName)
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
@@ -180,10 +180,10 @@ func TestImportImportScheme(t *testing.T) {
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
-	role, nErr = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultTeamGuestRole)
+	role, nErr = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultTeamPartnerRole)
 	require.NoError(t, nErr, "Should have found the imported role.")
 
-	assert.Equal(t, *data.DefaultTeamGuestRole.DisplayName, role.DisplayName)
+	assert.Equal(t, *data.DefaultTeamPartnerRole.DisplayName, role.DisplayName)
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
@@ -201,10 +201,10 @@ func TestImportImportScheme(t *testing.T) {
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
-	role, nErr = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultChannelGuestRole)
+	role, nErr = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultChannelPartnerRole)
 	require.NoError(t, nErr, "Should have found the imported role.")
 
-	assert.Equal(t, *data.DefaultChannelGuestRole.DisplayName, role.DisplayName)
+	assert.Equal(t, *data.DefaultChannelPartnerRole.DisplayName, role.DisplayName)
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
@@ -223,7 +223,7 @@ func TestImportImportScheme(t *testing.T) {
 	assert.Equal(t, "team", scheme.Scope)
 }
 
-func TestImportImportSchemeWithoutGuestRoles(t *testing.T) {
+func TestImportImportSchemeWithoutPartnerRoles(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t)
 	defer th.TearDown()
@@ -312,10 +312,10 @@ func TestImportImportSchemeWithoutGuestRoles(t *testing.T) {
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
-	role, err = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultTeamGuestRole)
+	role, err = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultTeamPartnerRole)
 	require.NoError(t, err, "Should have found the imported role.")
 
-	assert.Equal(t, *data.DefaultTeamGuestRole.DisplayName, role.DisplayName)
+	assert.Equal(t, *data.DefaultTeamPartnerRole.DisplayName, role.DisplayName)
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
@@ -333,10 +333,10 @@ func TestImportImportSchemeWithoutGuestRoles(t *testing.T) {
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
-	role, err = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultChannelGuestRole)
+	role, err = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultChannelPartnerRole)
 	require.NoError(t, err, "Should have found the imported role.")
 
-	assert.Equal(t, *data.DefaultChannelGuestRole.DisplayName, role.DisplayName)
+	assert.Equal(t, *data.DefaultChannelPartnerRole.DisplayName, role.DisplayName)
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
@@ -369,10 +369,10 @@ func TestImportImportSchemeWithoutGuestRoles(t *testing.T) {
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
-	role, err = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultTeamGuestRole)
+	role, err = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultTeamPartnerRole)
 	require.NoError(t, err, "Should have found the imported role.")
 
-	assert.Equal(t, *data.DefaultTeamGuestRole.DisplayName, role.DisplayName)
+	assert.Equal(t, *data.DefaultTeamPartnerRole.DisplayName, role.DisplayName)
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
@@ -390,10 +390,10 @@ func TestImportImportSchemeWithoutGuestRoles(t *testing.T) {
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
-	role, err = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultChannelGuestRole)
+	role, err = th.App.Srv().Store().Role().GetByName(context.Background(), scheme.DefaultChannelPartnerRole)
 	require.NoError(t, err, "Should have found the imported role.")
 
-	assert.Equal(t, *data.DefaultChannelGuestRole.DisplayName, role.DisplayName)
+	assert.Equal(t, *data.DefaultChannelPartnerRole.DisplayName, role.DisplayName)
 	assert.False(t, role.BuiltIn)
 	assert.True(t, role.SchemeManaged)
 
@@ -1533,7 +1533,7 @@ func TestImportImportUser(t *testing.T) {
 			Name:        model.NewPointer(model.NewId()),
 			DisplayName: model.NewPointer(model.NewId()),
 			Scope:       model.NewPointer("team"),
-			DefaultTeamGuestRole: &imports.RoleImportData{
+			DefaultTeamPartnerRole: &imports.RoleImportData{
 				Name:        model.NewPointer(model.NewId()),
 				DisplayName: model.NewPointer(model.NewId()),
 			},
@@ -1545,7 +1545,7 @@ func TestImportImportUser(t *testing.T) {
 				Name:        model.NewPointer(model.NewId()),
 				DisplayName: model.NewPointer(model.NewId()),
 			},
-			DefaultChannelGuestRole: &imports.RoleImportData{
+			DefaultChannelPartnerRole: &imports.RoleImportData{
 				Name:        model.NewPointer(model.NewId()),
 				DisplayName: model.NewPointer(model.NewId()),
 			},
@@ -1620,7 +1620,7 @@ func TestImportImportUser(t *testing.T) {
 
 		assert.True(t, teamMember.SchemeAdmin)
 		assert.True(t, teamMember.SchemeUser)
-		assert.False(t, teamMember.SchemeGuest)
+		assert.False(t, teamMember.SchemePartner)
 		assert.Equal(t, "", teamMember.ExplicitRoles)
 
 		channelMember, appErr2 := th.App.GetChannelMember(th.Context, channel.Id, user.Id)
@@ -1628,7 +1628,7 @@ func TestImportImportUser(t *testing.T) {
 
 		assert.True(t, channelMember.SchemeAdmin)
 		assert.True(t, channelMember.SchemeUser)
-		assert.False(t, channelMember.SchemeGuest)
+		assert.False(t, channelMember.SchemePartner)
 		assert.Equal(t, "", channelMember.ExplicitRoles)
 
 		// Test importing deleted user with a valid team & valid channel name in apply mode.
@@ -1662,7 +1662,7 @@ func TestImportImportUser(t *testing.T) {
 
 		assert.False(t, teamMember.SchemeAdmin)
 		assert.True(t, teamMember.SchemeUser)
-		assert.False(t, teamMember.SchemeGuest)
+		assert.False(t, teamMember.SchemePartner)
 		assert.Equal(t, "", teamMember.ExplicitRoles)
 
 		channelMember, appErr2 = th.App.GetChannelMember(th.Context, channel.Id, user.Id)
@@ -1670,11 +1670,11 @@ func TestImportImportUser(t *testing.T) {
 
 		assert.False(t, channelMember.SchemeAdmin)
 		assert.True(t, channelMember.SchemeUser)
-		assert.False(t, channelMember.SchemeGuest)
+		assert.False(t, channelMember.SchemePartner)
 		assert.Equal(t, "", channelMember.ExplicitRoles)
 	})
 
-	t.Run("import deleted guest with a valid team & valid channel name in apply mode", func(t *testing.T) {
+	t.Run("import deleted partner with a valid team & valid channel name in apply mode", func(t *testing.T) {
 		teamData := &imports.TeamImportData{
 			Name:            model.NewPointer(model.NewRandomTeamName()),
 			DisplayName:     model.NewPointer("Display Name"),
@@ -1703,29 +1703,29 @@ func TestImportImportUser(t *testing.T) {
 
 		username := model.NewUsername()
 		deleteAt := model.GetMillis()
-		deletedGuestData := &imports.UserImportData{
+		deletedPartnerData := &imports.UserImportData{
 			Username: &username,
 			DeleteAt: &deleteAt,
 			Email:    model.NewPointer(model.NewId() + "@example.com"),
-			Roles:    model.NewPointer("system_guest"),
+			Roles:    model.NewPointer("system_partner"),
 			Teams: &[]imports.UserTeamImportData{
 				{
 					Name:  &team.Name,
-					Roles: model.NewPointer("team_guest"),
+					Roles: model.NewPointer("team_partner"),
 					Channels: &[]imports.UserChannelImportData{
 						{
 							Name:  &channel.Name,
-							Roles: model.NewPointer("channel_guest"),
+							Roles: model.NewPointer("channel_partner"),
 						},
 					},
 				},
 			},
 		}
 
-		appErr = th.App.importUser(th.Context, deletedGuestData, false)
+		appErr = th.App.importUser(th.Context, deletedPartnerData, false)
 		assert.Nil(t, appErr)
 
-		user, appErr := th.App.GetUserByUsername(*deletedGuestData.Username)
+		user, appErr := th.App.GetUserByUsername(*deletedPartnerData.Username)
 		require.Nil(t, appErr, "Failed to get user from database.")
 
 		teamMember, appErr := th.App.GetTeamMember(th.Context, team.Id, user.Id)
@@ -1733,7 +1733,7 @@ func TestImportImportUser(t *testing.T) {
 
 		assert.False(t, teamMember.SchemeAdmin)
 		assert.False(t, teamMember.SchemeUser)
-		assert.True(t, teamMember.SchemeGuest)
+		assert.True(t, teamMember.SchemePartner)
 		assert.Equal(t, "", teamMember.ExplicitRoles)
 
 		channelMember, appErr := th.App.GetChannelMember(th.Context, channel.Id, user.Id)
@@ -1741,7 +1741,7 @@ func TestImportImportUser(t *testing.T) {
 
 		assert.False(t, teamMember.SchemeAdmin)
 		assert.False(t, channelMember.SchemeUser)
-		assert.True(t, teamMember.SchemeGuest)
+		assert.True(t, teamMember.SchemePartner)
 		assert.Equal(t, "", channelMember.ExplicitRoles)
 	})
 }

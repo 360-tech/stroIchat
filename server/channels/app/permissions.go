@@ -63,8 +63,8 @@ func (a *App) ResetPermissionsSystem() *model.AppError {
 		return model.NewAppError("ResetPermissionSystem", "app.system.permanent_delete_by_name.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
 
-	// Remove the "System" table entry that marks the guest roles permissions migration as done.
-	if _, err := a.Srv().Store().System().PermanentDeleteByName(GuestRolesCreationMigrationKey); err != nil {
+	// Remove the "System" table entry that marks the partner roles permissions migration as done.
+	if _, err := a.Srv().Store().System().PermanentDeleteByName(PartnerRolesCreationMigrationKey); err != nil {
 		return model.NewAppError("ResetPermissionSystem", "app.system.permanent_delete_by_name.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
 
@@ -83,10 +83,10 @@ func (a *App) ExportPermissions(rctx request.CTX, w io.Writer) error {
 			roleNames := []string{
 				scheme.DefaultTeamAdminRole,
 				scheme.DefaultTeamUserRole,
-				scheme.DefaultTeamGuestRole,
+				scheme.DefaultTeamPartnerRole,
 				scheme.DefaultChannelAdminRole,
 				scheme.DefaultChannelUserRole,
-				scheme.DefaultChannelGuestRole,
+				scheme.DefaultChannelPartnerRole,
 			}
 
 			roles := []*model.Role{}
@@ -108,10 +108,10 @@ func (a *App) ExportPermissions(rctx request.CTX, w io.Writer) error {
 				Scope:        scheme.Scope,
 				TeamAdmin:    scheme.DefaultTeamAdminRole,
 				TeamUser:     scheme.DefaultTeamUserRole,
-				TeamGuest:    scheme.DefaultTeamGuestRole,
+				TeamPartner:    scheme.DefaultTeamPartnerRole,
 				ChannelAdmin: scheme.DefaultChannelAdminRole,
 				ChannelUser:  scheme.DefaultChannelUserRole,
-				ChannelGuest: scheme.DefaultChannelGuestRole,
+				ChannelPartner: scheme.DefaultChannelPartnerRole,
 				Roles:        roles,
 			})
 			if err != nil {

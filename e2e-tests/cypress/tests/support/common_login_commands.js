@@ -35,8 +35,8 @@ Cypress.Commands.add('checkLoginFailed', () => {
     });
 });
 
-Cypress.Commands.add('checkGuestNoChannels', () => {
-    cy.findByText('Your guest account has no channels assigned. Please contact an administrator.').should('be.visible');
+Cypress.Commands.add('checkPartnerNoChannels', () => {
+    cy.findByText('Your partner account has no channels assigned. Please contact an administrator.').should('be.visible');
 });
 
 Cypress.Commands.add('checkMemberNoChannels', () => {
@@ -80,14 +80,14 @@ Cypress.Commands.add('checkInvitePeoplePage', (settings = {}) => {
 
 Cypress.Commands.add('checkInvitePeopleAdminPage', (settings = {}) => {
     cy.findByText('Members', {timeout: TIMEOUTS.ONE_MIN}).should('be.visible');
-    cy.findByText('Guests').should('be.visible');
+    cy.findByText('Partners').should('be.visible');
     if (settings.teamName != null && settings.teamName.length > 0) {
         cy.findByText('Invite people to ' + settings.teamName).should('be.visible');
     }
 });
 
 Cypress.Commands.add('doLogoutFromSignUp', () => {
-    cy.checkGuestNoChannels();
+    cy.checkPartnerNoChannels();
     cy.findByText('Logout').should('be.visible').click();
 });
 

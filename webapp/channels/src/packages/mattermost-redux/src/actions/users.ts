@@ -591,16 +591,16 @@ export function getTermsOfService() {
     });
 }
 
-export function promoteGuestToUser(userId: string) {
+export function promotePartnerToUser(userId: string) {
     return bindClientFunc({
-        clientFunc: Client4.promoteGuestToUser,
+        clientFunc: Client4.promotePartnerToUser,
         params: [userId],
     });
 }
 
-export function demoteUserToGuest(userId: string) {
+export function demoteUserToPartner(userId: string) {
     return bindClientFunc({
-        clientFunc: Client4.demoteUserToGuest,
+        clientFunc: Client4.demoteUserToPartner,
         params: [userId],
     });
 }

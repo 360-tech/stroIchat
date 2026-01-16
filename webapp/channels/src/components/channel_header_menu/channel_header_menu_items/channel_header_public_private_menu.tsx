@@ -9,7 +9,7 @@ import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
 
 import {Permissions} from 'mattermost-redux/constants';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import ChannelMoveToSubMenu from 'components/channel_move_to_sub_menu';
 import * as Menu from 'components/menu';
@@ -160,7 +160,7 @@ const ChannelHeaderPublicMenu = ({channel, user, isMuted, isDefault, isMobile, i
             {!isDefault && (
                 <Menu.Separator/>
             )}
-            {!isDefault && !isGuest(user.roles) && (
+            {!isDefault && !isPartner(user.roles) && (
                 <MenuItemLeaveChannel
                     id='channelLeaveChannel'
                     channel={channel}

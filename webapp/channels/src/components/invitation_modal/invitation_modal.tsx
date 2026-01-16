@@ -47,13 +47,13 @@ export type Props = {
         regenerateTeamInviteId: (teamId: string) => void;
 
         searchProfiles: (term: string, options?: Record<string, string>) => Promise<ActionResult<UserProfile[]>>;
-        sendGuestsInvites: (
+        sendPartnersInvites: (
             currentTeamId: string,
             channels: Channel[],
             users: UserProfile[],
             emails: string[],
             message: string,
-            guestSubtype?: string,
+            partnerSubtype?: string,
         ) => Promise<ActionResult<InviteResults>>;
         sendMembersInvites: (
             teamId: string,
@@ -75,11 +75,11 @@ export type Props = {
     emailInvitationsEnabled: boolean;
     isAdmin: boolean;
     canAddUsers: boolean;
-    canInviteGuests: boolean;
+    canInvitePartners: boolean;
     onExited: () => void;
     channelToInvite?: Channel;
     initialValue?: string;
-    inviteAsGuest?: boolean;
+    inviteAsPartner?: boolean;
     focusOriginElement?: string;
 }
 
@@ -102,7 +102,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
     defaultState: State = deepFreeze({
         view: View.INVITE,
         termWithoutResults: null,
-        invite: initializeInviteState(this.props.initialValue || '', this.props.inviteAsGuest),
+        invite: initializeInviteState(this.props.initialValue || '', this.props.inviteAsPartner),
         result: defaultResultState,
         show: true,
     });
@@ -115,7 +115,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
             ...this.defaultState,
             invite: {
                 ...this.defaultState.invite,
-                inviteType: (!props.canAddUsers && props.canInviteGuests) ? InviteType.GUEST : this.defaultState.invite.inviteType,
+                inviteType: (!props.canAddUsers && props.canInvitePartners) ? InviteType.PARTNER : this.defaultState.invite.inviteType,
                 inviteChannels: {
                     ...this.defaultState.invite.inviteChannels,
                     channels: props.channelToInvite ? [...defaultStateChannels, props.channelToInvite] : defaultStateChannels,
@@ -204,14 +204,14 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 const result = await this.props.actions.sendMembersInvites(this.props.currentTeam.id, users, emails);
                 invites = result.data!;
             }
-        } else if (inviteAs === InviteType.GUEST) {
-            const result = await this.props.actions.sendGuestsInvites(
+        } else if (inviteAs === InviteType.PARTNER) {
+            const result = await this.props.actions.sendPartnersInvites(
                 this.props.currentTeam.id,
                 this.state.invite.inviteChannels.channels,
                 users,
                 emails,
                 this.state.invite.customMessage.open ? this.state.invite.customMessage.message : '',
-                this.state.invite.guestSubtype,
+                this.state.invite.partnerSubtype,
             );
             invites = result.data!;
         }
@@ -223,7 +223,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
             });
         }
 
-        if (inviteAs === InviteType.GUEST && this.state.invite.inviteChannels.search !== '') {
+        if (inviteAs === InviteType.PARTNER && this.state.invite.inviteChannels.search !== '') {
             invites.notSent.push({
                 text: this.state.invite.inviteChannels.search,
                 reason: messages.notValidChannel,
@@ -248,19 +248,19 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 inviteType: state.invite.inviteType,
                 customMessage: state.invite.customMessage,
                 inviteChannels: state.invite.inviteChannels,
-                guestSubtype: state.invite.guestSubtype,
+                partnerSubtype: state.invite.partnerSubtype,
             },
             result: defaultResultState,
             termWithoutResults: null,
         }));
     };
 
-    setGuestSubtype = (subtype: string) => {
+    setPartnerSubtype = (subtype: string) => {
         this.setState((state: State) => ({
             ...state,
             invite: {
                 ...state.invite,
-                guestSubtype: subtype,
+                partnerSubtype: subtype,
             },
         }));
     };
@@ -268,10 +268,10 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
     debouncedSearchChannels = debounce((term) => this.props.currentTeam && this.props.actions.searchChannels(this.props.currentTeam.id, term), 150);
 
     // Filter channels based on the current invite type and search term
-    filterChannels = (channels: Channel[], isGuestInvite: boolean, searchTerm: string = '') => {
+    filterChannels = (channels: Channel[], isPartnerInvite: boolean, searchTerm: string = '') => {
         return channels.filter((channel) => {
-            // For guest invites, filter out policy_enforced channels
-            if (isGuestInvite && channel.policy_enforced) {
+            // For partner invites, filter out policy_enforced channels
+            if (isPartnerInvite && channel.policy_enforced) {
                 return false;
             }
 
@@ -287,7 +287,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
     };
 
     channelsLoader = async (value: string) => {
-        const isGuestInvite = this.state.invite.inviteType === InviteType.GUEST;
+        const isPartnerInvite = this.state.invite.inviteType === InviteType.PARTNER;
 
         // If there's a search term, search the channels from the server
         if (value) {
@@ -297,7 +297,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
         // Apply filtering to the channels
         return this.filterChannels(
             this.props.invitableChannels,
-            isGuestInvite,
+            isPartnerInvite,
             value,
         );
     };
@@ -382,14 +382,14 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
         // 'static' means backdrop clicks do not close
         // true means backdrop clicks do close
         // false means no backdrop
-        if (this.state.view === View.RESULT || (!this.props.canAddUsers && !this.props.canInviteGuests)) {
+        if (this.state.view === View.RESULT || (!this.props.canAddUsers && !this.props.canInvitePartners)) {
             return true;
         }
 
         const emptyInvites = this.state.invite.usersEmails.length === 0 && this.state.invite.usersEmailsSearch === '';
         if (!emptyInvites) {
             return 'static';
-        } else if (this.state.invite.inviteType === InviteType.GUEST) {
+        } else if (this.state.invite.inviteType === InviteType.PARTNER) {
             if (this.state.invite.inviteChannels.channels.length !== 0 ||
                 this.state.invite.inviteChannels.search !== ''
             ) {
@@ -423,12 +423,12 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 onChangeUsersEmails={this.onChangeUsersEmails}
                 onUsersInputChange={this.onUsersInputChange}
                 canAddUsers={this.props.canAddUsers}
-                canInviteGuests={this.props.canInviteGuests}
+                canInvitePartners={this.props.canInvitePartners}
                 headerClass='InvitationModal__header'
                 footerClass='InvitationModal__footer'
                 onClose={this.handleHide}
                 channelToInvite={this.props.channelToInvite}
-                setGuestSubtype={this.setGuestSubtype}
+                setPartnerSubtype={this.setPartnerSubtype}
                 {...this.state.invite}
             />
         );
@@ -445,7 +445,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 />
             );
         }
-        if (!this.props.canInviteGuests && !this.props.canAddUsers) {
+        if (!this.props.canInvitePartners && !this.props.canAddUsers) {
             view = (
                 <NoPermissionsView
                     footerClass='InvitationModal__footer'

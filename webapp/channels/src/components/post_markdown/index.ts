@@ -74,7 +74,7 @@ function makeMapStateToProps() {
             highlightKeys: getHighlightWithoutNotificationKeys(state),
             isMilitaryTime: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false),
             timezone: getCurrentTimezone(state),
-            hideGuestTags: getConfig(state).HideGuestTags === 'true',
+            hidePartnerTags: getConfig(state).HidePartnerTags === 'true',
             isEnterpriseOrCloudOrSKUStarterFree: false,
             isEnterpriseReady,
             renderEmoticonsAsEmoji: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.RENDER_EMOTICONS_AS_EMOJI, Preferences.RENDER_EMOTICONS_AS_EMOJI_DEFAULT === 'true'),

@@ -4720,19 +4720,19 @@
     "translation": "Valor antigo inválido, não deve ser definido quando a operação não é atômica."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Emails inválidos."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Email inválido."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Canais inválidos."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Canal inválido."
   },
   {
@@ -4744,7 +4744,7 @@
     "translation": "Algoritmo de Assinatura Inválido."
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Atributo Convidado inválido. Deve estar no formato 'campo=valor'."
   },
   {
@@ -4780,7 +4780,7 @@
     "translation": "Grupo não pode ser associado ao canal até que ele seja primeiro associado ao grupo pai sincronizado da equipe."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Filtro Convidado AD/LDAP Inválido."
   },
   {
@@ -5172,7 +5172,7 @@
     "translation": "Servidor está ocupado, os serviços não críticos estão temporariamente indisponíveis."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "O email que você forneceu não pertence a um domínio aceito. Por favor contacte o administrador ou se inscreva com um email diferente."
   },
   {
@@ -5180,7 +5180,7 @@
     "translation": "O email que você forneceu não pertence a um domínio aceito. Por favor contacte o seu administrador ou se inscreve com um email diferente."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Você não pode ativar uma conta convidado devido ai recurso Conta Convidado não estar ativo."
   },
   {
@@ -5188,7 +5188,7 @@
     "translation": "Não foi possível decodificar o token de redefinição de senha"
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Não foi possível converter o convidado em usuário comum porque não é um convidado."
   },
   {
@@ -5208,15 +5208,15 @@
     "translation": "Informe um e-mail e/ou senha válidos"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Sua licença não suporta contas convidado"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Contas convidado estão desativadas"
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Não é possível converte o usuário para convidado devido ele já ser um convidado."
   },
   {
@@ -5224,11 +5224,11 @@
     "translation": "Não é possível criar o usuário, convite inválido."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Sua licença não suporta contas convidado."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Contas convidadas estão desativadas."
   },
   {
@@ -5244,11 +5244,11 @@
     "translation": "Sua licença Enterprise Edition expirou e alguns recursos podem ser desativados. Por favor renove usa licença agora."
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} convidou você para ingressar na equipe {{ .TeamDisplayName }} como convidado"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Atualização de membro da equipe inválida: Um usuário deve ser um convidado ou um usuário, mas não ambos."
   },
   {
@@ -5264,7 +5264,7 @@
     "translation": "Não é possível remover um usuário de uma equipe de grupo-restrita."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Os canais do convite devem ser parte da equipe do convite."
   },
   {
@@ -5276,15 +5276,15 @@
     "translation": "Você não tem a permissão apropriada para listar todas as equipes"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Sua licença não suporta contas convidado"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Contas convidadas estão desativadas."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Os convidados estão impedidos de ingressar em uma equipe com um link de convite. Solicite um convite por email para a equipe."
   },
   {
@@ -5392,7 +5392,7 @@
     "translation": "Palavra do gatilho do comando está faltando o caractere de barra principal"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Atualização de membro da equipe inválida: Você não pode adicionar ou remover a função de convidado manualmente."
   },
   {
@@ -5400,11 +5400,11 @@
     "translation": "O canal padrão não pode ser privado."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Atualização de membro do canal inválida: Um usuário deve ser um convidado ou um usuário, mas não ambos."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Atualização de membro do canal inválida: Você não pode adicionar ou remover a função de convidado manualmente."
   },
   {
@@ -5436,7 +5436,7 @@
     "translation": "Sua licença não suporta moderação de canal"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v ingressou no canal como convidado."
   },
   {
@@ -5456,7 +5456,7 @@
     "translation": "Erro ao adicionar membro(s) ao canal."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v adicionado ao canal como convidado por %v."
   },
   {
@@ -6836,7 +6836,7 @@
     "translation": "Não foi possível salvar a conta."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Falha ao atualizar o usuário."
   },
   {
@@ -6876,7 +6876,7 @@
     "translation": "Nós não conseguimos obter os usuários ativos durante o período solicitado."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Falha ao atualizar o usuário."
   },
   {
@@ -7592,7 +7592,7 @@
     "translation": "O link de redefinição de senha expira em 24 horas."
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Você foi convidado para colaborar com a equipe"
   },
   {
@@ -7668,7 +7668,7 @@
     "translation": "Adicionar aplicativos ao seu espaço de trabalho"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Corpo da solicitação inválido ou ausente."
   },
   {
@@ -7872,7 +7872,7 @@
     "translation": "Usuário não tem permissão para criar um marcador de canal."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Falha ao criar marcador de canal."
   },
   {
@@ -7888,7 +7888,7 @@
     "translation": "falha ao adicionar usuário às equipes e canais do grupo"
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Falha ao excluir o marcador de canal."
   },
   {
@@ -7900,7 +7900,7 @@
     "translation": "Falha ao atualizar critério de ordenação dos marcadores do canal."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Falha ao atualizar critério de ordenação dos marcadores do canal."
   },
   {
@@ -7932,11 +7932,11 @@
     "translation": "Gerar um link para baixar uma exportação."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Atualização de membro do canal inválida: não é possível definir um convidado para um único canal; o administrador do sistema deve promover ou rebaixar os usuários de/para convidados."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Atualização de membro do canal inválida: um convidado não pode se tornar membro ou administrador da equipe; promova-o a usuário primeiro."
   },
   {
@@ -7956,7 +7956,7 @@
     "translation": "Falha ao atualizar o marcador de canal."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Falha ao atualizar o marcador de canal."
   },
   {
@@ -8268,7 +8268,7 @@
     "translation": "[{{ .SiteName }}] {{ .SenderName }} convidou você para participar de {{ .ChannelsLen }} canais na equipe {{ .TeamDisplayName }}"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "Atualização de membro da equipe inválida: um convidado não pode ser definido para uma única equipe; um administrador do sistema deve promover ou rebaixar usuários para/de convidados."
   },
   {
@@ -8276,11 +8276,11 @@
     "translation": "Não é possível gerar o código de convite para um cluster confirmado"
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "Contas de convidado estão desativadas"
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "Sua licença não suporta contas de convidado"
   },
   {
@@ -8380,7 +8380,7 @@
     "translation": "O SMTP não está configurado no console do sistema"
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "Atualização de membro da equipe inválida: um convidado não pode ser membro da equipe ou administrador da equipe; promova-o como usuário primeiro."
   },
   {
@@ -9576,7 +9576,7 @@
     "translation": "Não foi possível criar um diretório para imagens de emoji personalizadas"
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "As funções do usuário não são consistentes com o status de convidado."
   },
   {
@@ -9956,7 +9956,7 @@
     "translation": "A importação remota do cluster não é permitida"
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
     "translation": "Não é possível convidar usuários convidados para esse canal porque ele tem restrições de acesso com base nos atributos do usuário."
   },
   {

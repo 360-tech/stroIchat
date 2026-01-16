@@ -15,12 +15,12 @@ export const PostTypes = {
 
     JOIN_LEAVE: 'system_join_leave' as PostType,
     JOIN_CHANNEL: 'system_join_channel' as PostType,
-    GUEST_JOIN_CHANNEL: 'system_guest_join_channel' as PostType,
+    PARTNER_JOIN_CHANNEL: 'system_partner_join_channel' as PostType,
     LEAVE_CHANNEL: 'system_leave_channel' as PostType,
     JOIN_LEAVE_CHANNEL: 'system_join_leave_channel' as PostType,
     ADD_REMOVE: 'system_add_remove' as PostType,
     ADD_TO_CHANNEL: 'system_add_to_channel' as PostType,
-    ADD_GUEST_TO_CHANNEL: 'system_add_guest_to_chan' as PostType,
+    ADD_PARTNER_TO_CHANNEL: 'system_add_partner_to_chan' as PostType,
     REMOVE_FROM_CHANNEL: 'system_remove_from_channel' as PostType,
 
     JOIN_TEAM: 'system_join_team' as PostType,

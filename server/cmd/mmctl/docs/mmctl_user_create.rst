@@ -41,7 +41,7 @@ Options
       --email string            Required. The email address for the new user account
       --email-verified          Optional. If supplied, the new user will have the email verified. Defaults to false
       --firstname string        Optional. The first name for the new user account
-      --guest                   Optional. If supplied, the new user will be a guest. Defaults to false
+      --partner                   Optional. If supplied, the new user will be a partner. Defaults to false
   -h, --help                    help for create
       --lastname string         Optional. The last name for the new user account
       --locale string           Optional. The locale (ex: en, fr) for the new user account

@@ -46,7 +46,7 @@ Options
       --deactivated-users int          The number of deactivated users.
       --direct-channels int            The number of sample direct message channels. (default 30)
       --group-channels int             The number of sample group message channels. (default 15)
-  -g, --guests int                     The number of sample guests. (default 1)
+  -g, --partners int                     The number of sample partners. (default 1)
   -h, --help                           help for sampledata
       --posts-per-channel int          The number of sample post per channel. (default 100)
       --posts-per-direct-channel int   The number of sample posts per direct message channel. (default 15)

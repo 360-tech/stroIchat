@@ -22,7 +22,7 @@ import AdminPanelTogglable from 'components/widgets/admin_console/admin_panel_to
 
 import {PermissionsScope, DefaultRolePermissions, DocLinks, ModeratedPermissions} from 'utils/constants';
 
-import GuestPermissionsTree, {GUEST_INCLUDED_PERMISSIONS} from '../guest_permissions_tree';
+import PartnerPermissionsTree, {PARTNER_INCLUDED_PERMISSIONS} from '../partner_permissions_tree';
 import PermissionsTree, {EXCLUDED_PERMISSIONS} from '../permissions_tree';
 import PermissionsTreePlaybooks from '../permissions_tree_playbooks';
 
@@ -60,7 +60,7 @@ type RolesState = {
     run_admin: Role;
     run_member: Role;
     all_users: {name: string; display_name: string; permissions: Role['permissions']};
-    guests: {name: string; display_name: string; permissions: Role['permissions']};
+    partners: {name: string; display_name: string; permissions: Role['permissions']};
 }
 class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
     private rolesNeeded: string[];
@@ -75,7 +75,7 @@ class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
             serverError: null,
             roles: {} as RolesState,
             openRoles: {
-                guests: true,
+                partners: true,
                 all_users: true,
                 system_admin: true,
                 team_admin: true,
@@ -98,9 +98,9 @@ class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
             GeneralConstants.PLAYBOOK_MEMBER_ROLE,
             GeneralConstants.RUN_ADMIN_ROLE,
             GeneralConstants.RUN_MEMBER_ROLE,
-            GeneralConstants.SYSTEM_GUEST_ROLE,
-            GeneralConstants.TEAM_GUEST_ROLE,
-            GeneralConstants.CHANNEL_GUEST_ROLE,
+            GeneralConstants.SYSTEM_PARTNER_ROLE,
+            GeneralConstants.TEAM_PARTNER_ROLE,
+            GeneralConstants.CHANNEL_PARTNER_ROLE,
         ];
     }
 
@@ -173,12 +173,12 @@ class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
                         concat(props.roles.playbook_member.permissions).
                         concat(props.roles.run_member.permissions),
                 },
-                guests: {
-                    name: 'guests',
-                    display_name: 'Guests',
-                    permissions: props.roles.system_guest.permissions?.
-                        concat(props.roles.team_guest.permissions).
-                        concat(props.roles.channel_guest.permissions),
+                partners: {
+                    name: 'partners',
+                    display_name: 'Partners',
+                    permissions: props.roles.system_partner.permissions?.
+                        concat(props.roles.team_partner.permissions).
+                        concat(props.roles.channel_partner.permissions),
                 },
             },
         });
@@ -209,18 +209,18 @@ class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
         };
     };
 
-    deriveRolesFromGuests = (role: RolesState['guests']): Record<string, Role> => {
+    deriveRolesFromPartners = (role: RolesState['partners']): Record<string, Role> => {
         return {
-            system_guest: {
-                ...this.props.roles.system_guest,
+            system_partner: {
+                ...this.props.roles.system_partner,
                 permissions: role.permissions?.filter((p) => PermissionsScope[p] === 'system_scope'),
             },
-            team_guest: {
-                ...this.props.roles.team_guest,
+            team_partner: {
+                ...this.props.roles.team_partner,
                 permissions: role.permissions?.filter((p) => PermissionsScope[p] === 'team_scope'),
             },
-            channel_guest: {
-                ...this.props.roles.channel_guest,
+            channel_partner: {
+                ...this.props.roles.channel_partner,
                 permissions: role.permissions?.filter((p) => PermissionsScope[p] === 'channel_scope'),
             },
         };
@@ -250,20 +250,20 @@ class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
         return roles;
     };
 
-    restoreGuestPermissions = (roles: Record<string, Role>) => {
-        for (const permission of this.props.roles.system_guest.permissions) {
-            if (!GUEST_INCLUDED_PERMISSIONS.includes(permission)) {
-                roles.system_guest.permissions?.push(permission);
+    restorePartnerPermissions = (roles: Record<string, Role>) => {
+        for (const permission of this.props.roles.system_partner.permissions) {
+            if (!PARTNER_INCLUDED_PERMISSIONS.includes(permission)) {
+                roles.system_partner.permissions?.push(permission);
             }
         }
-        for (const permission of this.props.roles.team_guest.permissions) {
-            if (!GUEST_INCLUDED_PERMISSIONS.includes(permission)) {
-                roles.team_guest.permissions?.push(permission);
+        for (const permission of this.props.roles.team_partner.permissions) {
+            if (!PARTNER_INCLUDED_PERMISSIONS.includes(permission)) {
+                roles.team_partner.permissions?.push(permission);
             }
         }
-        for (const permission of this.props.roles.channel_guest.permissions) {
-            if (!GUEST_INCLUDED_PERMISSIONS.includes(permission)) {
-                roles.channel_guest.permissions?.push(permission);
+        for (const permission of this.props.roles.channel_partner.permissions) {
+            if (!PARTNER_INCLUDED_PERMISSIONS.includes(permission)) {
+                roles.channel_partner.permissions?.push(permission);
             }
         }
         return roles;
@@ -292,12 +292,12 @@ class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
             runMemberPromise,
         ];
 
-        if (this.haveGuestAccountsPermissions()) {
-            const guestRoles = this.restoreGuestPermissions(this.deriveRolesFromGuests(this.state.roles.guests));
-            const systemGuestPromise = this.props.actions.editRole(guestRoles.system_guest);
-            const teamGuestPromise = this.props.actions.editRole(guestRoles.team_guest);
-            const channelGuestPromise = this.props.actions.editRole(guestRoles.channel_guest);
-            promises.push(systemGuestPromise, teamGuestPromise, channelGuestPromise);
+        if (this.havePartnerAccountsPermissions()) {
+            const partnerRoles = this.restorePartnerPermissions(this.deriveRolesFromPartners(this.state.roles.partners));
+            const systemPartnerPromise = this.props.actions.editRole(partnerRoles.system_partner);
+            const teamPartnerPromise = this.props.actions.editRole(partnerRoles.team_partner);
+            const channelPartnerPromise = this.props.actions.editRole(partnerRoles.channel_partner);
+            promises.push(systemPartnerPromise, teamPartnerPromise, channelPartnerPromise);
         }
 
         this.setState({saving: true});
@@ -373,8 +373,8 @@ class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
         this.props.actions.setNavigationBlocked(true);
     };
 
-    haveGuestAccountsPermissions = () => {
-        return this.props.license.GuestAccountsPermissions === 'true';
+    havePartnerAccountsPermissions = () => {
+        return this.props.license.PartnerAccountsPermissions === 'true';
     };
 
     render = () => {
@@ -421,22 +421,22 @@ class PermissionSystemSchemeSettings extends React.PureComponent<Props, State> {
                             </div>
                         </div>
 
-                        {isLicensed && this.props.config.EnableGuestAccounts === 'true' &&
+                        {isLicensed && this.props.config.EnablePartnerAccounts === 'true' &&
                             <AdminPanelTogglable
                                 className='permissions-block'
-                                open={this.state.openRoles.guests}
+                                open={this.state.openRoles.partners}
                                 id='all_users'
-                                onToggle={() => this.toggleRole('guests')}
-                                title={defineMessage({id: 'admin.permissions.systemScheme.GuestsTitle', defaultMessage: 'Guests'})}
-                                subtitle={defineMessage({id: 'admin.permissions.systemScheme.GuestsDescription', defaultMessage: 'Permissions granted to guest users.'})}
+                                onToggle={() => this.toggleRole('partners')}
+                                title={defineMessage({id: 'admin.permissions.systemScheme.PartnersTitle', defaultMessage: 'Partners'})}
+                                subtitle={defineMessage({id: 'admin.permissions.systemScheme.PartnersDescription', defaultMessage: 'Permissions granted to partner users.'})}
                             >
-                                <GuestPermissionsTree
+                                <PartnerPermissionsTree
                                     selected={this.state.selectedPermission}
-                                    role={this.state.roles.guests}
+                                    role={this.state.roles.partners}
                                     scope={'system_scope'}
                                     onToggle={this.togglePermission}
                                     selectRow={this.selectRow}
-                                    readOnly={this.props.isDisabled || !this.haveGuestAccountsPermissions()}
+                                    readOnly={this.props.isDisabled || !this.havePartnerAccountsPermissions()}
                                 />
                             </AdminPanelTogglable>}
 

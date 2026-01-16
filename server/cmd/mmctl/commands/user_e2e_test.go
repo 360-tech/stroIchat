@@ -981,61 +981,61 @@ func (s *MmctlE2ETestSuite) TestDeleteAllUserCmd() {
 	})
 }
 
-func (s *MmctlE2ETestSuite) TestPromoteGuestToUserCmd() {
+func (s *MmctlE2ETestSuite) TestPromotePartnerToUserCmd() {
 	s.SetupEnterpriseTestHelper().InitBasic()
 
 	user, appErr := s.th.App.CreateUser(s.th.Context, &model.User{Email: s.th.GenerateTestEmail(), Username: model.NewUsername(), Password: model.NewId()})
 	s.Require().Nil(appErr)
 
-	s.th.App.UpdateConfig(func(c *model.Config) { *c.GuestAccountsSettings.Enable = true })
-	defer s.th.App.UpdateConfig(func(c *model.Config) { *c.GuestAccountsSettings.Enable = false })
+	s.th.App.UpdateConfig(func(c *model.Config) { *c.PartnerAccountsSettings.Enable = true })
+	defer s.th.App.UpdateConfig(func(c *model.Config) { *c.PartnerAccountsSettings.Enable = false })
 
-	s.Require().Nil(s.th.App.DemoteUserToGuest(s.th.Context, user))
+	s.Require().Nil(s.th.App.DemoteUserToPartner(s.th.Context, user))
 
-	s.RunForSystemAdminAndLocal("MM-T3936 Promote a guest to a user", func(c client.Client) {
+	s.RunForSystemAdminAndLocal("MM-T3936 Promote a partner to a user", func(c client.Client) {
 		printer.Clean()
 
-		err := promoteGuestToUserCmdF(c, nil, []string{user.Email})
+		err := promotePartnerToUserCmdF(c, nil, []string{user.Email})
 		s.Require().NoError(err)
-		defer s.Require().Nil(s.th.App.DemoteUserToGuest(s.th.Context, user))
+		defer s.Require().Nil(s.th.App.DemoteUserToPartner(s.th.Context, user))
 		s.Require().Len(printer.GetLines(), 1)
 		s.Require().Len(printer.GetErrorLines(), 0)
 	})
 
-	s.Run("MM-T3937 Promote a guest to a user with normal client", func() {
+	s.Run("MM-T3937 Promote a partner to a user with normal client", func() {
 		printer.Clean()
 
-		err := promoteGuestToUserCmdF(s.th.Client, nil, []string{user.Email})
+		err := promotePartnerToUserCmdF(s.th.Client, nil, []string{user.Email})
 		s.Require().Error(err)
 		s.Require().Len(printer.GetLines(), 0)
 		s.Require().Len(printer.GetErrorLines(), 1)
-		s.Require().Equal(fmt.Sprintf("unable to promote guest %s: You do not have the appropriate permissions.", user.Email), printer.GetErrorLines()[0])
+		s.Require().Equal(fmt.Sprintf("unable to promote partner %s: You do not have the appropriate permissions.", user.Email), printer.GetErrorLines()[0])
 	})
 }
 
-func (s *MmctlE2ETestSuite) TestDemoteUserToGuestCmd() {
+func (s *MmctlE2ETestSuite) TestDemoteUserToPartnerCmd() {
 	s.SetupEnterpriseTestHelper().InitBasic()
 
 	user, appErr := s.th.App.CreateUser(s.th.Context, &model.User{Email: s.th.GenerateTestEmail(), Username: model.NewUsername(), Password: model.NewId()})
 	s.Require().Nil(appErr)
 
-	s.th.App.UpdateConfig(func(c *model.Config) { *c.GuestAccountsSettings.Enable = true })
-	defer s.th.App.UpdateConfig(func(c *model.Config) { *c.GuestAccountsSettings.Enable = false })
+	s.th.App.UpdateConfig(func(c *model.Config) { *c.PartnerAccountsSettings.Enable = true })
+	defer s.th.App.UpdateConfig(func(c *model.Config) { *c.PartnerAccountsSettings.Enable = false })
 
-	s.RunForSystemAdminAndLocal("MM-T3938 Demote a user to a guest", func(c client.Client) {
+	s.RunForSystemAdminAndLocal("MM-T3938 Demote a user to a partner", func(c client.Client) {
 		printer.Clean()
 
-		err := demoteUserToGuestCmdF(c, nil, []string{user.Email})
+		err := demoteUserToPartnerCmdF(c, nil, []string{user.Email})
 		s.Require().Nil(err)
-		defer s.Require().Nil(s.th.App.PromoteGuestToUser(s.th.Context, user, ""))
+		defer s.Require().Nil(s.th.App.PromotePartnerToUser(s.th.Context, user, ""))
 		s.Require().Len(printer.GetLines(), 1)
 		s.Require().Len(printer.GetErrorLines(), 0)
 	})
 
-	s.Run("MM-T3939 Demote a user to a guest with normal client", func() {
+	s.Run("MM-T3939 Demote a user to a partner with normal client", func() {
 		printer.Clean()
 
-		err := demoteUserToGuestCmdF(s.th.Client, nil, []string{user.Email})
+		err := demoteUserToPartnerCmdF(s.th.Client, nil, []string{user.Email})
 		s.Require().NotNil(err)
 		s.Require().Len(printer.GetLines(), 0)
 		s.Require().Len(printer.GetErrorLines(), 1)

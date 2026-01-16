@@ -233,7 +233,7 @@ func TestAddUserToTeamByToken(t *testing.T) {
 
 	user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
 	ruser, _ := th.App.CreateUser(th.Context, &user)
-	rguest := th.CreateGuest()
+	rpartner := th.CreatePartner()
 
 	t.Run("invalid token", func(t *testing.T) {
 		_, _, err := th.App.AddUserToTeamByToken(th.Context, ruser.Id, "123")
@@ -320,19 +320,19 @@ func TestAddUserToTeamByToken(t *testing.T) {
 		assert.Len(t, members, 2)
 	})
 
-	t.Run("invalid add a guest using a regular invite", func(t *testing.T) {
+	t.Run("invalid add a partner using a regular invite", func(t *testing.T) {
 		token := model.NewToken(
 			TokenTypeTeamInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id}),
 		)
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
-		_, _, err := th.App.AddUserToTeamByToken(th.Context, rguest.Id, token.Token)
+		_, _, err := th.App.AddUserToTeamByToken(th.Context, rpartner.Id, token.Token)
 		assert.NotNil(t, err)
 	})
 
-	t.Run("invalid add a regular user using a guest invite", func(t *testing.T) {
+	t.Run("invalid add a regular user using a partner invite", func(t *testing.T) {
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "channels": th.BasicChannel.Id}),
 		)
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
@@ -340,46 +340,46 @@ func TestAddUserToTeamByToken(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 
-	t.Run("invalid add a guest user with a non-granted email domain", func(t *testing.T) {
-		restrictedDomain := *th.App.Config().GuestAccountsSettings.RestrictCreationToDomains
+	t.Run("invalid add a partner user with a non-granted email domain", func(t *testing.T) {
+		restrictedDomain := *th.App.Config().PartnerAccountsSettings.RestrictCreationToDomains
 		defer func() {
-			th.App.UpdateConfig(func(cfg *model.Config) { cfg.GuestAccountsSettings.RestrictCreationToDomains = &restrictedDomain })
+			th.App.UpdateConfig(func(cfg *model.Config) { cfg.PartnerAccountsSettings.RestrictCreationToDomains = &restrictedDomain })
 		}()
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.RestrictCreationToDomains = "restricted.com" })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.RestrictCreationToDomains = "restricted.com" })
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "channels": th.BasicChannel.Id}),
 		)
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
-		_, _, err := th.App.AddUserToTeamByToken(th.Context, rguest.Id, token.Token)
+		_, _, err := th.App.AddUserToTeamByToken(th.Context, rpartner.Id, token.Token)
 		require.NotNil(t, err)
 		assert.Equal(t, "api.team.join_user_to_team.allowed_domains.app_error", err.Id)
 	})
 
-	t.Run("add a guest user with a granted email domain", func(t *testing.T) {
-		restrictedDomain := *th.App.Config().GuestAccountsSettings.RestrictCreationToDomains
+	t.Run("add a partner user with a granted email domain", func(t *testing.T) {
+		restrictedDomain := *th.App.Config().PartnerAccountsSettings.RestrictCreationToDomains
 		defer func() {
-			th.App.UpdateConfig(func(cfg *model.Config) { cfg.GuestAccountsSettings.RestrictCreationToDomains = &restrictedDomain })
+			th.App.UpdateConfig(func(cfg *model.Config) { cfg.PartnerAccountsSettings.RestrictCreationToDomains = &restrictedDomain })
 		}()
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.RestrictCreationToDomains = "restricted.com" })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.RestrictCreationToDomains = "restricted.com" })
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "channels": th.BasicChannel.Id}),
 		)
-		guestEmail := rguest.Email
-		rguest.Email = "test@restricted.com"
-		_, err := th.App.Srv().Store().User().Update(th.Context, rguest, false)
-		th.App.InvalidateCacheForUser(rguest.Id)
+		partnerEmail := rpartner.Email
+		rpartner.Email = "test@restricted.com"
+		_, err := th.App.Srv().Store().User().Update(th.Context, rpartner, false)
+		th.App.InvalidateCacheForUser(rpartner.Id)
 		require.NoError(t, err)
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
-		_, _, appErr := th.App.AddUserToTeamByToken(th.Context, rguest.Id, token.Token)
+		_, _, appErr := th.App.AddUserToTeamByToken(th.Context, rpartner.Id, token.Token)
 		require.Nil(t, appErr)
-		rguest.Email = guestEmail
-		_, err = th.App.Srv().Store().User().Update(th.Context, rguest, false)
+		rpartner.Email = partnerEmail
+		_, err = th.App.Srv().Store().User().Update(th.Context, rpartner, false)
 		require.NoError(t, err)
 	})
 
-	t.Run("add a guest user even though there are team and system domain restrictions", func(t *testing.T) {
+	t.Run("add a partner user even though there are team and system domain restrictions", func(t *testing.T) {
 		th.BasicTeam.AllowedDomains = "restricted-team.com"
 		_, err := th.Server.Store().Team().Update(th.BasicTeam)
 		require.NoError(t, err)
@@ -389,33 +389,33 @@ func TestAddUserToTeamByToken(t *testing.T) {
 		}()
 		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.TeamSettings.RestrictCreationToDomains = "restricted.com" })
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "channels": th.BasicChannel.Id}),
 		)
-		_, err = th.App.Srv().Store().User().Update(th.Context, rguest, false)
+		_, err = th.App.Srv().Store().User().Update(th.Context, rpartner, false)
 		require.NoError(t, err)
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
-		_, _, appErr := th.App.AddUserToTeamByToken(th.Context, rguest.Id, token.Token)
+		_, _, appErr := th.App.AddUserToTeamByToken(th.Context, rpartner.Id, token.Token)
 		require.Nil(t, appErr)
 		th.BasicTeam.AllowedDomains = ""
 		_, err = th.Server.Store().Team().Update(th.BasicTeam)
 		require.NoError(t, err)
 	})
 
-	t.Run("valid request from guest invite", func(t *testing.T) {
+	t.Run("valid request from partner invite", func(t *testing.T) {
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "channels": th.BasicChannel.Id}),
 		)
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
 
-		_, _, err := th.App.AddUserToTeamByToken(th.Context, rguest.Id, token.Token)
+		_, _, err := th.App.AddUserToTeamByToken(th.Context, rpartner.Id, token.Token)
 		require.Nil(t, err, "Should add user to the team")
 
 		_, nErr := th.App.Srv().Store().Token().GetByToken(token.Token)
 		require.Error(t, nErr, "The token must be deleted after be used")
 
-		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, rguest.Id)
+		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, rpartner.Id)
 		require.Nil(t, err)
 		require.Len(t, members, 1)
 		assert.Equal(t, members[0].ChannelId, th.BasicChannel.Id)
@@ -1372,31 +1372,31 @@ func TestGetTeamStats(t *testing.T) {
 	})
 }
 
-func TestUpdateTeamMemberRolesChangingGuest(t *testing.T) {
+func TestUpdateTeamMemberRolesChangingPartner(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	t.Run("from guest to user", func(t *testing.T) {
+	t.Run("from partner to user", func(t *testing.T) {
 		user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		ruser, _ := th.App.CreateGuest(th.Context, &user)
+		ruser, _ := th.App.CreatePartner(th.Context, &user)
 
 		_, _, err := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, ruser.Id, "")
 		require.Nil(t, err)
 
 		_, err = th.App.UpdateTeamMemberRoles(th.Context, th.BasicTeam.Id, ruser.Id, "team_user")
-		require.NotNil(t, err, "Should fail when try to modify the guest role")
+		require.NotNil(t, err, "Should fail when try to modify the partner role")
 	})
 
-	t.Run("from user to guest", func(t *testing.T) {
+	t.Run("from user to partner", func(t *testing.T) {
 		user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
 		ruser, _ := th.App.CreateUser(th.Context, &user)
 
 		_, _, err := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, ruser.Id, "")
 		require.Nil(t, err)
 
-		_, err = th.App.UpdateTeamMemberRoles(th.Context, th.BasicTeam.Id, ruser.Id, "team_guest")
-		require.NotNil(t, err, "Should fail when try to modify the guest role")
+		_, err = th.App.UpdateTeamMemberRoles(th.Context, th.BasicTeam.Id, ruser.Id, "team_partner")
+		require.NotNil(t, err, "Should fail when try to modify the partner role")
 	})
 
 	t.Run("from user to admin", func(t *testing.T) {
@@ -1407,12 +1407,12 @@ func TestUpdateTeamMemberRolesChangingGuest(t *testing.T) {
 		require.Nil(t, err)
 
 		_, err = th.App.UpdateTeamMemberRoles(th.Context, th.BasicTeam.Id, ruser.Id, "team_user team_admin")
-		require.Nil(t, err, "Should work when you not modify guest role")
+		require.Nil(t, err, "Should work when you not modify partner role")
 	})
 
-	t.Run("from guest to guest plus custom", func(t *testing.T) {
+	t.Run("from partner to partner plus custom", func(t *testing.T) {
 		user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		ruser, _ := th.App.CreateGuest(th.Context, &user)
+		ruser, _ := th.App.CreatePartner(th.Context, &user)
 
 		_, _, err := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, ruser.Id, "")
 		require.Nil(t, err)
@@ -1420,19 +1420,19 @@ func TestUpdateTeamMemberRolesChangingGuest(t *testing.T) {
 		_, err = th.App.CreateRole(&model.Role{Name: "custom", DisplayName: "custom", Description: "custom"})
 		require.Nil(t, err)
 
-		_, err = th.App.UpdateTeamMemberRoles(th.Context, th.BasicTeam.Id, ruser.Id, "team_guest custom")
-		require.Nil(t, err, "Should work when you not modify guest role")
+		_, err = th.App.UpdateTeamMemberRoles(th.Context, th.BasicTeam.Id, ruser.Id, "team_partner custom")
+		require.Nil(t, err, "Should work when you not modify partner role")
 	})
 
-	t.Run("a guest cant have user role", func(t *testing.T) {
+	t.Run("a partner cant have user role", func(t *testing.T) {
 		user := model.User{Email: strings.ToLower(model.NewId()) + "success+test@example.com", Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		ruser, _ := th.App.CreateGuest(th.Context, &user)
+		ruser, _ := th.App.CreatePartner(th.Context, &user)
 
 		_, _, err := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, ruser.Id, "")
 		require.Nil(t, err)
 
-		_, err = th.App.UpdateTeamMemberRoles(th.Context, th.BasicTeam.Id, ruser.Id, "team_guest team_user")
-		require.NotNil(t, err, "Should work when you not modify guest role")
+		_, err = th.App.UpdateTeamMemberRoles(th.Context, th.BasicTeam.Id, ruser.Id, "team_partner team_user")
+		require.NotNil(t, err, "Should work when you not modify partner role")
 	})
 }
 
@@ -1468,7 +1468,7 @@ func TestInvalidateAllEmailInvites(t *testing.T) {
 	t1 := model.Token{
 		Token:    "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
 		CreateAt: model.GetMillis(),
-		Type:     TokenTypeGuestInvitation,
+		Type:     TokenTypePartnerInvitation,
 		Extra:    "",
 	}
 	err := th.App.Srv().Store().Token().Save(&t1)
@@ -1642,7 +1642,7 @@ func TestInviteNewUsersToTeamGracefully(t *testing.T) {
 	})
 }
 
-func TestInviteGuestsToChannelsGracefully(t *testing.T) {
+func TestInvitePartnersToChannelsGracefully(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
@@ -1653,7 +1653,7 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 
 	t.Run("it return list of email with no error on success", func(t *testing.T) {
 		emailServiceMock := emailmocks.ServiceInterface{}
-		emailServiceMock.On("SendGuestInviteEmails",
+		emailServiceMock.On("SendPartnerInviteEmails",
 			mock.AnythingOfType("*model.Team"),
 			mock.AnythingOfType("[]*model.Channel"),
 			mock.AnythingOfType("string"),
@@ -1670,7 +1670,7 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 		emailServiceMock.On("Stop").Once().Return()
 		th.App.Srv().EmailService = &emailServiceMock
 
-		res, err := th.App.InviteGuestsToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
+		res, err := th.App.InvitePartnersToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.PartnersInvite{
 			Emails:   []string{"idontexist@mattermost.com"},
 			Channels: []string{th.BasicChannel.Id},
 		}, th.BasicUser.Id)
@@ -1681,7 +1681,7 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 
 	t.Run("it should assign errors to emails when failing to send", func(t *testing.T) {
 		emailServiceMock := emailmocks.ServiceInterface{}
-		emailServiceMock.On("SendGuestInviteEmails",
+		emailServiceMock.On("SendPartnerInviteEmails",
 			mock.AnythingOfType("*model.Team"),
 			mock.AnythingOfType("[]*model.Channel"),
 			mock.AnythingOfType("string"),
@@ -1698,7 +1698,7 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 		emailServiceMock.On("Stop").Once().Return()
 		th.App.Srv().EmailService = &emailServiceMock
 
-		res, err := th.App.InviteGuestsToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
+		res, err := th.App.InvitePartnersToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.PartnersInvite{
 			Emails:   []string{"idontexist@mattermost.com"},
 			Channels: []string{th.BasicChannel.Id},
 		}, th.BasicUser.Id)
@@ -1708,29 +1708,29 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 		require.NotNil(t, res[0].Error)
 	})
 
-	t.Run("should handle guest_subtype in gracefully invite", func(t *testing.T) {
+	t.Run("should handle partner_subtype in gracefully invite", func(t *testing.T) {
 		emailServiceMock := emailmocks.ServiceInterface{}
-		emailServiceMock.On("SendGuestInviteEmails",
+		emailServiceMock.On("SendPartnerInviteEmails",
 			mock.AnythingOfType("*model.Team"),
 			mock.AnythingOfType("[]*model.Channel"),
 			mock.AnythingOfType("string"),
 			mock.AnythingOfType("string"),
 			mock.AnythingOfType("[]uint8"),
-			[]string{"guest@test.com"},
+			[]string{"partner@test.com"},
 			"",
 			"",
 			true,
 			false,
 			false,
-			model.GuestSubtypeCustomer,
+			model.PartnerSubtypeCustomer,
 		).Once().Return(nil)
 		emailServiceMock.On("Stop").Maybe().Return()
 		th.App.Srv().EmailService = &emailServiceMock
 
-		res, err := th.App.InviteGuestsToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
-			Emails:       []string{"guest@test.com"},
+		res, err := th.App.InvitePartnersToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.PartnersInvite{
+			Emails:       []string{"partner@test.com"},
 			Channels:     []string{th.BasicChannel.Id},
-			GuestSubtype: model.GuestSubtypeCustomer,
+			PartnerSubtype: model.PartnerSubtypeCustomer,
 		}, th.BasicUser.Id)
 		require.Nil(t, err)
 		require.Len(t, res, 1)
@@ -1739,7 +1739,7 @@ func TestInviteGuestsToChannelsGracefully(t *testing.T) {
 	})
 }
 
-func TestInviteGuestsToChannelsWithGuestSubtype(t *testing.T) {
+func TestInvitePartnersToChannelsWithPartnerSubtype(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
@@ -1748,89 +1748,89 @@ func TestInviteGuestsToChannelsWithGuestSubtype(t *testing.T) {
 		*cfg.ServiceSettings.EnableEmailInvitations = true
 	})
 
-	t.Run("should accept valid guest_subtype", func(t *testing.T) {
+	t.Run("should accept valid partner_subtype", func(t *testing.T) {
 		emailServiceMock := emailmocks.ServiceInterface{}
-		emailServiceMock.On("SendGuestInviteEmails",
+		emailServiceMock.On("SendPartnerInviteEmails",
 			mock.AnythingOfType("*model.Team"),
 			mock.AnythingOfType("[]*model.Channel"),
 			mock.AnythingOfType("string"),
 			mock.AnythingOfType("string"),
 			mock.AnythingOfType("[]uint8"),
-			[]string{"guest@test.com"},
+			[]string{"partner@test.com"},
 			"",
 			"",
 			false,
 			false,
 			false,
-			model.GuestSubtypeContractor,
+			model.PartnerSubtypeContractor,
 		).Once().Return(nil)
 		emailServiceMock.On("Stop").Maybe().Return()
 		th.App.Srv().EmailService = &emailServiceMock
 
-		err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
-			Emails:       []string{"guest@test.com"},
+		err := th.App.InvitePartnersToChannels(th.Context, th.BasicTeam.Id, &model.PartnersInvite{
+			Emails:       []string{"partner@test.com"},
 			Channels:     []string{th.BasicChannel.Id},
-			GuestSubtype: model.GuestSubtypeContractor,
+			PartnerSubtype: model.PartnerSubtypeContractor,
 		}, th.BasicUser.Id)
 		require.Nil(t, err)
 		emailServiceMock.AssertExpectations(t)
 	})
 
-	t.Run("should reject invalid guest_subtype", func(t *testing.T) {
-		err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
-			Emails:       []string{"guest@test.com"},
+	t.Run("should reject invalid partner_subtype", func(t *testing.T) {
+		err := th.App.InvitePartnersToChannels(th.Context, th.BasicTeam.Id, &model.PartnersInvite{
+			Emails:       []string{"partner@test.com"},
 			Channels:     []string{th.BasicChannel.Id},
-			GuestSubtype: "invalid_subtype",
+			PartnerSubtype: "invalid_subtype",
 		}, th.BasicUser.Id)
 		require.NotNil(t, err)
-		require.Equal(t, "api.team.invite_guests.invalid_guest_subtype.app_error", err.Id)
+		require.Equal(t, "api.team.invite_partners.invalid_partner_subtype.app_error", err.Id)
 	})
 
-	t.Run("should default to not_specified when guest_subtype is empty", func(t *testing.T) {
+	t.Run("should default to not_specified when partner_subtype is empty", func(t *testing.T) {
 		emailServiceMock := emailmocks.ServiceInterface{}
-		emailServiceMock.On("SendGuestInviteEmails",
+		emailServiceMock.On("SendPartnerInviteEmails",
 			mock.AnythingOfType("*model.Team"),
 			mock.AnythingOfType("[]*model.Channel"),
 			mock.AnythingOfType("string"),
 			mock.AnythingOfType("string"),
 			mock.AnythingOfType("[]uint8"),
-			[]string{"guest@test.com"},
+			[]string{"partner@test.com"},
 			"",
 			"",
 			false,
 			false,
 			false,
-			model.GuestSubtypeNotSpecified,
+			model.PartnerSubtypeNotSpecified,
 		).Once().Return(nil)
 		emailServiceMock.On("Stop").Maybe().Return()
 		th.App.Srv().EmailService = &emailServiceMock
 
-		err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
-			Emails:       []string{"guest@test.com"},
+		err := th.App.InvitePartnersToChannels(th.Context, th.BasicTeam.Id, &model.PartnersInvite{
+			Emails:       []string{"partner@test.com"},
 			Channels:     []string{th.BasicChannel.Id},
-			GuestSubtype: "",
+			PartnerSubtype: "",
 		}, th.BasicUser.Id)
 		require.Nil(t, err)
 		emailServiceMock.AssertExpectations(t)
 	})
 
-	t.Run("should accept all valid guest_subtypes", func(t *testing.T) {
+	t.Run("should accept all valid partner_subtypes", func(t *testing.T) {
 		validSubtypes := []string{
-			model.GuestSubtypeNotSpecified,
-			model.GuestSubtypeContractor,
-			model.GuestSubtypeCustomer,
-			model.GuestSubtypePartner,
+			model.PartnerSubtypeNotSpecified,
+			model.PartnerSubtypeContractor,
+			model.PartnerSubtypeCustomer,
+			model.PartnerSubtypePartner,
 		}
 
 		for _, subtype := range validSubtypes {
 			emailServiceMock := emailmocks.ServiceInterface{}
-			emailServiceMock.On("SendGuestInviteEmails",
+			emailServiceMock.On("SendPartnerInviteEmails",
 				mock.AnythingOfType("*model.Team"),
 				mock.AnythingOfType("[]*model.Channel"),
 				mock.AnythingOfType("string"),
 				mock.AnythingOfType("string"),
 				mock.AnythingOfType("[]uint8"),
-				[]string{"guest@test.com"},
+				[]string{"partner@test.com"},
 				"",
 				"",
 				false,
@@ -1841,18 +1841,18 @@ func TestInviteGuestsToChannelsWithGuestSubtype(t *testing.T) {
 			emailServiceMock.On("Stop").Maybe().Return()
 			th.App.Srv().EmailService = &emailServiceMock
 
-			err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{
-				Emails:       []string{"guest@test.com"},
+			err := th.App.InvitePartnersToChannels(th.Context, th.BasicTeam.Id, &model.PartnersInvite{
+				Emails:       []string{"partner@test.com"},
 				Channels:     []string{th.BasicChannel.Id},
-				GuestSubtype: subtype,
+				PartnerSubtype: subtype,
 			}, th.BasicUser.Id)
-			require.Nil(t, err, "Should accept guest_subtype: %s", subtype)
+			require.Nil(t, err, "Should accept partner_subtype: %s", subtype)
 			emailServiceMock.AssertExpectations(t)
 		}
 	})
 }
 
-func TestInviteGuestsToChannelsWithPolicyEnforced(t *testing.T) {
+func TestInvitePartnersToChannelsWithPolicyEnforced(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
@@ -1883,19 +1883,19 @@ func TestInviteGuestsToChannelsWithPolicyEnforced(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, channelPolicy)
 
-	// Attempt to invite guests to the policy-enforced channel
-	guestsInvite := &model.GuestsInvite{
-		Emails:   []string{"guest@example.com"},
+	// Attempt to invite partners to the policy-enforced channel
+	partnersInvite := &model.PartnersInvite{
+		Emails:   []string{"partner@example.com"},
 		Channels: []string{channel.Id},
 		Message:  "test message",
 	}
 
 	// Call the function we want to test
-	_, _, _, appErr := th.App.prepareInviteGuestsToChannels(th.BasicTeam.Id, guestsInvite, th.BasicUser.Id)
+	_, _, _, appErr := th.App.prepareInvitePartnersToChannels(th.BasicTeam.Id, partnersInvite, th.BasicUser.Id)
 
 	// Verify that the appropriate error is returned
 	require.NotNil(t, appErr)
-	require.Equal(t, "api.team.invite_guests.policy_enforced_channel.app_error", appErr.Id)
+	require.Equal(t, "api.team.invite_partners.policy_enforced_channel.app_error", appErr.Id)
 }
 
 func TestTeamSendEvents(t *testing.T) {

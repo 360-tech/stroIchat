@@ -47,8 +47,8 @@ func (api *API) InitUser() {
 	api.BaseRoutes.User.Handle("/roles", api.APISessionRequired(updateUserRoles)).Methods(http.MethodPut)
 	api.BaseRoutes.User.Handle("/active", api.APISessionRequired(updateUserActive)).Methods(http.MethodPut)
 	api.BaseRoutes.User.Handle("/password", api.APISessionRequired(updatePassword)).Methods(http.MethodPut)
-	api.BaseRoutes.User.Handle("/promote", api.APISessionRequired(promoteGuestToUser)).Methods(http.MethodPost)
-	api.BaseRoutes.User.Handle("/demote", api.APISessionRequired(demoteUserToGuest)).Methods(http.MethodPost)
+	api.BaseRoutes.User.Handle("/promote", api.APISessionRequired(promotePartnerToUser)).Methods(http.MethodPost)
+	api.BaseRoutes.User.Handle("/demote", api.APISessionRequired(demoteUserToPartner)).Methods(http.MethodPost)
 	api.BaseRoutes.User.Handle("/convert_to_bot", api.APISessionRequired(convertUserToBot)).Methods(http.MethodPost)
 	api.BaseRoutes.Users.Handle("/password/reset", api.APIHandler(resetPassword)).Methods(http.MethodPost)
 	api.BaseRoutes.Users.Handle("/password/reset/send", api.APIHandler(sendPasswordReset)).Methods(http.MethodPost)
@@ -240,7 +240,7 @@ func createUser(c *Context, w http.ResponseWriter, r *http.Request) {
 		}
 		auditRec.AddMeta("token_type", token.Type)
 
-		if token.Type == app.TokenTypeGuestInvitation {
+		if token.Type == app.TokenTypePartnerInvitation {
 		}
 		ruser, err = c.App.CreateUserWithToken(c.AppContext, &user, token)
 	} else if inviteId != "" {
@@ -2005,7 +2005,7 @@ func login(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 	auditRec.AddEventResultState(user)
 
-	if user.IsGuest() {
+	if user.IsPartner() {
 	}
 
 	if user.IsRemote() {
@@ -2914,18 +2914,18 @@ func getUserTermsOfService(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func promoteGuestToUser(c *Context, w http.ResponseWriter, r *http.Request) {
+func promotePartnerToUser(c *Context, w http.ResponseWriter, r *http.Request) {
 	c.RequireUserId()
 	if c.Err != nil {
 		return
 	}
 
-	auditRec := c.MakeAuditRecord(model.AuditEventPromoteGuestToUser, model.AuditStatusFail)
+	auditRec := c.MakeAuditRecord(model.AuditEventPromotePartnerToUser, model.AuditStatusFail)
 	defer c.LogAuditRec(auditRec)
 	model.AddEventParameterToAuditRec(auditRec, "user_id", c.Params.UserId)
 
-	if !c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionPromoteGuest) {
-		c.SetPermissionError(model.PermissionPromoteGuest)
+	if !c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionPromotePartner) {
+		c.SetPermissionError(model.PermissionPromotePartner)
 		return
 	}
 
@@ -2936,12 +2936,12 @@ func promoteGuestToUser(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 	auditRec.AddEventResultState(user)
 
-	if !user.IsGuest() {
-		c.Err = model.NewAppError("Api4.promoteGuestToUser", "api.user.promote_guest_to_user.no_guest.app_error", nil, "", http.StatusNotImplemented)
+	if !user.IsPartner() {
+		c.Err = model.NewAppError("Api4.promotePartnerToUser", "api.user.promote_partner_to_user.no_partner.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
 
-	if err := c.App.PromoteGuestToUser(c.AppContext, user, c.AppContext.Session().UserId); err != nil {
+	if err := c.App.PromotePartnerToUser(c.AppContext, user, c.AppContext.Session().UserId); err != nil {
 		c.Err = err
 		return
 	}
@@ -2950,19 +2950,19 @@ func promoteGuestToUser(c *Context, w http.ResponseWriter, r *http.Request) {
 	ReturnStatusOK(w)
 }
 
-func demoteUserToGuest(c *Context, w http.ResponseWriter, r *http.Request) {
+func demoteUserToPartner(c *Context, w http.ResponseWriter, r *http.Request) {
 	c.RequireUserId()
 	if c.Err != nil {
 		return
 	}
 
 
-	auditRec := c.MakeAuditRecord(model.AuditEventDemoteUserToGuest, model.AuditStatusFail)
+	auditRec := c.MakeAuditRecord(model.AuditEventDemoteUserToPartner, model.AuditStatusFail)
 	model.AddEventParameterToAuditRec(auditRec, "user_id", c.Params.UserId)
 	defer c.LogAuditRec(auditRec)
 
-	if !c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionDemoteToGuest) {
-		c.SetPermissionError(model.PermissionDemoteToGuest)
+	if !c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionDemoteToPartner) {
+		c.SetPermissionError(model.PermissionDemoteToPartner)
 		return
 	}
 
@@ -2979,12 +2979,12 @@ func demoteUserToGuest(c *Context, w http.ResponseWriter, r *http.Request) {
 
 	auditRec.AddEventResultState(user)
 
-	if user.IsGuest() {
-		c.Err = model.NewAppError("Api4.demoteUserToGuest", "api.user.demote_user_to_guest.already_guest.app_error", nil, "", http.StatusNotImplemented)
+	if user.IsPartner() {
+		c.Err = model.NewAppError("Api4.demoteUserToPartner", "api.user.demote_user_to_partner.already_partner.app_error", nil, "", http.StatusNotImplemented)
 		return
 	}
 
-	if err := c.App.DemoteUserToGuest(c.AppContext, user); err != nil {
+	if err := c.App.DemoteUserToPartner(c.AppContext, user); err != nil {
 		c.Err = err
 		return
 	}

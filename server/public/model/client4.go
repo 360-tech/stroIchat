@@ -1381,9 +1381,9 @@ func (c *Client4) UpdateUserHashedPassword(ctx context.Context, userId, newHashe
 	return BuildResponse(r), nil
 }
 
-// PromoteGuestToUser convert a guest into a regular user
-func (c *Client4) PromoteGuestToUser(ctx context.Context, guestId string) (*Response, error) {
-	r, err := c.DoAPIPost(ctx, c.userRoute(guestId)+"/promote", "")
+// PromotePartnerToUser convert a partner into a regular user
+func (c *Client4) PromotePartnerToUser(ctx context.Context, partnerId string) (*Response, error) {
+	r, err := c.DoAPIPost(ctx, c.userRoute(partnerId)+"/promote", "")
 	if err != nil {
 		return BuildResponse(r), err
 	}
@@ -1391,9 +1391,9 @@ func (c *Client4) PromoteGuestToUser(ctx context.Context, guestId string) (*Resp
 	return BuildResponse(r), nil
 }
 
-// DemoteUserToGuest convert a regular user into a guest
-func (c *Client4) DemoteUserToGuest(ctx context.Context, guestId string) (*Response, error) {
-	r, err := c.DoAPIPost(ctx, c.userRoute(guestId)+"/demote", "")
+// DemoteUserToPartner convert a regular user into a partner
+func (c *Client4) DemoteUserToPartner(ctx context.Context, partnerId string) (*Response, error) {
+	r, err := c.DoAPIPost(ctx, c.userRoute(partnerId)+"/demote", "")
 	if err != nil {
 		return BuildResponse(r), err
 	}
@@ -2382,14 +2382,14 @@ func (c *Client4) InviteUsersToTeam(ctx context.Context, teamId string, userEmai
 	return BuildResponse(r), nil
 }
 
-// InviteGuestsToTeam invite guest by email to some channels in a team.
-func (c *Client4) InviteGuestsToTeam(ctx context.Context, teamId string, userEmails []string, channels []string, message string) (*Response, error) {
-	guestsInvite := GuestsInvite{
+// InvitePartnersToTeam invite partner by email to some channels in a team.
+func (c *Client4) InvitePartnersToTeam(ctx context.Context, teamId string, userEmails []string, channels []string, message string) (*Response, error) {
+	partnersInvite := PartnersInvite{
 		Emails:   userEmails,
 		Channels: channels,
 		Message:  message,
 	}
-	r, err := c.DoAPIPostJSON(ctx, c.teamRoute(teamId)+"/invite-guests/email", guestsInvite)
+	r, err := c.DoAPIPostJSON(ctx, c.teamRoute(teamId)+"/invite-partners/email", partnersInvite)
 	if err != nil {
 		return BuildResponse(r), err
 	}
@@ -2422,14 +2422,14 @@ func (c *Client4) InviteUsersToTeamAndChannelsGracefully(ctx context.Context, te
 	return DecodeJSONFromResponse[[]*EmailInviteWithError](r)
 }
 
-// InviteGuestsToTeam invite guest by email to some channels in a team.
-func (c *Client4) InviteGuestsToTeamGracefully(ctx context.Context, teamId string, userEmails []string, channels []string, message string) ([]*EmailInviteWithError, *Response, error) {
-	guestsInvite := GuestsInvite{
+// InvitePartnersToTeam invite partner by email to some channels in a team.
+func (c *Client4) InvitePartnersToTeamGracefully(ctx context.Context, teamId string, userEmails []string, channels []string, message string) ([]*EmailInviteWithError, *Response, error) {
+	partnersInvite := PartnersInvite{
 		Emails:   userEmails,
 		Channels: channels,
 		Message:  message,
 	}
-	r, err := c.DoAPIPostJSON(ctx, c.teamRoute(teamId)+"/invite-guests/email?graceful="+c.boolString(true), guestsInvite)
+	r, err := c.DoAPIPostJSON(ctx, c.teamRoute(teamId)+"/invite-partners/email?graceful="+c.boolString(true), partnersInvite)
 	if err != nil {
 		return nil, BuildResponse(r), err
 	}

@@ -21,7 +21,7 @@ describe('ManageTeamsDropdown', () => {
         teamMember: TestHelper.getTeamMembershipMock({
             team_id: 'teamid',
             scheme_user: true,
-            scheme_guest: false,
+            scheme_partner: false,
             scheme_admin: false,
         }),
         onError: jest.fn(),
@@ -80,10 +80,10 @@ describe('ManageTeamsDropdown', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot for guest', () => {
+    test('should match snapshot for partner', () => {
         const user = {
             ...baseProps.user,
-            roles: 'system_guest',
+            roles: 'system_partner',
         };
 
         const teamMember = {

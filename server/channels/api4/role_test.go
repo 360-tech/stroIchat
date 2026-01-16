@@ -343,25 +343,25 @@ func TestPatchRole(t *testing.T) {
 		assert.EqualValues(t, received.Permissions, perms)
 		assert.Equal(t, received.SchemeManaged, role.SchemeManaged)
 
-		t.Run("Check guest permissions editing without E20 license", func(t *testing.T) {
+		t.Run("Check partner permissions editing without E20 license", func(t *testing.T) {
 			license := model.NewTestLicense()
-			license.Features.GuestAccountsPermissions = model.NewPointer(false)
+			license.Features.PartnerAccountsPermissions = model.NewPointer(false)
 			th.App.Srv().SetLicense(license)
 
-			guestRole, err := th.App.Srv().Store().Role().GetByName(context.Background(), "system_guest")
+			partnerRole, err := th.App.Srv().Store().Role().GetByName(context.Background(), "system_partner")
 			require.NoError(t, err)
-			received, resp, err = client.PatchRole(context.Background(), guestRole.Id, patch)
+			received, resp, err = client.PatchRole(context.Background(), partnerRole.Id, patch)
 			require.Error(t, err)
 			CheckNotImplementedStatus(t, resp)
 		})
 
-		t.Run("Check guest permissions editing with E20 license", func(t *testing.T) {
+		t.Run("Check partner permissions editing with E20 license", func(t *testing.T) {
 			license := model.NewTestLicense()
-			license.Features.GuestAccountsPermissions = model.NewPointer(true)
+			license.Features.PartnerAccountsPermissions = model.NewPointer(true)
 			th.App.Srv().SetLicense(license)
-			guestRole, err := th.App.Srv().Store().Role().GetByName(context.Background(), "system_guest")
+			partnerRole, err := th.App.Srv().Store().Role().GetByName(context.Background(), "system_partner")
 			require.NoError(t, err)
-			_, _, err = client.PatchRole(context.Background(), guestRole.Id, patch)
+			_, _, err = client.PatchRole(context.Background(), partnerRole.Id, patch)
 			require.NoError(t, err)
 		})
 	})

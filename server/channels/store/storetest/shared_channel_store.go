@@ -840,7 +840,7 @@ func testGetRemoteForUser(t *testing.T, rctx request.CTX, ss store.Store) {
 			ChannelId:   channel.Id,
 			UserId:      id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 			SchemeUser:  true,
 		}
 		_, err := ss.Channel().SaveMember(rctx, member)
@@ -1034,8 +1034,8 @@ func createSharedTestChannel(ss store.Store, rctx request.CTX, name string, shar
 			ChannelId:   channel.Id,
 			UserId:      member.Id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: member.IsGuest(),
-			SchemeUser:  !member.IsGuest(),
+			SchemePartner: member.IsPartner(),
+			SchemeUser:  !member.IsPartner(),
 		}
 
 		_, err = ss.Channel().SaveMember(rctx, newMember)

@@ -45,7 +45,7 @@ func TestCreateScheduledPost(t *testing.T) {
 			{
 				Name: model.NewPointer(model.PermissionCreatePost.Id),
 				Roles: &model.ChannelModeratedRolesPatch{
-					Guests:  model.NewPointer(true),
+					Partners:  model.NewPointer(true),
 					Members: model.NewPointer(false),
 				},
 			},

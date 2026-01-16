@@ -116,7 +116,7 @@ export default function AddToChannels(props: Props) {
                 />
             }
             ariaLabel={formatMessage({
-                id: 'invitation_modal.guests.add_channels.title',
+                id: 'invitation_modal.partners.add_channels.title',
                 defaultMessage: 'Search and Add Channels',
             })}
             channelsLoader={props.channelsLoader}
@@ -136,7 +136,7 @@ export default function AddToChannels(props: Props) {
                         href='#'
                     >
                         <FormattedMessage
-                            id='invitation_modal.guests.custom-message.link'
+                            id='invitation_modal.partners.custom-message.link'
                             defaultMessage='Set a custom message'
                         />
                     </a>
@@ -146,7 +146,7 @@ export default function AddToChannels(props: Props) {
                 <>
                     <div className={'AddToChannels__customMessageTitle ' + props.titleClass}>
                         <FormattedMessage
-                            id='invitation_modal.guests.custom-message.title'
+                            id='invitation_modal.partners.custom-message.title'
                             defaultMessage='Custom message'
                         />
                         <CloseCircleIcon

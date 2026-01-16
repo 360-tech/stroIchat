@@ -72,10 +72,10 @@ func TestExportPermissions(t *testing.T) {
 		scheme.Scope:                   func(_ string) string { return row["scope"].(string) },
 		scheme.DefaultTeamAdminRole:    func(str string) string { return getRoleByName(str) },
 		scheme.DefaultTeamUserRole:     func(str string) string { return getRoleByName(str) },
-		scheme.DefaultTeamGuestRole:    func(str string) string { return getRoleByName(str) },
+		scheme.DefaultTeamPartnerRole:    func(str string) string { return getRoleByName(str) },
 		scheme.DefaultChannelAdminRole: func(str string) string { return getRoleByName(str) },
 		scheme.DefaultChannelUserRole:  func(str string) string { return getRoleByName(str) },
-		scheme.DefaultChannelGuestRole: func(str string) string { return getRoleByName(str) },
+		scheme.DefaultChannelPartnerRole: func(str string) string { return getRoleByName(str) },
 	}
 
 	for key, valF := range expectations {

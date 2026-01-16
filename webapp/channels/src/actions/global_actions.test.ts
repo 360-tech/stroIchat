@@ -121,18 +121,18 @@ describe('actions/global_actions', () => {
                     users: {
                         currentUserId: userId,
                         profiles: {
-                            [userId]: {id: userId, roles: 'system_guest'},
+                            [userId]: {id: userId, roles: 'system_partner'},
                         },
                     },
                     roles: {
                         roles: {
-                            system_guest: {
+                            system_partner: {
                                 permissions: [],
                             },
-                            team_guest: {
+                            team_partner: {
                                 permissions: [],
                             },
-                            channel_guest: {
+                            channel_partner: {
                                 permissions: [],
                             },
                         },
@@ -194,18 +194,18 @@ describe('actions/global_actions', () => {
                     users: {
                         currentUserId: userId,
                         profiles: {
-                            [userId]: {id: userId, roles: 'system_guest'},
+                            [userId]: {id: userId, roles: 'system_partner'},
                         },
                     },
                     roles: {
                         roles: {
-                            system_guest: {
+                            system_partner: {
                                 permissions: [],
                             },
-                            team_guest: {
+                            team_partner: {
                                 permissions: [],
                             },
-                            channel_guest: {
+                            channel_partner: {
                                 permissions: [],
                             },
                         },
@@ -266,18 +266,18 @@ describe('actions/global_actions', () => {
                     users: {
                         currentUserId: userId,
                         profiles: {
-                            [userId]: {id: userId, roles: 'system_guest'},
+                            [userId]: {id: userId, roles: 'system_partner'},
                         },
                     },
                     roles: {
                         roles: {
-                            system_guest: {
+                            system_partner: {
                                 permissions: [],
                             },
-                            team_guest: {
+                            team_partner: {
                                 permissions: [],
                             },
-                            channel_guest: {
+                            channel_partner: {
                                 permissions: [],
                             },
                         },
@@ -311,7 +311,7 @@ describe('actions/global_actions', () => {
                     },
                     users: {
                         profiles: {
-                            user1: {id: 'user1', roles: 'system_guest'},
+                            user1: {id: 'user1', roles: 'system_partner'},
                         },
                     },
                 },
@@ -391,19 +391,19 @@ describe('actions/global_actions', () => {
                     users: {
                         currentUserId: userId,
                         profiles: {
-                            [userId]: {id: userId, username: userId, roles: 'system_guest'},
-                            [user2]: {id: user2, username: user2, roles: 'system_guest'},
+                            [userId]: {id: userId, username: userId, roles: 'system_partner'},
+                            [user2]: {id: user2, username: user2, roles: 'system_partner'},
                         },
                     },
                     roles: {
                         roles: {
-                            system_guest: {
+                            system_partner: {
                                 permissions: [],
                             },
-                            team_guest: {
+                            team_partner: {
                                 permissions: [],
                             },
-                            channel_guest: {
+                            channel_partner: {
                                 permissions: [],
                             },
                         },
@@ -488,19 +488,19 @@ describe('actions/global_actions', () => {
                     users: {
                         currentUserId: userId,
                         profiles: {
-                            [userId]: {id: userId, username: userId, roles: 'system_guest'},
-                            [user2]: {id: user2, username: user2, roles: 'system_guest'},
+                            [userId]: {id: userId, username: userId, roles: 'system_partner'},
+                            [user2]: {id: user2, username: user2, roles: 'system_partner'},
                         },
                     },
                     roles: {
                         roles: {
-                            system_guest: {
+                            system_partner: {
                                 permissions: [],
                             },
-                            team_guest: {
+                            team_partner: {
                                 permissions: [],
                             },
-                            channel_guest: {
+                            channel_partner: {
                                 permissions: [],
                             },
                         },

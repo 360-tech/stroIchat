@@ -58,8 +58,8 @@ func ValidateSchemeImportData(data *SchemeImportData) *model.AppError {
 		}
 	}
 
-	if data.DefaultTeamGuestRole != nil {
-		if err := ValidateRoleImportData(data.DefaultTeamGuestRole); err != nil {
+	if data.DefaultTeamPartnerRole != nil {
+		if err := ValidateRoleImportData(data.DefaultTeamPartnerRole); err != nil {
 			return err
 		}
 	}
@@ -76,8 +76,8 @@ func ValidateSchemeImportData(data *SchemeImportData) *model.AppError {
 		}
 	}
 
-	if data.DefaultChannelGuestRole != nil {
-		if err := ValidateRoleImportData(data.DefaultChannelGuestRole); err != nil {
+	if data.DefaultChannelPartnerRole != nil {
+		if err := ValidateRoleImportData(data.DefaultChannelPartnerRole); err != nil {
 			return err
 		}
 	}
@@ -267,8 +267,8 @@ func ValidateUserImportData(data *UserImportData) *model.AppError {
 		return model.NewAppError("BulkImport", "app.import.validate_user_import_data.roles_invalid.error", nil, "", http.StatusBadRequest)
 	}
 
-	if !isValidGuestRoles(*data) {
-		return model.NewAppError("BulkImport", "app.import.validate_user_import_data.guest_roles_conflict.error", nil, "", http.StatusBadRequest)
+	if !isValidPartnerRoles(*data) {
+		return model.NewAppError("BulkImport", "app.import.validate_user_import_data.partner_roles_conflict.error", nil, "", http.StatusBadRequest)
 	}
 
 	if data.NotifyProps != nil {
@@ -758,21 +758,21 @@ func isValidEmailBatchingInterval(emailInterval string) bool {
 		emailInterval == model.PreferenceEmailIntervalHour
 }
 
-// isValidGuestRoles checks if the user has both guest roles in the same team or channel.
+// isValidPartnerRoles checks if the user has both partner roles in the same team or channel.
 // at this point we assume that the user has a valid role scheme.
-func isValidGuestRoles(data UserImportData) bool {
+func isValidPartnerRoles(data UserImportData) bool {
 	if data.Roles == nil {
 		return true
 	}
-	isSystemGuest := model.IsInRole(*data.Roles, model.SystemGuestRoleId)
+	isSystemPartner := model.IsInRole(*data.Roles, model.SystemPartnerRoleId)
 
-	var isTeamGuest, isChannelGuest bool
+	var isTeamPartner, isChannelPartner bool
 	if data.Teams != nil {
-		// counters for guest roles for teams and channels
-		// we expect the total count of guest roles to be equal to the total count of teams and channels
+		// counters for partner roles for teams and channels
+		// we expect the total count of partner roles to be equal to the total count of teams and channels
 		var gtc, ctc int
 		for _, team := range *data.Teams {
-			if team.Roles != nil && model.IsInRole(*team.Roles, model.TeamGuestRoleId) {
+			if team.Roles != nil && model.IsInRole(*team.Roles, model.TeamPartnerRoleId) {
 				gtc++
 			}
 
@@ -780,23 +780,23 @@ func isValidGuestRoles(data UserImportData) bool {
 				continue
 			}
 			for _, channel := range *team.Channels {
-				if channel.Roles != nil && model.IsInRole(*channel.Roles, model.ChannelGuestRoleId) {
+				if channel.Roles != nil && model.IsInRole(*channel.Roles, model.ChannelPartnerRoleId) {
 					ctc++
 				}
 			}
 
 			if ctc == len(*team.Channels) {
-				isChannelGuest = true
+				isChannelPartner = true
 			}
 		}
 		if gtc == len(*data.Teams) {
-			isTeamGuest = true
+			isTeamPartner = true
 		}
 	}
 
-	// basically we want to be sure if the user either fully guest in all 3 places or not at all
+	// basically we want to be sure if the user either fully partner in all 3 places or not at all
 	// (a | b | c) & !(a & b & c) -> 3-way XOR?
-	if (isSystemGuest || isTeamGuest || isChannelGuest) && !(isSystemGuest && isTeamGuest && isChannelGuest) {
+	if (isSystemPartner || isTeamPartner || isChannelPartner) && !(isSystemPartner && isTeamPartner && isChannelPartner) {
 		return false
 	}
 

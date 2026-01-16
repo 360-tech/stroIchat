@@ -4,7 +4,7 @@
 import type {ClientLicense} from '@mattermost/types/config';
 import type {UserProfile} from '@mattermost/types/users';
 
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import {ErrorPageTypes} from 'utils/constants';
 
@@ -19,7 +19,7 @@ const mfaAuthServices = ['', 'email', 'ldap'];
 export type ConfigOption = {
     EnableMultifactorAuthentication?: string;
     EnforceMultifactorAuthentication?: string;
-    GuestAccountsEnforceMultifactorAuthentication?: string;
+    PartnerAccountsEnforceMultifactorAuthentication?: string;
 };
 
 export function checkIfMFARequired(
@@ -36,8 +36,8 @@ export function checkIfMFARequired(
     ) {
         if (
             user &&
-            isGuest(user.roles) &&
-            config.GuestAccountsEnforceMultifactorAuthentication !== 'true'
+            isPartner(user.roles) &&
+            config.PartnerAccountsEnforceMultifactorAuthentication !== 'true'
         ) {
             return false;
         }

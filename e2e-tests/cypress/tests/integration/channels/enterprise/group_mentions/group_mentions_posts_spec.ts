@@ -29,9 +29,9 @@ describe('Group Mentions', () => {
         // * Check if server has license for LDAP Groups
         cy.apiRequireLicenseForFeature('LDAPGroups');
 
-        // # Enable GuestAccountSettings
+        // # Enable PartnerAccountSettings
         cy.apiUpdateConfig({
-            GuestAccountsSettings: {
+            PartnerAccountsSettings: {
                 Enable: true,
             },
         });

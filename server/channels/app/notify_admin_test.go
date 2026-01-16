@@ -46,14 +46,14 @@ func Test_SendNotifyAdminPosts(t *testing.T) {
 		_, appErr := th.App.SaveAdminNotifyData(&model.NotifyAdminData{
 			UserId:          th.BasicUser.Id,
 			RequiredPlan:    model.LicenseShortSkuProfessional,
-			RequiredFeature: model.PaidFeatureGuestAccounts,
+			RequiredFeature: model.PaidFeaturePartnerAccounts,
 		})
 		require.Nil(t, appErr)
 
 		_, appErr = th.App.SaveAdminNotifyData(&model.NotifyAdminData{
 			UserId:          th.BasicUser2.Id,
 			RequiredPlan:    model.LicenseShortSkuProfessional,
-			RequiredFeature: model.PaidFeatureGuestAccounts,
+			RequiredFeature: model.PaidFeaturePartnerAccounts,
 		})
 		require.Nil(t, appErr)
 

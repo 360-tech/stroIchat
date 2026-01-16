@@ -16,14 +16,14 @@ import AddUsersToTeamModal from './add_users_to_team_modal';
 
 type Props = {
     team: Team;
-    filterExcludeGuests?: boolean;
+    filterExcludePartners?: boolean;
 };
 
 function mapStateToProps(state: GlobalState, props: Props) {
     const {id: teamId} = props.team;
 
     let filterOptions: {[key: string]: any} = {active: true};
-    if (props.filterExcludeGuests) {
+    if (props.filterExcludePartners) {
         filterOptions = {role: 'system_user', ...filterOptions};
     }
 

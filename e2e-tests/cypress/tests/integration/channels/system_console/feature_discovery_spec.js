@@ -36,7 +36,7 @@ describe('Feature discovery', () => {
             {sidebarName: 'Channels', featureDiscoveryTitle: 'read-only channels'},
             {sidebarName: 'Custom Terms of Service', featureDiscoveryTitle: 'custom terms of service'},
             {sidebarName: 'Announcement Banner', featureDiscoveryTitle: 'custom announcement banners'},
-            {sidebarName: 'Guest Access', featureDiscoveryTitle: 'guest accounts'},
+            {sidebarName: 'Partner Access', featureDiscoveryTitle: 'partner accounts'},
         ].forEach(({sidebarName, featureDiscoveryTitle}) => {
             cy.get('li').contains(sidebarName).click();
             cy.get("div[data-testid='featureDiscovery_title']").should('contain', featureDiscoveryTitle);

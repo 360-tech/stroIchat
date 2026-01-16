@@ -33,7 +33,7 @@ type Props = {
     searchTerm: string;
     loading?: boolean;
     isDisabled?: boolean;
-    enableGuestAccounts: boolean;
+    enablePartnerAccounts: boolean;
 
     onAddCallback: (users: UserProfile[]) => void;
     onRemoveCallback: (user: UserProfile) => void;
@@ -181,11 +181,11 @@ export default class TeamMembers extends React.PureComponent<Props, State> {
                     />
                 ),
                 values: {
-                    [GeneralConstants.SYSTEM_GUEST_ROLE]: {
+                    [GeneralConstants.SYSTEM_PARTNER_ROLE]: {
                         name: (
                             <FormattedMessage
-                                id='admin.user_grid.guest'
-                                defaultMessage='Guest'
+                                id='admin.user_grid.partner'
+                                defaultMessage='Partner'
                             />
                         ),
                         value: false,
@@ -218,11 +218,11 @@ export default class TeamMembers extends React.PureComponent<Props, State> {
                         value: false,
                     },
                 },
-                keys: [GeneralConstants.SYSTEM_GUEST_ROLE, GeneralConstants.TEAM_USER_ROLE, GeneralConstants.TEAM_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE],
+                keys: [GeneralConstants.SYSTEM_PARTNER_ROLE, GeneralConstants.TEAM_USER_ROLE, GeneralConstants.TEAM_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE],
             },
         };
-        if (!this.props.enableGuestAccounts) {
-            delete filterOptions.role.values[GeneralConstants.SYSTEM_GUEST_ROLE];
+        if (!this.props.enablePartnerAccounts) {
+            delete filterOptions.role.values[GeneralConstants.SYSTEM_PARTNER_ROLE];
             filterOptions.role.keys = [GeneralConstants.TEAM_USER_ROLE, GeneralConstants.TEAM_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE];
         }
         const filterKeys = ['role'];
@@ -250,7 +250,7 @@ export default class TeamMembers extends React.PureComponent<Props, State> {
                             skipCommit: true,
                             excludeUsers: usersToAdd,
                             includeUsers: usersToRemove,
-                            filterExcludeGuests: true,
+                            filterExcludePartners: true,
                         }}
                     >
                         <FormattedMessage

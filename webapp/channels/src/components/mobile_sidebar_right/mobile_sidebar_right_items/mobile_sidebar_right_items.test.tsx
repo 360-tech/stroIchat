@@ -25,7 +25,7 @@ describe('MobileSidebarRightItems', () => {
         usageDeltaTeams: 0,
         siteName: 'site-name',
         isLicensedForLDAPGroups: false,
-        guestAccessEnabled: true,
+        partnerAccessEnabled: true,
         actions: {
             showMentions: jest.fn(),
             showFlaggedPosts: jest.fn(),

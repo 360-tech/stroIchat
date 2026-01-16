@@ -4710,19 +4710,19 @@
     "translation": "古い値が不正です。操作がアトミックでない場合は設定しないでください。"
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "不正な電子メールアドレスです。"
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "不正な電子メールアドレスです。"
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "不正なチャンネルです。"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "不正なチャンネルです。"
   },
   {
@@ -4734,7 +4734,7 @@
     "translation": "署名アルゴリズムが不正です。"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "ゲストの属性値が不正です。'field=value' の形式でなくてはなりません。"
   },
   {
@@ -4770,7 +4770,7 @@
     "translation": "親となるグループに同期されたチームへの関連づけが行われるまでは、グループをチャンネルに関連づけることはできません。"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "不正なAD/LDAPゲストフィルターです。"
   },
   {
@@ -5162,7 +5162,7 @@
     "translation": "サーバーが混雑しているため、重要でないサービスは一時的に利用不可となっています。"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "あなたの指定した電子メールアドレスは、ゲストアカウント用のドメインとして許可されていません。システム管理者に連絡するか他の電子メールアドレスで利用登録してください。"
   },
   {
@@ -5170,7 +5170,7 @@
     "translation": "あなたの指定した電子メールアドレスのドメインは許可されていません。システム管理者に連絡するか他の電子メールアドレスで利用登録してください。"
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "ゲストアカウント機能が有効ではないため、ゲストアカウントを有効化できません。"
   },
   {
@@ -5178,7 +5178,7 @@
     "translation": "パスワード初期化トークンを解析できませんでした"
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "そのユーザーはゲストアカウントでないため、ゲストアカウントから通常のユーザーアカウントへ変更できませんでした。"
   },
   {
@@ -5198,15 +5198,15 @@
     "translation": "有効な電子メールアドレスとパスワードを入力してください"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "現在のライセンスではゲストアカウントはサポートされていません"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "ゲストアカウントは無効化されています"
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "既にそのユーザーはゲストアカウントのため、ゲストアカウントに変更できませんでした。"
   },
   {
@@ -5214,11 +5214,11 @@
     "translation": "無効な招待のため、ユーザーを作成できません。"
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "現在のライセンスではゲストアカウントはサポートされていません。"
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "ゲストアカウントは無効化されています。"
   },
   {
@@ -5234,11 +5234,11 @@
     "translation": "エンタープライズエディションのライセンスの有効期限が切れ、一部の機能が無効になることがあります。今すぐライセンスを更新してください。"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} がゲストとしてあなたを {{ .TeamDisplayName }} チームに招待しました"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "不正なチームメンバー更新: ユーザーはゲストかユーザーのどちらかでなければならず、両方であってはいけません。"
   },
   {
@@ -5254,7 +5254,7 @@
     "translation": "グループ制約が設定されたチームからユーザーを削除できませんでした。"
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "招待チャンネルは招待チーム内のチャンネルでなくてはなりません。"
   },
   {
@@ -5266,15 +5266,15 @@
     "translation": "あなたには全チームリストにアクセスするために必要な権限が付与されていません"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "現在のライセンスではゲストアカウントはサポートされていません"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "ゲストアカウントは無効化されています。"
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "ゲストが招待リンクからチームに参加することはできません。チームに招待メールをリクエストしてください。"
   },
   {
@@ -5382,7 +5382,7 @@
     "translation": "コマンドトリガーワードの先頭のスラッシュが欠落しています"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "不正なチームメンバ更新: 手動でゲストのロールを追加/削除することはできません。"
   },
   {
@@ -5390,11 +5390,11 @@
     "translation": "デフォルトチャンネルは非公開にできません。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "不正なチャンネルメンバー更新: ユーザーはゲストかユーザーのどちらかでなければならず、両方であってはいけません。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "不正なチャンネルメンバー更新: 手動でゲストのロールを追加/削除することはできません。"
   },
   {
@@ -5426,7 +5426,7 @@
     "translation": "現在のライセンスではチャンネルモデレーションはサポートされていません"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v がゲストとしてチャンネルに参加しました。"
   },
   {
@@ -5446,7 +5446,7 @@
     "translation": "チャンネルメンバー追加時にエラーが発生しました。"
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v は %v によってゲストとしてチャンネルに追加されました。"
   },
   {
@@ -6846,7 +6846,7 @@
     "translation": "アカウントを探す際にエラーが発生しました。"
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "ユーザーを更新できませんでした。"
   },
   {
@@ -6958,7 +6958,7 @@
     "translation": "アカウントを保存できませんでした。"
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "ユーザーを更新できませんでした。"
   },
   {
@@ -7366,7 +7366,7 @@
     "translation": "パスワードリセットリンクの有効期限は24時間です。"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "チームとのコラボレーションのためにゲストとして招待されました"
   },
   {
@@ -7454,7 +7454,7 @@
     "translation": "ワークスペースにアプリを追加する"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "リクエストボディが存在しない、または不正です。"
   },
   {
@@ -8406,11 +8406,11 @@
     "translation": "クラウドプランの制限を超えているため、ファイルを取得できません。"
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "現在のライセンス ではゲストアカウントはサポートされていません"
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "ゲストアカウントは無効化されています"
   },
   {
@@ -9282,7 +9282,7 @@
     "translation": "不正な email_token"
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "チームメンバーの不正な更新: ゲストをチームメンバーやチーム管理者にすることはできません。先にユーザーに昇格してください。"
   },
   {
@@ -9362,7 +9362,7 @@
     "translation": "ユーザーはチャンネルブックマークの作成を許可されていません。"
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "チャンネルブックマークを作成できませんでした。"
   },
   {
@@ -9374,7 +9374,7 @@
     "translation": "チャンネルブックマークを削除できませんでした。"
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "チャンネルブックマークを削除できませんでした。"
   },
   {
@@ -9386,7 +9386,7 @@
     "translation": "チャンネルブックマークを更新できませんでした。"
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "チャンネルブックマークを更新できませんでした。"
   },
   {
@@ -9398,7 +9398,7 @@
     "translation": "チャンネルブックマークのソート順を更新できませんでした。"
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "チャンネルブックマークのソート順を更新できませんでした。"
   },
   {
@@ -9522,15 +9522,15 @@
     "translation": "チャンネルインデックススキーマが古いため、チャンネル自動補完を有効にできません。チャンネルインデックスを再生成してください。詳しくはMattermost changelogを参照してください"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "チャンネルメンバーの不正な更新: ゲストをチームメンバーやチーム管理者にすることはできません。先にユーザーへ昇格してください。"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "チームメンバーの不正な更新: ゲストを単一のチャンネルに設定することはできません。システム管理者がユーザーをゲストに設定する必要があります。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "チャンネルメンバーの不正な更新: ゲストを単一のチャンネルに設定することはできません。システム管理者がユーザーをゲストに設定する必要があります。"
   },
   {
@@ -10034,7 +10034,7 @@
     "translation": "カスタム絵文字の画像用のディレクトリを作成できませんでした"
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "ユーザーロールがゲストのステータスと一致していません。"
   },
   {
@@ -10690,7 +10690,7 @@
     "translation": "監査ログ設定の最大ファイルバックアップ数は負の値であってはなりません。"
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
     "translation": "ユーザー属性に基づくアクセス制限が設定されているため、このチャンネルにゲストユーザーは招待できません。"
   },
   {

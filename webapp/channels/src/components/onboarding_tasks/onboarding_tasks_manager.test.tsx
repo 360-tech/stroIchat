@@ -41,7 +41,7 @@ describe('onboarding tasks manager', () => {
                 profiles: {
                     [user1]: {id: user1, username: user1, roles: 'system_admin'},
                     [user2]: {id: user2, username: user2, roles: 'system_user'},
-                    [user3]: {id: user3, username: user3, roles: 'system_guest'},
+                    [user3]: {id: user3, username: user3, roles: 'system_partner'},
                 },
             },
             roles: {},

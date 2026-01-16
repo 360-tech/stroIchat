@@ -540,19 +540,19 @@
     "translation": "Neplatné id kanálu."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Neplatné e-mailové adresy."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Neplatná e-mailová adresa."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Neplatné kanály."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Neplatný kanál."
   },
   {
@@ -1732,7 +1732,7 @@
     "translation": "Prázdné pole pod \"image\" v žádosti."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Zadaný e-mail nepatří do povolené domény pro hosty. Obraťte se prosím na správce nebo zaregistrujte jiný e-mail."
   },
   {
@@ -1776,7 +1776,7 @@
     "translation": "Nemůžete si deaktivovat účet, protože tato funkce není povolena. Obraťte se na správce systému."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Nelze aktivovat účet hosta, protože funkce \"Přístup Hosta\" není povolena."
   },
   {
@@ -1832,7 +1832,7 @@
     "translation": "Token pro obnovení hesla není platný."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Hosta nelze převést na běžného uživatele, protože už není host."
   },
   {
@@ -2380,7 +2380,7 @@
     "translation": "chyba při načítání ldap skupiny"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Neplatný AD/LDAP filter na návštěvníky."
   },
   {
@@ -2516,11 +2516,11 @@
     "translation": "Přihlášení se nezdařilo, protože váš účet byl deaktivován.  Kontaktujte správce."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Vaše licence nepodporuje účty typu host"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Účty typu host jsou vypnuté"
   },
   {
@@ -2552,7 +2552,7 @@
     "translation": "Funkce AD/LDAP je na tomto serveru nedostupná."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Uživatele se nepodařilo změnit na hosta, protože už hostem je."
   },
   {
@@ -2576,11 +2576,11 @@
     "translation": "Nelze vytvořit uživatele, neplatná pozvánka."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Vaše licence nepodporuje účty typu host."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Účty typu Host jsou vypnuty."
   },
   {
@@ -2808,7 +2808,7 @@
     "translation": "[{{ .SiteName }}] {{ .SenderName }} vás pozval(a), abyste se připojil(a) k týmu {{ .TeamDisplayName }}"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} vás pozval(a), abyste se připojil(a) k týmu {{ .TeamDisplayName }} jako host"
   },
   {
@@ -2860,7 +2860,7 @@
     "translation": "Emailové pozvánky jsou zakázány."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Kanály v pozvánce musí patřit k týmu v pozvánce."
   },
   {
@@ -2912,15 +2912,15 @@
     "translation": "K zobrazení výčtu všech týmů nemáte oprávnění"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Vaše licence nepodporuje účty typu Host"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Účty typu Host jsou vypnuty."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Hosté se nesmí připojit k týmu pomocí pozvánkového odkazu. Požádejte tým o zaslání e-mailové pozvánky pro hosta."
   },
   {
@@ -4336,7 +4336,7 @@
     "translation": "Vaše licence nepodporuje aktualizaci týmového schématu"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Neplatná aktualizace člena Týmu: Uživatel může být typu Host nebo Uživatel, ale ne obojí."
   },
   {
@@ -4636,7 +4636,7 @@
     "translation": "Poskytovaná role je řízena schématem, a proto ji nelze přímo uplatnit na člena kanálu."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Neplatná aktualizace člena týmu: Roli hosta nelze přidávat ani odebírat ručně."
   },
   {
@@ -4656,11 +4656,11 @@
     "translation": "Poskytnutá role je řízena schématem, a proto ji nelze přímo přiřadit členu kanálu."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Neplatná aktualizace člena kanálu: Uživatel musí být buď host, nebo uživatel, ale nemůže být obojí."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Neplatná aktualizace člena kanálu: Role hosta nemůžete ručně přidávat ani odebírat."
   },
   {
@@ -4784,7 +4784,7 @@
     "translation": "Nemáte potřebná oprávnění."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v se připojil ke kanálu jako host."
   },
   {
@@ -4872,7 +4872,7 @@
     "translation": "%v byl přidán do kanálu uživatelem %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v přidán % do kanálu jako host, uživatelem %v."
   },
   {
@@ -6024,11 +6024,11 @@
     "translation": "Vyskytla se chyba při hledání účtu."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Selhala aktualizace uživatele."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Selhala aktualizace uživatele."
   },
   {
@@ -7088,7 +7088,7 @@
     "translation": "Uživatel nemá oprávnění vytvořit záložku kanálu."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Nepodařilo se vytvořit záložku kanálu."
   },
   {
@@ -7100,7 +7100,7 @@
     "translation": "Smazání záložky kanálu se nezdařilo."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Nepodařilo se smazat záložku kanálu."
   },
   {
@@ -7112,7 +7112,7 @@
     "translation": "Nepodařilo se aktualizovat záložku kanálu."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Aktualizace záložky kanálu se nezdařila."
   },
   {
@@ -7124,7 +7124,7 @@
     "translation": "Nepodařilo se aktualizovat pořadí záložek kanálu."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Nepodařilo se aktualizovat pořadí záložky kanálu."
   },
   {
@@ -7232,11 +7232,11 @@
     "translation": "Při získávání zabezpečeného připojení došlo k chybě."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Neplatná aktualizace člena kanálu: Host nemůže být povýšen na člena týmu nebo administrátora týmu, nejprve ho prosím povyšte na uživatele."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Neplatná aktualizace členství kanálu: Host nemůže být přiřazen k jednotlivým kanálům; systémový administrátor musí uživatele povýšit nebo degradovat na/z hosta."
   },
   {
@@ -7368,7 +7368,7 @@
     "translation": "Co je Mattermost?"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Byli jste pozváni jako host, abyste spolupracovali s týmem"
   },
   {
@@ -7716,7 +7716,7 @@
     "translation": "Uživatele nelze najít."
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Neplatné nebo chybějící tělo požadavku."
   },
   {
@@ -7776,7 +7776,7 @@
     "translation": "CWS Server selhal při nastavení odebírání novinek."
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "Účty návštěvníků jsou zakázané"
   },
   {
@@ -7792,7 +7792,7 @@
     "translation": "Překročen limit při kontrole obrázku. Rozlišení je příliš velké."
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "Neplatná aktualizace člena týmu: Host nemůže být přidělen jako člen týmu nebo administrátor týmu, nejprve jej prosím povyšte na uživatele."
   },
   {
@@ -7824,7 +7824,7 @@
     "translation": "Zkontrolujte změny"
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "Vaše licence nepodporuje návštěvnické účty"
   },
   {
@@ -7952,7 +7952,7 @@
     "translation": "Nelze vygenerovat kód pozvánky pro potvrzený cluster"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "Neplatná aktualizace člena týmu: Host nemůže být přiřazen k jednotlivému týmu, systémový administrátor musí uživatele povýšit nebo degradovat na hosta."
   },
   {
@@ -9696,7 +9696,7 @@
     "translation": "Nelze rozdělit vlastnosti webhooku na části o délce {{.Max}} znaků."
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Neplatný atribut hosta. Musí mít formát 'field=value'."
   },
   {
@@ -10048,7 +10048,7 @@
     "translation": "Nelze vytvořit adresář pro obrázky vlastních emoji"
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "Role uživatele nejsou v souladu se stavem hosta."
   },
   {
@@ -10452,7 +10452,7 @@
     "translation": "Import vzdáleného clusteru není povolen"
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
     "translation": "Pozvání hostů do tohoto kanálu není umožněno, protože má nastavené omezení na základě uživatelských vlastností."
   },
   {

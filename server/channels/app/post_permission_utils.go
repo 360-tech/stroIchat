@@ -19,10 +19,10 @@ func PostPriorityCheckWithApp(where string, a *App, userId string, priority *mod
 
 	isPostPriorityEnabled := a.IsPostPriorityEnabled()
 	IsPersistentNotificationsEnabled := a.IsPersistentNotificationsEnabled()
-	allowPersistentNotificationsForGuests := *a.Config().ServiceSettings.AllowPersistentNotificationsForGuests
+	allowPersistentNotificationsForPartners := *a.Config().ServiceSettings.AllowPersistentNotificationsForPartners
 	license := a.License()
 
-	appErr = postPriorityCheck(user, priority, rootId, isPostPriorityEnabled, IsPersistentNotificationsEnabled, allowPersistentNotificationsForGuests, license)
+	appErr = postPriorityCheck(user, priority, rootId, isPostPriorityEnabled, IsPersistentNotificationsEnabled, allowPersistentNotificationsForPartners, license)
 	if appErr != nil {
 		appErr.Where = where
 		return appErr
@@ -37,7 +37,7 @@ func postPriorityCheck(
 	rootId string,
 	isPostPriorityEnabled,
 	isPersistentNotificationsEnabled,
-	allowPersistentNotificationsForGuests bool,
+	allowPersistentNotificationsForPartners bool,
 	license *model.License,
 ) *model.AppError {
 	if priority == nil {
@@ -72,8 +72,8 @@ func postPriorityCheck(
 			return model.NewAppError("", "api.post.post_priority.urgent_persistent_notification_post.request_error", nil, "", http.StatusBadRequest)
 		}
 
-		if !allowPersistentNotificationsForGuests {
-			if user.IsGuest() {
+		if !allowPersistentNotificationsForPartners {
+			if user.IsPartner() {
 				return priorityForbiddenErr
 			}
 		}

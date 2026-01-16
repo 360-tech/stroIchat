@@ -668,7 +668,7 @@
     "translation": "hiba az ldap csoport lekérésekor"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Érvénytelen AD/LDAP vendég szűrő."
   },
   {
@@ -1640,19 +1640,19 @@
     "translation": "Érvénytelen csatorna azonosító."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Érvénytelen e-mailek."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Érvénytelen e-mail."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Érvénytelen csatornák."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Érvénytelen csatorna."
   },
   {
@@ -1856,7 +1856,7 @@
     "translation": "Hiányzik a Személyazonosság szolgáltató (IdP) nyilvános tanúsítványa. Elfelejtette feltölteni?"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Érvénytelen vendég attribútum. Ebben a formátumban kell lennie 'mezo=ertek'."
   },
   {
@@ -3588,7 +3588,7 @@
     "translation": "Nem sikerült elmenteni a fiókot."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Nem sikerült frissíteni a felhasználót."
   },
   {
@@ -3660,7 +3660,7 @@
     "translation": "Hiba lépett fel a fiók megkeresésekor."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Nem sikerült frissíteni a felhasználót."
   },
   {
@@ -4192,7 +4192,7 @@
     "translation": "A '{{.Field}}' mezőt a felhasználó bejelentkezési szolgáltatóján keresztül kell beállítani."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "A megadott e-mail nem tartozik a vendég fiókok számára engedélyezett domainek közé. Kérjük vegye fel a kapcsolatot a rendszergazdával vagy regisztráljon egy másik e-mail címmel."
   },
   {
@@ -4240,7 +4240,7 @@
     "translation": "Nem deaktiválhatja saját magát, mert ez a funkció nincs engedélyezve. Kérjük, lépjen kapcsolatba a rendszergazdával."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Nem aktiválhat vendégfiókot, mert a vendégelérés funkció nincs engedélyezve."
   },
   {
@@ -4296,7 +4296,7 @@
     "translation": "A jelszó visszaállítás token nem tűnik érvényesnek."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Nem lehet átalakítani a vendéget rendes felhasználóvá, mert nem vendég."
   },
   {
@@ -4364,11 +4364,11 @@
     "translation": "A bejelentkezés sikertelen, mert fiókját inaktiválták.  Kérjük, lépjen kapcsolatba egy rendszergazdával."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Az Ön licence nem támogatja a vendég fiókokat"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "A vendég fiókok tiltva vannak"
   },
   {
@@ -4408,7 +4408,7 @@
     "translation": "AD/LDAP nem elérhető ezen a szerveren."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "A felhasználót nem lehet vendéggé alakítani, mert már vendég."
   },
   {
@@ -4444,11 +4444,11 @@
     "translation": "A felhasználót nem lehet létrehozni, érvénytelen meghívó."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Az Ön licence nem támogatja a vendég fiókokat."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Vendég fiókok le vannak tiltva."
   },
   {
@@ -4996,11 +4996,11 @@
     "translation": "[{{ .SiteName }}] {{ .SenderName }} meghívta Önt a {{ .TeamDisplayName }} csapatba"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} meghívta Önt, hogy csatlakozzon a {{ .TeamDisplayName }} csapathoz vendégként"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Ön meghívást kapott vendégként, hogy működjön együtt a csapattal"
   },
   {
@@ -5140,7 +5140,7 @@
     "translation": "Az Ön licence nem támogatja a csapat séma frissítését"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Érvénytelen csoporttag frissítés: A felhasználónak vendégnek vagy felhasználónak kell lennie, de nem mindkettőnek."
   },
   {
@@ -5260,11 +5260,11 @@
     "translation": "E-mail meghívások le vannak tíltva."
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Érvénytelen vagy hiányzó kérés törzs."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "A meghívás csatornáinak a meghívó csapat részének kell lenniük."
   },
   {
@@ -5320,15 +5320,15 @@
     "translation": "Nincs elegendő jogosultsága az összes csapat kilistázásához"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Az Ön licence nem támogatja a vendég fiókokat"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "A vendég fiókok le vannak tiltva."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "A vendégek nem csatlakozhatnak egy csapathoz meghívó linken keresztül. Kérjük, kérjen egy vendég e-mail meghívót a csapathoz."
   },
   {
@@ -6611,7 +6611,7 @@
     "translation": "A megadott szerepkört egy séma kezeli, éppen ezért nem lehet közvetlenül egy csatorna tagra alkalmazni."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Érvénytelen csapattag frissítés: Nem lehet hozzáadni vagy eltávolítani a vendég szerepkört manuálisan."
   },
   {
@@ -6631,11 +6631,11 @@
     "translation": "A megadott szerepkört egy séma kezeli, éppen ezért nem lehet közvetlenül egy csatorna tagra alkalmazni."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Érvénytelen csatorna tagság frissítés: A felhasználónak vendégnek vagy felhasználónak kell lennie, de nem lehet mindkettő."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Érvénytelen csatorna tagság frissítés: Nem lehet hozzáadni vagy eltávolítani a vendég szerepkört manuálisan."
   },
   {
@@ -6767,7 +6767,7 @@
     "translation": "Ön nem rendelkezik a megfelelő jogosultságokkal."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v vendégként csatlakozott a csatornához."
   },
   {
@@ -6855,7 +6855,7 @@
     "translation": "%v hozzáadva a csatornához %v által."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v hozzáadva a csatornához vendégeként %v által."
   },
   {

@@ -841,9 +841,9 @@ exports[`components/AdminSidebar should match snapshot 1`] = `
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access_feature_discovery"
-              key="authentication.guest_access_feature_discovery"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access_feature_discovery"
+              key="authentication.partner_access_feature_discovery"
+              name="authentication/partner_access"
               restrictedIndicator={
                 <RestrictedIndicator
                   blocked={true}
@@ -859,8 +859,8 @@ exports[`components/AdminSidebar should match snapshot 1`] = `
               }
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />
@@ -1917,9 +1917,9 @@ exports[`components/AdminSidebar should match snapshot with license with enterpr
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access_feature_discovery"
-              key="authentication.guest_access_feature_discovery"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access_feature_discovery"
+              key="authentication.partner_access_feature_discovery"
+              name="authentication/partner_access"
               restrictedIndicator={
                 <RestrictedIndicator
                   blocked={true}
@@ -1935,8 +1935,8 @@ exports[`components/AdminSidebar should match snapshot with license with enterpr
               }
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />
@@ -2991,9 +2991,9 @@ exports[`components/AdminSidebar should match snapshot with license with enterpr
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access_feature_discovery"
-              key="authentication.guest_access_feature_discovery"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access_feature_discovery"
+              key="authentication.partner_access_feature_discovery"
+              name="authentication/partner_access"
               restrictedIndicator={
                 <RestrictedIndicator
                   blocked={true}
@@ -3009,8 +3009,8 @@ exports[`components/AdminSidebar should match snapshot with license with enterpr
               }
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />
@@ -3987,9 +3987,9 @@ exports[`components/AdminSidebar should match snapshot with license with profess
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access_feature_discovery"
-              key="authentication.guest_access_feature_discovery"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access_feature_discovery"
+              key="authentication.partner_access_feature_discovery"
+              name="authentication/partner_access"
               restrictedIndicator={
                 <RestrictedIndicator
                   blocked={true}
@@ -4005,8 +4005,8 @@ exports[`components/AdminSidebar should match snapshot with license with profess
               }
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />
@@ -4961,9 +4961,9 @@ exports[`components/AdminSidebar should match snapshot with workspace optimizati
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access_feature_discovery"
-              key="authentication.guest_access_feature_discovery"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access_feature_discovery"
+              key="authentication.partner_access_feature_discovery"
+              name="authentication/partner_access"
               restrictedIndicator={
                 <RestrictedIndicator
                   blocked={true}
@@ -4979,8 +4979,8 @@ exports[`components/AdminSidebar should match snapshot with workspace optimizati
               }
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />
@@ -5974,9 +5974,9 @@ exports[`components/AdminSidebar should match snapshot, not prevent the console 
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access_feature_discovery"
-              key="authentication.guest_access_feature_discovery"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access_feature_discovery"
+              key="authentication.partner_access_feature_discovery"
+              name="authentication/partner_access"
               restrictedIndicator={
                 <RestrictedIndicator
                   blocked={true}
@@ -5992,8 +5992,8 @@ exports[`components/AdminSidebar should match snapshot, not prevent the console 
               }
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />
@@ -6948,9 +6948,9 @@ exports[`components/AdminSidebar should match snapshot, render plugins without a
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access_feature_discovery"
-              key="authentication.guest_access_feature_discovery"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access_feature_discovery"
+              key="authentication.partner_access_feature_discovery"
+              name="authentication/partner_access"
               restrictedIndicator={
                 <RestrictedIndicator
                   blocked={true}
@@ -6966,8 +6966,8 @@ exports[`components/AdminSidebar should match snapshot, render plugins without a
               }
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />
@@ -7864,13 +7864,13 @@ exports[`components/AdminSidebar should match snapshot, with license (with all f
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access"
-              key="authentication.guest_access"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access"
+              key="authentication.partner_access"
+              name="authentication/partner_access"
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />
@@ -8808,9 +8808,9 @@ exports[`components/AdminSidebar should match snapshot, with license (without an
               }
             />
             <AdminSidebarSection
-              definitionKey="authentication.guest_access_feature_discovery"
-              key="authentication.guest_access_feature_discovery"
-              name="authentication/guest_access"
+              definitionKey="authentication.partner_access_feature_discovery"
+              key="authentication.partner_access_feature_discovery"
+              name="authentication/partner_access"
               restrictedIndicator={
                 <RestrictedIndicator
                   blocked={true}
@@ -8826,8 +8826,8 @@ exports[`components/AdminSidebar should match snapshot, with license (without an
               }
               title={
                 <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest Access"
-                  id="admin.sidebar.guest_access"
+                  defaultMessage="Partner Access"
+                  id="admin.sidebar.partner_access"
                 />
               }
             />

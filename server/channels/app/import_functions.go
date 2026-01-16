@@ -82,14 +82,14 @@ func (a *App) importScheme(rctx request.CTX, data *imports.SchemeImportData, dry
 			return err
 		}
 
-		if data.DefaultTeamGuestRole == nil {
-			data.DefaultTeamGuestRole = &imports.RoleImportData{
-				DisplayName:   model.NewPointer("Team Guest Role for Scheme"),
+		if data.DefaultTeamPartnerRole == nil {
+			data.DefaultTeamPartnerRole = &imports.RoleImportData{
+				DisplayName:   model.NewPointer("Team Partner Role for Scheme"),
 				SchemeManaged: model.NewPointer(true),
 			}
 		}
-		data.DefaultTeamGuestRole.Name = &scheme.DefaultTeamGuestRole
-		if err := a.importRole(rctx, data.DefaultTeamGuestRole, dryRun); err != nil {
+		data.DefaultTeamPartnerRole.Name = &scheme.DefaultTeamPartnerRole
+		if err := a.importRole(rctx, data.DefaultTeamPartnerRole, dryRun); err != nil {
 			return err
 		}
 	}
@@ -105,14 +105,14 @@ func (a *App) importScheme(rctx request.CTX, data *imports.SchemeImportData, dry
 			return err
 		}
 
-		if data.DefaultChannelGuestRole == nil {
-			data.DefaultChannelGuestRole = &imports.RoleImportData{
-				DisplayName:   model.NewPointer("Channel Guest Role for Scheme"),
+		if data.DefaultChannelPartnerRole == nil {
+			data.DefaultChannelPartnerRole = &imports.RoleImportData{
+				DisplayName:   model.NewPointer("Channel Partner Role for Scheme"),
 				SchemeManaged: model.NewPointer(true),
 			}
 		}
-		data.DefaultChannelGuestRole.Name = &scheme.DefaultChannelGuestRole
-		if err := a.importRole(rctx, data.DefaultChannelGuestRole, dryRun); err != nil {
+		data.DefaultChannelPartnerRole.Name = &scheme.DefaultChannelPartnerRole
+		if err := a.importRole(rctx, data.DefaultChannelPartnerRole, dryRun); err != nil {
 			return err
 		}
 	}
@@ -1001,7 +1001,7 @@ func (a *App) importUserTeams(rctx request.CTX, user *model.User, data *[]import
 		newTeamMembers           = []*model.TeamMember{}
 		oldTeamMembers           = []*model.TeamMember{}
 		rolesByTeamID            = map[string]string{}
-		isGuestByTeamID          = map[string]bool{}
+		isPartnerByTeamID          = map[string]bool{}
 		isUserByTeamId           = map[string]bool{}
 		isAdminByTeamID          = map[string]bool{}
 	)
@@ -1027,7 +1027,7 @@ func (a *App) importUserTeams(rctx request.CTX, user *model.User, data *[]import
 			})
 		}
 
-		isGuestByTeamID[team.Id] = false
+		isPartnerByTeamID[team.Id] = false
 		isUserByTeamId[team.Id] = true
 		isAdminByTeamID[team.Id] = false
 
@@ -1037,8 +1037,8 @@ func (a *App) importUserTeams(rctx request.CTX, user *model.User, data *[]import
 			rawRoles := *tdata.Roles
 			explicitRoles := []string{}
 			for role := range strings.FieldsSeq(rawRoles) {
-				if role == model.TeamGuestRoleId {
-					isGuestByTeamID[team.Id] = true
+				if role == model.TeamPartnerRoleId {
+					isPartnerByTeamID[team.Id] = true
 					isUserByTeamId[team.Id] = false
 				} else if role == model.TeamUserRoleId {
 					isUserByTeamId[team.Id] = true
@@ -1054,12 +1054,12 @@ func (a *App) importUserTeams(rctx request.CTX, user *model.User, data *[]import
 		member := &model.TeamMember{
 			TeamId:      team.Id,
 			UserId:      user.Id,
-			SchemeGuest: user.IsGuest(),
-			SchemeUser:  !user.IsGuest(),
-			SchemeAdmin: team.Email == user.Email && !user.IsGuest(),
+			SchemePartner: user.IsPartner(),
+			SchemeUser:  !user.IsPartner(),
+			SchemeAdmin: team.Email == user.Email && !user.IsPartner(),
 			CreateAt:    model.GetMillis(),
 		}
-		if !user.IsGuest() {
+		if !user.IsPartner() {
 			var userShouldBeAdmin bool
 			userShouldBeAdmin, appErr = a.UserIsInAdminRoleGroup(user.Id, team.Id, model.GroupSyncableTypeTeam)
 			if appErr != nil {
@@ -1071,7 +1071,7 @@ func (a *App) importUserTeams(rctx request.CTX, user *model.User, data *[]import
 		if tdata.Channels != nil {
 			channels[team.Id] = append(channels[team.Id], *tdata.Channels...)
 		}
-		if !user.IsGuest() {
+		if !user.IsPartner() {
 			channels[team.Id] = append(channels[team.Id], imports.UserChannelImportData{Name: model.NewPointer(model.DefaultChannelName)})
 		}
 
@@ -1121,7 +1121,7 @@ func (a *App) importUserTeams(rctx request.CTX, user *model.User, data *[]import
 			}
 		}
 
-		if _, appErr := a.UpdateTeamMemberSchemeRoles(rctx, member.TeamId, user.Id, isGuestByTeamID[member.TeamId], isUserByTeamId[member.TeamId], isAdminByTeamID[member.TeamId]); appErr != nil {
+		if _, appErr := a.UpdateTeamMemberSchemeRoles(rctx, member.TeamId, user.Id, isPartnerByTeamID[member.TeamId], isUserByTeamId[member.TeamId], isAdminByTeamID[member.TeamId]); appErr != nil {
 			rctx.Logger().Warn("Error updating team member scheme roles", mlog.String("team_id", member.TeamId), mlog.String("user_id", user.Id), mlog.Err(appErr))
 		}
 	}
@@ -1163,7 +1163,7 @@ func (a *App) importUserChannels(rctx request.CTX, user *model.User, team *model
 		oldChannelMembers        = []*model.ChannelMember{}
 		rolesByChannelId         = map[string]string{}
 		channelPreferencesByID   = map[string]model.Preferences{}
-		isGuestByChannelId       = map[string]bool{}
+		isPartnerByChannelId       = map[string]bool{}
 		isUserByChannelId        = map[string]bool{}
 		isAdminByChannelId       = map[string]bool{}
 	)
@@ -1186,7 +1186,7 @@ func (a *App) importUserChannels(rctx request.CTX, user *model.User, team *model
 			continue
 		}
 
-		isGuestByChannelId[channel.Id] = false
+		isPartnerByChannelId[channel.Id] = false
 		isUserByChannelId[channel.Id] = true
 		isAdminByChannelId[channel.Id] = false
 
@@ -1194,8 +1194,8 @@ func (a *App) importUserChannels(rctx request.CTX, user *model.User, team *model
 			rawRoles := *cdata.Roles
 			explicitRoles := []string{}
 			for role := range strings.FieldsSeq(rawRoles) {
-				if role == model.ChannelGuestRoleId {
-					isGuestByChannelId[channel.Id] = true
+				if role == model.ChannelPartnerRoleId {
+					isPartnerByChannelId[channel.Id] = true
 					isUserByChannelId[channel.Id] = false
 				} else if role == model.ChannelUserRoleId {
 					isUserByChannelId[channel.Id] = true
@@ -1221,11 +1221,11 @@ func (a *App) importUserChannels(rctx request.CTX, user *model.User, team *model
 			ChannelId:   channel.Id,
 			UserId:      user.Id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: user.IsGuest(),
-			SchemeUser:  !user.IsGuest(),
+			SchemePartner: user.IsPartner(),
+			SchemeUser:  !user.IsPartner(),
 			SchemeAdmin: false,
 		}
-		if !user.IsGuest() {
+		if !user.IsPartner() {
 			var userShouldBeAdmin bool
 			userShouldBeAdmin, err = a.UserIsInAdminRoleGroup(user.Id, team.Id, model.GroupSyncableTypeTeam)
 			if err != nil {
@@ -1313,7 +1313,7 @@ func (a *App) importUserChannels(rctx request.CTX, user *model.User, team *model
 			}
 		}
 
-		if _, appErr := a.UpdateChannelMemberSchemeRoles(rctx, member.ChannelId, user.Id, isGuestByChannelId[member.ChannelId], isUserByChannelId[member.ChannelId], isAdminByChannelId[member.ChannelId]); appErr != nil {
+		if _, appErr := a.UpdateChannelMemberSchemeRoles(rctx, member.ChannelId, user.Id, isPartnerByChannelId[member.ChannelId], isUserByChannelId[member.ChannelId], isAdminByChannelId[member.ChannelId]); appErr != nil {
 			rctx.Logger().Warn("Error updating channel member scheme roles", mlog.String("channel_id", member.ChannelId), mlog.String("user_id", user.Id), mlog.Err(appErr))
 		}
 	}
@@ -2157,8 +2157,8 @@ func (a *App) importDirectChannel(rctx request.CTX, data *imports.DirectChannelI
 		if member.SchemeAdmin != nil {
 			m.SchemeAdmin = *member.SchemeAdmin
 		}
-		if member.SchemeGuest != nil {
-			m.SchemeGuest = *member.SchemeGuest
+		if member.SchemePartner != nil {
+			m.SchemePartner = *member.SchemePartner
 		}
 
 		if member.NotifyProps != nil {

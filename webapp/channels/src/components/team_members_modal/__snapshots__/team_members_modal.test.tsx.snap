@@ -12,7 +12,7 @@ exports[`components/TeamMembersModal should match snapshot 1`] = `
       permissions={
         Array [
           "add_user_to_team",
-          "invite_guest",
+          "invite_partner",
         ]
       }
       teamId="id"

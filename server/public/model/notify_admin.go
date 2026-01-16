@@ -13,7 +13,7 @@ import (
 type MattermostFeature string
 
 const (
-	PaidFeatureGuestAccounts                = MattermostFeature("mattermost.feature.guest_accounts")
+	PaidFeaturePartnerAccounts                = MattermostFeature("mattermost.feature.partner_accounts")
 	PaidFeatureCustomUsergroups             = MattermostFeature("mattermost.feature.custom_user_groups")
 	PaidFeatureCreateMultipleTeams          = MattermostFeature("mattermost.feature.create_multiple_teams")
 	PaidFeatureStartcall                    = MattermostFeature("mattermost.feature.start_call")
@@ -34,7 +34,7 @@ var validSKUs = map[string]struct{}{
 
 // These are the features a non admin would typically ping an admin about
 var paidFeatures = map[MattermostFeature]struct{}{
-	PaidFeatureGuestAccounts:                {},
+	PaidFeaturePartnerAccounts:                {},
 	PaidFeatureCustomUsergroups:             {},
 	PaidFeatureCreateMultipleTeams:          {},
 	PaidFeatureStartcall:                    {},

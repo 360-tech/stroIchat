@@ -9,14 +9,14 @@ import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
 
 import {Client4} from 'mattermost-redux/client';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import ChannelMembersDropdown from 'components/channel_members_dropdown';
 import CustomStatusEmoji from 'components/custom_status/custom_status_emoji';
 import ProfilePicture from 'components/profile_picture';
 import ProfilePopover from 'components/profile_popover';
 import SharedChannelIndicator from 'components/shared_channel_indicator';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 import WithTooltip from 'components/with_tooltip';
 
 import type {ChannelMember as ChannelMemberType} from './member_list';
@@ -70,7 +70,7 @@ const Member = ({channel, member, index, totalUsers, editing, actions}: Props) =
                 >
                     <span className='channel-members-rhs__display-name'>
                         {member.displayName}
-                        {isGuest(member.user.roles) && <GuestTag/>}
+                        {isPartner(member.user.roles) && <PartnerTag/>}
                         {member.user.remote_id &&
                         (
                             <span className='channel-members-rhs__shared-icon'>
@@ -124,10 +124,10 @@ const Member = ({channel, member, index, totalUsers, editing, actions}: Props) =
                                 defaultMessage='Member'
                             />
                         }
-                        guestLabel={
+                        partnerLabel={
                             <FormattedMessage
-                                id='channel_members_rhs.member.select_role_guest'
-                                defaultMessage='Guest'
+                                id='channel_members_rhs.member.select_role_partner'
+                                defaultMessage='Partner'
                             />
                         }
                     />

@@ -34,7 +34,7 @@ export interface Props {
     totalUsers: number;
     channelAdminLabel?: JSX.Element;
     channelMemberLabel?: JSX.Element;
-    guestLabel?: JSX.Element;
+    partnerLabel?: JSX.Element;
     actions: {
         getChannelStats: (channelId: string) => void;
         updateChannelMemberSchemeRoles: (channelId: string, userId: string, isSchemeUser: boolean, isSchemeAdmin: boolean) => Promise<ActionResult>;
@@ -55,7 +55,7 @@ export default function ChannelMembersDropdown({
     totalUsers,
     channelAdminLabel,
     channelMemberLabel,
-    guestLabel,
+    partnerLabel,
     actions,
 }: Props) {
     const intl = useIntl();
@@ -114,7 +114,7 @@ export default function ChannelMembersDropdown({
         actions.getChannelMember(channel.id, user.id);
     };
 
-    const renderRole = (isChannelAdmin: boolean, isGuest: boolean) => {
+    const renderRole = (isChannelAdmin: boolean, isPartner: boolean) => {
         if (isChannelAdmin) {
             if (channelAdminLabel) {
                 return channelAdminLabel;
@@ -125,14 +125,14 @@ export default function ChannelMembersDropdown({
                     defaultMessage='Channel Admin'
                 />
             );
-        } else if (isGuest) {
-            if (guestLabel) {
-                return guestLabel;
+        } else if (isPartner) {
+            if (partnerLabel) {
+                return partnerLabel;
             }
             return (
                 <FormattedMessage
-                    id='channel_members_dropdown.channel_guest'
-                    defaultMessage='Channel Guest'
+                    id='channel_members_dropdown.channel_partner'
+                    defaultMessage='Channel Partner'
                 />
             );
         }
@@ -149,10 +149,10 @@ export default function ChannelMembersDropdown({
     };
 
     const isChannelAdmin = UserUtils.isChannelAdmin(channelMember.roles) || channelMember.scheme_admin;
-    const isGuest = UserUtils.isGuest(user.roles);
-    const isMember = !isChannelAdmin && !isGuest;
+    const isPartner = UserUtils.isPartner(user.roles);
+    const isMember = !isChannelAdmin && !isPartner;
     const isDefaultChannel = channel.name === Constants.DEFAULT_CHANNEL;
-    const currentRole = renderRole(isChannelAdmin, isGuest);
+    const currentRole = renderRole(isChannelAdmin, isPartner);
 
     if (user.remote_id) {
         return (<></>);
@@ -160,7 +160,7 @@ export default function ChannelMembersDropdown({
 
     const canMakeUserChannelMember = canChangeMemberRoles && isChannelAdmin;
     const canMakeUserChannelAdmin = canChangeMemberRoles && isMember;
-    const canRemoveUserFromChannel = canRemoveMember && (!channel.group_constrained || user.is_bot) && (!isDefaultChannel || isGuest);
+    const canRemoveUserFromChannel = canRemoveMember && (!channel.group_constrained || user.is_bot) && (!isDefaultChannel || isPartner);
     const removeFromChannelText = user.id === currentUserId ? intl.formatMessage({id: 'channel_header.leave', defaultMessage: 'Leave Channel'}) : intl.formatMessage({id: 'channel_members_dropdown.remove_from_channel', defaultMessage: 'Remove from Channel'});
     const removeFromChannelTestId = user.id === currentUserId ? 'leaveChannel' : 'removeFromChannel';
 

@@ -18,12 +18,12 @@ function getAnyState(wrapper: any) {
 describe('components/admin_console/permission_schemes_settings/permission_team_scheme_settings/permission_team_scheme_settings', () => {
     const defaultProps = {
         config: {
-            EnableGuestAccounts: 'true',
+            EnablePartnerAccounts: 'true',
         },
         license: {
             IsLicensed: 'true',
             CustomPermissionsSchemes: 'true',
-            GuestAccountsPermissions: 'true',
+            PartnerAccountsPermissions: 'true',
         },
         location: {},
         schemeId: '',
@@ -48,10 +48,10 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
             channel_admin: {
                 permissions: [],
             },
-            team_guest: {
+            team_partner: {
                 permissions: [],
             },
-            channel_guest: {
+            channel_partner: {
                 permissions: [],
             },
             playbook_admin: {
@@ -130,13 +130,13 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
 
     test('should match snapshot on new with default roles with permissions', (done) => {
         const roles = {
-            system_guest: {
+            system_partner: {
                 permissions: ['create_post'],
             },
-            team_guest: {
+            team_partner: {
                 permissions: ['invite_user'],
             },
-            channel_guest: {
+            channel_partner: {
                 permissions: ['add_reaction'],
             },
             system_user: {
@@ -181,8 +181,8 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
                 default_team_admin_role: 'bbb',
                 default_channel_user_role: 'ccc',
                 default_channel_admin_role: 'ddd',
-                default_team_guest_role: 'eee',
-                default_channel_guest_role: 'fff',
+                default_team_partner_role: 'eee',
+                default_channel_partner_role: 'fff',
                 default_playbook_admin_role: 'ggg',
                 default_playbook_member_role: 'hhh',
                 default_run_admin_role: 'iii',
@@ -226,8 +226,8 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
                 default_team_admin_role: 'bbb',
                 default_channel_user_role: 'ccc',
                 default_channel_admin_role: 'ddd',
-                default_team_guest_role: 'eee',
-                default_channel_guest_role: 'fff',
+                default_team_partner_role: 'eee',
+                default_channel_partner_role: 'fff',
                 default_playbook_admin_role: 'ggg',
                 default_playbook_member_role: 'hhh',
                 default_run_admin_role: 'iii',
@@ -251,11 +251,11 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
             <PermissionTeamSchemeSettings {...defaultProps}/>,
         );
         const instance = getAnyInstance(wrapper);
-        expect(getAnyState(wrapper).openRoles.guests).toBe(true);
-        instance.toggleRole('guests');
-        expect(getAnyState(wrapper).openRoles.guests).toBe(false);
-        instance.toggleRole('guests');
-        expect(getAnyState(wrapper).openRoles.guests).toBe(true);
+        expect(getAnyState(wrapper).openRoles.partners).toBe(true);
+        instance.toggleRole("partners")');
+        expect(getAnyState(wrapper).openRoles.partners).toBe(false);
+        instance.toggleRole("partners")');
+        expect(getAnyState(wrapper).openRoles.partners).toBe(true);
 
         expect(getAnyState(wrapper).openRoles.all_users).toBe(true);
         instance.toggleRole('all_users');
@@ -289,8 +289,8 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
                 default_team_admin_role: 'bbb',
                 default_channel_user_role: 'ccc',
                 default_channel_admin_role: 'ddd',
-                default_team_guest_role: 'eee',
-                default_channel_guest_role: 'fff',
+                default_team_partner_role: 'eee',
+                default_channel_partner_role: 'fff',
                 default_playbook_admin_role: 'ggg',
                 default_playbook_member_role: 'hhh',
                 default_run_admin_role: 'iii',
@@ -312,7 +312,7 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
         const props = {
             ...defaultProps,
             config: {
-                EnableGuestAccounts: 'false',
+                EnablePartnerAccounts: 'false',
             },
             schemeId: 'xyz',
             scheme: {
@@ -324,8 +324,8 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
                 default_team_admin_role: 'bbb',
                 default_channel_user_role: 'ccc',
                 default_channel_admin_role: 'ddd',
-                default_team_guest_role: 'eee',
-                default_channel_guest_role: 'fff',
+                default_team_partner_role: 'eee',
+                default_channel_partner_role: 'fff',
                 default_playbook_admin_role: 'ggg',
                 default_playbook_member_role: 'hhh',
                 default_run_admin_role: 'iii',
@@ -394,11 +394,11 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
         expect(getAnyState(wrapper).roles.team_admin.permissions.indexOf(Permissions.CREATE_POST)).toBe(-1);
     });
 
-    test('should match snapshot on edit without guest permissions', (done) => {
+    test('should match snapshot on edit without partner permissions', (done) => {
         const props = {
             ...defaultProps,
             config: {
-                EnableGuestAccounts: 'false',
+                EnablePartnerAccounts: 'false',
             },
             schemeId: 'xyz',
             scheme: {
@@ -410,8 +410,8 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
                 default_team_admin_role: 'bbb',
                 default_channel_user_role: 'ccc',
                 default_channel_admin_role: 'ddd',
-                default_team_guest_role: 'eee',
-                default_channel_guest_role: 'fff',
+                default_team_partner_role: 'eee',
+                default_channel_partner_role: 'fff',
                 default_playbook_admin_role: 'ggg',
                 default_playbook_member_role: 'hhh',
                 default_run_admin_role: 'iii',
@@ -445,8 +445,8 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
                 default_team_admin_role: 'bbb',
                 default_channel_user_role: 'ccc',
                 default_channel_admin_role: 'ddd',
-                default_team_guest_role: 'eee',
-                default_channel_guest_role: 'fff',
+                default_team_partner_role: 'eee',
+                default_channel_partner_role: 'fff',
                 default_playbook_admin_role: 'ggg',
                 default_playbook_member_role: 'hhh',
                 default_run_admin_role: 'iii',

@@ -1175,7 +1175,7 @@ func TestExecuteCommandReadOnly(t *testing.T) {
 		[]*model.ChannelModerationPatch{{
 			Name: &model.PermissionCreatePost.Id,
 			Roles: &model.ChannelModeratedRolesPatch{
-				Guests:  model.NewPointer(false),
+				Partners:  model.NewPointer(false),
 				Members: model.NewPointer(false),
 			},
 		}})

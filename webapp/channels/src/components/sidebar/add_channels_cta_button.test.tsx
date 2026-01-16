@@ -66,7 +66,7 @@ describe('components/new_channel_modal', () => {
                 },
                 roles: {
                     roles: {
-                        guest_user: {
+                        partner_user: {
                             permissions: [],
                         },
                         system_user: {
@@ -124,16 +124,16 @@ describe('components/new_channel_modal', () => {
     });
 
     test('should return nothing when user does not have permissions', () => {
-        const guestUser = {
-            currentUserId: 'guest_user_id',
+        const partnerUser = {
+            currentUserId: 'partner_user_id',
             profiles: {
                 user_id: {
-                    id: 'guest_user_id',
+                    id: 'partner_user_id',
                     roles: 'team_role',
                 },
             },
         } as unknown as UsersState;
-        mockState = {...mockState, entities: {...mockState.entities, users: guestUser}};
+        mockState = {...mockState, entities: {...mockState.entities, users: partnerUser}};
 
         const wrapper = mountWithIntl(
             <AddChannelsCtaButton/>,

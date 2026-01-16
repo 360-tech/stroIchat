@@ -293,7 +293,7 @@ describe('components/AdminSidebar', () => {
                 Elasticsearch: 'true',
                 CustomPermissionsSchemes: 'true',
                 OpenId: 'true',
-                GuestAccounts: 'true',
+                PartnerAccounts: 'true',
                 Announcement: 'true',
             },
             config: {

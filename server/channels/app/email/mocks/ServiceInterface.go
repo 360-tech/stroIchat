@@ -254,17 +254,17 @@ func (_m *ServiceInterface) SendEmailChangeVerifyEmail(newUserEmail string, loca
 	return r0
 }
 
-// SendGuestInviteEmails provides a mock function with given fields: team, channels, senderName, senderUserId, senderProfileImage, invites, siteURL, message, errorWhenNotSent, isSystemAdmin, isFirstAdmin, guestSubtype
-func (_m *ServiceInterface) SendGuestInviteEmails(team *model.Team, channels []*model.Channel, senderName string, senderUserId string, senderProfileImage []byte, invites []string, siteURL string, message string, errorWhenNotSent bool, isSystemAdmin bool, isFirstAdmin bool, guestSubtype string) error {
-	ret := _m.Called(team, channels, senderName, senderUserId, senderProfileImage, invites, siteURL, message, errorWhenNotSent, isSystemAdmin, isFirstAdmin, guestSubtype)
+// SendPartnerInviteEmails provides a mock function with given fields: team, channels, senderName, senderUserId, senderProfileImage, invites, siteURL, message, errorWhenNotSent, isSystemAdmin, isFirstAdmin, partnerSubtype
+func (_m *ServiceInterface) SendPartnerInviteEmails(team *model.Team, channels []*model.Channel, senderName string, senderUserId string, senderProfileImage []byte, invites []string, siteURL string, message string, errorWhenNotSent bool, isSystemAdmin bool, isFirstAdmin bool, partnerSubtype string) error {
+	ret := _m.Called(team, channels, senderName, senderUserId, senderProfileImage, invites, siteURL, message, errorWhenNotSent, isSystemAdmin, isFirstAdmin, partnerSubtype)
 
 	if len(ret) == 0 {
-		panic("no return value specified for SendGuestInviteEmails")
+		panic("no return value specified for SendPartnerInviteEmails")
 	}
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(*model.Team, []*model.Channel, string, string, []byte, []string, string, string, bool, bool, bool, string) error); ok {
-		r0 = rf(team, channels, senderName, senderUserId, senderProfileImage, invites, siteURL, message, errorWhenNotSent, isSystemAdmin, isFirstAdmin, guestSubtype)
+		r0 = rf(team, channels, senderName, senderUserId, senderProfileImage, invites, siteURL, message, errorWhenNotSent, isSystemAdmin, isFirstAdmin, partnerSubtype)
 	} else {
 		r0 = ret.Error(0)
 	}

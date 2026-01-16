@@ -271,7 +271,7 @@ exports[`admin_console/system_role_permissions should match snapshot 1`] = `
               "name": "authentication_openid",
             },
             Object {
-              "name": "authentication_guest_access",
+              "name": "authentication_partner_access",
             },
           ],
         }
@@ -583,7 +583,7 @@ exports[`admin_console/system_role_permissions should match snapshot with isLice
               "name": "authentication_openid",
             },
             Object {
-              "name": "authentication_guest_access",
+              "name": "authentication_partner_access",
             },
           ],
         }

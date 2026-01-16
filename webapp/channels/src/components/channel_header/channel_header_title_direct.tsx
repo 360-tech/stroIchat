@@ -9,9 +9,9 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import {getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
-import {displayUsername, isGuest} from 'mattermost-redux/utils/user_utils';
+import {displayUsername, isPartner} from 'mattermost-redux/utils/user_utils';
 
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 
 type Props = {
     dmUser?: UserProfile;
@@ -33,7 +33,7 @@ const ChannelHeaderTitleDirect = ({
                     defaultMessage='{displayName} (you) '
                     values={{displayName}}
                 />}
-            {isGuest(dmUser?.roles ?? '') && <GuestTag/>}
+            {isPartner(dmUser?.roles ?? '') && <PartnerTag/>}
         </>
     );
 };

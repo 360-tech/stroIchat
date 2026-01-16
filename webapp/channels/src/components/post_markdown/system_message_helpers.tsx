@@ -57,16 +57,16 @@ function renderJoinChannelMessage(post: Post): ReactNode {
     );
 }
 
-function renderGuestJoinChannelMessage(post: Post, hideGuestTags: boolean): ReactNode {
-    if (hideGuestTags) {
+function renderPartnerJoinChannelMessage(post: Post, hidePartnerTags: boolean): ReactNode {
+    if (hidePartnerTags) {
         return renderJoinChannelMessage(post);
     }
     const username = renderUsername(post.props.username);
 
     return (
         <FormattedMessage
-            id='api.channel.guest_join_channel.post_and_forget'
-            defaultMessage='{username} joined the channel as a guest.'
+            id='api.channel.partner_join_channel.post_and_forget'
+            defaultMessage='{username} joined the channel as a partner.'
             values={{username}}
         />
     );
@@ -100,8 +100,8 @@ function renderAddToChannelMessage(post: Post): ReactNode {
     );
 }
 
-function renderAddGuestToChannelMessage(post: Post, hideGuestTags: boolean): ReactNode {
-    if (hideGuestTags) {
+function renderAddPartnerToChannelMessage(post: Post, hidePartnerTags: boolean): ReactNode {
+    if (hidePartnerTags) {
         return renderAddToChannelMessage(post);
     }
     const username = renderUsername(post.props.username);
@@ -109,8 +109,8 @@ function renderAddGuestToChannelMessage(post: Post, hideGuestTags: boolean): Rea
 
     return (
         <FormattedMessage
-            id='api.channel.add_guest.added'
-            defaultMessage='{addedUsername} added to the channel as a guest by {username}.'
+            id='api.channel.add_partner.added'
+            defaultMessage='{addedUsername} added to the channel as a partner by {username}.'
             values={{
                 username,
                 addedUsername,
@@ -423,7 +423,7 @@ export function isAddMemberProps(v: unknown): v is AddMemberProps {
     return true;
 }
 
-export function renderSystemMessage(post: Post, currentTeamName: string, channel: Channel, hideGuestTags: boolean, isUserCanManageMembers?: boolean, isMilitaryTime?: boolean, timezone?: string): ReactNode {
+export function renderSystemMessage(post: Post, currentTeamName: string, channel: Channel, hidePartnerTags: boolean, isUserCanManageMembers?: boolean, isMilitaryTime?: boolean, timezone?: string): ReactNode {
     const isEphemeral = isPostEphemeral(post);
     if (isEphemeral && post.props?.type === Posts.POST_TYPES.REMINDER) {
         return renderReminderACKMessage(post, currentTeamName, Boolean(isMilitaryTime), timezone);
@@ -447,10 +447,10 @@ export function renderSystemMessage(post: Post, currentTeamName: string, channel
         return null;
     } else if (systemMessageRenderers[post.type]) {
         return systemMessageRenderers[post.type](post);
-    } else if (post.type === Posts.POST_TYPES.GUEST_JOIN_CHANNEL) {
-        return renderGuestJoinChannelMessage(post, hideGuestTags);
-    } else if (post.type === Posts.POST_TYPES.ADD_GUEST_TO_CHANNEL) {
-        return renderAddGuestToChannelMessage(post, hideGuestTags);
+    } else if (post.type === Posts.POST_TYPES.PARTNER_JOIN_CHANNEL) {
+        return renderPartnerJoinChannelMessage(post, hidePartnerTags);
+    } else if (post.type === Posts.POST_TYPES.ADD_PARTNER_TO_CHANNEL) {
+        return renderAddPartnerToChannelMessage(post, hidePartnerTags);
     } else if (post.type === Posts.POST_TYPES.COMBINED_USER_ACTIVITY && isUserActivityProp(post.props.user_activity)) {
         const {allUserIds, allUsernames, messageData} = post.props.user_activity;
 

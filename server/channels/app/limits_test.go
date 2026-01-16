@@ -56,7 +56,7 @@ func TestGetServerLimits(t *testing.T) {
 		require.Equal(t, int64(3), serverLimits.ActiveUserCount)
 	})
 
-	t.Run("user count should increase on creating new guest user and decrease on permanently deleting", func(t *testing.T) {
+	t.Run("user count should increase on creating new partner user and decrease on permanently deleting", func(t *testing.T) {
 		th := Setup(t).InitBasic()
 		defer th.TearDown()
 
@@ -67,14 +67,14 @@ func TestGetServerLimits(t *testing.T) {
 		require.Equal(t, int64(3), serverLimits.ActiveUserCount)
 
 		// now we create a new user
-		newGuestUser := th.CreateGuest()
+		newPartnerUser := th.CreatePartner()
 
 		serverLimits, appErr = th.App.GetServerLimits()
 		require.Nil(t, appErr)
 		require.Equal(t, int64(4), serverLimits.ActiveUserCount)
 
 		// now we'll delete the user
-		_ = th.App.PermanentDeleteUser(th.Context, newGuestUser)
+		_ = th.App.PermanentDeleteUser(th.Context, newPartnerUser)
 		serverLimits, appErr = th.App.GetServerLimits()
 		require.Nil(t, appErr)
 		require.Equal(t, int64(3), serverLimits.ActiveUserCount)
@@ -105,7 +105,7 @@ func TestGetServerLimits(t *testing.T) {
 		require.Equal(t, int64(3), serverLimits.ActiveUserCount)
 	})
 
-	t.Run("user count should increase on creating new guest user and decrease on soft deleting", func(t *testing.T) {
+	t.Run("user count should increase on creating new partner user and decrease on soft deleting", func(t *testing.T) {
 		th := Setup(t).InitBasic()
 		defer th.TearDown()
 
@@ -116,14 +116,14 @@ func TestGetServerLimits(t *testing.T) {
 		require.Equal(t, int64(3), serverLimits.ActiveUserCount)
 
 		// now we create a new user
-		newGuestUser := th.CreateGuest()
+		newPartnerUser := th.CreatePartner()
 
 		serverLimits, appErr = th.App.GetServerLimits()
 		require.Nil(t, appErr)
 		require.Equal(t, int64(4), serverLimits.ActiveUserCount)
 
 		// now we'll delete the user
-		_, appErr = th.App.UpdateActive(th.Context, newGuestUser, false)
+		_, appErr = th.App.UpdateActive(th.Context, newPartnerUser, false)
 		require.Nil(t, appErr)
 		serverLimits, appErr = th.App.GetServerLimits()
 		require.Nil(t, appErr)

@@ -123,10 +123,10 @@ export class MobileSidebarRightItems extends React.PureComponent<Props> {
                             icon={<i className='fa fa-user-plus'/>}
                         />
                     </TeamPermissionGate>
-                    {this.props.guestAccessEnabled && (
+                    {this.props.partnerAccessEnabled && (
                         <TeamPermissionGate
                             teamId={this.props.teamId}
-                            permissions={[Permissions.ADD_USER_TO_TEAM, Permissions.INVITE_GUEST]}
+                            permissions={[Permissions.ADD_USER_TO_TEAM, Permissions.INVITE_PARTNER]}
                         >
                             <Menu.ItemToggleModalRedux
                                 id='invitePeople'

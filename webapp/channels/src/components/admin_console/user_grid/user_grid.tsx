@@ -157,7 +157,7 @@ export default class UserGrid extends React.PureComponent<Props, State> {
         return {
             user_id: user.id,
             scheme_admin: false,
-            scheme_user: !user.roles.includes('guest'),
+            scheme_user: !user.roles.includes('partner'),
         };
     };
 

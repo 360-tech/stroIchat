@@ -4759,19 +4759,19 @@
     "translation": "Ungültiger alter Wert; er sollte nicht gesetzt werden, wenn die Operation nicht atomar ist."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Ungültige E-Mail-Adressen."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Ungültige E-Mail-Adresse."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Ungültige Kanäle."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Ungültiger Kanal."
   },
   {
@@ -4783,7 +4783,7 @@
     "translation": "Ungültiger Signaturalgorithmus."
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Ungültiges Gastattribut. Muss in der Form 'feld=wert' vorliegen."
   },
   {
@@ -4819,7 +4819,7 @@
     "translation": "Gruppe kann dem Kanal nicht zugeordnet werden, solange sie nicht zuerst dem übergeordneten gruppen-sychronisierten Team zugeordnet wird."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Ungültiger AD/LDAP-Gast-Filter."
   },
   {
@@ -5211,7 +5211,7 @@
     "translation": "Der Server ist ausgelastet, unkritische Dienste sind vorübergehend nicht verfügbar."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Die angegebene E-Mail-Adresse gehört nicht zu den zugelassenen Domains für Gastkonten. Bitte kontaktiere deinen Administrator oder registriere dich mit einer andere E-Mail-Adresse."
   },
   {
@@ -5219,7 +5219,7 @@
     "translation": "Die angegebene E-Mail-Adresse gehört nicht zu den zugelassenen Domains. Bitte kontaktiere deinen Administrator oder registriere dich mit einer andere E-Mail-Adresse."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Du kannst kein Gastkonto aktivieren, da die Funktion Gastzugang nicht aktiviert ist."
   },
   {
@@ -5227,7 +5227,7 @@
     "translation": "Konnte Passwortrücksetzungs-Token nicht verarbeiten"
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Der Gast kann nicht in einen regulären Benutzer umgewandelt werden, da er kein Gast ist."
   },
   {
@@ -5247,15 +5247,15 @@
     "translation": "Gültige E-Mail und/oder Passwort eingeben"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Deine Lizenz unterstützt Gastkonten nicht"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Gastkonten sind deaktiviert"
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Der Benutzer kann nicht in einen Gast umgewandelt werden, da er bereits ein Gast ist."
   },
   {
@@ -5263,11 +5263,11 @@
     "translation": "Konnte Benutzer nicht erstellen, ungültige Einladung."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Deine Lizenz unterstützt Gastkonten nicht."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Gastkonten sind deaktiviert."
   },
   {
@@ -5283,11 +5283,11 @@
     "translation": "Die Lizenz deiner Enterprise Edition ist abgelaufen und einige Funktionen sind möglicherweise deaktiviert. Bitte erneuere die Lizenz."
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} hat dich eingeladen, dem Team {{ .TeamDisplayName }} als Gast beizutreten"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Ungültige Aktualisierung von Teammitglied: Ein Benutzer muss ein Gast oder ein Benutzer sein, aber nicht beides."
   },
   {
@@ -5303,7 +5303,7 @@
     "translation": "Konnte Benutzer nicht aus einem gruppenbeschränkten Team entfernen."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Die Kanäle der Einladung müssen Teil des Teams der Einladung sein."
   },
   {
@@ -5315,15 +5315,15 @@
     "translation": "Du hast nicht die nötigen Berechtigungen, um die Kanalüberschrift zu bearbeiten"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Deine Lizenz unterstützt Gastkonten nicht"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Gastkonten sind deaktiviert."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Gäste dürfen einem Team nicht durch einen Einladungslink beitreten. Bitte fordere eine Einladung in das Team per E-Mail an."
   },
   {
@@ -5431,7 +5431,7 @@
     "translation": "Dem Kommandowort fehlt der führende Slash"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Ungültige Aktualisierung von Teammitglied: Du kannst die Gastrolle nicht manuell hinzufügen oder entfernen."
   },
   {
@@ -5439,11 +5439,11 @@
     "translation": "Der Standardkanal kann nicht privat gemacht werden."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Ungültige Aktualisierung von Kanalmitglied: Ein Benutzer muss ein Gast oder ein Benutzer sein, aber nicht beides."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Ungültige Aktualisierung von Kanalmitglied: Du kannst die Gastrolle nicht manuell hinzufügen oder entfernen."
   },
   {
@@ -5475,7 +5475,7 @@
     "translation": "Deine Lizenz unterstützt die Datenaufbewahrung nicht"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v hat den Kanal als Gast betreten."
   },
   {
@@ -5495,7 +5495,7 @@
     "translation": "Fehler beim Hinzufügen von Kanalmitglied(ern)."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v wurde durch %v als Gast zum Kanal hinzugefügt."
   },
   {
@@ -7110,7 +7110,7 @@
     "translation": "Prüfung der Bildbeschränkungen ist fehlgeschlagen. Auflösung ist zu hoch."
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Ungültiger oder fehlender Anfragebody."
   },
   {
@@ -7154,7 +7154,7 @@
     "translation": "Deine Lizenz ist zur Erneuerung fällig"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Du wurdest als Gast eingeladen mit dem Team zusammenzuarbeiten"
   },
   {
@@ -7658,7 +7658,7 @@
     "translation": "Wir sind beim Suchen des Kontos auf einen Fehler gestoßen."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Fehlschlag beim Aktualisieren des Benutzers."
   },
   {
@@ -7758,7 +7758,7 @@
     "translation": "Konnte Konto nicht speichern."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Konnte Benutzer nicht aktualisieren."
   },
   {
@@ -8414,11 +8414,11 @@
     "translation": "Gruppenname existiert bereits als reservierter Name"
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "Deine Lizenz unterstützt Gastkonten nicht"
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "Gastkonten sind deaktiviert"
   },
   {
@@ -9254,7 +9254,7 @@
     "translation": "Keine Benutzerkennung zum Senden des Berichts"
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "Ungültige Teammitglied Aktualisierung: Ein Gast kann nicht zum Teammitglied oder -administrator ernannt werden. Bitte ernenne ihn zuerst zu einem Benutzer."
   },
   {
@@ -9346,7 +9346,7 @@
     "translation": "Die angegebene Zielgruppe ist ungültig: {{ .Error }}"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "Ungültige Aktualisierung eines Teammitglieds: Ein Gast kann nicht für ein einzelnes Team festgelegt werden. Ein Systemadministrator muss Benutzer zu/von Gästen befördern oder degradieren."
   },
   {
@@ -9370,7 +9370,7 @@
     "translation": "Du darfst keine Lesezeichen für einen Kanal erstellen."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Lesezeichen für den Channel konnte nicht erstellt werden."
   },
   {
@@ -9378,7 +9378,7 @@
     "translation": "Lesezeichen für den Channel konnte nicht erstellt werden."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Lesezeichen für den Kanal konnte nicht gelöscht werden."
   },
   {
@@ -9394,7 +9394,7 @@
     "translation": "Aktualisierung des Kanal-Lesezeichens ist fehlgeschlagen."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Aktualisierung des Kanal-Lesezeichens ist fehlgeschlagen."
   },
   {
@@ -9406,7 +9406,7 @@
     "translation": "Sortierreihenfolge des Kanal-Lesezeichens konnte nicht aktualisiert werden."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Sortierreihenfolge des Kanal-Lesezeichens konnte nicht aktualisiert werden."
   },
   {
@@ -9414,7 +9414,7 @@
     "translation": "Sortierreihenfolge des Kanal-Lesezeichens konnte nicht aktualisiert werden."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Ungültige Aktualisierung eines Channel-Mitglieds: Ein Gast kann nicht für einen einzelnen Kanal festgelegt werden, ein Systemadministrator muss Benutzer zu/von Gästen befördern oder zurückstufen."
   },
   {
@@ -9502,7 +9502,7 @@
     "translation": "Aktualisier am muss eine gültige Zeit sein."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Ungültige Aktualisierung des Kanal-Mitglieds: Ein Gast kann nicht zum Teammitglied oder Admin gemacht werden, bitte befördere ihn zuerst zum Benutzer."
   },
   {
@@ -10044,7 +10044,7 @@
     "translation": "Verzeichnis für benutzerdefinierte Emoji-Bilder kann nicht erstellt werden"
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "Die Benutzerrollen stimmen nicht mit dem Gaststatus überein."
   },
   {
@@ -10636,7 +10636,7 @@
     "translation": "Wenn die Protokollierung von Audit-Dateien aktiviert ist, muss ein Dateiname angegeben werden."
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
     "translation": "Du kannst keine Gäste in diesen Kanal einladen, weil der Zugang zu diesem Kanal aufgrund von Benutzerattributen eingeschränkt ist."
   },
   {

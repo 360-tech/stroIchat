@@ -175,8 +175,8 @@ type Features struct {
 	MessageExport             *bool `json:"message_export"`
 	CustomPermissionsSchemes  *bool `json:"custom_permissions_schemes"`
 	CustomTermsOfService      *bool `json:"custom_terms_of_service"`
-	GuestAccounts             *bool `json:"guest_accounts"`
-	GuestAccountsPermissions  *bool `json:"guest_accounts_permissions"`
+	PartnerAccounts             *bool `json:"partner_accounts"`
+	PartnerAccountsPermissions  *bool `json:"partner_accounts_permissions"`
 	IDLoadedPushNotifications *bool `json:"id_loaded"`
 	LockTeammateNameDisplay   *bool `json:"lock_teammate_name_display"`
 	EnterprisePlugins         *bool `json:"enterprise_plugins"`
@@ -208,8 +208,8 @@ func (f *Features) ToMap() map[string]any {
 		"data_retention":              *f.DataRetention,
 		"message_export":              *f.MessageExport,
 		"custom_permissions_schemes":  *f.CustomPermissionsSchemes,
-		"guest_accounts":              *f.GuestAccounts,
-		"guest_accounts_permissions":  *f.GuestAccountsPermissions,
+		"partner_accounts":              *f.PartnerAccounts,
+		"partner_accounts_permissions":  *f.PartnerAccountsPermissions,
 		"id_loaded":                   *f.IDLoadedPushNotifications,
 		"lock_teammate_name_display":  *f.LockTeammateNameDisplay,
 		"enterprise_plugins":          *f.EnterprisePlugins,
@@ -303,12 +303,12 @@ func (f *Features) SetDefaults() {
 		f.CustomPermissionsSchemes = NewPointer(*f.FutureFeatures)
 	}
 
-	if f.GuestAccounts == nil {
-		f.GuestAccounts = NewPointer(*f.FutureFeatures)
+	if f.PartnerAccounts == nil {
+		f.PartnerAccounts = NewPointer(*f.FutureFeatures)
 	}
 
-	if f.GuestAccountsPermissions == nil {
-		f.GuestAccountsPermissions = NewPointer(*f.FutureFeatures)
+	if f.PartnerAccountsPermissions == nil {
+		f.PartnerAccountsPermissions = NewPointer(*f.FutureFeatures)
 	}
 
 	if f.CustomTermsOfService == nil {

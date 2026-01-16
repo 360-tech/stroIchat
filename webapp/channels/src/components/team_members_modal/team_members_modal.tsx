@@ -99,7 +99,7 @@ export default class TeamMembersModal extends React.PureComponent<Props, State> 
                 headerButton={
                     <TeamPermissionGate
                         teamId={this.props.currentTeam?.id}
-                        permissions={[Permissions.ADD_USER_TO_TEAM, Permissions.INVITE_GUEST]}
+                        permissions={[Permissions.ADD_USER_TO_TEAM, Permissions.INVITE_PARTNER]}
                     >
                         <button
                             id='invitePeople'

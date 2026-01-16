@@ -565,9 +565,9 @@ export function sendEmailInvitesToTeam(teamId: string, emails: string[]) {
     });
 }
 
-export function sendEmailGuestInvitesToChannels(teamId: string, channelIds: string[], emails: string[], message: string) {
+export function sendEmailPartnerInvitesToChannels(teamId: string, channelIds: string[], emails: string[], message: string) {
     return bindClientFunc({
-        clientFunc: Client4.sendEmailGuestInvitesToChannels,
+        clientFunc: Client4.sendEmailPartnerInvitesToChannels,
         params: [
             teamId,
             channelIds,
@@ -586,15 +586,15 @@ export function sendEmailInvitesToTeamGracefully(teamId: string, emails: string[
     });
 }
 
-export function sendEmailGuestInvitesToChannelsGracefully(teamId: string, channelIds: string[], emails: string[], message: string, guestSubtype?: string) {
+export function sendEmailPartnerInvitesToChannelsGracefully(teamId: string, channelIds: string[], emails: string[], message: string, partnerSubtype?: string) {
     return bindClientFunc({
-        clientFunc: Client4.sendEmailGuestInvitesToChannelsGracefully,
+        clientFunc: Client4.sendEmailPartnerInvitesToChannelsGracefully,
         params: [
             teamId,
             channelIds,
             emails,
             message,
-            guestSubtype,
+            partnerSubtype,
         ],
     });
 }

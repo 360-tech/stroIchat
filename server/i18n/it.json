@@ -4756,7 +4756,7 @@
     "translation": "Filtro Amministratore AD/LDAP non valido."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Filtro Ospite AD/LDAP non valido."
   },
   {
@@ -4776,19 +4776,19 @@
     "translation": "Firma Algoritmo non valida."
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Attributo Ospite non valido. Deve essere in forma 'campo=valore'."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Canali non validi."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Email invalida."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Email invalide."
   },
   {
@@ -4868,7 +4868,7 @@
     "translation": "Il tipo del canale non può essere aggiornato."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Aggiornamento membro del canale non valido. Non si può aggiungere o rimuovere il ruolo ospite manualmente."
   },
   {
@@ -4948,7 +4948,7 @@
     "translation": "La paginazione non è implementata per la ricerca nelle sole squadre pubbliche."
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} ti ha invitato ad unirti alla squadra {{ .TeamDisplayName }} come ospite"
   },
   {
@@ -4956,11 +4956,11 @@
     "translation": "Impossibile creare un token di recupero password"
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "La tua licenza non supporta gli account ospite."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "La tua licenza non supporta gli account ospite"
   },
   {
@@ -4968,7 +4968,7 @@
     "translation": "Inserire un'email o un nome utente e/o una password validi, oppure accedere con un metodo diverso."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Non puoi attivare un account ospite perché la funzionalità Accesso Ospite non è attiva."
   },
   {
@@ -5112,7 +5112,7 @@
     "translation": "caratteri non validi nella proprietà nome del gruppo"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Canale non valido."
   },
   {
@@ -5208,11 +5208,11 @@
     "translation": "la licenza non supporta i gruppi ldap"
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v aggiunto al canale come ospite da parte di %v."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v si è unito al canale come ospite."
   },
   {
@@ -5232,7 +5232,7 @@
     "translation": "{{.Username}} ha de-archiviato il canale."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Aggiornamento membro canale non valido: Un utente deve essere un ospite o un utente ma non entrambi."
   },
   {
@@ -5240,7 +5240,7 @@
     "translation": "Il canale predefinito non può essere privato."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Aggiornamento membro squadra non valido: Non è possibile aggiungere o rimuovere il ruolo ospite manualmente."
   },
   {
@@ -5304,15 +5304,15 @@
     "translation": "Errore aggiungendo i membri alla squadra."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Agli ospiti è impedito di accedere alle squadre seguendo un collegamento. Per favore richiedere un'email di invito alla squadra."
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Gli account ospite sono disattivati."
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "La tua licenza non supporta gli account ospite"
   },
   {
@@ -5320,7 +5320,7 @@
     "translation": "Errore invalidando gli inviti email."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "I canali dell'invito devono far parte della squadra dell'invito."
   },
   {
@@ -5328,7 +5328,7 @@
     "translation": "Non si dispone dei permessi necessari per elencare tutte le squadre"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Aggiornamento membro squadra invalido: Un utente deve essere ospite o utente ma non entrambi."
   },
   {
@@ -5340,7 +5340,7 @@
     "translation": "Licenza Mattermost Enteprise disabilitata."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Gli account ospite sono disattivati."
   },
   {
@@ -5348,11 +5348,11 @@
     "translation": "Impossibile creare l'utente, invito non valido."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Impossibile convertire l'utente in ospite poiché è già un ospite."
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Gli account ospite sono disattivati"
   },
   {
@@ -5368,7 +5368,7 @@
     "translation": "Inserire un nome utente e/o una password validi."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Impossibile convertire l'ospite in un utente regolare poiché non è un ospite."
   },
   {
@@ -5376,7 +5376,7 @@
     "translation": "Impossibile elaborare il token di recupero password"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "L'indirizzo email fornito non appartiene ai domini accettati per gli account ospite. Contattare l'amministratore di sistema oppure utilizzare una email differente."
   },
   {
@@ -6940,7 +6940,7 @@
     "translation": "Errore nell'elaborazione della richiesta a CWS."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": " "
   },
   {
@@ -7232,7 +7232,7 @@
     "translation": " "
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": " "
   },
   {
@@ -7580,7 +7580,7 @@
     "translation": " "
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": " "
   },
   {
@@ -8236,7 +8236,7 @@
     "translation": " "
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": " "
   },
   {
@@ -8352,7 +8352,7 @@
     "translation": "Non è permessa la creazione di un segnalibro all'utente."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Creazione di un segnalibro canale fallita."
   },
   {

@@ -31,7 +31,7 @@ func TestResolvePersistentNotification(t *testing.T) {
 		th.App.Srv().SetLicense(getLicWithSkuShortName(model.LicenseShortSkuProfessional))
 		cfg := th.App.Config()
 		*cfg.ServiceSettings.PostPriority = true
-		*cfg.ServiceSettings.AllowPersistentNotificationsForGuests = true
+		*cfg.ServiceSettings.AllowPersistentNotificationsForPartners = true
 
 		err := th.App.ResolvePersistentNotification(th.Context, post, "")
 		require.Nil(t, err)
@@ -76,7 +76,7 @@ func TestResolvePersistentNotification(t *testing.T) {
 		th.App.Srv().SetLicense(getLicWithSkuShortName(model.LicenseShortSkuProfessional))
 		cfg := th.App.Config()
 		*cfg.ServiceSettings.PostPriority = true
-		*cfg.ServiceSettings.AllowPersistentNotificationsForGuests = true
+		*cfg.ServiceSettings.AllowPersistentNotificationsForPartners = true
 
 		err := th.App.ResolvePersistentNotification(th.Context, post, user1.Id)
 		require.Nil(t, err)
@@ -140,7 +140,7 @@ func TestResolvePersistentNotification(t *testing.T) {
 		th.App.Srv().SetLicense(getLicWithSkuShortName(model.LicenseShortSkuProfessional))
 		cfg := th.App.Config()
 		*cfg.ServiceSettings.PostPriority = true
-		*cfg.ServiceSettings.AllowPersistentNotificationsForGuests = true
+		*cfg.ServiceSettings.AllowPersistentNotificationsForPartners = true
 
 		err := th.App.ResolvePersistentNotification(th.Context, post, user3.Id)
 		require.Nil(t, err)
@@ -166,7 +166,7 @@ func TestDeletePersistentNotification(t *testing.T) {
 		th.App.Srv().SetLicense(getLicWithSkuShortName(model.LicenseShortSkuProfessional))
 		cfg := th.App.Config()
 		*cfg.ServiceSettings.PostPriority = true
-		*cfg.ServiceSettings.AllowPersistentNotificationsForGuests = true
+		*cfg.ServiceSettings.AllowPersistentNotificationsForPartners = true
 
 		err := th.App.DeletePersistentNotification(th.Context, post)
 		require.Nil(t, err)

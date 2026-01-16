@@ -7,10 +7,10 @@ import type {OptionProps} from 'react-select';
 
 import type {UserProfile} from '@mattermost/types/users';
 
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 import Avatar from 'components/widgets/users/avatar/avatar';
 
 import * as Utils from 'utils/utils';
@@ -54,7 +54,7 @@ export const SelectUserOption = (props: OptionProps<UserProfile>) => {
                     </span>
                 </div>
                 {props.data.is_bot && <BotTag/>}
-                {isGuest(props.data.roles) && <GuestTag/>}
+                {isPartner(props.data.roles) && <PartnerTag/>}
             </div>
         </Option>
     );

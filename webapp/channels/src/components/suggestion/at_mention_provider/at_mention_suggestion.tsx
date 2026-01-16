@@ -7,14 +7,14 @@ import {FormattedMessage} from 'react-intl';
 
 import type {UserProfile} from '@mattermost/types/users';
 
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import usePrefixedIds, {joinIds} from 'components/common/hooks/usePrefixedIds';
 import CustomStatusEmoji from 'components/custom_status/custom_status_emoji';
 import SharedUserIndicator from 'components/shared_user_indicator';
 import StatusIcon from 'components/status_icon';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 import Tag from 'components/widgets/tag/tag';
 import Avatar from 'components/widgets/users/avatar';
 
@@ -47,7 +47,7 @@ const AtMentionSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Item
         status: null,
         botTag: null,
         sharedIcon: null,
-        guestTag: null,
+        partnerTag: null,
         groupMembers: null,
     });
 
@@ -200,7 +200,7 @@ const AtMentionSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Item
             ref={ref}
             {...props}
             aria-labelledby={ids.atMention}
-            aria-describedby={joinIds(ids.description, ids.youElement, ids.status, ids.botTag, ids.sharedIcon, ids.guestTag, ids.groupMembers)}
+            aria-describedby={joinIds(ids.description, ids.youElement, ids.status, ids.botTag, ids.sharedIcon, ids.partnerTag, ids.groupMembers)}
             data-testid={`mentionSuggestion_${itemname}`}
         >
             {icon}
@@ -216,7 +216,7 @@ const AtMentionSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Item
                 {youElement}
                 {customStatus}
                 {sharedIcon}
-                {isGuest(item.roles) && <GuestTag/>}
+                {isPartner(item.roles) && <PartnerTag/>}
             </span>
             {countBadge}
         </SuggestionContainer>

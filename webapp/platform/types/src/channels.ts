@@ -14,7 +14,7 @@ export type ChannelType = 'O' | 'P' | 'D' | 'G' | 'threads';
 export type ChannelStats = {
     channel_id: string;
     member_count: number;
-    guest_count: number;
+    partner_count: number;
     pinnedpost_count: number;
     files_count: number;
 };
@@ -182,7 +182,7 @@ export type ChannelsState = {
 export type ChannelModeration = {
     name: string;
     roles: {
-        guests?: {
+        partners?: {
             value: boolean;
             enabled: boolean;
         };
@@ -200,7 +200,7 @@ export type ChannelModeration = {
 export type ChannelModerationPatch = {
     name: string;
     roles: {
-        guests?: boolean;
+        partners?: boolean;
         members?: boolean;
     };
 };

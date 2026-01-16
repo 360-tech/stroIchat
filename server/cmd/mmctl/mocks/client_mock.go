@@ -494,19 +494,19 @@ func (mr *MockClientMockRecorder) DeletePreferences(arg0, arg1, arg2 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePreferences", reflect.TypeOf((*MockClient)(nil).DeletePreferences), arg0, arg1, arg2)
 }
 
-// DemoteUserToGuest mocks base method.
-func (m *MockClient) DemoteUserToGuest(arg0 context.Context, arg1 string) (*model.Response, error) {
+// DemoteUserToPartner mocks base method.
+func (m *MockClient) DemoteUserToPartner(arg0 context.Context, arg1 string) (*model.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DemoteUserToGuest", arg0, arg1)
+	ret := m.ctrl.Call(m, "DemoteUserToPartner", arg0, arg1)
 	ret0, _ := ret[0].(*model.Response)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// DemoteUserToGuest indicates an expected call of DemoteUserToGuest.
-func (mr *MockClientMockRecorder) DemoteUserToGuest(arg0, arg1 interface{}) *gomock.Call {
+// DemoteUserToPartner indicates an expected call of DemoteUserToPartner.
+func (mr *MockClientMockRecorder) DemoteUserToPartner(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DemoteUserToGuest", reflect.TypeOf((*MockClient)(nil).DemoteUserToGuest), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DemoteUserToPartner", reflect.TypeOf((*MockClient)(nil).DemoteUserToPartner), arg0, arg1)
 }
 
 // DisableBot mocks base method.
@@ -1969,19 +1969,19 @@ func (mr *MockClientMockRecorder) PermanentDeleteUser(arg0, arg1 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PermanentDeleteUser", reflect.TypeOf((*MockClient)(nil).PermanentDeleteUser), arg0, arg1)
 }
 
-// PromoteGuestToUser mocks base method.
-func (m *MockClient) PromoteGuestToUser(arg0 context.Context, arg1 string) (*model.Response, error) {
+// PromotePartnerToUser mocks base method.
+func (m *MockClient) PromotePartnerToUser(arg0 context.Context, arg1 string) (*model.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PromoteGuestToUser", arg0, arg1)
+	ret := m.ctrl.Call(m, "PromotePartnerToUser", arg0, arg1)
 	ret0, _ := ret[0].(*model.Response)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// PromoteGuestToUser indicates an expected call of PromoteGuestToUser.
-func (mr *MockClientMockRecorder) PromoteGuestToUser(arg0, arg1 interface{}) *gomock.Call {
+// PromotePartnerToUser indicates an expected call of PromotePartnerToUser.
+func (mr *MockClientMockRecorder) PromotePartnerToUser(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PromoteGuestToUser", reflect.TypeOf((*MockClient)(nil).PromoteGuestToUser), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PromotePartnerToUser", reflect.TypeOf((*MockClient)(nil).PromotePartnerToUser), arg0, arg1)
 }
 
 // RegenOutgoingHookToken mocks base method.

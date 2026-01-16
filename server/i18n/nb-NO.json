@@ -148,7 +148,7 @@
     "translation": "Brukeren har ikke lov til å opprette et kanalbokmerke."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunne ikke opprette kanalbokmerket."
   },
   {
@@ -156,7 +156,7 @@
     "translation": "Ingen fil under \"sertifikat\" i forespørsel."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v lagt til kanalen som gjest av %v."
   },
   {
@@ -192,7 +192,7 @@
     "translation": "Kunne ikke slette kanalbokmerket."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunne ikke slette kanalbokmerket."
   },
   {
@@ -204,7 +204,7 @@
     "translation": "Kunne ikke oppdatere kanalbokmerket."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunne ikke oppdatere kanalbokmerket."
   },
   {
@@ -312,7 +312,7 @@
     "translation": "Hva er Mattermost?"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Du ble invitert som gjest for å samarbeide med teamet"
   },
   {
@@ -364,7 +364,7 @@
     "translation": "%v forlot kanalen."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v ble med i kanalen som gjest."
   },
   {

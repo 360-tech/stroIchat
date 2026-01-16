@@ -40,7 +40,7 @@ func (a *App) ResolvePersistentNotification(rctx request.CTX, post *model.Post, 
 		}
 	}
 
-	if !*a.Config().ServiceSettings.AllowPersistentNotificationsForGuests {
+	if !*a.Config().ServiceSettings.AllowPersistentNotificationsForPartners {
 		user, nErr := a.Srv().Store().User().Get(context.Background(), loggedInUserID)
 		if nErr != nil {
 			var nfErr *store.ErrNotFound
@@ -51,7 +51,7 @@ func (a *App) ResolvePersistentNotification(rctx request.CTX, post *model.Post, 
 				return model.NewAppError("ResolvePersistentNotification", "app.user.get.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
 			}
 		}
-		if user.IsGuest() {
+		if user.IsPartner() {
 			return nil
 		}
 	}

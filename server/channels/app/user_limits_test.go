@@ -274,7 +274,7 @@ func TestUpdateActiveWithUserLimits(t *testing.T) {
 	})
 }
 
-func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
+func TestCreateUserOrPartnerSeatCountEnforcement(t *testing.T) {
 	mainHelper.Parallel(t)
 
 	t.Run("seat count enforced - allows user creation when under limit", func(t *testing.T) {
@@ -289,13 +289,13 @@ func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
 
 		// InitBasic creates 3 users, so we're under the limit of 5
 		user := &model.User{
-			Email:         "TestCreateUserOrGuest@example.com",
+			Email:         "TestCreateUserOrPartner@example.com",
 			Username:      "username_123",
 			Password:      "Password1",
 			EmailVerified: true,
 		}
 
-		createdUser, appErr := th.App.createUserOrGuest(th.Context, user, false)
+		createdUser, appErr := th.App.createUserOrPartner(th.Context, user, false)
 		require.Nil(t, appErr)
 		require.NotNil(t, createdUser)
 		require.Equal(t, "username_123", createdUser.Username)
@@ -327,7 +327,7 @@ func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
 			EmailVerified: true,
 		}
 
-		createdUser, appErr := th.App.createUserOrGuest(th.Context, user, false)
+		createdUser, appErr := th.App.createUserOrPartner(th.Context, user, false)
 		require.NotNil(t, appErr)
 		require.Nil(t, createdUser)
 		require.Equal(t, "api.user.create_user.license_user_limits.exceeded", appErr.Id)
@@ -366,7 +366,7 @@ func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
 			EmailVerified: true,
 		}
 
-		createdUser, appErr := th.App.createUserOrGuest(th.Context, user, false)
+		createdUser, appErr := th.App.createUserOrPartner(th.Context, user, false)
 		require.NotNil(t, appErr)
 		require.Nil(t, createdUser)
 		require.Equal(t, "api.user.create_user.license_user_limits.exceeded", appErr.Id)
@@ -395,7 +395,7 @@ func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
 			EmailVerified: true,
 		}
 
-		createdUser, appErr := th.App.createUserOrGuest(th.Context, user, false)
+		createdUser, appErr := th.App.createUserOrPartner(th.Context, user, false)
 		require.Nil(t, appErr)
 		require.NotNil(t, createdUser)
 		require.Equal(t, "seat_test_user", createdUser.Username)
@@ -415,7 +415,7 @@ func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
 			EmailVerified: true,
 		}
 
-		createdUser, appErr := th.App.createUserOrGuest(th.Context, user, false)
+		createdUser, appErr := th.App.createUserOrPartner(th.Context, user, false)
 		require.Nil(t, appErr)
 		require.NotNil(t, createdUser)
 		require.Equal(t, "seat_test_user", createdUser.Username)
@@ -438,13 +438,13 @@ func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
 			EmailVerified: true,
 		}
 
-		createdUser, appErr := th.App.createUserOrGuest(th.Context, user, false)
+		createdUser, appErr := th.App.createUserOrPartner(th.Context, user, false)
 		require.Nil(t, appErr)
 		require.NotNil(t, createdUser)
 		require.Equal(t, "seat_test_user", createdUser.Username)
 	})
 
-	t.Run("guest creation with seat count enforcement - blocks when at limit", func(t *testing.T) {
+	t.Run("partner creation with seat count enforcement - blocks when at limit", func(t *testing.T) {
 		th := Setup(t).InitBasic()
 		defer th.TearDown()
 
@@ -462,21 +462,21 @@ func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
 		th.CreateUser()
 		th.CreateUser()
 
-		// Now at hard limit - attempting to create a guest should fail
+		// Now at hard limit - attempting to create a partner should fail
 		user := &model.User{
-			Email:         "TestSeatCountGuest@example.com",
-			Username:      "seat_test_guest",
+			Email:         "TestSeatCountPartner@example.com",
+			Username:      "seat_test_partner",
 			Password:      "Password1",
 			EmailVerified: true,
 		}
 
-		createdUser, appErr := th.App.createUserOrGuest(th.Context, user, true)
+		createdUser, appErr := th.App.createUserOrPartner(th.Context, user, true)
 		require.NotNil(t, appErr)
 		require.Nil(t, createdUser)
 		require.Equal(t, "api.user.create_user.license_user_limits.exceeded", appErr.Id)
 	})
 
-	t.Run("guest creation with seat count enforcement - allows when under limit", func(t *testing.T) {
+	t.Run("partner creation with seat count enforcement - allows when under limit", func(t *testing.T) {
 		th := Setup(t).InitBasic()
 		defer th.TearDown()
 
@@ -490,15 +490,15 @@ func TestCreateUserOrGuestSeatCountEnforcement(t *testing.T) {
 
 		// InitBasic creates 3 users, so we're under the limit of 5
 		user := &model.User{
-			Email:         "TestSeatCountGuest@example.com",
-			Username:      "seat_test_guest",
+			Email:         "TestSeatCountPartner@example.com",
+			Username:      "seat_test_partner",
 			Password:      "Password1",
 			EmailVerified: true,
 		}
 
-		createdUser, appErr := th.App.createUserOrGuest(th.Context, user, true)
+		createdUser, appErr := th.App.createUserOrPartner(th.Context, user, true)
 		require.Nil(t, appErr)
 		require.NotNil(t, createdUser)
-		require.Equal(t, "seat_test_guest", createdUser.Username)
+		require.Equal(t, "seat_test_partner", createdUser.Username)
 	})
 }

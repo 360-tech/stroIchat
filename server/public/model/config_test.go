@@ -407,17 +407,17 @@ func TestConfigIsValidFakeAlgorithm(t *testing.T) {
 	require.Equal(t, "model.config.is_valid.saml_signature_algorithm.app_error", appErr.Message)
 }
 
-func TestConfigOverwriteGuestSettings(t *testing.T) {
+func TestConfigOverwritePartnerSettings(t *testing.T) {
 	const attribute = "FakeAttributeName"
 	c1 := Config{
 		SamlSettings: SamlSettings{
-			GuestAttribute: NewPointer(attribute),
+			PartnerAttribute: NewPointer(attribute),
 		},
 	}
 
 	c1.SetDefaults()
 
-	require.Equal(t, *c1.SamlSettings.GuestAttribute, attribute)
+	require.Equal(t, *c1.SamlSettings.PartnerAttribute, attribute)
 }
 
 func TestConfigOverwriteAdminSettings(t *testing.T) {
@@ -1191,7 +1191,7 @@ func TestLdapSettingsIsValid(t *testing.T) {
 		},
 
 		{
-			Name: "valid guest filter #1",
+			Name: "valid partner filter #1",
 			LdapSettings: LdapSettings{
 				Enable:            NewPointer(true),
 				LdapServer:        NewPointer("server"),
@@ -1200,12 +1200,12 @@ func TestLdapSettingsIsValid(t *testing.T) {
 				UsernameAttribute: NewPointer("username"),
 				IdAttribute:       NewPointer("id"),
 				LoginIdAttribute:  NewPointer("loginid"),
-				GuestFilter:       NewPointer("(property=value)"),
+				PartnerFilter:       NewPointer("(property=value)"),
 			},
 			ExpectError: false,
 		},
 		{
-			Name: "invalid guest filter #1",
+			Name: "invalid partner filter #1",
 			LdapSettings: LdapSettings{
 				Enable:            NewPointer(true),
 				LdapServer:        NewPointer("server"),
@@ -1214,12 +1214,12 @@ func TestLdapSettingsIsValid(t *testing.T) {
 				UsernameAttribute: NewPointer("username"),
 				IdAttribute:       NewPointer("id"),
 				LoginIdAttribute:  NewPointer("loginid"),
-				GuestFilter:       NewPointer("("),
+				PartnerFilter:       NewPointer("("),
 			},
 			ExpectError: true,
 		},
 		{
-			Name: "invalid guest filter #2",
+			Name: "invalid partner filter #2",
 			LdapSettings: LdapSettings{
 				Enable:            NewPointer(true),
 				LdapServer:        NewPointer("server"),
@@ -1228,12 +1228,12 @@ func TestLdapSettingsIsValid(t *testing.T) {
 				UsernameAttribute: NewPointer("username"),
 				IdAttribute:       NewPointer("id"),
 				LoginIdAttribute:  NewPointer("loginid"),
-				GuestFilter:       NewPointer("()"),
+				PartnerFilter:       NewPointer("()"),
 			},
 			ExpectError: true,
 		},
 		{
-			Name: "valid guest filter #2",
+			Name: "valid partner filter #2",
 			LdapSettings: LdapSettings{
 				Enable:            NewPointer(true),
 				LdapServer:        NewPointer("server"),
@@ -1242,12 +1242,12 @@ func TestLdapSettingsIsValid(t *testing.T) {
 				UsernameAttribute: NewPointer("username"),
 				IdAttribute:       NewPointer("id"),
 				LoginIdAttribute:  NewPointer("loginid"),
-				GuestFilter:       NewPointer("(&(property=value)(otherthing=othervalue))"),
+				PartnerFilter:       NewPointer("(&(property=value)(otherthing=othervalue))"),
 			},
 			ExpectError: false,
 		},
 		{
-			Name: "valid guest filter #3",
+			Name: "valid partner filter #3",
 			LdapSettings: LdapSettings{
 				Enable:            NewPointer(true),
 				LdapServer:        NewPointer("server"),
@@ -1256,12 +1256,12 @@ func TestLdapSettingsIsValid(t *testing.T) {
 				UsernameAttribute: NewPointer("username"),
 				IdAttribute:       NewPointer("id"),
 				LoginIdAttribute:  NewPointer("loginid"),
-				GuestFilter:       NewPointer("(&(property=value)(|(otherthing=othervalue)(other=thing)))"),
+				PartnerFilter:       NewPointer("(&(property=value)(|(otherthing=othervalue)(other=thing)))"),
 			},
 			ExpectError: false,
 		},
 		{
-			Name: "invalid guest filter #3",
+			Name: "invalid partner filter #3",
 			LdapSettings: LdapSettings{
 				Enable:            NewPointer(true),
 				LdapServer:        NewPointer("server"),
@@ -1270,12 +1270,12 @@ func TestLdapSettingsIsValid(t *testing.T) {
 				UsernameAttribute: NewPointer("username"),
 				IdAttribute:       NewPointer("id"),
 				LoginIdAttribute:  NewPointer("loginid"),
-				GuestFilter:       NewPointer("(&(property=value)(|(otherthing=othervalue)(other=thing))"),
+				PartnerFilter:       NewPointer("(&(property=value)(|(otherthing=othervalue)(other=thing))"),
 			},
 			ExpectError: true,
 		},
 		{
-			Name: "invalid guest filter #4",
+			Name: "invalid partner filter #4",
 			LdapSettings: LdapSettings{
 				Enable:            NewPointer(true),
 				LdapServer:        NewPointer("server"),
@@ -1284,7 +1284,7 @@ func TestLdapSettingsIsValid(t *testing.T) {
 				UsernameAttribute: NewPointer("username"),
 				IdAttribute:       NewPointer("id"),
 				LoginIdAttribute:  NewPointer("loginid"),
-				GuestFilter:       NewPointer("(&(property=value)((otherthing=othervalue)(other=thing)))"),
+				PartnerFilter:       NewPointer("(&(property=value)((otherthing=othervalue)(other=thing)))"),
 			},
 			ExpectError: true,
 		},

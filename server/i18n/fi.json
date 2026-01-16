@@ -780,7 +780,7 @@
     "translation": "virhe haettaessa ldap-ryhmää"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Virheellinen AD/LDAP suodatin"
   },
   {
@@ -1696,19 +1696,19 @@
     "translation": "Virheellinen kanavan id"
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Virheellinen sähköposti"
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Virheellinen sähköposti"
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Virheellinen kanavan id"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Virheellinen kanavan id"
   },
   {
@@ -2232,7 +2232,7 @@
     "translation": "Tyhjä taulukko pyynnön kohdassa 'image'"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Sähköpostiosoitteesi ei kuulu hyväksyttyyn domainiin. Ota yhteyttä järjestelmänvalvojaan tai liity toisella sähköpostiosoitteella."
   },
   {
@@ -2384,7 +2384,7 @@
     "translation": "[{{ .SiteName }}] {{ .SenderName }} Kutsui sinut liittymään tiimiin {{ .TeamDisplayName }}"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} Kutsui sinut liittymään tiimiin {{ .TeamDisplayName }}"
   },
   {
@@ -2612,7 +2612,7 @@
     "translation": "Sinulla ei ole asianmukaisia oikeuksia kaikkien joukkueiden luetteloimiseen"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Lisenssisi ei tue vierailijatilejä"
   },
   {
@@ -3793,7 +3793,7 @@
     "translation": "Kirjautuminen epäonnistui, koska tilisi on inaktivoitu.  Ota yhteyttä ylläpitäjään."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Lisenssisi ei tue vierailijatilejä"
   },
   {
@@ -3837,7 +3837,7 @@
     "translation": "Tämä palvelin ei salli avoimia liittymisiä.  Ota yhteyttä järjestelmänvalvojaan saadaksesi kutsun."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Lisenssisi ei tue vierailijatilejä."
   },
   {
@@ -4691,7 +4691,7 @@
     "translation": "%v lisätty kanavalle %v:n toimesta."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v lisätty kanavalle vieraana %v:n toimesta."
   },
   {
@@ -4855,7 +4855,7 @@
     "translation": "Sisäinen virhe pilvirajapintapyynnön aikana."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Epäkelvollinen joukkuejäsenen päivitys: Et voi lisätä tai poistaa vierasroolia manuaalisesti."
   },
   {
@@ -4863,11 +4863,11 @@
     "translation": "Oletuskanavaa ei voi tehdä yksityiseksi."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Epäkelvollinen kanavan jäsenpäivitys: Käyttäjän on oltava vieras tai käyttäjä, mutta ei molempia."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Epäkelvollinen kanavan jäsenpäivitys: Et voi lisätä tai poistaa vierasroolia manuaalisesti."
   },
   {
@@ -4899,7 +4899,7 @@
     "translation": "Suora- ja ryhmäviestikanavia ei voi siirtää"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v liittyi kanavalle vieraana."
   },
   {
@@ -4967,7 +4967,7 @@
     "translation": "Turvallinen yhteystunnus on epäkelvollinen: {{.Error}}"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Epäkelvollinen tai puuttuva pyyntökeho."
   },
   {
@@ -4975,7 +4975,7 @@
     "translation": "Epäkelvollinen pyyntökeho."
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Epäkelvollinen joukkueen jäsenpäivitys: Käyttäjän on oltava vieras tai käyttäjä, mutta ei molempia."
   },
   {
@@ -5007,7 +5007,7 @@
     "translation": "Virhe sähköpostikutsujen mitätöimisessä."
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "Epäkelvollinen joukkueen jäsenpäivitys: Vieraasta ei voi tehdä joukkueen jäseneksi tai järjestelmänvalvojaksi. Mainosta ensin käyttäjäksi."
   },
   {
@@ -5023,7 +5023,7 @@
     "translation": "Luotavan työn työtyyppi on epäkelvollinen"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "Epäkelvollinen joukkueen jäsenpäivitys: Vieraita ei voi asettaa yhdelle joukkueelle. Järjestelmänvalvojan on ylennettävä käyttäjät vieraiksi tai alennettava käyttäjät vieraista."
   },
   {
@@ -5039,7 +5039,7 @@
     "translation": "Epäkelvollinen arvo '{{.Arg}}':lle: {{.Error}}"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Epäkelvollinen kanavan jäsenpäivitys: Vieraasta ei voi tehdä joukkueen jäseneksi tai järjestelmänvalvojaksi. Mainosta ensin käyttäjäksi."
   },
   {
@@ -5047,7 +5047,7 @@
     "translation": "Epäkelvollinen lokisuodatin"
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Epäkelvollinen kanavan jäsenpäivitys: Vierailijaa ei voi asettaa yhdelle kanavalle. Järjestelmänvalvojan on mainostettava käyttäjiä vieraiksi tai kumottava käyttäjien mainostaminen vierailta."
   },
   {
@@ -5071,7 +5071,7 @@
     "translation": "Kanavan kirjanmerkin poistaminen epäonnistui."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kanavan kirjanmerkin poistaminen epäonnistui."
   },
   {
@@ -5091,7 +5091,7 @@
     "translation": "Kanavan kirjanmerkin lajittelujärjestyksen päivittäminen epäonnistui."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kanavan kirjanmerkin lajittelujärjestyksen päivittäminen epäonnistui."
   },
   {
@@ -5115,7 +5115,7 @@
     "translation": "Käyttäjällä ei ole lupaa luoda kanavan kirjanmerkkiä."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kanavan kirjanmerkin luominen epäonnistui."
   },
   {
@@ -5127,7 +5127,7 @@
     "translation": "Kanavan kirjanmerkin päivittäminen epäonnistui."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kanavan kirjanmerkin päivittäminen epäonnistui."
   },
   {

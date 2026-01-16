@@ -28,14 +28,14 @@ const (
 	PostTypeSystemGeneric        = "system_generic"
 	PostTypeJoinLeave            = "system_join_leave" // Deprecated, use PostJoinChannel or PostLeaveChannel instead
 	PostTypeJoinChannel          = "system_join_channel"
-	PostTypeGuestJoinChannel     = "system_guest_join_channel"
+	PostTypePartnerJoinChannel     = "system_partner_join_channel"
 	PostTypeLeaveChannel         = "system_leave_channel"
 	PostTypeJoinTeam             = "system_join_team"
 	PostTypeLeaveTeam            = "system_leave_team"
 	PostTypeAutoResponder        = "system_auto_responder"
 	PostTypeAddRemove            = "system_add_remove" // Deprecated, use PostAddToChannel or PostRemoveFromChannel instead
 	PostTypeAddToChannel         = "system_add_to_channel"
-	PostTypeAddGuestToChannel    = "system_add_guest_to_chan"
+	PostTypeAddPartnerToChannel    = "system_add_partner_to_chan"
 	PostTypeRemoveFromChannel    = "system_remove_from_channel"
 	PostTypeMoveChannel          = "system_move_channel"
 	PostTypeAddToTeam            = "system_add_to_team"
@@ -479,12 +479,12 @@ func (o *Post) IsValid(maxPostSize int) *AppError {
 		PostTypeAutoResponder,
 		PostTypeAddRemove,
 		PostTypeJoinChannel,
-		PostTypeGuestJoinChannel,
+		PostTypePartnerJoinChannel,
 		PostTypeLeaveChannel,
 		PostTypeJoinTeam,
 		PostTypeLeaveTeam,
 		PostTypeAddToChannel,
-		PostTypeAddGuestToChannel,
+		PostTypeAddPartnerToChannel,
 		PostTypeRemoveFromChannel,
 		PostTypeMoveChannel,
 		PostTypeAddToTeam,

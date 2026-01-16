@@ -44,10 +44,10 @@ func TestCreateScheme(t *testing.T) {
 	assert.Equal(t, s1.Scope, scheme1.Scope)
 	assert.NotZero(t, len(s1.DefaultTeamAdminRole))
 	assert.NotZero(t, len(s1.DefaultTeamUserRole))
-	assert.NotZero(t, len(s1.DefaultTeamGuestRole))
+	assert.NotZero(t, len(s1.DefaultTeamPartnerRole))
 	assert.NotZero(t, len(s1.DefaultChannelAdminRole))
 	assert.NotZero(t, len(s1.DefaultChannelUserRole))
-	assert.NotZero(t, len(s1.DefaultChannelGuestRole))
+	assert.NotZero(t, len(s1.DefaultChannelPartnerRole))
 
 	// Check the default roles have been created.
 	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamAdminRole)
@@ -59,11 +59,11 @@ func TestCreateScheme(t *testing.T) {
 	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelUserRole)
 	require.NoError(t, err)
 
-	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamGuestRole)
+	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamPartnerRole)
 	require.NoError(t, err)
-	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamGuestRole)
+	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamPartnerRole)
 	require.NoError(t, err)
-	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelGuestRole)
+	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelPartnerRole)
 	require.NoError(t, err)
 
 	// Basic Test of a Channel scheme.
@@ -86,17 +86,17 @@ func TestCreateScheme(t *testing.T) {
 	assert.Equal(t, s2.Scope, scheme2.Scope)
 	assert.Zero(t, len(s2.DefaultTeamAdminRole))
 	assert.Zero(t, len(s2.DefaultTeamUserRole))
-	assert.Zero(t, len(s2.DefaultTeamGuestRole))
+	assert.Zero(t, len(s2.DefaultTeamPartnerRole))
 	assert.NotZero(t, len(s2.DefaultChannelAdminRole))
 	assert.NotZero(t, len(s2.DefaultChannelUserRole))
-	assert.NotZero(t, len(s2.DefaultChannelGuestRole))
+	assert.NotZero(t, len(s2.DefaultChannelPartnerRole))
 
 	// Check the default roles have been created.
 	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s2.DefaultChannelAdminRole)
 	require.NoError(t, err)
 	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s2.DefaultChannelUserRole)
 	require.NoError(t, err)
-	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s2.DefaultChannelGuestRole)
+	_, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s2.DefaultChannelPartnerRole)
 	require.NoError(t, err)
 
 	// Try and create a scheme with an invalid scope.
@@ -223,10 +223,10 @@ func TestGetScheme(t *testing.T) {
 	assert.Equal(t, s1.Scope, scheme1.Scope)
 	assert.NotZero(t, len(s1.DefaultTeamAdminRole))
 	assert.NotZero(t, len(s1.DefaultTeamUserRole))
-	assert.NotZero(t, len(s1.DefaultTeamGuestRole))
+	assert.NotZero(t, len(s1.DefaultTeamPartnerRole))
 	assert.NotZero(t, len(s1.DefaultChannelAdminRole))
 	assert.NotZero(t, len(s1.DefaultChannelUserRole))
-	assert.NotZero(t, len(s1.DefaultChannelGuestRole))
+	assert.NotZero(t, len(s1.DefaultChannelPartnerRole))
 
 	s2, _, err := th.SystemAdminClient.GetScheme(context.Background(), s1.Id)
 	require.NoError(t, err)
@@ -558,10 +558,10 @@ func TestPatchScheme(t *testing.T) {
 	assert.Equal(t, s1.Scope, scheme1.Scope)
 	assert.NotZero(t, len(s1.DefaultTeamAdminRole))
 	assert.NotZero(t, len(s1.DefaultTeamUserRole))
-	assert.NotZero(t, len(s1.DefaultTeamGuestRole))
+	assert.NotZero(t, len(s1.DefaultTeamPartnerRole))
 	assert.NotZero(t, len(s1.DefaultChannelAdminRole))
 	assert.NotZero(t, len(s1.DefaultChannelUserRole))
-	assert.NotZero(t, len(s1.DefaultChannelGuestRole))
+	assert.NotZero(t, len(s1.DefaultChannelPartnerRole))
 
 	s2, _, err := th.SystemAdminClient.GetScheme(context.Background(), s1.Id)
 	require.NoError(t, err)
@@ -688,9 +688,9 @@ func TestDeleteScheme(t *testing.T) {
 		require.NoError(t, err)
 		role4, _, err := th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelUserRole)
 		require.NoError(t, err)
-		role5, _, err := th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamGuestRole)
+		role5, _, err := th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamPartnerRole)
 		require.NoError(t, err)
-		role6, _, err := th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelGuestRole)
+		role6, _, err := th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelPartnerRole)
 		require.NoError(t, err)
 
 		assert.Zero(t, role1.DeleteAt)
@@ -723,9 +723,9 @@ func TestDeleteScheme(t *testing.T) {
 		require.NoError(t, err)
 		role4, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelUserRole)
 		require.NoError(t, err)
-		role5, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamGuestRole)
+		role5, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultTeamPartnerRole)
 		require.NoError(t, err)
-		role6, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelGuestRole)
+		role6, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelPartnerRole)
 		require.NoError(t, err)
 
 		assert.NotZero(t, role1.DeleteAt)
@@ -763,7 +763,7 @@ func TestDeleteScheme(t *testing.T) {
 		require.NoError(t, err)
 		role4, _, err := th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelUserRole)
 		require.NoError(t, err)
-		role6, _, err := th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelGuestRole)
+		role6, _, err := th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelPartnerRole)
 		require.NoError(t, err)
 
 		assert.Zero(t, role3.DeleteAt)
@@ -789,7 +789,7 @@ func TestDeleteScheme(t *testing.T) {
 		require.NoError(t, err)
 		role4, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelUserRole)
 		require.NoError(t, err)
-		role6, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelGuestRole)
+		role6, _, err = th.SystemAdminClient.GetRoleByName(context.Background(), s1.DefaultChannelPartnerRole)
 		require.NoError(t, err)
 
 		assert.NotZero(t, role3.DeleteAt)

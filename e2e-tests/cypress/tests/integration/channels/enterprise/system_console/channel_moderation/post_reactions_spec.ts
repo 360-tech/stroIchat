@@ -32,7 +32,7 @@ import {
 
 describe('MM-23102 - Channel Moderation - Post Reactions', () => {
     let regularUser: UserProfile;
-    let guestUser: UserProfile;
+    let partnerUser: UserProfile;
     let testTeam: Team;
     let testChannel: Channel;
     const admin = getAdminAccount();
@@ -46,11 +46,11 @@ describe('MM-23102 - Channel Moderation - Post Reactions', () => {
             testTeam = team;
             testChannel = channel;
 
-            cy.apiCreateGuestUser({}).then(({guest}) => {
-                guestUser = guest;
+            cy.apiCreatePartnerUser({}).then(({partner}) => {
+                partnerUser = partner;
 
-                cy.apiAddUserToTeam(testTeam.id, guestUser.id).then(() => {
-                    cy.apiAddUserToChannel(testChannel.id, guestUser.id);
+                cy.apiAddUserToTeam(testTeam.id, partnerUser.id).then(() => {
+                    cy.apiAddUserToChannel(testChannel.id, partnerUser.id);
                 });
 
                 // Post a few messages in the channel
@@ -62,32 +62,32 @@ describe('MM-23102 - Channel Moderation - Post Reactions', () => {
         });
     });
 
-    it('MM-T1543 Post Reactions option for Guests', () => {
+    it('MM-T1543 Post Reactions option for Partners', () => {
         visitChannelConfigPage(testChannel);
 
-        // # Uncheck the post reactions option for Guests and save
+        // # Uncheck the post reactions option for Partners and save
         disablePermission(checkboxesTitleToIdMap.POST_REACTIONS_GUESTS);
         saveConfigForChannel();
 
-        // # Login as a Guest user and visit the same channel
-        visitChannel(guestUser, testChannel, testTeam);
+        // # Login as a Partner user and visit the same channel
+        visitChannel(partnerUser, testChannel, testTeam);
 
-        // # Check Guest user should not have the permission to react to any post on a channel when the option is removed.
-        // * Guest user should not see the smiley face that allows a user to react to a post
+        // # Check Partner user should not have the permission to react to any post on a channel when the option is removed.
+        // * Partner user should not see the smiley face that allows a user to react to a post
         cy.getLastPostId().then((postId) => {
             cy.get(`#post_${postId}`).trigger('mouseover');
             cy.findByTestId('post-reaction-emoji-icon').should('not.exist');
         });
 
-        // # Visit test channel configuration page and enable post reactions for guest and save
+        // # Visit test channel configuration page and enable post reactions for partner and save
         visitChannelConfigPage(testChannel);
         enablePermission(checkboxesTitleToIdMap.POST_REACTIONS_GUESTS);
         saveConfigForChannel();
 
-        visitChannel(guestUser, testChannel, testTeam);
+        visitChannel(partnerUser, testChannel, testTeam);
 
-        // # Check Guest user should have the permission to react to any post on a channel when the option is allowed.
-        // * Guest user should see the smiley face that allows a user to react to a post
+        // # Check Partner user should have the permission to react to any post on a channel when the option is allowed.
+        // * Partner user should see the smiley face that allows a user to react to a post
         cy.getLastPostId().then((postId) => {
             cy.get(`#post_${postId}`).trigger('mouseover');
             cy.findByTestId('post-reaction-emoji-icon').should('exist');
@@ -127,11 +127,11 @@ describe('MM-23102 - Channel Moderation - Post Reactions', () => {
         });
     });
 
-    it('MM-T1545 Post Reactions option removed for Guests and Members in System Scheme', () => {
+    it('MM-T1545 Post Reactions option removed for Partners and Members in System Scheme', () => {
         // # Login as sysadmin and visit the Permissions page in the system console.
-        // # Edit the System Scheme and remove the Post Reaction option for Guests & Save.
+        // # Edit the System Scheme and remove the Post Reaction option for Partners & Save.
         goToSystemScheme();
-        cy.get('.guest').should('be.visible').within(() => {
+        cy.get('.partner').should('be.visible').within(() => {
             cy.findByText('Post Reactions').click();
         });
         saveConfigForScheme();
@@ -139,10 +139,10 @@ describe('MM-23102 - Channel Moderation - Post Reactions', () => {
         // # Visit the Channels page and click on a channel.
         visitChannelConfigPage(testChannel);
 
-        // * Assert that post reaction is disabled for guest and not disabled for members and a message is displayed
-        cy.findByTestId('admin-channel_settings-channel_moderation-postReactions-disabledGuest').
+        // * Assert that post reaction is disabled for partner and not disabled for members and a message is displayed
+        cy.findByTestId('admin-channel_settings-channel_moderation-postReactions-disabledPartner').
             should('exist').
-            and('have.text', 'Post reactions for guests are disabled in System Scheme.');
+            and('have.text', 'Post reactions for partners are disabled in System Scheme.');
         cy.findByTestId(checkboxesTitleToIdMap.POST_REACTIONS_MEMBERS).should('not.be.disabled');
         cy.findByTestId(checkboxesTitleToIdMap.POST_REACTIONS_GUESTS).should('be.disabled');
 
@@ -153,18 +153,18 @@ describe('MM-23102 - Channel Moderation - Post Reactions', () => {
 
         visitChannelConfigPage(testChannel);
 
-        // * Post Reaction option should be disabled for a Members. A message Post reactions for guests & members are disabled in the System Scheme should be displayed.
+        // * Post Reaction option should be disabled for a Members. A message Post reactions for partners & members are disabled in the System Scheme should be displayed.
         cy.findByTestId('admin-channel_settings-channel_moderation-postReactions-disabledBoth').
             should('exist').
-            and('have.text', 'Post reactions for members and guests are disabled in System Scheme.');
+            and('have.text', 'Post reactions for members and partners are disabled in System Scheme.');
         cy.findByTestId(checkboxesTitleToIdMap.POST_REACTIONS_MEMBERS).should('be.disabled');
         cy.findByTestId(checkboxesTitleToIdMap.POST_REACTIONS_GUESTS).should('be.disabled');
 
-        // # Login as a Guest user and visit the same channel
-        visitChannel(guestUser, testChannel, testTeam);
+        // # Login as a Partner user and visit the same channel
+        visitChannel(partnerUser, testChannel, testTeam);
 
-        // # Check Guest User should not have the permission to react to any post on any channel when the option is removed from the System Scheme.
-        // * Guest user should not see the smiley face that allows a user to react to a post
+        // # Check Partner User should not have the permission to react to any post on any channel when the option is removed from the System Scheme.
+        // * Partner user should not see the smiley face that allows a user to react to a post
         cy.getLastPostId().then((postId) => {
             cy.get(`#post_${postId}`).trigger('mouseover');
             cy.findByTestId('post-reaction-emoji-icon').should('not.exist');
@@ -183,7 +183,7 @@ describe('MM-23102 - Channel Moderation - Post Reactions', () => {
 
     // GUEST PERMISSIONS DON'T EXIST ON TEAM OVERRIDE SCHEMES SO GUEST PORTION NOT IMPLEMENTED!
     // ONLY THE MEMBERS PORTION OF THIS TEST IS IMPLEMENTED
-    it('MM-T1546_4 Post Reactions option removed for Guests & Members in Team Override Scheme', () => {
+    it('MM-T1546_4 Post Reactions option removed for Partners & Members in Team Override Scheme', () => {
         const teamOverrideSchemeName = `post_reactions_${getRandomId()}`;
 
         // # Create a new team override scheme

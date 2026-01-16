@@ -36,10 +36,10 @@ type Role struct {
 }
 
 type channelRolesPermissions struct {
-	GuestRoleName                string
+	PartnerRoleName                string
 	UserRoleName                 string
 	AdminRoleName                string
-	HigherScopedGuestPermissions string
+	HigherScopedPartnerPermissions string
 	HigherScopedUserPermissions  string
 	HigherScopedAdminPermissions string
 }
@@ -291,10 +291,10 @@ func (s *SqlRoleStore) PermanentDeleteAll() error {
 func (s *SqlRoleStore) channelHigherScopedPermissionsQuery(roleNames []string) string {
 	sqlTmpl := `
 		SELECT
-			'' AS GuestRoleName,
+			'' AS PartnerRoleName,
 			RoleSchemes.DefaultChannelUserRole AS UserRoleName,
 			RoleSchemes.DefaultChannelAdminRole AS AdminRoleName,
-			'' AS HigherScopedGuestPermissions,
+			'' AS HigherScopedPartnerPermissions,
 			UserRoles.Permissions AS HigherScopedUserPermissions,
 			AdminRoles.Permissions AS HigherScopedAdminPermissions
 		FROM
@@ -311,10 +311,10 @@ func (s *SqlRoleStore) channelHigherScopedPermissionsQuery(roleNames []string) s
 		UNION
 
 		SELECT
-			RoleSchemes.DefaultChannelGuestRole AS GuestRoleName,
+			RoleSchemes.DefaultChannelPartnerRole AS PartnerRoleName,
 			'' AS UserRoleName,
 			'' AS AdminRoleName,
-			GuestRoles.Permissions AS HigherScopedGuestPermissions,
+			PartnerRoles.Permissions AS HigherScopedPartnerPermissions,
 			'' AS HigherScopedUserPermissions,
 			'' AS HigherScopedAdminPermissions
 		FROM
@@ -322,28 +322,28 @@ func (s *SqlRoleStore) channelHigherScopedPermissionsQuery(roleNames []string) s
 			JOIN Channels ON Channels.SchemeId = RoleSchemes.Id
 			JOIN Teams ON Teams.Id = Channels.TeamId
 			JOIN Schemes ON Schemes.Id = Teams.SchemeId
-			RIGHT JOIN Roles AS GuestRoles ON GuestRoles.Name = Schemes.DefaultChannelGuestRole
+			RIGHT JOIN Roles AS PartnerRoles ON PartnerRoles.Name = Schemes.DefaultChannelPartnerRole
 		WHERE
-			RoleSchemes.DefaultChannelGuestRole IN ('%[1]s')
+			RoleSchemes.DefaultChannelPartnerRole IN ('%[1]s')
 
 		UNION
 
 		SELECT
-			Schemes.DefaultChannelGuestRole AS GuestRoleName,
+			Schemes.DefaultChannelPartnerRole AS PartnerRoleName,
 			Schemes.DefaultChannelUserRole AS UserRoleName,
 			Schemes.DefaultChannelAdminRole AS AdminRoleName,
-			GuestRoles.Permissions AS HigherScopedGuestPermissions,
+			PartnerRoles.Permissions AS HigherScopedPartnerPermissions,
 			UserRoles.Permissions AS HigherScopedUserPermissions,
 			AdminRoles.Permissions AS HigherScopedAdminPermissions
 		FROM
 			Schemes
 			JOIN Channels ON Channels.SchemeId = Schemes.Id
 			JOIN Teams ON Teams.Id = Channels.TeamId
-			JOIN Roles AS GuestRoles ON GuestRoles.Name = '%[2]s'
+			JOIN Roles AS PartnerRoles ON PartnerRoles.Name = '%[2]s'
 			JOIN Roles AS UserRoles ON UserRoles.Name = '%[3]s'
 			JOIN Roles AS AdminRoles ON AdminRoles.Name = '%[4]s'
 		WHERE
-			(Schemes.DefaultChannelGuestRole IN ('%[1]s')
+			(Schemes.DefaultChannelPartnerRole IN ('%[1]s')
 			OR Schemes.DefaultChannelUserRole IN ('%[1]s')
 			OR Schemes.DefaultChannelAdminRole IN ('%[1]s'))
 		AND (Teams.SchemeId = ''
@@ -356,7 +356,7 @@ func (s *SqlRoleStore) channelHigherScopedPermissionsQuery(roleNames []string) s
 	return fmt.Sprintf(
 		sqlTmpl,
 		strings.Join(roleNames, "', '"),
-		model.ChannelGuestRoleId,
+		model.ChannelPartnerRoleId,
 		model.ChannelUserRoleId,
 		model.ChannelAdminRoleId,
 	)
@@ -373,7 +373,7 @@ func (s *SqlRoleStore) ChannelHigherScopedPermissions(roleNames []string) (map[s
 	roleNameHigherScopedPermissions := map[string]*model.RolePermissions{}
 
 	for _, rp := range rolesPermissions {
-		roleNameHigherScopedPermissions[rp.GuestRoleName] = &model.RolePermissions{RoleID: model.ChannelGuestRoleId, Permissions: strings.Split(rp.HigherScopedGuestPermissions, " ")}
+		roleNameHigherScopedPermissions[rp.PartnerRoleName] = &model.RolePermissions{RoleID: model.ChannelPartnerRoleId, Permissions: strings.Split(rp.HigherScopedPartnerPermissions, " ")}
 		roleNameHigherScopedPermissions[rp.UserRoleName] = &model.RolePermissions{RoleID: model.ChannelUserRoleId, Permissions: strings.Split(rp.HigherScopedUserPermissions, " ")}
 		roleNameHigherScopedPermissions[rp.AdminRoleName] = &model.RolePermissions{RoleID: model.ChannelAdminRoleId, Permissions: strings.Split(rp.HigherScopedAdminPermissions, " ")}
 	}
@@ -396,7 +396,7 @@ func (s *SqlRoleStore) AllChannelSchemeRoles() ([]*model.Role, error) {
 			"Roles.BuiltIn",
 		).
 		From("Schemes").
-		Join("Roles ON Schemes.DefaultChannelGuestRole = Roles.Name OR Schemes.DefaultChannelUserRole = Roles.Name OR Schemes.DefaultChannelAdminRole = Roles.Name").
+		Join("Roles ON Schemes.DefaultChannelPartnerRole = Roles.Name OR Schemes.DefaultChannelUserRole = Roles.Name OR Schemes.DefaultChannelAdminRole = Roles.Name").
 		Where(sq.Eq{"Schemes.Scope": model.SchemeScopeChannel}).
 		Where(sq.Eq{"Roles.DeleteAt": 0}).
 		Where(sq.Eq{"Schemes.DeleteAt": 0})
@@ -435,11 +435,11 @@ func (s *SqlRoleStore) ChannelRolesUnderTeamRole(roleName string) ([]*model.Role
 			"ChannelSchemeRoles.BuiltIn",
 		).
 		From("Roles AS HigherScopedRoles").
-		Join("Schemes AS HigherScopedSchemes ON (HigherScopedRoles.Name = HigherScopedSchemes.DefaultChannelGuestRole OR HigherScopedRoles.Name = HigherScopedSchemes.DefaultChannelUserRole OR HigherScopedRoles.Name = HigherScopedSchemes.DefaultChannelAdminRole)").
+		Join("Schemes AS HigherScopedSchemes ON (HigherScopedRoles.Name = HigherScopedSchemes.DefaultChannelPartnerRole OR HigherScopedRoles.Name = HigherScopedSchemes.DefaultChannelUserRole OR HigherScopedRoles.Name = HigherScopedSchemes.DefaultChannelAdminRole)").
 		Join("Teams ON Teams.SchemeId = HigherScopedSchemes.Id").
 		Join("Channels ON Channels.TeamId = Teams.Id").
 		Join("Schemes AS ChannelSchemes ON Channels.SchemeId = ChannelSchemes.Id").
-		Join("Roles AS ChannelSchemeRoles ON (ChannelSchemeRoles.Name = ChannelSchemes.DefaultChannelGuestRole OR ChannelSchemeRoles.Name = ChannelSchemes.DefaultChannelUserRole OR ChannelSchemeRoles.Name = ChannelSchemes.DefaultChannelAdminRole)").
+		Join("Roles AS ChannelSchemeRoles ON (ChannelSchemeRoles.Name = ChannelSchemes.DefaultChannelPartnerRole OR ChannelSchemeRoles.Name = ChannelSchemes.DefaultChannelUserRole OR ChannelSchemeRoles.Name = ChannelSchemes.DefaultChannelAdminRole)").
 		Where(sq.Eq{"HigherScopedSchemes.Scope": model.SchemeScopeTeam}).
 		Where(sq.Eq{"HigherScopedRoles.Name": roleName}).
 		Where(sq.Eq{"HigherScopedRoles.DeleteAt": 0}).

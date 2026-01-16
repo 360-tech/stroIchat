@@ -283,9 +283,9 @@ export const adminConsoleNavigation = [
     },
     {
         type: ['team', 'e20', 'cloud_enterprise'],
-        header: 'Guest Access',
-        sidebar: 'Guest Access',
-        url: 'admin_console/authentication/guest_access',
+        header: 'Partner Access',
+        sidebar: 'Partner Access',
+        url: 'admin_console/authentication/partner_access',
     },
     {
         type: ['team', 'e20', 'cloud_enterprise'],

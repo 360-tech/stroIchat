@@ -238,7 +238,7 @@ export class TestHelper {
             roles: 'team_user',
             delete_at: 0,
             scheme_admin: false,
-            scheme_guest: false,
+            scheme_partner: false,
             scheme_user: true,
         };
         return Object.assign({}, defaultMembership, override);

@@ -115,73 +115,73 @@ export const groupRolesStrings: Record<string, Record<string, MessageDescriptor>
             defaultMessage: 'Manage team members.',
         },
     }),
-    guest_reactions: defineMessages({
+    partner_reactions: defineMessages({
         name: {
-            id: 'admin.permissions.group.guest_reactions.name',
+            id: 'admin.permissions.group.partner_reactions.name',
             defaultMessage: 'Post Reactions',
         },
         description: {
-            id: 'admin.permissions.group.guest_reactions.description',
+            id: 'admin.permissions.group.partner_reactions.description',
             defaultMessage: 'Add and delete reactions on posts.',
         },
     }),
-    guest_create_post: defineMessages({
+    partner_create_post: defineMessages({
         name: {
-            id: 'admin.permissions.group.guest_create_post.name',
+            id: 'admin.permissions.group.partner_create_post.name',
             defaultMessage: 'Create Posts',
         },
         description: {
-            id: 'admin.permissions.group.guest_create_post.description',
+            id: 'admin.permissions.group.partner_create_post.description',
             defaultMessage: 'Allow users to create posts.',
         },
     }),
-    guest_create_private_channel: defineMessages({
+    partner_create_private_channel: defineMessages({
         name: {
-            id: 'admin.permissions.group.guest_create_private_channel.name',
+            id: 'admin.permissions.group.partner_create_private_channel.name',
             defaultMessage: 'Create Channels',
         },
         description: {
-            id: 'admin.permissions.group.guest_create_private_channel.description',
+            id: 'admin.permissions.group.partner_create_private_channel.description',
             defaultMessage: 'Create new private channels.',
         },
     }),
-    guest_delete_post: defineMessages({
+    partner_delete_post: defineMessages({
         name: {
-            id: 'admin.permissions.group.guest_delete_post.name',
+            id: 'admin.permissions.group.partner_delete_post.name',
             defaultMessage: 'Delete Own Posts',
         },
         description: {
-            id: 'admin.permissions.group.guest_delete_post.description',
+            id: 'admin.permissions.group.partner_delete_post.description',
             defaultMessage: 'Author\'s own posts can be deleted.',
         },
     }),
-    guest_edit_post: defineMessages({
+    partner_edit_post: defineMessages({
         name: {
-            id: 'admin.permissions.group.guest_edit_post.name',
+            id: 'admin.permissions.group.partner_edit_post.name',
             defaultMessage: 'Edit Own Posts',
         },
         description: {
-            id: 'admin.permissions.group.guest_edit_post.description',
+            id: 'admin.permissions.group.partner_edit_post.description',
             defaultMessage: '{editTimeLimitButton} after posting, allow users to edit their own posts.',
         },
     }),
-    guest_use_channel_mentions: defineMessages({
+    partner_use_channel_mentions: defineMessages({
         name: {
-            id: 'admin.permissions.group.guest_use_channel_mentions.name',
+            id: 'admin.permissions.group.partner_use_channel_mentions.name',
             defaultMessage: 'Channel Mentions',
         },
         description: {
-            id: 'admin.permissions.group.guest_use_channel_mentions.description',
+            id: 'admin.permissions.group.partner_use_channel_mentions.description',
             defaultMessage: 'Notify channel members with @all, @channel and @here',
         },
     }),
-    guest_use_group_mentions: defineMessages({
+    partner_use_group_mentions: defineMessages({
         name: {
-            id: 'admin.permissions.group.guest_use_group_mentions.name',
+            id: 'admin.permissions.group.partner_use_group_mentions.name',
             defaultMessage: 'Group Mentions',
         },
         description: {
-            id: 'admin.permissions.group.guest_use_group_mentions.description',
+            id: 'admin.permissions.group.partner_use_group_mentions.description',
             defaultMessage: 'Notify group members with a group mention',
         },
     }),

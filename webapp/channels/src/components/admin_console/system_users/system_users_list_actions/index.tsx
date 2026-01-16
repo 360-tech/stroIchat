@@ -15,7 +15,7 @@ import General from 'mattermost-redux/constants/general';
 import {getConfig} from 'mattermost-redux/selectors/entities/admin';
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
 import {haveISystemPermission} from 'mattermost-redux/selectors/entities/roles_helpers';
-import {isSystemAdmin, isGuest} from 'mattermost-redux/utils/user_utils';
+import {isSystemAdmin, isPartner} from 'mattermost-redux/utils/user_utils';
 
 import {adminResetMfa} from 'actions/admin_actions';
 import {openModal} from 'actions/views/modals';
@@ -38,7 +38,7 @@ import ConfirmManageUserSettingsModal from './confirm_manage_user_settings_modal
 import ConfirmResetFailedAttemptsModal from './confirm_reset_failed_attempts_modal';
 import CreateGroupSyncablesMembershipsModal from './create_group_syncables_membership_modal';
 import DeactivateMemberModal from './deactivate_member_modal';
-import DemoteToGuestModal from './demote_to_guest_modal';
+import DemoteToPartnerModal from './demote_to_partner_modal';
 import PromoteToMemberModal from './promote_to_member_modal';
 import RevokeSessionsModal from './revoke_sessions_modal';
 
@@ -73,11 +73,11 @@ export function SystemUsersListAction({user, currentUser, tableId, rowIndex, onE
                     defaultMessage='System Admin'
                 />
             );
-        } else if (isGuest(userRoles)) {
+        } else if (isPartner(userRoles)) {
             return (
                 <FormattedMessage
-                    id='admin.system_users.list.actions.userGuest'
-                    defaultMessage='Guest'
+                    id='admin.system_users.list.actions.userPartner'
+                    defaultMessage='Partner'
                 />
             );
         }
@@ -215,7 +215,7 @@ export function SystemUsersListAction({user, currentUser, tableId, rowIndex, onE
 
     const handlePromoteToMemberClick = useCallback(() => {
         function onPromoteToMemberSuccess() {
-            updateUser({roles: user.roles.replace(General.SYSTEM_GUEST_ROLE, '')});
+            updateUser({roles: user.roles.replace(General.SYSTEM_PARTNER_ROLE, '')});
         }
 
         dispatch(openModal({
@@ -229,18 +229,18 @@ export function SystemUsersListAction({user, currentUser, tableId, rowIndex, onE
         }));
     }, [user, updateUser, onError]);
 
-    const handleDemoteToGuestClick = useCallback(() => {
-        function onDemoteToGuestSuccess() {
-            updateUser({roles: `${user.roles} ${General.SYSTEM_GUEST_ROLE}`});
+    const handleDemoteToPartnerClick = useCallback(() => {
+        function onDemoteToPartnerSuccess() {
+            updateUser({roles: `${user.roles} ${General.SYSTEM_PARTNER_ROLE}`});
         }
 
         dispatch(openModal({
-            modalId: ModalIdentifiers.DEMOTE_TO_GUEST_MODAL,
-            dialogType: DemoteToGuestModal,
+            modalId: ModalIdentifiers.DEMOTE_TO_PARTNER_MODAL,
+            dialogType: DemoteToPartnerModal,
             dialogProps: {
                 user,
                 onError,
-                onSuccess: onDemoteToGuestSuccess,
+                onSuccess: onDemoteToPartnerSuccess,
             },
         }));
     }, [user, updateUser, onError]);
@@ -492,7 +492,7 @@ export function SystemUsersListAction({user, currentUser, tableId, rowIndex, onE
                     onClick={handleUpdateEmailClick}
                 />
             }
-            {isGuest(user.roles) &&
+            {isPartner(user.roles) &&
                 <Menu.Item
                     id={`${menuItemIdPrefix}-promoteToMember`}
                     labels={
@@ -504,16 +504,16 @@ export function SystemUsersListAction({user, currentUser, tableId, rowIndex, onE
                     onClick={handlePromoteToMemberClick}
                 />
             }
-            {!isGuest(user.roles) && user.id !== currentUser.id && config.GuestAccountsSettings?.Enable &&
+            {!isPartner(user.roles) && user.id !== currentUser.id && config.PartnerAccountsSettings?.Enable &&
                 <Menu.Item
-                    id={`${menuItemIdPrefix}-demoteToGuest`}
+                    id={`${menuItemIdPrefix}-demoteToPartner`}
                     labels={
                         <FormattedMessage
-                            id='admin.system_users.list.actions.menu.demoteToGuest'
-                            defaultMessage='Demote to guest'
+                            id='admin.system_users.list.actions.menu.demoteToPartner'
+                            defaultMessage='Demote to partner'
                         />
                     }
-                    onClick={handleDemoteToGuestClick}
+                    onClick={handleDemoteToPartnerClick}
                 />
             }
             <SystemPermissionGate permissions={[Permissions.REVOKE_USER_ACCESS_TOKEN]}>

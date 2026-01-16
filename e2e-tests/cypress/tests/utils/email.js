@@ -24,12 +24,12 @@ export function getEmailResetEmailTemplate(userEmail) {
     ];
 }
 
-export function getJoinEmailTemplate(sender, userEmail, team, isGuest = false) {
+export function getJoinEmailTemplate(sender, userEmail, team, isPartner = false) {
     const baseUrl = Cypress.config('baseUrl');
 
     return [
         `${sender} invited you to join the ${team.display_name} team.`,
-        `${isGuest ? 'You were invited as a guest to collaborate with the team' : 'Start collaborating with your team on Mattermost'}`,
+        `${isPartner ? 'You were invited as a partner to collaborate with the team' : 'Start collaborating with your team on Mattermost'}`,
         '',
         `<join-link-check> Join now ( ${baseUrl}/signup_user_complete/?d=${encodeURIComponent(JSON.stringify({display_name: team.display_name.replace(' ', '+'), email: userEmail, name: team.name}))}&t=<actual-token> )`,
         '',

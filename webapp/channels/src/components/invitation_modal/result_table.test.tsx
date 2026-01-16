@@ -9,7 +9,7 @@ import deepFreeze from 'mattermost-redux/utils/deep_freeze';
 import AlertIcon from 'components/widgets/icons/alert_icon';
 import EmailIcon from 'components/widgets/icons/mail_icon';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from "components/widgets/tag/partner_tag"';
 import Avatar from 'components/widgets/users/avatar';
 
 import {mountWithIntl} from 'tests/helpers/intl-test-helper';
@@ -96,7 +96,7 @@ describe('ResultTable', () => {
         const wrapper = shallow(<ResultTable {...props}/>);
         expect(wrapper.find(Avatar).length).toBe(1);
         expect(wrapper.find(BotTag).length).toBe(0);
-        expect(wrapper.find(GuestTag).length).toBe(0);
+        expect(wrapper.find(PartnerTag).length).toBe(0);
     });
 
     test('bots render as bots', () => {
@@ -110,21 +110,21 @@ describe('ResultTable', () => {
         const wrapper = shallow(<ResultTable {...props}/>);
         expect(wrapper.find(Avatar).length).toBe(1);
         expect(wrapper.find(BotTag).length).toBe(1);
-        expect(wrapper.find(GuestTag).length).toBe(0);
+        expect(wrapper.find(PartnerTag).length).toBe(0);
     });
 
-    test('guests render as guests', () => {
+    test('partners render as partners', () => {
         props.rows = [{
             user: {
                 ...defaultUser,
-                roles: 'system_guest',
+                roles: 'system_partner',
             },
             reason: {id: 'success', defaultMessage: 'added successfully'},
         }];
         const wrapper = shallow(<ResultTable {...props}/>);
         expect(wrapper.find(Avatar).length).toBe(1);
         expect(wrapper.find(BotTag).length).toBe(0);
-        expect(wrapper.find(GuestTag).length).toBe(1);
+        expect(wrapper.find(PartnerTag).length).toBe(1);
     });
 
     test('renders success banner when invites were sent', () => {

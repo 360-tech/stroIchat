@@ -157,7 +157,7 @@ func (s *SearchUserStore) autocompleteUsersInChannelByEngine(rctx request.CTX, e
 //		- If we don't receive team id or the provided team id is not in the list of allowed teams to search of and we
 //		  don't have channel restrictions then we return an empty result because we cannot get channels
 //		- If we receive channels restrictions we get:
-//			- If we don't have team id, we get those restricted channels (guest accounts and quick search)
+//			- If we don't have team id, we get those restricted channels (partner accounts and quick search)
 //			- If we have a team id then we only return those restricted channels that belongs to that team
 func (s *SearchUserStore) getListOfAllowedChannels(teamId, channelId string, viewRestrictions *model.ViewUsersRestrictions) ([]string, error) {
 	var listOfAllowedChannels []string

@@ -1222,7 +1222,7 @@ func (c *CommonTestSuite) TestSearchChannels() {
 		c.Nil(appErr)
 		c.Len(ids, 2)
 
-		// No private channels if user is guest
+		// No private channels if user is partner
 		ids, appErr = c.ESImpl.SearchChannels("", c.TH.BasicUser.Id, "Channel", true, includeDeleted)
 		c.Nil(appErr)
 		c.Len(ids, 1)

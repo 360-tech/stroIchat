@@ -86,8 +86,8 @@ func (a *App) JoinDefaultChannels(rctx request.CTX, teamID string, user *model.U
 		cm := &model.ChannelMember{
 			ChannelId:   channel.Id,
 			UserId:      user.Id,
-			SchemeGuest: user.IsGuest(),
-			SchemeUser:  !user.IsGuest(),
+			SchemePartner: user.IsPartner(),
+			SchemeUser:  !user.IsPartner(),
 			SchemeAdmin: shouldBeAdmin,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
 		}
@@ -273,8 +273,8 @@ func (a *App) CreateChannel(rctx request.CTX, channel *model.Channel, addMember 
 		cm := &model.ChannelMember{
 			ChannelId:   sc.Id,
 			UserId:      user.Id,
-			SchemeGuest: user.IsGuest(),
-			SchemeUser:  !user.IsGuest(),
+			SchemePartner: user.IsPartner(),
+			SchemeUser:  !user.IsPartner(),
 			SchemeAdmin: true,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
 		}
@@ -606,8 +606,8 @@ func (a *App) createGroupChannel(rctx request.CTX, userIDs []string, creatorID s
 			UserId:      user.Id,
 			ChannelId:   channel.Id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: user.IsGuest(),
-			SchemeUser:  !user.IsGuest(),
+			SchemePartner: user.IsPartner(),
+			SchemeUser:  !user.IsPartner(),
 		}
 
 		if _, nErr = a.Srv().Store().Channel().SaveMember(rctx, cm); nErr != nil {
@@ -974,7 +974,7 @@ func (a *App) PatchChannel(rctx request.CTX, channel *model.Channel, patch *mode
 }
 
 // GetSchemeRolesForChannel Checks if a channel or its team has an override scheme for channel roles and returns the scheme roles or default channel roles.
-func (a *App) GetSchemeRolesForChannel(rctx request.CTX, channelID string) (guestRoleName, userRoleName, adminRoleName string, err *model.AppError) {
+func (a *App) GetSchemeRolesForChannel(rctx request.CTX, channelID string) (partnerRoleName, userRoleName, adminRoleName string, err *model.AppError) {
 	channel, err := a.GetChannel(rctx, channelID)
 	if err != nil {
 		return
@@ -987,7 +987,7 @@ func (a *App) GetSchemeRolesForChannel(rctx request.CTX, channelID string) (gues
 			return
 		}
 
-		guestRoleName = scheme.DefaultChannelGuestRole
+		partnerRoleName = scheme.DefaultChannelPartnerRole
 		userRoleName = scheme.DefaultChannelUserRole
 		adminRoleName = scheme.DefaultChannelAdminRole
 
@@ -998,7 +998,7 @@ func (a *App) GetSchemeRolesForChannel(rctx request.CTX, channelID string) (gues
 }
 
 // GetTeamSchemeChannelRoles Checks if a team has an override scheme and returns the scheme channel role names or default channel role names.
-func (a *App) GetTeamSchemeChannelRoles(rctx request.CTX, teamID string) (guestRoleName, userRoleName, adminRoleName string, err *model.AppError) {
+func (a *App) GetTeamSchemeChannelRoles(rctx request.CTX, teamID string) (partnerRoleName, userRoleName, adminRoleName string, err *model.AppError) {
 	team, err := a.GetTeam(teamID)
 	if err != nil {
 		return
@@ -1011,11 +1011,11 @@ func (a *App) GetTeamSchemeChannelRoles(rctx request.CTX, teamID string) (guestR
 			return
 		}
 
-		guestRoleName = scheme.DefaultChannelGuestRole
+		partnerRoleName = scheme.DefaultChannelPartnerRole
 		userRoleName = scheme.DefaultChannelUserRole
 		adminRoleName = scheme.DefaultChannelAdminRole
 	} else {
-		guestRoleName = model.ChannelGuestRoleId
+		partnerRoleName = model.ChannelPartnerRoleId
 		userRoleName = model.ChannelUserRoleId
 		adminRoleName = model.ChannelAdminRoleId
 	}
@@ -1025,7 +1025,7 @@ func (a *App) GetTeamSchemeChannelRoles(rctx request.CTX, teamID string) (guestR
 
 // GetChannelModerationsForChannel Gets a channels ChannelModerations from either the higherScoped roles or from the channel scheme roles.
 func (a *App) GetChannelModerationsForChannel(rctx request.CTX, channel *model.Channel) ([]*model.ChannelModeration, *model.AppError) {
-	guestRoleName, memberRoleName, _, err := a.GetSchemeRolesForChannel(rctx, channel.Id)
+	partnerRoleName, memberRoleName, _, err := a.GetSchemeRolesForChannel(rctx, channel.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -1035,15 +1035,15 @@ func (a *App) GetChannelModerationsForChannel(rctx request.CTX, channel *model.C
 		return nil, err
 	}
 
-	var guestRole *model.Role
-	if guestRoleName != "" {
-		guestRole, err = a.GetRoleByName(rctx, guestRoleName)
+	var partnerRole *model.Role
+	if partnerRoleName != "" {
+		partnerRole, err = a.GetRoleByName(rctx, partnerRoleName)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	higherScopedGuestRoleName, higherScopedMemberRoleName, _, err := a.GetTeamSchemeChannelRoles(rctx, channel.TeamId)
+	higherScopedPartnerRoleName, higherScopedMemberRoleName, _, err := a.GetTeamSchemeChannelRoles(rctx, channel.TeamId)
 	if err != nil {
 		return nil, err
 	}
@@ -1052,20 +1052,20 @@ func (a *App) GetChannelModerationsForChannel(rctx request.CTX, channel *model.C
 		return nil, err
 	}
 
-	var higherScopedGuestRole *model.Role
-	if higherScopedGuestRoleName != "" {
-		higherScopedGuestRole, err = a.GetRoleByName(rctx, higherScopedGuestRoleName)
+	var higherScopedPartnerRole *model.Role
+	if higherScopedPartnerRoleName != "" {
+		higherScopedPartnerRole, err = a.GetRoleByName(rctx, higherScopedPartnerRoleName)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	return buildChannelModerations(rctx, channel.Type, memberRole, guestRole, higherScopedMemberRole, higherScopedGuestRole), nil
+	return buildChannelModerations(rctx, channel.Type, memberRole, partnerRole, higherScopedMemberRole, higherScopedPartnerRole), nil
 }
 
 // PatchChannelModerationsForChannel Updates a channels scheme roles based on a given ChannelModerationPatch, if the permissions match the higher scoped role the scheme is deleted.
 func (a *App) PatchChannelModerationsForChannel(rctx request.CTX, channel *model.Channel, channelModerationsPatch []*model.ChannelModerationPatch) ([]*model.ChannelModeration, *model.AppError) {
-	higherScopedGuestRoleName, higherScopedMemberRoleName, _, err := a.GetTeamSchemeChannelRoles(rctx, channel.TeamId)
+	higherScopedPartnerRoleName, higherScopedMemberRoleName, _, err := a.GetTeamSchemeChannelRoles(rctx, channel.TeamId)
 	if err != nil {
 		return nil, err
 	}
@@ -1075,9 +1075,9 @@ func (a *App) PatchChannelModerationsForChannel(rctx request.CTX, channel *model
 		return nil, err
 	}
 
-	var higherScopedGuestRole *model.Role
-	if higherScopedGuestRoleName != "" {
-		higherScopedGuestRole, err = a.GetRoleByName(RequestContextWithMaster(rctx), higherScopedGuestRoleName)
+	var higherScopedPartnerRole *model.Role
+	if higherScopedPartnerRoleName != "" {
+		higherScopedPartnerRole, err = a.GetRoleByName(RequestContextWithMaster(rctx), higherScopedPartnerRoleName)
 		if err != nil {
 			return nil, err
 		}
@@ -1085,16 +1085,16 @@ func (a *App) PatchChannelModerationsForChannel(rctx request.CTX, channel *model
 
 	higherScopedMemberPermissions := higherScopedMemberRole.GetChannelModeratedPermissions(channel.Type)
 
-	var higherScopedGuestPermissions map[string]bool
-	if higherScopedGuestRole != nil {
-		higherScopedGuestPermissions = higherScopedGuestRole.GetChannelModeratedPermissions(channel.Type)
+	var higherScopedPartnerPermissions map[string]bool
+	if higherScopedPartnerRole != nil {
+		higherScopedPartnerPermissions = higherScopedPartnerRole.GetChannelModeratedPermissions(channel.Type)
 	}
 
 	for _, moderationPatch := range channelModerationsPatch {
 		if moderationPatch.Roles.Members != nil && *moderationPatch.Roles.Members && !higherScopedMemberPermissions[*moderationPatch.Name] {
 			return nil, model.NewAppError("PatchChannelModerationsForChannel", "api.channel.patch_channel_moderations_for_channel.restricted_permission.app_error", nil, "", http.StatusForbidden)
 		}
-		if moderationPatch.Roles.Guests != nil && *moderationPatch.Roles.Guests && !higherScopedGuestPermissions[*moderationPatch.Name] {
+		if moderationPatch.Roles.Partners != nil && *moderationPatch.Roles.Partners && !higherScopedPartnerPermissions[*moderationPatch.Name] {
 			return nil, model.NewAppError("PatchChannelModerationsForChannel", "api.channel.patch_channel_moderations_for_channel.restricted_permission.app_error", nil, "", http.StatusForbidden)
 		}
 	}
@@ -1107,7 +1107,7 @@ func (a *App) PatchChannelModerationsForChannel(rctx request.CTX, channel *model
 			return nil, err
 		}
 
-		// Send a websocket event about this new role. The other new roles—member and guest—get emitted when they're updated.
+		// Send a websocket event about this new role. The other new roles—member and partner—get emitted when they're updated.
 		var adminRole *model.Role
 		adminRole, err = a.GetRoleByName(rctx, scheme.DefaultChannelAdminRole)
 		if err != nil {
@@ -1127,34 +1127,34 @@ func (a *App) PatchChannelModerationsForChannel(rctx request.CTX, channel *model
 		}
 	}
 
-	guestRoleName := scheme.DefaultChannelGuestRole
+	partnerRoleName := scheme.DefaultChannelPartnerRole
 	memberRoleName := scheme.DefaultChannelUserRole
 	memberRole, err := a.GetRoleByName(rctx, memberRoleName)
 	if err != nil {
 		return nil, err
 	}
 
-	var guestRole *model.Role
-	if guestRoleName != "" {
-		guestRole, err = a.GetRoleByName(rctx, guestRoleName)
+	var partnerRole *model.Role
+	if partnerRoleName != "" {
+		partnerRole, err = a.GetRoleByName(rctx, partnerRoleName)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	memberRolePatch := memberRole.RolePatchFromChannelModerationsPatch(channelModerationsPatch, "members")
-	var guestRolePatch *model.RolePatch
-	if guestRole != nil {
-		guestRolePatch = guestRole.RolePatchFromChannelModerationsPatch(channelModerationsPatch, "guests")
+	var partnerRolePatch *model.RolePatch
+	if partnerRole != nil {
+		partnerRolePatch = partnerRole.RolePatchFromChannelModerationsPatch(channelModerationsPatch, "partners")
 	}
 
 	for _, channelModerationPatch := range channelModerationsPatch {
 		permissionModified := *channelModerationPatch.Name
-		if channelModerationPatch.Roles.Guests != nil && slices.Contains(model.ChannelModeratedPermissionsChangedByPatch(guestRole, guestRolePatch), permissionModified) {
-			if *channelModerationPatch.Roles.Guests {
-				rctx.Logger().Info("Permission enabled for guests.", mlog.String("permission", permissionModified), mlog.String("channel_id", channel.Id), mlog.String("channel_name", channel.Name))
+		if channelModerationPatch.Roles.Partners != nil && slices.Contains(model.ChannelModeratedPermissionsChangedByPatch(partnerRole, partnerRolePatch), permissionModified) {
+			if *channelModerationPatch.Roles.Partners {
+				rctx.Logger().Info("Permission enabled for partners.", mlog.String("permission", permissionModified), mlog.String("channel_id", channel.Id), mlog.String("channel_name", channel.Name))
 			} else {
-				rctx.Logger().Info("Permission disabled for guests.", mlog.String("permission", permissionModified), mlog.String("channel_id", channel.Id), mlog.String("channel_name", channel.Name))
+				rctx.Logger().Info("Permission disabled for partners.", mlog.String("permission", permissionModified), mlog.String("channel_id", channel.Id), mlog.String("channel_name", channel.Name))
 			}
 		}
 
@@ -1168,8 +1168,8 @@ func (a *App) PatchChannelModerationsForChannel(rctx request.CTX, channel *model
 	}
 
 	memberRolePermissionsUnmodified := len(model.ChannelModeratedPermissionsChangedByPatch(higherScopedMemberRole, memberRolePatch)) == 0
-	guestRolePermissionsUnmodified := len(model.ChannelModeratedPermissionsChangedByPatch(higherScopedGuestRole, guestRolePatch)) == 0
-	if memberRolePermissionsUnmodified && guestRolePermissionsUnmodified {
+	partnerRolePermissionsUnmodified := len(model.ChannelModeratedPermissionsChangedByPatch(higherScopedPartnerRole, partnerRolePatch)) == 0
+	if memberRolePermissionsUnmodified && partnerRolePermissionsUnmodified {
 		// The channel scheme matches the permissions of its higherScoped scheme so delete the scheme
 		if _, err = a.DeleteChannelScheme(rctx, channel); err != nil {
 			return nil, err
@@ -1179,14 +1179,14 @@ func (a *App) PatchChannelModerationsForChannel(rctx request.CTX, channel *model
 		a.Publish(message)
 
 		memberRole = higherScopedMemberRole
-		guestRole = higherScopedGuestRole
+		partnerRole = higherScopedPartnerRole
 		rctx.Logger().Info("Permission scheme deleted.", mlog.String("channel_id", channel.Id), mlog.String("channel_name", channel.Name))
 	} else {
 		memberRole, err = a.PatchRole(memberRole, memberRolePatch)
 		if err != nil {
 			return nil, err
 		}
-		guestRole, err = a.PatchRole(guestRole, guestRolePatch)
+		partnerRole, err = a.PatchRole(partnerRole, partnerRolePatch)
 		if err != nil {
 			return nil, err
 		}
@@ -1209,22 +1209,22 @@ func (a *App) PatchChannelModerationsForChannel(rctx request.CTX, channel *model
 		return nil, model.NewAppError("PatchChannelModerationsForChannel", "api.channel.patch_channel_moderations.cache_invalidation.error", nil, "", http.StatusInternalServerError).Wrap(cErr)
 	}
 
-	return buildChannelModerations(rctx, channel.Type, memberRole, guestRole, higherScopedMemberRole, higherScopedGuestRole), nil
+	return buildChannelModerations(rctx, channel.Type, memberRole, partnerRole, higherScopedMemberRole, higherScopedPartnerRole), nil
 }
 
-func buildChannelModerations(rctx request.CTX, channelType model.ChannelType, memberRole *model.Role, guestRole *model.Role, higherScopedMemberRole *model.Role, higherScopedGuestRole *model.Role) []*model.ChannelModeration {
-	var memberPermissions, guestPermissions, higherScopedMemberPermissions, higherScopedGuestPermissions map[string]bool
+func buildChannelModerations(rctx request.CTX, channelType model.ChannelType, memberRole *model.Role, partnerRole *model.Role, higherScopedMemberRole *model.Role, higherScopedPartnerRole *model.Role) []*model.ChannelModeration {
+	var memberPermissions, partnerPermissions, higherScopedMemberPermissions, higherScopedPartnerPermissions map[string]bool
 	if memberRole != nil {
 		memberPermissions = memberRole.GetChannelModeratedPermissions(channelType)
 	}
-	if guestRole != nil {
-		guestPermissions = guestRole.GetChannelModeratedPermissions(channelType)
+	if partnerRole != nil {
+		partnerPermissions = partnerRole.GetChannelModeratedPermissions(channelType)
 	}
 	if higherScopedMemberRole != nil {
 		higherScopedMemberPermissions = higherScopedMemberRole.GetChannelModeratedPermissions(channelType)
 	}
-	if higherScopedGuestRole != nil {
-		higherScopedGuestPermissions = higherScopedGuestRole.GetChannelModeratedPermissions(channelType)
+	if higherScopedPartnerRole != nil {
+		higherScopedPartnerPermissions = higherScopedPartnerRole.GetChannelModeratedPermissions(channelType)
 	}
 
 	var channelModerations []*model.ChannelModeration
@@ -1237,11 +1237,11 @@ func buildChannelModerations(rctx request.CTX, channelType model.ChannelType, me
 		}
 
 		if permissionKey == "manage_members" || permissionKey == "manage_bookmarks" {
-			roles.Guests = nil
+			roles.Partners = nil
 		} else {
-			roles.Guests = &model.ChannelModeratedRole{
-				Value:   guestPermissions[permissionKey],
-				Enabled: higherScopedGuestPermissions[permissionKey],
+			roles.Partners = &model.ChannelModeratedRole{
+				Value:   partnerPermissions[permissionKey],
+				Enabled: higherScopedPartnerPermissions[permissionKey],
 			}
 		}
 
@@ -1263,15 +1263,15 @@ func (a *App) UpdateChannelMemberRoles(rctx request.CTX, channelID string, userI
 		return nil, err
 	}
 
-	schemeGuestRole, schemeUserRole, schemeAdminRole, err := a.GetSchemeRolesForChannel(rctx, channelID)
+	schemePartnerRole, schemeUserRole, schemeAdminRole, err := a.GetSchemeRolesForChannel(rctx, channelID)
 	if err != nil {
 		return nil, err
 	}
 
-	prevSchemeGuestValue := member.SchemeGuest
+	prevSchemePartnerValue := member.SchemePartner
 
 	var newExplicitRoles []string
-	member.SchemeGuest = false
+	member.SchemePartner = false
 	member.SchemeUser = false
 	member.SchemeAdmin = false
 
@@ -1293,8 +1293,8 @@ func (a *App) UpdateChannelMemberRoles(rctx request.CTX, channelID string, userI
 				member.SchemeAdmin = true
 			case schemeUserRole:
 				member.SchemeUser = true
-			case schemeGuestRole:
-				member.SchemeGuest = true
+			case schemePartnerRole:
+				member.SchemePartner = true
 			default:
 				// If not part of the scheme for this channel, then it is not allowed to apply it as an explicit role.
 				return nil, model.NewAppError("UpdateChannelMemberRoles", "api.channel.update_channel_member_roles.scheme_role.app_error", nil, "role_name="+roleName, http.StatusBadRequest)
@@ -1302,12 +1302,12 @@ func (a *App) UpdateChannelMemberRoles(rctx request.CTX, channelID string, userI
 		}
 	}
 
-	if member.SchemeUser && member.SchemeGuest {
-		return nil, model.NewAppError("UpdateChannelMemberRoles", "api.channel.update_channel_member_roles.guest_and_user.app_error", nil, "", http.StatusBadRequest)
+	if member.SchemeUser && member.SchemePartner {
+		return nil, model.NewAppError("UpdateChannelMemberRoles", "api.channel.update_channel_member_roles.partner_and_user.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if prevSchemeGuestValue != member.SchemeGuest {
-		return nil, model.NewAppError("UpdateChannelMemberRoles", "api.channel.update_channel_member_roles.changing_guest_role.app_error", nil, "", http.StatusBadRequest)
+	if prevSchemePartnerValue != member.SchemePartner {
+		return nil, model.NewAppError("UpdateChannelMemberRoles", "api.channel.update_channel_member_roles.changing_partner_role.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	member.ExplicitRoles = strings.Join(newExplicitRoles, " ")
@@ -1315,18 +1315,18 @@ func (a *App) UpdateChannelMemberRoles(rctx request.CTX, channelID string, userI
 	return a.updateChannelMember(rctx, member)
 }
 
-func (a *App) UpdateChannelMemberSchemeRoles(rctx request.CTX, channelID string, userID string, isSchemeGuest bool, isSchemeUser bool, isSchemeAdmin bool) (*model.ChannelMember, *model.AppError) {
+func (a *App) UpdateChannelMemberSchemeRoles(rctx request.CTX, channelID string, userID string, isSchemePartner bool, isSchemeUser bool, isSchemeAdmin bool) (*model.ChannelMember, *model.AppError) {
 	member, err := a.GetChannelMember(rctx, channelID, userID)
 	if err != nil {
 		return nil, err
 	}
 
-	if member.SchemeGuest {
-		return nil, model.NewAppError("UpdateChannelMemberSchemeRoles", "api.channel.update_channel_member_roles.guest.app_error", nil, "", http.StatusBadRequest)
+	if member.SchemePartner {
+		return nil, model.NewAppError("UpdateChannelMemberSchemeRoles", "api.channel.update_channel_member_roles.partner.app_error", nil, "", http.StatusBadRequest)
 	}
 
-	if isSchemeGuest {
-		return nil, model.NewAppError("UpdateChannelMemberSchemeRoles", "api.channel.update_channel_member_roles.user_and_guest.app_error", nil, "", http.StatusBadRequest)
+	if isSchemePartner {
+		return nil, model.NewAppError("UpdateChannelMemberSchemeRoles", "api.channel.update_channel_member_roles.user_and_partner.app_error", nil, "", http.StatusBadRequest)
 	}
 
 	if !isSchemeUser {
@@ -1335,11 +1335,11 @@ func (a *App) UpdateChannelMemberSchemeRoles(rctx request.CTX, channelID string,
 
 	member.SchemeAdmin = isSchemeAdmin
 	member.SchemeUser = isSchemeUser
-	member.SchemeGuest = isSchemeGuest
+	member.SchemePartner = isSchemePartner
 
 	// If the migration is not completed, we also need to check the default channel_admin/channel_user roles are not present in the roles field.
 	if err = a.IsPhase2MigrationCompleted(); err != nil {
-		member.ExplicitRoles = removeRoles([]string{model.ChannelGuestRoleId, model.ChannelUserRoleId, model.ChannelAdminRoleId}, member.ExplicitRoles)
+		member.ExplicitRoles = removeRoles([]string{model.ChannelPartnerRoleId, model.ChannelUserRoleId, model.ChannelAdminRoleId}, member.ExplicitRoles)
 	}
 
 	return a.updateChannelMember(rctx, member)
@@ -1657,11 +1657,11 @@ func (a *App) addUserToChannel(rctx request.CTX, user *model.User, channel *mode
 		ChannelId:   channel.Id,
 		UserId:      user.Id,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
-		SchemeGuest: user.IsGuest(),
-		SchemeUser:  !user.IsGuest(),
+		SchemePartner: user.IsPartner(),
+		SchemeUser:  !user.IsPartner(),
 	}
 
-	if !user.IsGuest() {
+	if !user.IsPartner() {
 		var userShouldBeAdmin bool
 		userShouldBeAdmin, appErr := a.UserIsInAdminRoleGroup(user.Id, channel.Id, model.GroupSyncableTypeChannel)
 		if appErr != nil {
@@ -2352,10 +2352,10 @@ func (a *App) GetChannelFileCount(rctx request.CTX, channelID string) (int64, *m
 	return count, nil
 }
 
-func (a *App) GetChannelGuestCount(rctx request.CTX, channelID string) (int64, *model.AppError) {
-	count, err := a.Srv().Store().Channel().GetGuestCount(channelID, true)
+func (a *App) GetChannelPartnerCount(rctx request.CTX, channelID string) (int64, *model.AppError) {
+	count, err := a.Srv().Store().Channel().GetPartnerCount(channelID, true)
 	if err != nil {
-		return 0, model.NewAppError("SqlChannelStore.GetGuestCount", "app.channel.get_member_count.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+		return 0, model.NewAppError("SqlChannelStore.GetPartnerCount", "app.channel.get_member_count.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
 
 	return count, nil
@@ -2459,9 +2459,9 @@ func (a *App) postJoinChannelMessage(rctx request.CTX, user *model.User, channel
 	message := fmt.Sprintf(i18n.T("api.channel.join_channel.post_and_forget"), user.Username)
 	postType := model.PostTypeJoinChannel
 
-	if user.IsGuest() {
-		message = fmt.Sprintf(i18n.T("api.channel.guest_join_channel.post_and_forget"), user.Username)
-		postType = model.PostTypeGuestJoinChannel
+	if user.IsPartner() {
+		message = fmt.Sprintf(i18n.T("api.channel.partner_join_channel.post_and_forget"), user.Username)
+		postType = model.PostTypePartnerJoinChannel
 	}
 
 	post := &model.Post{
@@ -2586,9 +2586,9 @@ func (a *App) PostAddToChannelMessage(rctx request.CTX, user *model.User, addedU
 	message := fmt.Sprintf(i18n.T("api.channel.add_member.added"), addedUser.Username, user.Username)
 	postType := model.PostTypeAddToChannel
 
-	if addedUser.IsGuest() {
-		message = fmt.Sprintf(i18n.T("api.channel.add_guest.added"), addedUser.Username, user.Username)
-		postType = model.PostTypeAddGuestToChannel
+	if addedUser.IsPartner() {
+		message = fmt.Sprintf(i18n.T("api.channel.add_partner.added"), addedUser.Username, user.Username)
+		postType = model.PostTypeAddPartnerToChannel
 	}
 
 	post := &model.Post{
@@ -2676,10 +2676,10 @@ func (a *App) removeUserFromChannel(rctx request.CTX, userIDToRemove string, rem
 			return model.NewAppError("removeUserFromChannel", "app.user.get.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
 		}
 	}
-	isGuest := user.IsGuest()
+	isPartner := user.IsPartner()
 
 	if channel.Name == model.DefaultChannelName {
-		if !isGuest {
+		if !isPartner {
 			return model.NewAppError("RemoveUserFromChannel", "api.channel.remove.default.app_error", map[string]any{"Channel": model.DefaultChannelName}, "", http.StatusBadRequest)
 		}
 	}
@@ -2709,7 +2709,7 @@ func (a *App) removeUserFromChannel(rctx request.CTX, userIDToRemove string, rem
 		return model.NewAppError("removeUserFromChannel", model.NoTranslation, nil, "failed to delete threadmemberships upon leaving channel", http.StatusInternalServerError).Wrap(err)
 	}
 
-	if isGuest {
+	if isPartner {
 		currentMembers, err := a.GetChannelMembersForUser(rctx, channel.TeamId, userIDToRemove)
 		if err != nil {
 			return err
@@ -3031,7 +3031,7 @@ func (a *App) AutocompleteChannels(rctx request.CTX, userID, term string) (model
 		return nil, appErr
 	}
 
-	channelList, err := a.Srv().Store().Channel().Autocomplete(rctx, userID, term, includeDeleted, user.IsGuest())
+	channelList, err := a.Srv().Store().Channel().Autocomplete(rctx, userID, term, includeDeleted, user.IsPartner())
 	if err != nil {
 		return nil, model.NewAppError("AutocompleteChannels", "app.channel.search.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
@@ -3048,7 +3048,7 @@ func (a *App) AutocompleteChannelsForTeam(rctx request.CTX, teamID, userID, term
 		return nil, appErr
 	}
 
-	channelList, err := a.Srv().Store().Channel().AutocompleteInTeam(rctx, teamID, userID, term, includeDeleted, user.IsGuest())
+	channelList, err := a.Srv().Store().Channel().AutocompleteInTeam(rctx, teamID, userID, term, includeDeleted, user.IsPartner())
 	if err != nil {
 		return nil, model.NewAppError("AutocompleteChannels", "app.channel.search.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}

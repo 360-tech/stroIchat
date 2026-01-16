@@ -1481,7 +1481,7 @@ func (s *MmctlUnitTestSuite) TestUserCreateCmd() {
 		s.Require().Len(printer.GetErrorLines(), 0)
 	})
 
-	s.Run("Create a guest user", func() {
+	s.Run("Create a partner user", func() {
 		printer.Clean()
 
 		s.client.
@@ -1492,7 +1492,7 @@ func (s *MmctlUnitTestSuite) TestUserCreateCmd() {
 
 		s.client.
 			EXPECT().
-			DemoteUserToGuest(context.TODO(), mockUser.Id).
+			DemoteUserToPartner(context.TODO(), mockUser.Id).
 			Return(&model.Response{StatusCode: http.StatusOK}, nil).
 			Times(1)
 
@@ -1500,7 +1500,7 @@ func (s *MmctlUnitTestSuite) TestUserCreateCmd() {
 		command.Flags().String("username", mockUser.Username, "")
 		command.Flags().String("email", mockUser.Email, "")
 		command.Flags().String("password", mockUser.Password, "")
-		command.Flags().Bool("guest", true, "")
+		command.Flags().Bool("partner", true, "")
 
 		err := userCreateCmdF(s.client, &command, []string{})
 
@@ -2669,8 +2669,8 @@ func (s *MmctlUnitTestSuite) TestMigrateAuthCmd() {
 	})
 }
 
-func (s *MmctlUnitTestSuite) TestPromoteGuestToUserCmd() {
-	s.Run("promote a guest to a user", func() {
+func (s *MmctlUnitTestSuite) TestPromotePartnerToUserCmd() {
+	s.Run("promote a partner to a user", func() {
 		printer.Clean()
 		emailArg := "example@example.com"
 		mockUser := model.User{Id: "example", Email: emailArg}
@@ -2683,18 +2683,18 @@ func (s *MmctlUnitTestSuite) TestPromoteGuestToUserCmd() {
 
 		s.client.
 			EXPECT().
-			PromoteGuestToUser(context.TODO(), mockUser.Id).
+			PromotePartnerToUser(context.TODO(), mockUser.Id).
 			Return(&model.Response{StatusCode: http.StatusOK}, nil).
 			Times(1)
 
-		err := promoteGuestToUserCmdF(s.client, nil, []string{emailArg})
+		err := promotePartnerToUserCmdF(s.client, nil, []string{emailArg})
 		s.Require().NoError(err)
 		s.Require().Len(printer.GetLines(), 1)
 		s.Require().Equal(&mockUser, printer.GetLines()[0])
 		s.Require().Len(printer.GetErrorLines(), 0)
 	})
 
-	s.Run("cannot promote a guest to a user", func() {
+	s.Run("cannot promote a partner to a user", func() {
 		printer.Clean()
 		emailArg := "example@example.com"
 		mockUser := model.User{Id: "example", Email: emailArg}
@@ -2707,20 +2707,20 @@ func (s *MmctlUnitTestSuite) TestPromoteGuestToUserCmd() {
 
 		s.client.
 			EXPECT().
-			PromoteGuestToUser(context.TODO(), mockUser.Id).
+			PromotePartnerToUser(context.TODO(), mockUser.Id).
 			Return(&model.Response{StatusCode: http.StatusBadRequest}, errors.New("some-error")).
 			Times(1)
 
-		err := promoteGuestToUserCmdF(s.client, nil, []string{emailArg})
-		s.Require().ErrorContains(err, "unable to promote guest")
+		err := promotePartnerToUserCmdF(s.client, nil, []string{emailArg})
+		s.Require().ErrorContains(err, "unable to promote partner")
 		s.Require().Len(printer.GetLines(), 0)
 		s.Require().Len(printer.GetErrorLines(), 1)
-		s.Require().Equal(fmt.Sprintf("unable to promote guest %s: %s", emailArg, "some-error"), printer.GetErrorLines()[0])
+		s.Require().Equal(fmt.Sprintf("unable to promote partner %s: %s", emailArg, "some-error"), printer.GetErrorLines()[0])
 	})
 }
 
-func (s *MmctlUnitTestSuite) TestDemoteUserToGuestCmd() {
-	s.Run("demote a user to a guest", func() {
+func (s *MmctlUnitTestSuite) TestDemoteUserToPartnerCmd() {
+	s.Run("demote a user to a partner", func() {
 		printer.Clean()
 		emailArg := "example@example.com"
 		mockUser := model.User{Id: "example", Email: emailArg}
@@ -2733,18 +2733,18 @@ func (s *MmctlUnitTestSuite) TestDemoteUserToGuestCmd() {
 
 		s.client.
 			EXPECT().
-			DemoteUserToGuest(context.TODO(), mockUser.Id).
+			DemoteUserToPartner(context.TODO(), mockUser.Id).
 			Return(&model.Response{StatusCode: http.StatusOK}, nil).
 			Times(1)
 
-		err := demoteUserToGuestCmdF(s.client, nil, []string{emailArg})
+		err := demoteUserToPartnerCmdF(s.client, nil, []string{emailArg})
 		s.Require().NoError(err)
 		s.Require().Len(printer.GetLines(), 1)
 		s.Require().Equal(&mockUser, printer.GetLines()[0])
 		s.Require().Len(printer.GetErrorLines(), 0)
 	})
 
-	s.Run("cannot demote a user to a guest", func() {
+	s.Run("cannot demote a user to a partner", func() {
 		printer.Clean()
 		emailArg := "example@example.com"
 		mockUser := model.User{Id: "example", Email: emailArg}
@@ -2757,11 +2757,11 @@ func (s *MmctlUnitTestSuite) TestDemoteUserToGuestCmd() {
 
 		s.client.
 			EXPECT().
-			DemoteUserToGuest(context.TODO(), mockUser.Id).
+			DemoteUserToPartner(context.TODO(), mockUser.Id).
 			Return(&model.Response{StatusCode: http.StatusBadRequest}, errors.New("some-error")).
 			Times(1)
 
-		err := demoteUserToGuestCmdF(s.client, nil, []string{emailArg})
+		err := demoteUserToPartnerCmdF(s.client, nil, []string{emailArg})
 		s.Require().ErrorContains(err, "unable to demote user")
 		s.Require().Len(printer.GetLines(), 0)
 		s.Require().Len(printer.GetErrorLines(), 1)

@@ -21,7 +21,7 @@ type Props = {
     location: Location;
     asymmetricSigningPublicKey?: string;
     siteName?: string;
-    isGuest?: boolean;
+    isPartner?: boolean;
 }
 
 export default class ErrorPage extends React.PureComponent<Props> {
@@ -34,7 +34,7 @@ export default class ErrorPage extends React.PureComponent<Props> {
     }
 
     public render() {
-        const {isGuest} = this.props;
+        const {isPartner} = this.props;
         const params: URLSearchParams = new URLSearchParams(this.props.location.search);
         const signature = params.get('s');
 
@@ -78,11 +78,11 @@ export default class ErrorPage extends React.PureComponent<Props> {
                     />
                 </Link>
             );
-        } else if (type === ErrorPageTypes.CHANNEL_NOT_FOUND && isGuest) {
+        } else if (type === ErrorPageTypes.CHANNEL_NOT_FOUND && isPartner) {
             backButton = (
                 <Link to='/'>
                     <FormattedMessage
-                        id='error.channelNotFound.guest_link'
+                        id='error.channelNotFound.partner_link'
                         defaultMessage='Back'
                     />
                 </Link>
@@ -140,7 +140,7 @@ export default class ErrorPage extends React.PureComponent<Props> {
                         type={type}
                         message={message}
                         service={service}
-                        isGuest={isGuest}
+                        isPartner={isPartner}
                     />
                     {backButton}
                 </div>

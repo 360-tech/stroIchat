@@ -186,7 +186,7 @@ func ExampleClient4_GetChannelStats() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Found %d members and %d guests in channel %s\n", stats.MemberCount, stats.GuestCount, channelId)
+	fmt.Printf("Found %d members and %d partners in channel %s\n", stats.MemberCount, stats.PartnerCount, channelId)
 }
 
 func ExampleClient4_GetPinnedPosts() {

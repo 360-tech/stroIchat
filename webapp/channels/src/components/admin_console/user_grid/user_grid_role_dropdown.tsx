@@ -29,7 +29,7 @@ type Props = {
     isDisabled?: boolean;
 }
 
-export type Role = 'system_admin' | 'team_admin' | 'team_user' | 'channel_admin' | 'channel_user' | 'shared_member' | 'guest';
+export type Role = 'system_admin' | 'team_admin' | 'team_user' | 'channel_admin' | 'channel_user' | 'shared_member' | 'partner';
 
 export default class UserGridRoleDropdown extends React.PureComponent<Props> {
     private getDropDownOptions = () => {
@@ -73,7 +73,7 @@ export default class UserGridRoleDropdown extends React.PureComponent<Props> {
             }
         }
 
-        return 'guest';
+        return 'partner';
     };
 
     private getLocalizedRole = (role: Role) => {
@@ -90,7 +90,7 @@ export default class UserGridRoleDropdown extends React.PureComponent<Props> {
         case 'channel_user':
             return Utils.localizeMessage({id: 'admin.group_teams_and_channels_row.member', defaultMessage: 'Member'});
         default:
-            return Utils.localizeMessage({id: 'admin.user_grid.guest', defaultMessage: 'Guest'});
+            return Utils.localizeMessage({id: 'admin.user_grid.partner', defaultMessage: 'Partner'});
         }
     };
 
@@ -150,7 +150,7 @@ export default class UserGridRoleDropdown extends React.PureComponent<Props> {
             );
         }
 
-        const dropdownEnabled = !['system_admin', 'guest'].includes(currentRole);
+        const dropdownEnabled = !['system_admin', 'partner'].includes(currentRole);
         const showMakeAdmin = ['channel_user', 'team_user'].includes(currentRole);
         const showMakeMember = ['channel_admin', 'team_admin'].includes(currentRole);
 

@@ -35,7 +35,7 @@ import {
     includesAnAdminRole,
     profileListToMap,
     sortByUsername,
-    isGuest,
+    isPartner,
     applyRolesFilters,
 } from 'mattermost-redux/utils/user_utils';
 
@@ -159,12 +159,12 @@ export const isCurrentUserSystemAdmin: (state: GlobalState) => boolean = createS
     },
 );
 
-export const isCurrentUserGuestUser: (state: GlobalState) => boolean = createSelector(
-    'isCurrentUserGuestUser',
+export const isCurrentUserPartnerUser: (state: GlobalState) => boolean = createSelector(
+    'isCurrentUserPartnerUser',
     getCurrentUser,
     (user) => {
         const roles = user?.roles || '';
-        return isGuest(roles);
+        return isPartner(roles);
     },
 );
 

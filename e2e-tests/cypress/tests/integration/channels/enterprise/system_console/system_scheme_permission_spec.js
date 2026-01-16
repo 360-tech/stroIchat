@@ -147,11 +147,11 @@ const resetPermissionsToDefault = () => {
 };
 
 const checkChannelPermission = (permissionName, hasChannelPermissionCheckFunc, notHasChannelPermissionCheckFunc, testUser, testTeam, testChannel) => {
-    const guestsTestId = `guests-guest_${permissionName}-checkbox`;
+    const partnersTestId = `partners-partner_${permissionName}-checkbox`;
     const usersTestId = `all_users-posts-${permissionName}-checkbox`;
     const channelTestId = `channel_admin-posts-${permissionName}-checkbox`;
     const teamTestId = `team_admin-posts-${permissionName}-checkbox`;
-    const testIds = [guestsTestId, usersTestId, channelTestId, teamTestId];
+    const testIds = [partnersTestId, usersTestId, channelTestId, teamTestId];
 
     const channelUrl = `/${testTeam.name}/channels/${testChannel.name}`;
 
@@ -172,12 +172,12 @@ const checkChannelPermission = (permissionName, hasChannelPermissionCheckFunc, n
         cy.findByTestId(testId).should('have.class', 'checked');
     });
 
-    // # Remove permission from guests and save
-    removePermission(guestsTestId);
+    // # Remove permission from partners and save
+    removePermission(partnersTestId);
     saveConfig();
 
     // * Ensure that the permission removed is now removed
-    cy.findByTestId(guestsTestId).should('not.have.class', 'checked');
+    cy.findByTestId(partnersTestId).should('not.have.class', 'checked');
 
     // # Remove permission from all users and save
     removePermission(usersTestId);

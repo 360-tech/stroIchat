@@ -52,9 +52,9 @@ const (
 	PermissionConvertPrivateChannelToPublic  = "convert_private_channel_to_public"
 	PermissionViewMembers                    = "view_members"
 	PermissionInviteUser                     = "invite_user"
-	PermissionInviteGuest                    = "invite_guest"
-	PermissionPromoteGuest                   = "promote_guest"
-	PermissionDemoteToGuest                  = "demote_to_guest"
+	PermissionInvitePartner                    = "invite_partner"
+	PermissionPromotePartner                   = "promote_partner"
+	PermissionDemoteToPartner                  = "demote_to_partner"
 	PermissionUseChannelMentions             = "use_channel_mentions"
 	PermissionCreatePost                     = "create_post"
 	PermissionCreatePost_PUBLIC              = "create_post_public"
@@ -89,10 +89,10 @@ func isExactRole(roleName string) func(*model.Role, map[string]map[string]bool) 
 //
 // TeamAdmin,
 // TeamUser,
-// TeamGuest,
+// TeamPartner,
 // ChannelAdmin,
 // ChannelUser,
-// ChannelGuest,
+// ChannelPartner,
 // PlaybookAdmin,
 // PlaybookMember,
 // RunAdmin,
@@ -123,11 +123,11 @@ func isSchemeRoleAssociatedToCommonName(roleName string, role *model.Role) bool 
 	roleIDToSchemeRoleDisplayName := map[string]string{
 		model.TeamAdminRoleId: sqlstore.SchemeRoleDisplayNameTeamAdmin,
 		model.TeamUserRoleId:  sqlstore.SchemeRoleDisplayNameTeamUser,
-		model.TeamGuestRoleId: sqlstore.SchemeRoleDisplayNameTeamGuest,
+		model.TeamPartnerRoleId: sqlstore.SchemeRoleDisplayNameTeamPartner,
 
 		model.ChannelAdminRoleId: sqlstore.SchemeRoleDisplayNameChannelAdmin,
 		model.ChannelUserRoleId:  sqlstore.SchemeRoleDisplayNameChannelUser,
-		model.ChannelGuestRoleId: sqlstore.SchemeRoleDisplayNameChannelGuest,
+		model.ChannelPartnerRoleId: sqlstore.SchemeRoleDisplayNameChannelPartner,
 
 		model.PlaybookAdminRoleId:  sqlstore.SchemeRoleDisplayNamePlaybookAdmin,
 		model.PlaybookMemberRoleId: sqlstore.SchemeRoleDisplayNamePlaybookMember,
@@ -364,11 +364,11 @@ func (a *App) getViewMembersPermissionMigration() (permissionsMap, error) {
 	}, nil
 }
 
-func (a *App) getAddManageGuestsPermissionsMigration() (permissionsMap, error) {
+func (a *App) getAddManagePartnersPermissionsMigration() (permissionsMap, error) {
 	return permissionsMap{
 		permissionTransformation{
 			On:  isExactRole(model.SystemAdminRoleId),
-			Add: []string{PermissionPromoteGuest, PermissionDemoteToGuest, PermissionInviteGuest},
+			Add: []string{PermissionPromotePartner, PermissionDemoteToPartner, PermissionInvitePartner},
 		},
 	}, nil
 }
@@ -391,31 +391,31 @@ func (a *App) channelModerationPermissionsMigration() (permissionsMap, error) {
 		PermissionUseChannelMentions,
 	}
 
-	teamAndChannelAdminConditionalTransformations := func(teamAdminID, channelAdminID, channelUserID, channelGuestID string) []permissionTransformation {
+	teamAndChannelAdminConditionalTransformations := func(teamAdminID, channelAdminID, channelUserID, channelPartnerID string) []permissionTransformation {
 		transformations := []permissionTransformation{}
 
 		for _, perm := range moderatedPermissionsMinusCreatePost {
-			// add each moderated permission to the channel admin if channel user or guest has the permission
+			// add each moderated permission to the channel admin if channel user or partner has the permission
 			trans := permissionTransformation{
 				On: permissionAnd(
 					isExactRole(channelAdminID),
 					permissionOr(
 						onOtherRole(channelUserID, permissionExists(perm)),
-						onOtherRole(channelGuestID, permissionExists(perm)),
+						onOtherRole(channelPartnerID, permissionExists(perm)),
 					),
 				),
 				Add: []string{perm},
 			}
 			transformations = append(transformations, trans)
 
-			// add each moderated permission to the team admin if channel admin, user, or guest has the permission
+			// add each moderated permission to the team admin if channel admin, user, or partner has the permission
 			trans = permissionTransformation{
 				On: permissionAnd(
 					isExactRole(teamAdminID),
 					permissionOr(
 						onOtherRole(channelAdminID, permissionExists(perm)),
 						onOtherRole(channelUserID, permissionExists(perm)),
-						onOtherRole(channelGuestID, permissionExists(perm)),
+						onOtherRole(channelPartnerID, permissionExists(perm)),
 					),
 				),
 				Add: []string{perm},
@@ -446,7 +446,7 @@ func (a *App) channelModerationPermissionsMigration() (permissionsMap, error) {
 			ts.DefaultTeamAdminRole,
 			ts.DefaultChannelAdminRole,
 			ts.DefaultChannelUserRole,
-			ts.DefaultChannelGuestRole,
+			ts.DefaultChannelPartnerRole,
 		)...)
 	}
 
@@ -467,7 +467,7 @@ func (a *App) channelModerationPermissionsMigration() (permissionsMap, error) {
 		model.TeamAdminRoleId,
 		model.ChannelAdminRoleId,
 		model.ChannelUserRoleId,
-		model.ChannelGuestRoleId,
+		model.ChannelPartnerRoleId,
 	)...)
 
 	// ensure system admin has all the moderated permissions
@@ -489,8 +489,8 @@ func (a *App) getAddUseGroupMentionsPermissionMigration() (permissionsMap, error
 	return permissionsMap{
 		permissionTransformation{
 			On: permissionAnd(
-				isNotExactRole(model.ChannelGuestRoleId),
-				isNotSchemeRole(sqlstore.SchemeRoleDisplayNameChannelGuest),
+				isNotExactRole(model.ChannelPartnerRoleId),
+				isNotSchemeRole(sqlstore.SchemeRoleDisplayNameChannelPartner),
 				permissionOr(permissionExists(PermissionCreatePost), permissionExists(PermissionCreatePost_PUBLIC)),
 			),
 			Add: []string{PermissionUseGroupMentions},
@@ -855,8 +855,8 @@ func (a *App) getAddReportingSubsectionPermissions() (permissionsMap, error) {
 }
 
 func (a *App) getAddAuthenticationSubsectionPermissions() (permissionsMap, error) {
-	permissionsAuthenticationRead := []string{model.PermissionSysconsoleReadAuthenticationSignup.Id, model.PermissionSysconsoleReadAuthenticationEmail.Id, model.PermissionSysconsoleReadAuthenticationPassword.Id, model.PermissionSysconsoleReadAuthenticationMfa.Id, model.PermissionSysconsoleReadAuthenticationLdap.Id, model.PermissionSysconsoleReadAuthenticationSaml.Id, model.PermissionSysconsoleReadAuthenticationOpenid.Id, model.PermissionSysconsoleReadAuthenticationGuestAccess.Id}
-	permissionsAuthenticationWrite := []string{model.PermissionSysconsoleWriteAuthenticationSignup.Id, model.PermissionSysconsoleWriteAuthenticationEmail.Id, model.PermissionSysconsoleWriteAuthenticationPassword.Id, model.PermissionSysconsoleWriteAuthenticationMfa.Id, model.PermissionSysconsoleWriteAuthenticationLdap.Id, model.PermissionSysconsoleWriteAuthenticationSaml.Id, model.PermissionSysconsoleWriteAuthenticationOpenid.Id, model.PermissionSysconsoleWriteAuthenticationGuestAccess.Id}
+	permissionsAuthenticationRead := []string{model.PermissionSysconsoleReadAuthenticationSignup.Id, model.PermissionSysconsoleReadAuthenticationEmail.Id, model.PermissionSysconsoleReadAuthenticationPassword.Id, model.PermissionSysconsoleReadAuthenticationMfa.Id, model.PermissionSysconsoleReadAuthenticationLdap.Id, model.PermissionSysconsoleReadAuthenticationSaml.Id, model.PermissionSysconsoleReadAuthenticationOpenid.Id, model.PermissionSysconsoleReadAuthenticationPartnerAccess.Id}
+	permissionsAuthenticationWrite := []string{model.PermissionSysconsoleWriteAuthenticationSignup.Id, model.PermissionSysconsoleWriteAuthenticationEmail.Id, model.PermissionSysconsoleWriteAuthenticationPassword.Id, model.PermissionSysconsoleWriteAuthenticationMfa.Id, model.PermissionSysconsoleWriteAuthenticationLdap.Id, model.PermissionSysconsoleWriteAuthenticationSaml.Id, model.PermissionSysconsoleWriteAuthenticationOpenid.Id, model.PermissionSysconsoleWriteAuthenticationPartnerAccess.Id}
 
 	return permissionsMap{
 		// Give the new subsection READ permissions to any user with READ_AUTHENTICATION
@@ -1231,7 +1231,7 @@ func (s *Server) doPermissionsMigrations() error {
 		{Key: model.MigrationKeyApplyChannelManageDeleteToChannelUser, Migration: a.applyChannelManageDeleteToChannelUser},
 		{Key: model.MigrationKeyRemoveChannelManageDeleteFromTeamUser, Migration: a.removeChannelManageDeleteFromTeamUser},
 		{Key: model.MigrationKeyViewMembersNewPermission, Migration: a.getViewMembersPermissionMigration},
-		{Key: model.MigrationKeyAddManageGuestsPermissions, Migration: a.getAddManageGuestsPermissionsMigration},
+		{Key: model.MigrationKeyAddManagePartnersPermissions, Migration: a.getAddManagePartnersPermissionsMigration},
 		{Key: model.MigrationKeyChannelModerationsPermissions, Migration: a.channelModerationPermissionsMigration},
 		{Key: model.MigrationKeyAddUseGroupMentionsPermission, Migration: a.getAddUseGroupMentionsPermissionMigration},
 		{Key: model.MigrationKeyAddSystemConsolePermissions, Migration: a.getAddSystemConsolePermissionsMigration},

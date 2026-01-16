@@ -28,7 +28,7 @@ import {
 
 describe('MM-23102 - Channel Moderation - Channel Mentions', () => {
     let regularUser: UserProfile;
-    let guestUser: UserProfile;
+    let partnerUser: UserProfile;
     let testTeam: Team;
     let testChannel: Channel;
 
@@ -41,37 +41,37 @@ describe('MM-23102 - Channel Moderation - Channel Mentions', () => {
             testTeam = team;
             testChannel = channel;
 
-            cy.apiCreateGuestUser({}).then(({guest}) => {
-                guestUser = guest;
+            cy.apiCreatePartnerUser({}).then(({partner}) => {
+                partnerUser = partner;
 
-                cy.apiAddUserToTeam(testTeam.id, guestUser.id).then(() => {
-                    cy.apiAddUserToChannel(testChannel.id, guestUser.id);
+                cy.apiAddUserToTeam(testTeam.id, partnerUser.id).then(() => {
+                    cy.apiAddUserToChannel(testChannel.id, partnerUser.id);
                 });
             });
         });
     });
 
-    it('MM-T1551 Channel Mentions option for Guests', () => {
-        // # Uncheck the Channel Mentions option for Guests and save
+    it('MM-T1551 Channel Mentions option for Partners', () => {
+        // # Uncheck the Channel Mentions option for Partners and save
         visitChannelConfigPage(testChannel);
         disablePermission(checkboxesTitleToIdMap.CHANNEL_MENTIONS_GUESTS);
         saveConfigForChannel();
 
-        visitChannel(guestUser, testChannel, testTeam);
+        visitChannel(partnerUser, testChannel, testTeam);
 
-        // # Check Guest user has the permission to user special mentions like @all @channel and @here
+        // # Check Partner user has the permission to user special mentions like @all @channel and @here
         postChannelMentionsAndVerifySystemMessageExist(testChannel.name);
 
         // # Visit Channel page and Search for the channel.
         visitChannelConfigPage(testChannel);
 
-        // # check the channel mentions option for guests and save
+        // # check the channel mentions option for partners and save
         enablePermission(checkboxesTitleToIdMap.CHANNEL_MENTIONS_GUESTS);
         saveConfigForChannel();
 
-        visitChannel(guestUser, testChannel, testTeam);
+        visitChannel(partnerUser, testChannel, testTeam);
 
-        // # Check Guest user has the permission to user special mentions like @all @channel and @here
+        // # Check Partner user has the permission to user special mentions like @all @channel and @here
         postChannelMentionsAndVerifySystemMessageNotExist(testChannel);
     });
 
@@ -79,7 +79,7 @@ describe('MM-23102 - Channel Moderation - Channel Mentions', () => {
         // # Visit Channel page and Search for the channel.
         visitChannelConfigPage(testChannel);
 
-        // # Uncheck the channel mentions option for guests and save
+        // # Uncheck the channel mentions option for partners and save
         disablePermission(checkboxesTitleToIdMap.CHANNEL_MENTIONS_MEMBERS);
         saveConfigForChannel();
 
@@ -91,7 +91,7 @@ describe('MM-23102 - Channel Moderation - Channel Mentions', () => {
         // # Visit Channel page and Search for the channel.
         visitChannelConfigPage(testChannel);
 
-        // # check the channel mentions option for guests and save
+        // # check the channel mentions option for partners and save
         enablePermission(checkboxesTitleToIdMap.CHANNEL_MENTIONS_MEMBERS);
         saveConfigForChannel();
 
@@ -105,16 +105,16 @@ describe('MM-23102 - Channel Moderation - Channel Mentions', () => {
         // # Visit Channel page and Search for the channel.
         visitChannelConfigPage(testChannel);
 
-        // # Uncheck the create posts option for guests
+        // # Uncheck the create posts option for partners
         disablePermission(checkboxesTitleToIdMap.CREATE_POSTS_GUESTS);
 
-        // * Option to allow Channel Mentions for Guests should also be disabled when Create Post option is disabled.
-        // * A message Guests can not use channel mentions without the ability to create posts should be displayed.
-        cy.findByTestId('admin-channel_settings-channel_moderation-channelMentions-disabledGuestsDueToCreatePosts').
-            should('have.text', 'Guests can not use channel mentions without the ability to create posts.');
+        // * Option to allow Channel Mentions for Partners should also be disabled when Create Post option is disabled.
+        // * A message Partners can not use channel mentions without the ability to create posts should be displayed.
+        cy.findByTestId('admin-channel_settings-channel_moderation-channelMentions-disabledPartnersDueToCreatePosts').
+            should('have.text', 'Partners can not use channel mentions without the ability to create posts.');
         cy.findByTestId(checkboxesTitleToIdMap.CHANNEL_MENTIONS_GUESTS).should('be.disabled');
 
-        // # check the create posts option for guests and uncheck for members
+        // # check the create posts option for partners and uncheck for members
         enablePermission(checkboxesTitleToIdMap.CREATE_POSTS_GUESTS);
         disablePermission(checkboxesTitleToIdMap.CREATE_POSTS_MEMBERS);
 
@@ -124,13 +124,13 @@ describe('MM-23102 - Channel Moderation - Channel Mentions', () => {
             should('have.text', 'Members can not use channel mentions without the ability to create posts.');
         cy.findByTestId(checkboxesTitleToIdMap.CHANNEL_MENTIONS_MEMBERS).should('be.disabled');
 
-        // # Uncheck the create posts option for guests
+        // # Uncheck the create posts option for partners
         disablePermission(checkboxesTitleToIdMap.CREATE_POSTS_GUESTS);
 
-        // * Ensure that channel mentions for members and guests is disabled
-        // * Ensure message Guests & Members can not use channel mentions without the ability to create posts
+        // * Ensure that channel mentions for members and partners is disabled
+        // * Ensure message Partners & Members can not use channel mentions without the ability to create posts
         cy.findByTestId('admin-channel_settings-channel_moderation-channelMentions-disabledBothDueToCreatePosts').
-            should('have.text', 'Guests and members can not use channel mentions without the ability to create posts.');
+            should('have.text', 'Partners and members can not use channel mentions without the ability to create posts.');
         cy.findByTestId(checkboxesTitleToIdMap.CHANNEL_MENTIONS_GUESTS).should('be.disabled');
         cy.findByTestId(checkboxesTitleToIdMap.CHANNEL_MENTIONS_MEMBERS).should('be.disabled');
     });

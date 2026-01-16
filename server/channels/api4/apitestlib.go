@@ -683,15 +683,15 @@ func (th *TestHelper) CreateUser() *model.User {
 	return th.CreateUserWithClient(th.Client)
 }
 
-func (th *TestHelper) CreateGuestUser(tb testing.TB) *model.User {
+func (th *TestHelper) CreatePartnerUser(tb testing.TB) *model.User {
 	tb.Helper()
 
-	guestUser := th.CreateUserWithClient(th.Client)
+	partnerUser := th.CreateUserWithClient(th.Client)
 
-	_, appErr := th.App.UpdateUserRoles(th.Context, guestUser.Id, model.SystemGuestRoleId, false)
+	_, appErr := th.App.UpdateUserRoles(th.Context, partnerUser.Id, model.SystemPartnerRoleId, false)
 	require.Nil(tb, appErr)
 
-	return guestUser
+	return partnerUser
 }
 
 func (th *TestHelper) CreateTeam() *model.Team {
@@ -755,34 +755,34 @@ func (th *TestHelper) CreateUserWithAuth(authService string) *model.User {
 	return user
 }
 
-// CreateGuestAndClient creates a guest user, adds them to the basic
+// CreatePartnerAndClient creates a partner user, adds them to the basic
 // team, basic channel and basic private channel, and generates an API
 // client ready to use
-func (th *TestHelper) CreateGuestAndClient(tb testing.TB) (*model.User, *model.Client4) {
+func (th *TestHelper) CreatePartnerAndClient(tb testing.TB) (*model.User, *model.Client4) {
 	tb.Helper()
 	id := model.NewId()
 
-	// create a guest user and add it to the basic team and public/private channels
-	guest, cgErr := th.App.CreateGuest(th.Context, &model.User{
-		Email:         "test_guest" + id + "@sample.com",
-		Username:      "guest_" + id,
-		Nickname:      "guest_" + id,
+	// create a partner user and add it to the basic team and public/private channels
+	partner, cgErr := th.App.CreatePartner(th.Context, &model.User{
+		Email:         "test_partner" + id + "@sample.com",
+		Username:      "partner_" + id,
+		Nickname:      "partner_" + id,
 		Password:      "Password1",
 		EmailVerified: true,
 	})
 	require.Nil(tb, cgErr)
 
-	_, _, appErr := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, guest.Id, th.SystemAdminUser.Id)
+	_, _, appErr := th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, partner.Id, th.SystemAdminUser.Id)
 	require.Nil(tb, appErr)
-	th.AddUserToChannel(guest, th.BasicChannel)
-	th.AddUserToChannel(guest, th.BasicPrivateChannel)
+	th.AddUserToChannel(partner, th.BasicChannel)
+	th.AddUserToChannel(partner, th.BasicPrivateChannel)
 
-	// create a client and login the guest
-	guestClient := th.CreateClient()
-	_, _, err := guestClient.Login(context.Background(), guest.Email, "Password1")
+	// create a client and login the partner
+	partnerClient := th.CreateClient()
+	_, _, err := partnerClient.Login(context.Background(), partner.Email, "Password1")
 	require.NoError(tb, err)
 
-	return guest, guestClient
+	return partner, partnerClient
 }
 
 func (th *TestHelper) SetupLdapConfig() {

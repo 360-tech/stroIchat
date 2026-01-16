@@ -151,13 +151,13 @@ func TestOAuthRevokeAccessToken(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestUpdateSessionsIsGuest(t *testing.T) {
+func TestUpdateSessionsIsPartner(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t)
 	defer th.TearDown()
 
 	t.Run("Test session is demoted", func(t *testing.T) {
-		user := th.CreateUserOrGuest(false)
+		user := th.CreateUserOrPartner(false)
 
 		session := &model.Session{}
 		session.CreateAt = model.GetMillis()
@@ -168,21 +168,21 @@ func TestUpdateSessionsIsGuest(t *testing.T) {
 
 		session, _ = th.Service.CreateSession(th.Context, session)
 
-		demotedUser, err := th.Service.Store.User().DemoteUserToGuest(user.Id)
+		demotedUser, err := th.Service.Store.User().DemoteUserToPartner(user.Id)
 		require.NoError(t, err)
-		require.Equal(t, model.SystemGuestRoleId, demotedUser.Roles)
+		require.Equal(t, model.SystemPartnerRoleId, demotedUser.Roles)
 
-		err = th.Service.UpdateSessionsIsGuest(th.Context, demotedUser, true)
+		err = th.Service.UpdateSessionsIsPartner(th.Context, demotedUser, true)
 		require.NoError(t, err)
 
 		session, err = th.Service.GetSession(th.Context, session.Id)
 		require.NoError(t, err)
-		require.Equal(t, model.SystemGuestRoleId, session.Roles)
-		require.Equal(t, "true", session.Props[model.SessionPropIsGuest])
+		require.Equal(t, model.SystemPartnerRoleId, session.Roles)
+		require.Equal(t, "true", session.Props[model.SessionPropIsPartner])
 	})
 
 	t.Run("Test session is promoted", func(t *testing.T) {
-		user := th.CreateUserOrGuest(true)
+		user := th.CreateUserOrPartner(true)
 
 		session := &model.Session{}
 		session.CreateAt = model.GetMillis()
@@ -193,17 +193,17 @@ func TestUpdateSessionsIsGuest(t *testing.T) {
 
 		session, _ = th.Service.CreateSession(th.Context, session)
 
-		err := th.Service.Store.User().PromoteGuestToUser(user.Id)
+		err := th.Service.Store.User().PromotePartnerToUser(user.Id)
 		require.NoError(t, err)
 
 		promotedUser, err := th.Service.Store.User().Get(th.Context.Context(), user.Id)
 		require.NoError(t, err)
-		err = th.Service.UpdateSessionsIsGuest(th.Context, promotedUser, false)
+		err = th.Service.UpdateSessionsIsPartner(th.Context, promotedUser, false)
 		require.NoError(t, err)
 
 		session, err = th.Service.GetSession(th.Context, session.Id)
 		require.NoError(t, err)
 		require.Equal(t, model.SystemUserRoleId, session.Roles)
-		require.Equal(t, "false", session.Props[model.SessionPropIsGuest])
+		require.Equal(t, "false", session.Props[model.SessionPropIsPartner])
 	})
 }

@@ -233,24 +233,24 @@ describe('components/channel_members_rhs/Member', () => {
         });
     });
 
-    test('should render guest tag for guest user', () => {
-        const guestMember = {
+    test('should render partner tag for partner user', () => {
+        const partnerMember = {
             ...baseMember,
             user: {
                 ...mockUser,
-                roles: 'system_guest',
+                roles: 'system_partner',
             },
         };
 
         renderWithContext(
             <Member
                 {...baseProps}
-                member={guestMember}
+                member={partnerMember}
             />,
             initialState,
         );
 
-        expect(screen.getByText('Guest')).toBeInTheDocument();
+        expect(screen.getByText('Partner')).toBeInTheDocument();
     });
 
     afterEach(() => {

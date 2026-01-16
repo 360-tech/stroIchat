@@ -192,16 +192,16 @@ func TestHubConnIndex(t *testing.T) {
 		ChannelId:   th.BasicChannel.Id,
 		UserId:      th.BasicUser.Id,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
-		SchemeGuest: th.BasicUser.IsGuest(),
-		SchemeUser:  !th.BasicUser.IsGuest(),
+		SchemePartner: th.BasicUser.IsPartner(),
+		SchemeUser:  !th.BasicUser.IsPartner(),
 	})
 	require.NoError(t, err)
 	_, err = th.Service.Store.Channel().SaveMember(th.Context, &model.ChannelMember{
 		ChannelId:   th.BasicChannel.Id,
 		UserId:      th.BasicUser2.Id,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
-		SchemeGuest: th.BasicUser2.IsGuest(),
-		SchemeUser:  !th.BasicUser2.IsGuest(),
+		SchemePartner: th.BasicUser2.IsPartner(),
+		SchemeUser:  !th.BasicUser2.IsPartner(),
 	})
 	require.NoError(t, err)
 
@@ -415,8 +415,8 @@ func TestHubConnIndex(t *testing.T) {
 			ChannelId:   ch.Id,
 			UserId:      th.BasicUser2.Id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: th.BasicUser2.IsGuest(),
-			SchemeUser:  !th.BasicUser2.IsGuest(),
+			SchemePartner: th.BasicUser2.IsPartner(),
+			SchemeUser:  !th.BasicUser2.IsPartner(),
 		})
 		require.NoError(t, err)
 
@@ -736,16 +736,16 @@ func BenchmarkHubConnIndexIteratorForChannel(b *testing.B) {
 		ChannelId:   th.BasicChannel.Id,
 		UserId:      th.BasicUser.Id,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
-		SchemeGuest: th.BasicUser.IsGuest(),
-		SchemeUser:  !th.BasicUser.IsGuest(),
+		SchemePartner: th.BasicUser.IsPartner(),
+		SchemeUser:  !th.BasicUser.IsPartner(),
 	})
 	require.NoError(b, err)
 	_, err = th.Service.Store.Channel().SaveMember(th.Context, &model.ChannelMember{
 		ChannelId:   th.BasicChannel.Id,
 		UserId:      th.BasicUser2.Id,
 		NotifyProps: model.GetDefaultChannelNotifyProps(),
-		SchemeGuest: th.BasicUser2.IsGuest(),
-		SchemeUser:  !th.BasicUser2.IsGuest(),
+		SchemePartner: th.BasicUser2.IsPartner(),
+		SchemeUser:  !th.BasicUser2.IsPartner(),
 	})
 	require.NoError(b, err)
 

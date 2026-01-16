@@ -195,7 +195,7 @@ function isFilterTest(testResult: LdapDiagnosticResult | null) {
     if (!testResult) {
         return false;
     }
-    const filterTestNames = new Set(['BaseDN', 'UserFilter', 'GroupFilter', 'GuestFilter', 'AdminFilter']);
+    const filterTestNames = new Set(['BaseDN', 'UserFilter', 'GroupFilter', 'PartnerFilter', 'AdminFilter']);
     return filterTestNames.has(testResult.test_name);
 }
 

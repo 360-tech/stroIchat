@@ -26,7 +26,7 @@ export const StartTrialTour = () => {
         <p>
             <FormattedMessage
                 id='start_trial.tutorialTip.desc'
-                defaultMessage={'Explore our most requested premium features. Determine user access with Guest Accounts, automate compliance reports, and send secure ID-only mobile push notifications.'}
+                defaultMessage={'Explore our most requested premium features. Determine user access with Partner Accounts, automate compliance reports, and send secure ID-only mobile push notifications.'}
             />
         </p>
     );

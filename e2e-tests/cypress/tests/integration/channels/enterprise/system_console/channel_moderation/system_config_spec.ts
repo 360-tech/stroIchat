@@ -24,7 +24,7 @@ import {
 } from './helpers';
 
 describe('Channel Moderation', () => {
-    let guestUser: UserProfile;
+    let partnerUser: UserProfile;
     let testTeam: Team;
     let testChannel: Channel;
 
@@ -36,11 +36,11 @@ describe('Channel Moderation', () => {
             testTeam = team;
             testChannel = channel;
 
-            cy.apiCreateGuestUser({}).then(({guest}) => {
-                guestUser = guest;
+            cy.apiCreatePartnerUser({}).then(({partner}) => {
+                partnerUser = partner;
 
-                cy.apiAddUserToTeam(testTeam.id, guestUser.id).then(() => {
-                    cy.apiAddUserToChannel(testChannel.id, guestUser.id);
+                cy.apiAddUserToTeam(testTeam.id, partnerUser.id).then(() => {
+                    cy.apiAddUserToChannel(testChannel.id, partnerUser.id);
                 });
             });
         });

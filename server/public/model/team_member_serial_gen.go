@@ -41,9 +41,9 @@ func (z *TeamMember) DecodeMsg(dc *msgp.Reader) (err error) {
 		err = msgp.WrapError(err, "DeleteAt")
 		return
 	}
-	z.SchemeGuest, err = dc.ReadBool()
+	z.SchemePartner, err = dc.ReadBool()
 	if err != nil {
-		err = msgp.WrapError(err, "SchemeGuest")
+		err = msgp.WrapError(err, "SchemePartner")
 		return
 	}
 	z.SchemeUser, err = dc.ReadBool()
@@ -96,9 +96,9 @@ func (z *TeamMember) EncodeMsg(en *msgp.Writer) (err error) {
 		err = msgp.WrapError(err, "DeleteAt")
 		return
 	}
-	err = en.WriteBool(z.SchemeGuest)
+	err = en.WriteBool(z.SchemePartner)
 	if err != nil {
-		err = msgp.WrapError(err, "SchemeGuest")
+		err = msgp.WrapError(err, "SchemePartner")
 		return
 	}
 	err = en.WriteBool(z.SchemeUser)
@@ -133,7 +133,7 @@ func (z *TeamMember) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.AppendString(o, z.UserId)
 	o = msgp.AppendString(o, z.Roles)
 	o = msgp.AppendInt64(o, z.DeleteAt)
-	o = msgp.AppendBool(o, z.SchemeGuest)
+	o = msgp.AppendBool(o, z.SchemePartner)
 	o = msgp.AppendBool(o, z.SchemeUser)
 	o = msgp.AppendBool(o, z.SchemeAdmin)
 	o = msgp.AppendString(o, z.ExplicitRoles)
@@ -173,9 +173,9 @@ func (z *TeamMember) UnmarshalMsg(bts []byte) (o []byte, err error) {
 		err = msgp.WrapError(err, "DeleteAt")
 		return
 	}
-	z.SchemeGuest, bts, err = msgp.ReadBoolBytes(bts)
+	z.SchemePartner, bts, err = msgp.ReadBoolBytes(bts)
 	if err != nil {
-		err = msgp.WrapError(err, "SchemeGuest")
+		err = msgp.WrapError(err, "SchemePartner")
 		return
 	}
 	z.SchemeUser, bts, err = msgp.ReadBoolBytes(bts)

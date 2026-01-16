@@ -436,7 +436,7 @@
     "translation": "Identity Provider Public Certificate saknas. Har du glömt ladda upp filen?"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Ogiltigt Gäst-attribut. Måste vara i formen 'fält=värde'."
   },
   {
@@ -1772,19 +1772,19 @@
     "translation": "Ogiltigt kanal-id."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Ogiltiga e-postadresser."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Ogiltig e-postadress."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Ogiltiga kanaler."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Ogiltig kanal."
   },
   {
@@ -1832,7 +1832,7 @@
     "translation": "Kunde inte spara kontot."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Misslyckades att uppdatera användaren."
   },
   {
@@ -1900,7 +1900,7 @@
     "translation": "Ett fel uppstod vid sökning efter kontot."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Misslyckades att uppdatera användaren."
   },
   {
@@ -2664,7 +2664,7 @@
     "translation": "fel då LDAP-grupper skulle hämtas"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Ogiltigt AD/LDAP-gästfilter."
   },
   {
@@ -4208,7 +4208,7 @@
     "translation": "Anpassat behörighetsschema stöds inte i nuvarande licens"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Den e-postadress du uppgav tillhör inte en tillåten domän för gäster. Kontakta din administratör eller registrera dig med en annan e-postadress."
   },
   {
@@ -4256,7 +4256,7 @@
     "translation": "Funktionen att avaktivera sig själv är inte aktiverad. Kontakta din systemadministratör."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Du kan inte aktivera ett gästkonto då gästfunktionen ej är aktiverad."
   },
   {
@@ -4312,7 +4312,7 @@
     "translation": "Token för lösenordsåterställning verkar inte vara giltigt."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Kunde inte konvertera gästanvändaren till vanlig användare då hen redan är vanlig användare."
   },
   {
@@ -4376,11 +4376,11 @@
     "translation": "Inloggningen misslyckades för att ditt konto har stängts. Kontakta din administratör."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Din licens tillåter inte gäståtkomst"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Gäståtkomst har inaktiverats"
   },
   {
@@ -4420,7 +4420,7 @@
     "translation": "AD/LDAP finns inte tillgänglig på denna server."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Kunde inte konvertera användaren till gäst eftersom användaren redan är gäst."
   },
   {
@@ -4456,11 +4456,11 @@
     "translation": "Kunde inte skapa användaren, ogiltig inbjudan."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Din licens tillåter inte gäståtkomst."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Gäståtkomst har inaktiverats."
   },
   {
@@ -4540,7 +4540,7 @@
     "translation": "[{{ .SiteName }}] {{ .SenderName }} har bjudit in dig till {{ .TeamDisplayName }} teamet"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} har bjudit in dig till {{ .TeamDisplayName }} som gäst"
   },
   {
@@ -4708,7 +4708,7 @@
     "translation": "Kunde inte spara emoij."
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Felaktig uppdatering av gruppmedlem: En användare måste vara gäst eller användare, inte både och."
   },
   {
@@ -4828,7 +4828,7 @@
     "translation": "Inbjudan via epost är avaktiverad."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "De kanaler som ingår i inbjudan måste tillhöra de team som inbjudan gäller för."
   },
   {
@@ -4884,15 +4884,15 @@
     "translation": "Du har inte rättigheter att lista alla team"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Din licens tillåter inte gäståtkomst"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Gäståtkomst har inaktiverats."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Gästinloggning är begränsad att ansluta till teamet med en inbjudan. Efterfråga en e-post-inbjudan från teamet."
   },
   {
@@ -6655,7 +6655,7 @@
     "translation": "Den angivna rollen hanteras av ett schema och kan därför inte tilldelas direkt på en medlem i teamet."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Felaktig uppdatering av gruppmedlem: Du kan inte lägga till eller ta bort gäst-rollen manuellt."
   },
   {
@@ -6675,11 +6675,11 @@
     "translation": "Rollen hanteras av ett schema och kan inte tillämpas direkt på en medlem i kanalen."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Felaktig uppdatering av kanalmedlemskap: Användaren måste vara gäst eller användare, inte både-och."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Felaktig uppdatering av kanalmedlemskap: Du kan inte lägga till eller ta bort gäst-rollen manuellt."
   },
   {
@@ -6807,7 +6807,7 @@
     "translation": "Du har inte rätt behörigheter."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v har anslutit sig till kanalen som gäst."
   },
   {
@@ -6895,7 +6895,7 @@
     "translation": "%v tillagd i kanalen av %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v tillagd i kanalen som gäst av %v."
   },
   {
@@ -7323,7 +7323,7 @@
     "translation": "Kunde inte bearbeta förfrågan."
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Ogiltig eller saknad text i förfrågan."
   },
   {
@@ -7347,7 +7347,7 @@
     "translation": "Länken för lösenordsåterställning är giltig i 24 timmar."
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Du är inbjuden som en gäst att samarbeta med ditt team"
   },
   {
@@ -8414,11 +8414,11 @@
     "translation": "Ditt abonnemang begränsar möjligheten att hämta filen."
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "Din licens tillåter inte gäståtkomst"
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "Gäståtkomst har inaktiverats"
   },
   {
@@ -9254,7 +9254,7 @@
     "translation": "Arkiveringstid av filer kan inte vara mindre än 0 timmar"
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "Ogiltig uppdatering av teammedlem: En gäst kan inte bli teammedlem eller teamadministratör. Gör gästen till användare först."
   },
   {
@@ -9346,7 +9346,7 @@
     "translation": "Ogiltiga props (anpassad status)"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "Ogiltig uppdatering av teammedlem: En gäst kan inte vara ett enskilt team, en systemadministratör måste befordra eller degradera användare till/från gäster."
   },
   {
@@ -9370,7 +9370,7 @@
     "translation": "Användaren är inte tillåten att skapa bokmärken i kanaler."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunde inte skapa bokmärke i kanalen."
   },
   {
@@ -9382,7 +9382,7 @@
     "translation": "Kunde inte ta bort bokmärke i kanalen."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunde inte ta bort bokmärke i kanalen."
   },
   {
@@ -9394,7 +9394,7 @@
     "translation": "Kunde inte uppdatera bokmärket i kanalen."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunde inte uppdatera bokmärket i kanalen."
   },
   {
@@ -9406,7 +9406,7 @@
     "translation": "Kunde inte ta uppdatera sorteringsordningen av bokmärken i kanalen."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunde inte ta uppdatera sorteringsordningen av bokmärken i kanalen."
   },
   {
@@ -9414,11 +9414,11 @@
     "translation": "Kunde inte ta uppdatera sorteringsordningen av bokmärken i kanalen."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Ogiltig uppdatering av kanalmedlem: En gäst kan inte bli teammedlem eller teamadministratör, gör till användare först."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Ogiltig uppdatering av kanalmedlem: En gäst kan inte ansvara för en kanal. En systemadministratör behöver göra gästen till användare först."
   },
   {
@@ -9922,7 +9922,7 @@
     "translation": "Egenskapen meddelande är längre än den maximalt tillåtna längden."
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "Användarrollerna stämmer inte överens med gäststatus."
   },
   {
@@ -10644,7 +10644,7 @@
     "translation": "Import av externt kluster tillåt inte"
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
     "translation": "Det går inte att bjuda in gästanvändare till den här kanalen eftersom den har åtkomstbegränsningar baserade på användarattribut."
   },
   {

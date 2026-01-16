@@ -21,20 +21,20 @@ import {getSiteURL} from 'utils/url';
 import AddToChannels, {defaultCustomMessage, defaultInviteChannels} from './add_to_channels';
 import type {CustomMessageProps, InviteChannels} from './add_to_channels';
 import InviteAs, {InviteType} from './invite_as';
-import GuestSubtypeSelector from './guest_subtype_selector';
+import PartnerSubtypeSelector from './partner_subtype_selector';
 import OverageUsersBannerNotice from './overage_users_banner_notice';
-import {GuestSubtype} from 'utils/constants';
+import {PartnerSubtype} from 'utils/constants';
 
 import './invite_view.scss';
 
-export const initializeInviteState = (initialSearchValue = '', inviteAsGuest = false): InviteState => {
+export const initializeInviteState = (initialSearchValue = '', inviteAsPartner = false): InviteState => {
     return deepFreeze({
-        inviteType: inviteAsGuest ? InviteType.GUEST : InviteType.MEMBER,
+        inviteType: inviteAsPartner ? InviteType.PARTNER : InviteType.MEMBER,
         customMessage: defaultCustomMessage,
         inviteChannels: defaultInviteChannels,
         usersEmails: [],
         usersEmailsSearch: initialSearchValue,
-        guestSubtype: GuestSubtype.NOT_SPECIFIED,
+        partnerSubtype: PartnerSubtype.NOT_SPECIFIED,
     });
 };
 
@@ -44,7 +44,7 @@ export type InviteState = {
     inviteChannels: InviteChannels;
     usersEmails: Array<UserProfile | string>;
     usersEmailsSearch: string;
-    guestSubtype: string;
+    partnerSubtype: string;
 };
 
 export type Props = InviteState & {
@@ -66,12 +66,12 @@ export type Props = InviteState & {
     onUsersInputChange: (usersEmailsSearch: string) => void;
     headerClass: string;
     footerClass: string;
-    canInviteGuests: boolean;
+    canInvitePartners: boolean;
     canAddUsers: boolean;
     townSquareDisplayName: string;
     channelToInvite?: Channel;
     onPaste?: (e: ClipboardEvent) => void;
-    setGuestSubtype: (subtype: string) => void;
+    setPartnerSubtype: (subtype: string) => void;
 }
 
 export default function InviteView(props: Props) {
@@ -157,11 +157,11 @@ export default function InviteView(props: Props) {
     if (props.inviteType === InviteType.MEMBER) {
         validAddressMessage = messages.validAddressMember;
     } else {
-        validAddressMessage = messages.validAddressGuest;
+        validAddressMessage = messages.validAddressPartner;
     }
 
     const isInviteValid = useMemo(() => {
-        if (props.inviteType === InviteType.GUEST) {
+        if (props.inviteType === InviteType.PARTNER) {
             return props.inviteChannels.channels.length > 0 && props.usersEmails.length > 0;
         }
         return props.usersEmails.length > 0;
@@ -172,9 +172,9 @@ export default function InviteView(props: Props) {
         defaultMessage: 'people',
     });
 
-    const inviteModalGuest = formatMessage({
-        id: 'invite_modal.guests',
-        defaultMessage: 'guests',
+    const inviteModalPartner = formatMessage({
+        id: 'invite_modal.partners',
+        defaultMessage: 'partners',
     });
 
     return (
@@ -189,7 +189,7 @@ export default function InviteView(props: Props) {
                         defaultMessage={'Invite {inviteType} to {team_name}'}
                         values={{
                             inviteType: (
-                                props.inviteType === InviteType.MEMBER ? inviteModalPeople : inviteModalGuest
+                                props.inviteType === InviteType.MEMBER ? inviteModalPeople : inviteModalPartner
                             ),
                             team_name: props.currentTeam.display_name,
                         }}
@@ -230,22 +230,22 @@ export default function InviteView(props: Props) {
                     autoFocus={true}
                     onPaste={props.onPaste}
                 />
-                {props.canInviteGuests && props.canAddUsers &&
+                {props.canInvitePartners && props.canAddUsers &&
                 <InviteAs
                     inviteType={props.inviteType}
                     setInviteAs={props.setInviteAs}
                     titleClass='InviteView__sectionTitle'
-                    canInviteGuests={props.canInviteGuests}
+                    canInvitePartners={props.canInvitePartners}
                 />
                 }
-                {props.inviteType === InviteType.GUEST && (
-                    <GuestSubtypeSelector
-                        guestSubtype={props.guestSubtype}
-                        setGuestSubtype={props.setGuestSubtype}
+                {props.inviteType === InviteType.PARTNER && (
+                    <PartnerSubtypeSelector
+                        partnerSubtype={props.partnerSubtype}
+                        setPartnerSubtype={props.setPartnerSubtype}
                         titleClass='InviteView__sectionTitle'
                     />
                 )}
-                {(props.inviteType === InviteType.GUEST || (props.inviteType === InviteType.MEMBER && props.channelToInvite)) && (
+                {(props.inviteType === InviteType.PARTNER || (props.inviteType === InviteType.MEMBER && props.channelToInvite)) && (
                     <AddToChannels
                         setCustomMessage={props.setCustomMessage}
                         toggleCustomMessage={props.toggleCustomMessage}
@@ -263,7 +263,7 @@ export default function InviteView(props: Props) {
                 )}
                 <OverageUsersBannerNotice/>
             </Modal.Body>
-            <Modal.Footer className={classNames('InviteView__footer', props.footerClass, {'InviteView__footer-guest': props.inviteType === InviteType.GUEST})}>
+            <Modal.Footer className={classNames('InviteView__footer', props.footerClass, {'InviteView__footer-partner': props.inviteType === InviteType.PARTNER})}>
                 {props.inviteType === InviteType.MEMBER && copyButton}
                 <button
                     disabled={!isInviteValid}
@@ -294,9 +294,9 @@ const messages = defineMessages({
         id: 'invitation_modal.members.users_emails_input.no_user_found_matching-email-disabled',
         defaultMessage: 'No one found matching **{text}**',
     },
-    validAddressGuest: {
-        id: 'invitation_modal.guests.users_emails_input.valid_email',
-        defaultMessage: 'Invite **{email}** as a guest',
+    validAddressPartner: {
+        id: 'invitation_modal.partners.users_emails_input.valid_email',
+        defaultMessage: 'Invite **{email}** as a partner',
     },
     validAddressMember: {
         id: 'invitation_modal.members.users_emails_input.valid_email',

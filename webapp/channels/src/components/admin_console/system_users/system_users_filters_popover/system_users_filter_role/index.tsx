@@ -48,10 +48,10 @@ export function SystemUsersFilterRole(props: Props) {
                 }),
             },
             {
-                value: RoleFilters.Guest,
+                value: RoleFilters.Partner,
                 label: formatMessage({
-                    id: 'admin.system_users.filters.role.system_guest',
-                    defaultMessage: 'Guest',
+                    id: 'admin.system_users.filters.role.system_partner',
+                    defaultMessage: 'Partner',
                 }),
             },
         ];

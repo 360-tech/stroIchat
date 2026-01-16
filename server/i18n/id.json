@@ -288,19 +288,19 @@
     "translation": "ID Kanal tidak valid"
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Email tidak valid"
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Email tidak valid"
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "ID Kanal tidak valid"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "ID Kanal tidak valid"
   },
   {
@@ -800,7 +800,7 @@
     "translation": "Masuk dengan SAML gagal karena enkripsi tidak diaktifkan. Silakan hubungi Administrator Sistem Anda."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Filter LDAP tidak valid"
   },
   {
@@ -1140,7 +1140,7 @@
     "translation": "Lisensi anda tidak mendukung update skema saluran"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Update anggota kanal tidak valid: Pengguna harus menjadi tamu atau pengguna tetapi tidak keduanya."
   },
   {
@@ -2354,7 +2354,7 @@
     "translation": "Tidak ada berkas 'gambar' di dalam permintaan"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Email yang Anda berikan bukan bagian dari domain yang diperbolehkan. Silakan hubungi administrator Anda atau daftar dengan email yang berbeda."
   },
   {
@@ -2482,7 +2482,7 @@
     "translation": "Peran yang disediakan dikelola oleh Skema dan karena itu tidak dapat diterapkan langsung ke Anggota Tim"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Pembaruan anggota tim tidak valid: Anda tidak dapat menambah atau menghapus peran tamu secara manual"
   },
   {
@@ -2502,11 +2502,11 @@
     "translation": "Peran yang disediakan diatur oleh Skema dan tidak bisa dimenerapkan langsung ke Pengguna Kanal"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Update anggota kanal tidak valid: Pengguna harus menjadi tamu atau pengguna tetapi tidak keduanya."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Update anggota kanal tidak valid: Anda tidak bisa mentambahkan atau menghapus peran tamu secara manual."
   },
   {
@@ -2630,7 +2630,7 @@
     "translation": "Anda tidak memiliki hak akses"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "% v bergabung dengan saluran sebagai tamu."
   },
   {
@@ -2710,7 +2710,7 @@
     "translation": "%v ditambahkan ke kanal oleh %v"
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v ditambahkan ke kanal oleh %v sebagai tamu."
   },
   {

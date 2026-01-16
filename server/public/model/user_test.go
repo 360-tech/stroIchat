@@ -633,67 +633,67 @@ func TestSanitizeProfile(t *testing.T) {
 	})
 }
 
-func TestGetGuestSubtype(t *testing.T) {
+func TestGetPartnerSubtype(t *testing.T) {
 	t.Run("should return not_specified when Props is nil", func(t *testing.T) {
 		user := &User{}
-		require.Equal(t, GuestSubtypeNotSpecified, user.GetGuestSubtype())
+		require.Equal(t, PartnerSubtypeNotSpecified, user.GetPartnerSubtype())
 	})
 
-	t.Run("should return not_specified when guest_subtype is not set", func(t *testing.T) {
+	t.Run("should return not_specified when partner_subtype is not set", func(t *testing.T) {
 		user := &User{
 			Props: StringMap{"other": "value"},
 		}
-		require.Equal(t, GuestSubtypeNotSpecified, user.GetGuestSubtype())
+		require.Equal(t, PartnerSubtypeNotSpecified, user.GetPartnerSubtype())
 	})
 
-	t.Run("should return not_specified when guest_subtype is empty", func(t *testing.T) {
+	t.Run("should return not_specified when partner_subtype is empty", func(t *testing.T) {
 		user := &User{
-			Props: StringMap{UserPropsKeyGuestSubtype: ""},
+			Props: StringMap{UserPropsKeyPartnerSubtype: ""},
 		}
-		require.Equal(t, GuestSubtypeNotSpecified, user.GetGuestSubtype())
+		require.Equal(t, PartnerSubtypeNotSpecified, user.GetPartnerSubtype())
 	})
 
 	t.Run("should return correct subtype when set", func(t *testing.T) {
 		user := &User{
-			Props: StringMap{UserPropsKeyGuestSubtype: GuestSubtypeContractor},
+			Props: StringMap{UserPropsKeyPartnerSubtype: PartnerSubtypeContractor},
 		}
-		require.Equal(t, GuestSubtypeContractor, user.GetGuestSubtype())
+		require.Equal(t, PartnerSubtypeContractor, user.GetPartnerSubtype())
 
-		user.Props[UserPropsKeyGuestSubtype] = GuestSubtypeCustomer
-		require.Equal(t, GuestSubtypeCustomer, user.GetGuestSubtype())
+		user.Props[UserPropsKeyPartnerSubtype] = PartnerSubtypeCustomer
+		require.Equal(t, PartnerSubtypeCustomer, user.GetPartnerSubtype())
 
-		user.Props[UserPropsKeyGuestSubtype] = GuestSubtypePartner
-		require.Equal(t, GuestSubtypePartner, user.GetGuestSubtype())
+		user.Props[UserPropsKeyPartnerSubtype] = PartnerSubtypePartner
+		require.Equal(t, PartnerSubtypePartner, user.GetPartnerSubtype())
 	})
 }
 
-func TestSetGuestSubtype(t *testing.T) {
+func TestSetPartnerSubtype(t *testing.T) {
 	t.Run("should initialize Props when nil", func(t *testing.T) {
 		user := &User{}
-		user.SetGuestSubtype(GuestSubtypeContractor)
+		user.SetPartnerSubtype(PartnerSubtypeContractor)
 		require.NotNil(t, user.Props)
-		require.Equal(t, GuestSubtypeContractor, user.Props[UserPropsKeyGuestSubtype])
+		require.Equal(t, PartnerSubtypeContractor, user.Props[UserPropsKeyPartnerSubtype])
 	})
 
 	t.Run("should set not_specified when empty string provided", func(t *testing.T) {
 		user := &User{
 			Props: StringMap{},
 		}
-		user.SetGuestSubtype("")
-		require.Equal(t, GuestSubtypeNotSpecified, user.Props[UserPropsKeyGuestSubtype])
+		user.SetPartnerSubtype("")
+		require.Equal(t, PartnerSubtypeNotSpecified, user.Props[UserPropsKeyPartnerSubtype])
 	})
 
 	t.Run("should set correct subtype", func(t *testing.T) {
 		user := &User{
 			Props: StringMap{},
 		}
-		user.SetGuestSubtype(GuestSubtypeContractor)
-		require.Equal(t, GuestSubtypeContractor, user.Props[UserPropsKeyGuestSubtype])
+		user.SetPartnerSubtype(PartnerSubtypeContractor)
+		require.Equal(t, PartnerSubtypeContractor, user.Props[UserPropsKeyPartnerSubtype])
 
-		user.SetGuestSubtype(GuestSubtypeCustomer)
-		require.Equal(t, GuestSubtypeCustomer, user.Props[UserPropsKeyGuestSubtype])
+		user.SetPartnerSubtype(PartnerSubtypeCustomer)
+		require.Equal(t, PartnerSubtypeCustomer, user.Props[UserPropsKeyPartnerSubtype])
 
-		user.SetGuestSubtype(GuestSubtypePartner)
-		require.Equal(t, GuestSubtypePartner, user.Props[UserPropsKeyGuestSubtype])
+		user.SetPartnerSubtype(PartnerSubtypePartner)
+		require.Equal(t, PartnerSubtypePartner, user.Props[UserPropsKeyPartnerSubtype])
 	})
 }

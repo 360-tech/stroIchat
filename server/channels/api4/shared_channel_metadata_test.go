@@ -32,7 +32,7 @@ func setupTestEnvironment(t *testing.T) (*TestHelper, *sharedchannel.Service) {
 	th.App.UpdateConfig(func(cfg *model.Config) {
 		*cfg.ServiceSettings.PostPriority = true
 		*cfg.ServiceSettings.AllowPersistentNotifications = true
-		*cfg.ServiceSettings.AllowPersistentNotificationsForGuests = true
+		*cfg.ServiceSettings.AllowPersistentNotificationsForPartners = true
 		*cfg.ServiceSettings.PersistentNotificationMaxRecipients = 100
 	})
 

@@ -4771,7 +4771,7 @@
     "translation": "AD/LDAP yönetici süzgeci geçersiz."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "AD/LDAP konuk süzgeci geçersiz."
   },
   {
@@ -4795,11 +4795,11 @@
     "translation": "İmzalama algoritması geçersiz."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Kanal geçersiz."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Kanallar geçersiz."
   },
   {
@@ -4887,11 +4887,11 @@
     "translation": "Kanal arşivlenmemiş olduğundan arşivden çıkarılamadı."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Kanal üyesi güncellemesi geçersiz: Bir kullanıcı, bir konuk ya da kullanıcı olabilir ancak ikisi birden olamaz."
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Takım üyesi güncellemesi geçersiz: Bir kullanıcı, bir konuk ya da kullanıcı olabilir ancak ikisi birden olamaz."
   },
   {
@@ -4943,7 +4943,7 @@
     "translation": "Kod ile yüklenen anında bildirimler yapılandırılmamış ya da bu sunucu üzerinde desteklenmiyor."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Konuklar bir takıma ancak bir davet bağlantısı ile katılabilir. Lütfen takıma katılmak için bir konuk e-posta daveti isteğinde bulunun."
   },
   {
@@ -4951,7 +4951,7 @@
     "translation": "Yalnızca kişisel takımlar aranırken sayfalandırma yapılmaz."
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} sizi konuk olarak {{ .TeamDisplayName }} takımına katılmaya davet etti"
   },
   {
@@ -4963,15 +4963,15 @@
     "translation": "Parola sıfırlama kodu oluşturulamadı"
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Lisansınızda konuk hesaplarını kullanma özelliği yok."
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Konuk hesapları özelliği kapalı"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Lisansınızda konuk hesaplarını kullanma özelliği yok"
   },
   {
@@ -4979,7 +4979,7 @@
     "translation": "Geçerli bir e-posta adresi ya da kullanıcı adı ve parola yazın ya da başka bir oturum açma yöntemi kullanın."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Konuk erişimi özelliği kapalı olduğundan bir konuk hesabı etkinleştirilemez."
   },
   {
@@ -5099,15 +5099,15 @@
     "translation": "Yönetici özniteliği geçersiz. Öznitelikler 'alan=değer' çifti biçiminde olmalıdır."
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
-    "translation": "Guest özniteliği geçersiz. Öznitelikler 'alan=değer' çifti biçiminde olmalıdır."
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
+    "translation": "Partner özniteliği geçersiz. Öznitelikler 'alan=değer' çifti biçiminde olmalıdır."
   },
   {
     "id": "model.group.name.invalid_chars.app_error",
     "translation": "grubun ad özelliğinde geçersiz karakterler var"
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "E-posta adresleri geçersiz."
   },
   {
@@ -5187,7 +5187,7 @@
     "translation": "Bot ekleme özelliği kapalı."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v, %v tarafından kanala konuk olarak eklendi."
   },
   {
@@ -5199,7 +5199,7 @@
     "translation": "Şu kullanıcıların kanal üyesi olarak eklenmesi grup kısıtlamaları nedeniyle reddedildi: {{ .UserIDs }}"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v kanala konuk olarak katıldı."
   },
   {
@@ -5223,7 +5223,7 @@
     "translation": "Kanal türü güncellenemedi."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Kanal üyesi güncellemesi geçersiz: Konuk rolünü el ile ekleyemez ya da çıkaramazsınız."
   },
   {
@@ -5231,7 +5231,7 @@
     "translation": "Varsayılan kanal özel kanala dönüştürülemez."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Takım üyesi güncellemesi geçersiz: Konuk rolünü el ile ekleyemez ya da çıkaramazsınız."
   },
   {
@@ -5311,11 +5311,11 @@
     "translation": "Bu takım gruplar tarafından yönetiliyor.  Bu kullanıcı takım ile eşitlenen bir grubun üyesi değil."
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Konuk hesapları özelliği kapalı."
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Lisansınızda konuk hesaplarını kullanma özelliği yok"
   },
   {
@@ -5331,7 +5331,7 @@
     "translation": "E-posta davetleri geçersiz kılınırken sorun çıktı."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Davet edilen kanallar davet edilen takımın bir parçası olmalıdır."
   },
   {
@@ -5343,7 +5343,7 @@
     "translation": "Yalnızca herkese açık takımlar aranırken sayfalandırma yapılmaz."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Konuk hesapları özelliği kapalı."
   },
   {
@@ -5351,7 +5351,7 @@
     "translation": "Kullanıcı eklenemedi, davet geçersiz."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Kullanıcı zaten konuk olduğundan konuk hesabına dönüştürülemedi ."
   },
   {
@@ -5371,7 +5371,7 @@
     "translation": "Geçerli bir kullanıcı adı ve parola yazın."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Konuk, bir konuk hesabı kullanmadığından normal bir kullanıcıya dönüştürülemedi."
   },
   {
@@ -5383,7 +5383,7 @@
     "translation": "Bot kalıcı olarak silinemedi."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Yazdığınız e-posta adresi konuk hesapları için kabul edilen bir etki alanına ait değil. Lütfen yöneticiniz ile görüşün ya da farklı bir e-posta adresi ile oturum açın."
   },
   {
@@ -5463,7 +5463,7 @@
     "translation": "Tüm kanallar sayılamadı."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "E-posta adresi geçersiz."
   },
   {
@@ -6803,7 +6803,7 @@
     "translation": "Hesap kaydedilemedi."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Kullanıcı güncellenemedi."
   },
   {
@@ -6863,7 +6863,7 @@
     "translation": "Hesap bulunurken bir sorun çıktı."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Kullanıcı güncellenemedi."
   },
   {
@@ -7303,7 +7303,7 @@
     "translation": "{{ .ServerURL }}."
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Takım ile iş birliği yapmak üzere konuk olarak davet edildiniz"
   },
   {
@@ -7423,7 +7423,7 @@
     "translation": "Çalışma alanınıza uygulamalar ekleyin"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "İstek içeriği geçersiz ya da eksik."
   },
   {
@@ -8414,11 +8414,11 @@
     "translation": "aynı adlı bir grup zaten sistem kullanımına ayrılmış bir ad olarak var"
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "Lisansınız konuk hesaplarının kullanılmasını desteklemiyor"
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "Konuk hesapları özelliği kapalı"
   },
   {
@@ -8942,7 +8942,7 @@
     "translation": "Kullanıcının bir kanal yer imi eklemesine izin verilmiyor."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kanal yer imi eklenemedi."
   },
   {
@@ -8954,7 +8954,7 @@
     "translation": "Kanal yer imi silinemedi."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kanal yer imi silinemedi."
   },
   {
@@ -8966,7 +8966,7 @@
     "translation": "Kanal yer imi güncellenemedi."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kanal yer imi güncellenemedi."
   },
   {
@@ -8978,7 +8978,7 @@
     "translation": "Kanal yer imi sıralaması güncellenemedi."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kanal yer imi sıralaması güncellenemedi."
   },
   {
@@ -9002,11 +9002,11 @@
     "translation": "{{.ChannelID}} paylaşılmadığından uzak taraf davet edilemedi."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Kanal üyesi güncellemesi geçersiz: Bir konuk, takım üyesi ya da takım yöneticisi yapılamaz. Lütfen önce kullanıcı rolüne yükseltin."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Kanal üyesi güncellemesi geçersiz: Bir konuk tek bir kanal için ayarlanamaz. Bir sistem yöneticisi kullanıcıları konuk rolünden yükseltmeli ya da üyelik rolünden düşürmelidir."
   },
   {
@@ -9262,11 +9262,11 @@
     "translation": "OAuth kodu adresi geçersiz."
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "Takım üyesi güncellemesi geçersiz: Bir konuk, takım üyesi ya da ekip takım yöneticisi yapılamaz. Lütfen önce kullanıcı rolüne yükseltin."
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "Takım üyesi güncellemesi geçersiz: Bir konuk tek bir takım için ayarlanamaz. Bir sistem yöneticisi kullanıcıları konuk rolünden yükseltmeli ya da üyelik rolünden düşürmelidir."
   },
   {
@@ -10040,7 +10040,7 @@
     "translation": "Yapılandırma süzülemedi."
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "Kullanıcı rolleri konuk durumu ile tutarlı değil."
   },
   {
@@ -10452,7 +10452,7 @@
     "translation": "Uzak kümeden içe aktarıma izin verilmiyor"
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
     "translation": "Kullanıcı özniteliklerine dayalı erişim kısıtlamaları bulunduğundan konuk kullanıcıları bu kanala davet edemezsiniz."
   },
   {

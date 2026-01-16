@@ -539,9 +539,9 @@ func (_m *SearchEngineInterface) RefreshIndexes(rctx request.CTX) *model.AppErro
 	return r0
 }
 
-// SearchChannels provides a mock function with given fields: teamId, userID, term, isGuest, includeDeleted
-func (_m *SearchEngineInterface) SearchChannels(teamId string, userID string, term string, isGuest bool, includeDeleted bool) ([]string, *model.AppError) {
-	ret := _m.Called(teamId, userID, term, isGuest, includeDeleted)
+// SearchChannels provides a mock function with given fields: teamId, userID, term, isPartner, includeDeleted
+func (_m *SearchEngineInterface) SearchChannels(teamId string, userID string, term string, isPartner bool, includeDeleted bool) ([]string, *model.AppError) {
+	ret := _m.Called(teamId, userID, term, isPartner, includeDeleted)
 
 	if len(ret) == 0 {
 		panic("no return value specified for SearchChannels")
@@ -550,10 +550,10 @@ func (_m *SearchEngineInterface) SearchChannels(teamId string, userID string, te
 	var r0 []string
 	var r1 *model.AppError
 	if rf, ok := ret.Get(0).(func(string, string, string, bool, bool) ([]string, *model.AppError)); ok {
-		return rf(teamId, userID, term, isGuest, includeDeleted)
+		return rf(teamId, userID, term, isPartner, includeDeleted)
 	}
 	if rf, ok := ret.Get(0).(func(string, string, string, bool, bool) []string); ok {
-		r0 = rf(teamId, userID, term, isGuest, includeDeleted)
+		r0 = rf(teamId, userID, term, isPartner, includeDeleted)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]string)
@@ -561,7 +561,7 @@ func (_m *SearchEngineInterface) SearchChannels(teamId string, userID string, te
 	}
 
 	if rf, ok := ret.Get(1).(func(string, string, string, bool, bool) *model.AppError); ok {
-		r1 = rf(teamId, userID, term, isGuest, includeDeleted)
+		r1 = rf(teamId, userID, term, isPartner, includeDeleted)
 	} else {
 		if ret.Get(1) != nil {
 			r1 = ret.Get(1).(*model.AppError)

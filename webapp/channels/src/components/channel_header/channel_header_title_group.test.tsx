@@ -13,17 +13,17 @@ describe('components/ChannelHeaderTitleGroup', () => {
         channels: {
             channel_id: {
                 id: 'channel_id',
-                display_name: 'regular_user, guest_user',
+                display_name: 'regular_user, partner_user',
             },
         },
         currentChannelId: 'channel_id',
     };
 
-    const channelsWithoutGuests = {
+    const channelsWithoutPartners = {
         channels: {
             channel_id: {
                 id: 'channel_id',
-                display_name: 'regular_user, not_guest_user',
+                display_name: 'regular_user, not_partner_user',
             },
         },
         currentChannelId: 'channel_id',
@@ -36,21 +36,21 @@ describe('components/ChannelHeaderTitleGroup', () => {
                 username: 'regular_user',
                 roles: 'system_user',
             },
-            guest_id: {
-                id: 'guest_id',
-                username: 'guest_user',
-                roles: 'guest_user',
+            partner_id: {
+                id: 'partner_id',
+                username: 'partner_user',
+                roles: 'partner_user',
             },
-            not_guest_id: {
-                id: 'not_guest_id',
-                username: 'not_guest_user',
+            not_partner_id: {
+                id: 'not_partner_id',
+                username: 'not_partner_user',
                 roles: 'system_user',
             },
         },
         currentUserId: 'user_id',
     };
 
-    test('should render the guest tags on gms', () => {
+    test('should render the partner tags on gms', () => {
         const state = {
             entities: {
                 channels,
@@ -65,9 +65,9 @@ describe('components/ChannelHeaderTitleGroup', () => {
                 roles: 'system_user',
             }),
             TestHelper.getUserMock({
-                id: 'guest_id',
-                username: 'guest_user',
-                roles: 'system_guest',
+                id: 'partner_id',
+                username: 'partner_user',
+                roles: 'system_partner',
             }),
         ];
 
@@ -78,10 +78,10 @@ describe('components/ChannelHeaderTitleGroup', () => {
         expect(wrapper.queryAllByText('GUEST').length).toBe(1);
     });
 
-    test('should not render the guest tags on gms when no guest is in it', () => {
+    test('should not render the partner tags on gms when no partner is in it', () => {
         const state = {
             entities: {
-                channels: channelsWithoutGuests,
+                channels: channelsWithoutPartners,
                 users,
             },
         };
@@ -93,8 +93,8 @@ describe('components/ChannelHeaderTitleGroup', () => {
                 roles: 'system_user',
             }),
             TestHelper.getUserMock({
-                id: 'not_guest_id',
-                username: 'not_guest_user',
+                id: 'not_partner_id',
+                username: 'not_partner_user',
                 roles: 'system_user',
             }),
         ];

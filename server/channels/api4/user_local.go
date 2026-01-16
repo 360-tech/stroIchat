@@ -33,8 +33,8 @@ func (api *API) InitUserLocal() {
 	api.BaseRoutes.User.Handle("/password", api.APILocal(updatePassword)).Methods(http.MethodPut)
 	api.BaseRoutes.User.Handle("/convert_to_bot", api.APILocal(convertUserToBot)).Methods(http.MethodPost)
 	api.BaseRoutes.User.Handle("/email/verify/member", api.APILocal(verifyUserEmailWithoutToken)).Methods(http.MethodPost)
-	api.BaseRoutes.User.Handle("/promote", api.APILocal(promoteGuestToUser)).Methods(http.MethodPost)
-	api.BaseRoutes.User.Handle("/demote", api.APILocal(demoteUserToGuest)).Methods(http.MethodPost)
+	api.BaseRoutes.User.Handle("/promote", api.APILocal(promotePartnerToUser)).Methods(http.MethodPost)
+	api.BaseRoutes.User.Handle("/demote", api.APILocal(demoteUserToPartner)).Methods(http.MethodPost)
 
 	api.BaseRoutes.User.Handle("/auth", api.APILocal(updateUserAuth)).Methods(http.MethodPut)
 

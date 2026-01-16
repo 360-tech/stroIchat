@@ -367,7 +367,7 @@ func (a *App) exportSchemes(rctx request.CTX, job *model.Job, writer io.Writer, 
 			if scheme.Scope == model.SchemeScopeTeam {
 				schemeRolesMap[scheme.DefaultTeamAdminRole] = true
 				schemeRolesMap[scheme.DefaultTeamUserRole] = true
-				schemeRolesMap[scheme.DefaultTeamGuestRole] = true
+				schemeRolesMap[scheme.DefaultTeamPartnerRole] = true
 
 				// Playbooks
 				// At the moment this is only needed to avoid exporting and
@@ -381,7 +381,7 @@ func (a *App) exportSchemes(rctx request.CTX, job *model.Job, writer io.Writer, 
 			if scheme.Scope == model.SchemeScopeTeam || scheme.Scope == model.SchemeScopeChannel {
 				schemeRolesMap[scheme.DefaultChannelAdminRole] = true
 				schemeRolesMap[scheme.DefaultChannelUserRole] = true
-				schemeRolesMap[scheme.DefaultChannelGuestRole] = true
+				schemeRolesMap[scheme.DefaultChannelPartnerRole] = true
 			}
 
 			if err := a.exportWriteLine(writer, importLineFromScheme(scheme, rolesMap)); err != nil {

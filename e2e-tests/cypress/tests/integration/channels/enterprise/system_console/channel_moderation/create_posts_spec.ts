@@ -25,7 +25,7 @@ import {
 
 describe('MM-23102 - Channel Moderation - Create Posts', () => {
     let regularUser: UserProfile;
-    let guestUser: UserProfile;
+    let partnerUser: UserProfile;
     let testTeam: Team;
     let testChannel: Channel;
 
@@ -38,42 +38,42 @@ describe('MM-23102 - Channel Moderation - Create Posts', () => {
             testTeam = team;
             testChannel = channel;
 
-            cy.apiCreateGuestUser({}).then(({guest}) => {
-                guestUser = guest;
+            cy.apiCreatePartnerUser({}).then(({partner}) => {
+                partnerUser = partner;
 
-                cy.apiAddUserToTeam(testTeam.id, guestUser.id).then(() => {
-                    cy.apiAddUserToChannel(testChannel.id, guestUser.id);
+                cy.apiAddUserToTeam(testTeam.id, partnerUser.id).then(() => {
+                    cy.apiAddUserToChannel(testChannel.id, partnerUser.id);
                 });
             });
         });
     });
 
-    it('MM-T1541 Create Post option for Guests', () => {
+    it('MM-T1541 Create Post option for Partners', () => {
         // # Go to channel configuration page of
         visitChannelConfigPage(testChannel);
 
-        // # Uncheck the Create Posts option for Guests and Save
+        // # Uncheck the Create Posts option for Partners and Save
         disablePermission(checkboxesTitleToIdMap.CREATE_POSTS_GUESTS);
         saveConfigForChannel();
 
-        // # Login as a Guest user and visit the same channel
-        visitChannel(guestUser, testChannel, testTeam);
+        // # Login as a Partner user and visit the same channel
+        visitChannel(partnerUser, testChannel, testTeam);
 
-        // # Check Guest user should not have the permission to create a post on a channel when the option is removed
-        // * Guest user should see a message stating that this channel is read-only and the textbox area should be disabled
+        // # Check Partner user should not have the permission to create a post on a channel when the option is removed
+        // * Partner user should see a message stating that this channel is read-only and the textbox area should be disabled
         cy.findByTestId('post_textbox').should('have.attr', 'placeholder', 'This channel is read-only. Only members with permission can post here.');
         cy.findByTestId('post_textbox').should('be.disabled');
 
-        // # As a system admin, check the option to allow Create Posts for Guests and save
+        // # As a system admin, check the option to allow Create Posts for Partners and save
         visitChannelConfigPage(testChannel);
         enablePermission(checkboxesTitleToIdMap.CREATE_POSTS_GUESTS);
         saveConfigForChannel();
 
-        // # Login as a Guest user and visit the same channel
-        visitChannel(guestUser, testChannel, testTeam);
+        // # Login as a Partner user and visit the same channel
+        visitChannel(partnerUser, testChannel, testTeam);
 
-        // # Check Guest user should have the permission to create a post on a channel when the option is allowed
-        // * Guest user should see a message stating that this channel is read-only and the textbox area should be disabled
+        // # Check Partner user should have the permission to create a post on a channel when the option is allowed
+        // * Partner user should see a message stating that this channel is read-only and the textbox area should be disabled
         cy.findByTestId('post_textbox').clear();
         cy.findByTestId('post_textbox').should('have.attr', 'placeholder', `Write to ${testChannel.display_name}`);
         cy.findByTestId('post_textbox').should('not.be.disabled');
@@ -87,7 +87,7 @@ describe('MM-23102 - Channel Moderation - Create Posts', () => {
         disablePermission(checkboxesTitleToIdMap.CREATE_POSTS_MEMBERS);
         saveConfigForChannel();
 
-        // # Login as a Guest user and visit test channel
+        // # Login as a Partner user and visit test channel
         visitChannel(regularUser, testChannel, testTeam);
 
         // # Check Member should not have the permission to create a post on a channel when the option is removed.

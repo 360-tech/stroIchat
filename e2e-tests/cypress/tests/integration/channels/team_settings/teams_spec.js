@@ -62,7 +62,7 @@ describe('Teams Suite', () => {
     it('MM-T2340 Team or System Admin searches and adds new team member', () => {
         // # Update config
         cy.apiUpdateConfig({
-            GuestAccountsSettings: {
+            PartnerAccountsSettings: {
                 Enable: false,
             },
         });

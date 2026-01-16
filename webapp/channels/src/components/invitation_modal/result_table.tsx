@@ -6,12 +6,12 @@ import {FormattedMessage, useIntl} from 'react-intl';
 
 import type {UserProfile} from '@mattermost/types/users';
 
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import AlertIcon from 'components/widgets/icons/alert_icon';
 import EmailIcon from 'components/widgets/icons/mail_icon';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 import Avatar from 'components/widgets/users/avatar';
 
 import {imageURLForUser, getLongDisplayName} from 'utils/utils';
@@ -112,7 +112,7 @@ export default function ResultTable(props: Props) {
                         let icon;
                         let username;
                         let className;
-                        let guestBadge;
+                        let partnerBadge;
                         let botBadge;
                         let reactKey = '';
 
@@ -132,8 +132,8 @@ export default function ResultTable(props: Props) {
                             if (user.is_bot) {
                                 botBadge = <BotTag/>;
                             }
-                            if (isGuest(user.roles)) {
-                                guestBadge = <GuestTag/>;
+                            if (isPartner(user.roles)) {
+                                partnerBadge = <PartnerTag/>;
                             }
                         } else if (Object.hasOwn(invitation, 'email')) {
                             const email = (invitation as InviteEmail).email;
@@ -174,7 +174,7 @@ export default function ResultTable(props: Props) {
                                     <span className={className}>
                                         {username}
                                         {botBadge}
-                                        {guestBadge}
+                                        {partnerBadge}
                                     </span>
                                 </td>
                                 <td className='reason'>

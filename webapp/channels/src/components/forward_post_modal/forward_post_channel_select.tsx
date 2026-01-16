@@ -19,7 +19,7 @@ import type {Channel} from '@mattermost/types/channels';
 import {getDirectTeammate} from 'mattermost-redux/selectors/entities/channels';
 import {getMyTeams, getTeam} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUserId, getStatusForUserId, getUser} from 'mattermost-redux/selectors/entities/users';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import CustomStatusEmoji from 'components/custom_status/custom_status_emoji';
 import ProfilePicture from 'components/profile_picture';
@@ -27,7 +27,7 @@ import SharedChannelIndicator from 'components/shared_channel_indicator';
 import {flattenItems, type ProviderResults} from 'components/suggestion/suggestion_results';
 import SwitchChannelProvider from 'components/suggestion/switch_channel_provider';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 
 import Constants from 'utils/constants';
 import * as Utils from 'utils/utils';
@@ -102,8 +102,8 @@ const FormattedOption = (props: ChannelOption & {className: string; isSingleValu
     if (details.type === Constants.DM_CHANNEL) {
         if (teammate?.is_bot) {
             tag = <BotTag/>;
-        } else if (isGuest(teammate?.roles ?? '')) {
-            tag = <GuestTag/>;
+        } else if (isPartner(teammate?.roles ?? '')) {
+            tag = <PartnerTag/>;
         }
 
         const emojiStyle = {

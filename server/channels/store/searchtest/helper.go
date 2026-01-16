@@ -173,7 +173,7 @@ func (th *SearchTestHelper) createUser(username, nickname, firstName, lastName s
 	})
 }
 
-func (th *SearchTestHelper) createGuest(username, nickname, firstName, lastName string) (*model.User, error) {
+func (th *SearchTestHelper) createPartner(username, nickname, firstName, lastName string) (*model.User, error) {
 	return th.Store.User().Save(th.Context, &model.User{
 		Username:  username,
 		Password:  username,
@@ -181,7 +181,7 @@ func (th *SearchTestHelper) createGuest(username, nickname, firstName, lastName 
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     th.makeEmail(),
-		Roles:     model.SystemGuestRoleId,
+		Roles:     model.SystemPartnerRoleId,
 	})
 }
 

@@ -47,8 +47,8 @@ func createDefaultRoles(ss store.Store) {
 	})
 
 	ss.Role().Save(&model.Role{
-		Name:        model.TeamGuestRoleId,
-		DisplayName: model.TeamGuestRoleId,
+		Name:        model.TeamPartnerRoleId,
+		DisplayName: model.TeamPartnerRoleId,
 		Permissions: []string{
 			model.PermissionViewTeam.Id,
 		},
@@ -74,8 +74,8 @@ func createDefaultRoles(ss store.Store) {
 	})
 
 	ss.Role().Save(&model.Role{
-		Name:        model.ChannelGuestRoleId,
-		DisplayName: model.ChannelGuestRoleId,
+		Name:        model.ChannelPartnerRoleId,
+		DisplayName: model.ChannelPartnerRoleId,
 		Permissions: []string{
 			model.PermissionReadChannel.Id,
 			model.PermissionReadChannelContent.Id,
@@ -138,10 +138,10 @@ func testSchemeStoreSave(t *testing.T, rctx request.CTX, ss store.Store) {
 	assert.Equal(t, s1.Scope, d1.Scope)
 	assert.Len(t, d1.DefaultTeamAdminRole, 26)
 	assert.Len(t, d1.DefaultTeamUserRole, 26)
-	assert.Len(t, d1.DefaultTeamGuestRole, 26)
+	assert.Len(t, d1.DefaultTeamPartnerRole, 26)
 	assert.Len(t, d1.DefaultChannelAdminRole, 26)
 	assert.Len(t, d1.DefaultChannelUserRole, 26)
-	assert.Len(t, d1.DefaultChannelGuestRole, 26)
+	assert.Len(t, d1.DefaultChannelPartnerRole, 26)
 
 	// Check the default roles were created correctly.
 	role1, err := ss.Role().GetByName(context.Background(), d1.DefaultTeamAdminRole)
@@ -164,12 +164,12 @@ func testSchemeStoreSave(t *testing.T, rctx request.CTX, ss store.Store) {
 	assert.Equal(t, role4.Permissions, []string{"read_channel", "read_channel_content", "create_post"})
 	assert.True(t, role4.SchemeManaged)
 
-	role5, err := ss.Role().GetByName(context.Background(), d1.DefaultTeamGuestRole)
+	role5, err := ss.Role().GetByName(context.Background(), d1.DefaultTeamPartnerRole)
 	assert.NoError(t, err)
 	assert.Equal(t, role5.Permissions, []string{"view_team"})
 	assert.True(t, role5.SchemeManaged)
 
-	role6, err := ss.Role().GetByName(context.Background(), d1.DefaultChannelGuestRole)
+	role6, err := ss.Role().GetByName(context.Background(), d1.DefaultChannelPartnerRole)
 	assert.NoError(t, err)
 	assert.Equal(t, role6.Permissions, []string{"read_channel", "read_channel_content", "create_post"})
 	assert.True(t, role6.SchemeManaged)
@@ -189,10 +189,10 @@ func testSchemeStoreSave(t *testing.T, rctx request.CTX, ss store.Store) {
 	assert.Equal(t, s1.Scope, d2.Scope)
 	assert.Equal(t, d1.DefaultTeamAdminRole, d2.DefaultTeamAdminRole)
 	assert.Equal(t, d1.DefaultTeamUserRole, d2.DefaultTeamUserRole)
-	assert.Equal(t, d1.DefaultTeamGuestRole, d2.DefaultTeamGuestRole)
+	assert.Equal(t, d1.DefaultTeamPartnerRole, d2.DefaultTeamPartnerRole)
 	assert.Equal(t, d1.DefaultChannelAdminRole, d2.DefaultChannelAdminRole)
 	assert.Equal(t, d1.DefaultChannelUserRole, d2.DefaultChannelUserRole)
-	assert.Equal(t, d1.DefaultChannelGuestRole, d2.DefaultChannelGuestRole)
+	assert.Equal(t, d1.DefaultChannelPartnerRole, d2.DefaultChannelPartnerRole)
 
 	// Try saving one with an invalid ID set.
 	s3 := &model.Scheme{
@@ -233,10 +233,10 @@ func testSchemeStoreGet(t *testing.T, rctx request.CTX, ss store.Store) {
 	assert.Equal(t, s1.Scope, d2.Scope)
 	assert.Equal(t, d1.DefaultTeamAdminRole, d2.DefaultTeamAdminRole)
 	assert.Equal(t, d1.DefaultTeamUserRole, d2.DefaultTeamUserRole)
-	assert.Equal(t, d1.DefaultTeamGuestRole, d2.DefaultTeamGuestRole)
+	assert.Equal(t, d1.DefaultTeamPartnerRole, d2.DefaultTeamPartnerRole)
 	assert.Equal(t, d1.DefaultChannelAdminRole, d2.DefaultChannelAdminRole)
 	assert.Equal(t, d1.DefaultChannelUserRole, d2.DefaultChannelUserRole)
-	assert.Equal(t, d1.DefaultChannelGuestRole, d2.DefaultChannelGuestRole)
+	assert.Equal(t, d1.DefaultChannelPartnerRole, d2.DefaultChannelPartnerRole)
 
 	// Get an invalid scheme
 	_, err = ss.Scheme().Get(model.NewId())
@@ -269,10 +269,10 @@ func testSchemeStoreGetByName(t *testing.T, rctx request.CTX, ss store.Store) {
 	assert.Equal(t, s1.Scope, d2.Scope)
 	assert.Equal(t, d1.DefaultTeamAdminRole, d2.DefaultTeamAdminRole)
 	assert.Equal(t, d1.DefaultTeamUserRole, d2.DefaultTeamUserRole)
-	assert.Equal(t, d1.DefaultTeamGuestRole, d2.DefaultTeamGuestRole)
+	assert.Equal(t, d1.DefaultTeamPartnerRole, d2.DefaultTeamPartnerRole)
 	assert.Equal(t, d1.DefaultChannelAdminRole, d2.DefaultChannelAdminRole)
 	assert.Equal(t, d1.DefaultChannelUserRole, d2.DefaultChannelUserRole)
-	assert.Equal(t, d1.DefaultChannelGuestRole, d2.DefaultChannelGuestRole)
+	assert.Equal(t, d1.DefaultChannelPartnerRole, d2.DefaultChannelPartnerRole)
 
 	// Get an invalid scheme
 	_, err = ss.Scheme().GetByName(model.NewId())
@@ -366,10 +366,10 @@ func testSchemeStoreDelete(t *testing.T, rctx request.CTX, ss store.Store) {
 	assert.Equal(t, s1.Scope, d1.Scope)
 	assert.Len(t, d1.DefaultTeamAdminRole, 26)
 	assert.Len(t, d1.DefaultTeamUserRole, 26)
-	assert.Len(t, d1.DefaultTeamGuestRole, 26)
+	assert.Len(t, d1.DefaultTeamPartnerRole, 26)
 	assert.Len(t, d1.DefaultChannelAdminRole, 26)
 	assert.Len(t, d1.DefaultChannelUserRole, 26)
-	assert.Len(t, d1.DefaultChannelGuestRole, 26)
+	assert.Len(t, d1.DefaultChannelPartnerRole, 26)
 
 	// Check the default roles were created correctly.
 	role1, err := ss.Role().GetByName(context.Background(), d1.DefaultTeamAdminRole)
@@ -392,12 +392,12 @@ func testSchemeStoreDelete(t *testing.T, rctx request.CTX, ss store.Store) {
 	assert.Equal(t, role4.Permissions, []string{"read_channel", "read_channel_content", "create_post"})
 	assert.True(t, role4.SchemeManaged)
 
-	role5, err := ss.Role().GetByName(context.Background(), d1.DefaultTeamGuestRole)
+	role5, err := ss.Role().GetByName(context.Background(), d1.DefaultTeamPartnerRole)
 	assert.NoError(t, err)
 	assert.Equal(t, role5.Permissions, []string{"view_team"})
 	assert.True(t, role5.SchemeManaged)
 
-	role6, err := ss.Role().GetByName(context.Background(), d1.DefaultChannelGuestRole)
+	role6, err := ss.Role().GetByName(context.Background(), d1.DefaultChannelPartnerRole)
 	assert.NoError(t, err)
 	assert.Equal(t, role6.Permissions, []string{"read_channel", "read_channel_content", "create_post"})
 	assert.True(t, role6.SchemeManaged)
@@ -424,11 +424,11 @@ func testSchemeStoreDelete(t *testing.T, rctx request.CTX, ss store.Store) {
 	assert.NoError(t, err)
 	assert.NotZero(t, role10.DeleteAt)
 
-	role11, err := ss.Role().GetByName(context.Background(), d1.DefaultTeamGuestRole)
+	role11, err := ss.Role().GetByName(context.Background(), d1.DefaultTeamPartnerRole)
 	assert.NoError(t, err)
 	assert.NotZero(t, role11.DeleteAt)
 
-	role12, err := ss.Role().GetByName(context.Background(), d1.DefaultChannelGuestRole)
+	role12, err := ss.Role().GetByName(context.Background(), d1.DefaultChannelPartnerRole)
 	assert.NoError(t, err)
 	assert.NotZero(t, role12.DeleteAt)
 
@@ -572,14 +572,14 @@ func testCountWithoutPermission(t *testing.T, rctx request.CTX, ss store.Store) 
 		return scheme
 	}
 
-	getRoles := func(scheme *model.Scheme) (channelUser, channelGuest *model.Role) {
+	getRoles := func(scheme *model.Scheme) (channelUser, channelPartner *model.Role) {
 		var err error
 		channelUser, err = ss.Role().GetByName(context.Background(), scheme.DefaultChannelUserRole)
 		require.NoError(t, err)
 		require.NotNil(t, channelUser)
-		channelGuest, err = ss.Role().GetByName(context.Background(), scheme.DefaultChannelGuestRole)
+		channelPartner, err = ss.Role().GetByName(context.Background(), scheme.DefaultChannelPartnerRole)
 		require.NoError(t, err)
-		require.NotNil(t, channelGuest)
+		require.NotNil(t, channelPartner)
 		return
 	}
 
@@ -592,45 +592,45 @@ func testCountWithoutPermission(t *testing.T, rctx request.CTX, ss store.Store) 
 	channelScheme2 := createScheme(model.SchemeScopeChannel)
 	defer ss.Scheme().Delete(channelScheme2.Id)
 
-	ts1User, ts1Guest := getRoles(teamScheme1)
-	ts2User, ts2Guest := getRoles(teamScheme2)
-	cs1User, cs1Guest := getRoles(channelScheme1)
-	cs2User, cs2Guest := getRoles(channelScheme2)
+	ts1User, ts1Partner := getRoles(teamScheme1)
+	ts2User, ts2Partner := getRoles(teamScheme2)
+	cs1User, cs1Partner := getRoles(channelScheme1)
+	cs2User, cs2Partner := getRoles(channelScheme2)
 
 	allRoles := []*model.Role{
 		ts1User,
-		ts1Guest,
+		ts1Partner,
 		ts2User,
-		ts2Guest,
+		ts2Partner,
 		cs1User,
-		cs1Guest,
+		cs1Partner,
 		cs2User,
-		cs2Guest,
+		cs2Partner,
 	}
 
 	teamUserCount, err := ss.Scheme().CountWithoutPermission(model.SchemeScopeTeam, perm, model.RoleScopeChannel, model.RoleTypeUser)
 	require.NoError(t, err)
 	require.Equal(t, int64(0), teamUserCount)
 
-	teamGuestCount, err := ss.Scheme().CountWithoutPermission(model.SchemeScopeTeam, perm, model.RoleScopeChannel, model.RoleTypeGuest)
+	teamPartnerCount, err := ss.Scheme().CountWithoutPermission(model.SchemeScopeTeam, perm, model.RoleScopeChannel, model.RoleTypePartner)
 	require.NoError(t, err)
-	require.Equal(t, int64(0), teamGuestCount)
+	require.Equal(t, int64(0), teamPartnerCount)
 
 	var tests = []struct {
 		removePermissionFromRole             *model.Role
 		expectTeamSchemeChannelUserCount     int
-		expectTeamSchemeChannelGuestCount    int
+		expectTeamSchemeChannelPartnerCount    int
 		expectChannelSchemeChannelUserCount  int
-		expectChannelSchemeChannelGuestCount int
+		expectChannelSchemeChannelPartnerCount int
 	}{
 		{ts1User, 1, 0, 0, 0},
-		{ts1Guest, 1, 1, 0, 0},
+		{ts1Partner, 1, 1, 0, 0},
 		{ts2User, 2, 1, 0, 0},
-		{ts2Guest, 2, 2, 0, 0},
+		{ts2Partner, 2, 2, 0, 0},
 		{cs1User, 2, 2, 1, 0},
-		{cs1Guest, 2, 2, 1, 1},
+		{cs1Partner, 2, 2, 1, 1},
 		{cs2User, 2, 2, 2, 1},
-		{cs2Guest, 2, 2, 2, 2},
+		{cs2Partner, 2, 2, 2, 2},
 	}
 
 	removePermission := func(targetRole *model.Role) {
@@ -653,16 +653,16 @@ func testCountWithoutPermission(t *testing.T, rctx request.CTX, ss store.Store) 
 		require.NoError(t, err)
 		require.Equal(t, int64(test.expectTeamSchemeChannelUserCount), count)
 
-		count, err = ss.Scheme().CountWithoutPermission(model.SchemeScopeTeam, perm, model.RoleScopeChannel, model.RoleTypeGuest)
+		count, err = ss.Scheme().CountWithoutPermission(model.SchemeScopeTeam, perm, model.RoleScopeChannel, model.RoleTypePartner)
 		require.NoError(t, err)
-		require.Equal(t, int64(test.expectTeamSchemeChannelGuestCount), count)
+		require.Equal(t, int64(test.expectTeamSchemeChannelPartnerCount), count)
 
 		count, err = ss.Scheme().CountWithoutPermission(model.SchemeScopeChannel, perm, model.RoleScopeChannel, model.RoleTypeUser)
 		require.NoError(t, err)
 		require.Equal(t, int64(test.expectChannelSchemeChannelUserCount), count)
 
-		count, err = ss.Scheme().CountWithoutPermission(model.SchemeScopeChannel, perm, model.RoleScopeChannel, model.RoleTypeGuest)
+		count, err = ss.Scheme().CountWithoutPermission(model.SchemeScopeChannel, perm, model.RoleScopeChannel, model.RoleTypePartner)
 		require.NoError(t, err)
-		require.Equal(t, int64(test.expectChannelSchemeChannelGuestCount), count)
+		require.Equal(t, int64(test.expectChannelSchemeChannelPartnerCount), count)
 	}
 }

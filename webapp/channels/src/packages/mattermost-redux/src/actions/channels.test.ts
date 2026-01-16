@@ -1978,7 +1978,7 @@ describe('Actions.Channels', () => {
                 name: Permissions.CHANNEL_MODERATED_PERMISSIONS.CREATE_POST,
                 roles: {
                     members: true,
-                    guests: false,
+                    partners: false,
                 },
             }]);
 
@@ -1988,7 +1988,7 @@ describe('Actions.Channels', () => {
         expect(error).toEqual(undefined);
         expect(moderations[0].name).toEqual(Permissions.CHANNEL_MODERATED_PERMISSIONS.CREATE_POST);
         expect(moderations[0].roles.members).toEqual(true);
-        expect(moderations[0].roles.guests).toEqual(false);
+        expect(moderations[0].roles.partners).toEqual(false);
     });
 
     it('patchChannelModerations', async () => {
@@ -2000,7 +2000,7 @@ describe('Actions.Channels', () => {
                 name: Permissions.CHANNEL_MODERATED_PERMISSIONS.CREATE_REACTIONS,
                 roles: {
                     members: true,
-                    guests: false,
+                    partners: false,
                 },
             }]);
 
@@ -2010,7 +2010,7 @@ describe('Actions.Channels', () => {
         expect(error).toEqual(undefined);
         expect(moderations[0].name).toEqual(Permissions.CHANNEL_MODERATED_PERMISSIONS.CREATE_REACTIONS);
         expect(moderations[0].roles.members).toEqual(true);
-        expect(moderations[0].roles.guests).toEqual(false);
+        expect(moderations[0].roles.partners).toEqual(false);
     });
 
     it('getChannelMemberCountsByGroup', async () => {

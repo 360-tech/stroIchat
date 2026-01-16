@@ -104,12 +104,12 @@ func (_m *UserStore) AnalyticsGetExternalUsers(hostDomain string) (bool, error) 
 	return r0, r1
 }
 
-// AnalyticsGetGuestCount provides a mock function with no fields
-func (_m *UserStore) AnalyticsGetGuestCount() (int64, error) {
+// AnalyticsGetPartnerCount provides a mock function with no fields
+func (_m *UserStore) AnalyticsGetPartnerCount() (int64, error) {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
-		panic("no return value specified for AnalyticsGetGuestCount")
+		panic("no return value specified for AnalyticsGetPartnerCount")
 	}
 
 	var r0 int64
@@ -269,12 +269,12 @@ func (_m *UserStore) Count(options model.UserCountOptions) (int64, error) {
 	return r0, r1
 }
 
-// DeactivateGuests provides a mock function with no fields
-func (_m *UserStore) DeactivateGuests() ([]string, error) {
+// DeactivatePartners provides a mock function with no fields
+func (_m *UserStore) DeactivatePartners() ([]string, error) {
 	ret := _m.Called()
 
 	if len(ret) == 0 {
-		panic("no return value specified for DeactivateGuests")
+		panic("no return value specified for DeactivatePartners")
 	}
 
 	var r0 []string
@@ -299,12 +299,12 @@ func (_m *UserStore) DeactivateGuests() ([]string, error) {
 	return r0, r1
 }
 
-// DemoteUserToGuest provides a mock function with given fields: userID
-func (_m *UserStore) DemoteUserToGuest(userID string) (*model.User, error) {
+// DemoteUserToPartner provides a mock function with given fields: userID
+func (_m *UserStore) DemoteUserToPartner(userID string) (*model.User, error) {
 	ret := _m.Called(userID)
 
 	if len(ret) == 0 {
-		panic("no return value specified for DemoteUserToGuest")
+		panic("no return value specified for DemoteUserToPartner")
 	}
 
 	var r0 *model.User
@@ -1592,12 +1592,12 @@ func (_m *UserStore) PermanentDelete(rctx request.CTX, userID string) error {
 	return r0
 }
 
-// PromoteGuestToUser provides a mock function with given fields: userID
-func (_m *UserStore) PromoteGuestToUser(userID string) error {
+// PromotePartnerToUser provides a mock function with given fields: userID
+func (_m *UserStore) PromotePartnerToUser(userID string) error {
 	ret := _m.Called(userID)
 
 	if len(ret) == 0 {
-		panic("no return value specified for PromoteGuestToUser")
+		panic("no return value specified for PromotePartnerToUser")
 	}
 
 	var r0 error

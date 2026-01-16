@@ -1015,11 +1015,11 @@ func (s *RetryLayerChannelStore) AnalyticsTypeCount(teamID string, channelType m
 
 }
 
-func (s *RetryLayerChannelStore) Autocomplete(rctx request.CTX, userID string, term string, includeDeleted bool, isGuest bool) (model.ChannelListWithTeamData, error) {
+func (s *RetryLayerChannelStore) Autocomplete(rctx request.CTX, userID string, term string, includeDeleted bool, isPartner bool) (model.ChannelListWithTeamData, error) {
 
 	tries := 0
 	for {
-		result, err := s.ChannelStore.Autocomplete(rctx, userID, term, includeDeleted, isGuest)
+		result, err := s.ChannelStore.Autocomplete(rctx, userID, term, includeDeleted, isPartner)
 		if err == nil {
 			return result, nil
 		}
@@ -1036,11 +1036,11 @@ func (s *RetryLayerChannelStore) Autocomplete(rctx request.CTX, userID string, t
 
 }
 
-func (s *RetryLayerChannelStore) AutocompleteInTeam(rctx request.CTX, teamID string, userID string, term string, includeDeleted bool, isGuest bool) (model.ChannelList, error) {
+func (s *RetryLayerChannelStore) AutocompleteInTeam(rctx request.CTX, teamID string, userID string, term string, includeDeleted bool, isPartner bool) (model.ChannelList, error) {
 
 	tries := 0
 	for {
-		result, err := s.ChannelStore.AutocompleteInTeam(rctx, teamID, userID, term, includeDeleted, isGuest)
+		result, err := s.ChannelStore.AutocompleteInTeam(rctx, teamID, userID, term, includeDeleted, isPartner)
 		if err == nil {
 			return result, nil
 		}
@@ -1930,11 +1930,11 @@ func (s *RetryLayerChannelStore) GetForPost(postID string) (*model.Channel, erro
 
 }
 
-func (s *RetryLayerChannelStore) GetGuestCount(channelID string, allowFromCache bool) (int64, error) {
+func (s *RetryLayerChannelStore) GetPartnerCount(channelID string, allowFromCache bool) (int64, error) {
 
 	tries := 0
 	for {
-		result, err := s.ChannelStore.GetGuestCount(channelID, allowFromCache)
+		result, err := s.ChannelStore.GetPartnerCount(channelID, allowFromCache)
 		if err == nil {
 			return result, nil
 		}
@@ -2569,9 +2569,9 @@ func (s *RetryLayerChannelStore) InvalidateChannelByName(teamID string, name str
 
 }
 
-func (s *RetryLayerChannelStore) InvalidateGuestCount(channelID string) {
+func (s *RetryLayerChannelStore) InvalidatePartnerCount(channelID string) {
 
-	s.ChannelStore.InvalidateGuestCount(channelID)
+	s.ChannelStore.InvalidatePartnerCount(channelID)
 
 }
 
@@ -14587,11 +14587,11 @@ func (s *RetryLayerUserStore) AnalyticsGetExternalUsers(hostDomain string) (bool
 
 }
 
-func (s *RetryLayerUserStore) AnalyticsGetGuestCount() (int64, error) {
+func (s *RetryLayerUserStore) AnalyticsGetPartnerCount() (int64, error) {
 
 	tries := 0
 	for {
-		result, err := s.UserStore.AnalyticsGetGuestCount()
+		result, err := s.UserStore.AnalyticsGetPartnerCount()
 		if err == nil {
 			return result, nil
 		}
@@ -14719,11 +14719,11 @@ func (s *RetryLayerUserStore) Count(options model.UserCountOptions) (int64, erro
 
 }
 
-func (s *RetryLayerUserStore) DeactivateGuests() ([]string, error) {
+func (s *RetryLayerUserStore) DeactivatePartners() ([]string, error) {
 
 	tries := 0
 	for {
-		result, err := s.UserStore.DeactivateGuests()
+		result, err := s.UserStore.DeactivatePartners()
 		if err == nil {
 			return result, nil
 		}
@@ -14740,11 +14740,11 @@ func (s *RetryLayerUserStore) DeactivateGuests() ([]string, error) {
 
 }
 
-func (s *RetryLayerUserStore) DemoteUserToGuest(userID string) (*model.User, error) {
+func (s *RetryLayerUserStore) DemoteUserToPartner(userID string) (*model.User, error) {
 
 	tries := 0
 	for {
-		result, err := s.UserStore.DemoteUserToGuest(userID)
+		result, err := s.UserStore.DemoteUserToPartner(userID)
 		if err == nil {
 			return result, nil
 		}
@@ -15658,11 +15658,11 @@ func (s *RetryLayerUserStore) PermanentDelete(rctx request.CTX, userID string) e
 
 }
 
-func (s *RetryLayerUserStore) PromoteGuestToUser(userID string) error {
+func (s *RetryLayerUserStore) PromotePartnerToUser(userID string) error {
 
 	tries := 0
 	for {
-		err := s.UserStore.PromoteGuestToUser(userID)
+		err := s.UserStore.PromotePartnerToUser(userID)
 		if err == nil {
 			return nil
 		}

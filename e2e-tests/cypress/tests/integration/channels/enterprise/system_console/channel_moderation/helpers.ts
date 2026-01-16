@@ -224,14 +224,14 @@ export const enableDisableAllChannelModeratedPermissionsViaAPI = (channel: Chann
                         name: 'create_post',
                         roles: {
                             members: enable,
-                            guests: enable,
+                            partners: enable,
                         },
                     },
                     {
                         name: 'create_reactions',
                         roles: {
                             members: enable,
-                            guests: enable,
+                            partners: enable,
                         },
                     },
                     {
@@ -244,7 +244,7 @@ export const enableDisableAllChannelModeratedPermissionsViaAPI = (channel: Chann
                         name: 'use_channel_mentions',
                         roles: {
                             members: enable,
-                            guests: enable,
+                            partners: enable,
                         },
                     },
                     {

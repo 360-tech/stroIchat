@@ -574,7 +574,7 @@ exports[`components/select_team/SelectTeam should match snapshot, on no joinable
 </div>
 `;
 
-exports[`components/select_team/SelectTeam should match snapshot, on no joinable team and user is guest 1`] = `
+exports[`components/select_team/SelectTeam should match snapshot, on no joinable team and user is partner 1`] = `
 <div>
   <Connect(Component) />
   <BackButton />
@@ -602,8 +602,8 @@ exports[`components/select_team/SelectTeam should match snapshot, on no joinable
             className="control-label"
           >
             <MemoizedFormattedMessage
-              defaultMessage="Your guest account has no channels assigned. Please contact an administrator."
-              id="signup_team.guest_without_channels"
+              defaultMessage="Your partner account has no channels assigned. Please contact an administrator."
+              id="signup_team.partner_without_channels"
             />
           </div>
         </div>

@@ -13,10 +13,10 @@ export type Scheme = {
     scope: SchemeScope;
     default_team_admin_role: string;
     default_team_user_role: string;
-    default_team_guest_role: string;
+    default_team_partner_role: string;
     default_channel_admin_role: string;
     default_channel_user_role: string;
-    default_channel_guest_role: string;
+    default_channel_partner_role: string;
     default_playbook_admin_role: string;
     default_playbook_member_role: string;
     default_run_member_role: string;

@@ -96,7 +96,7 @@ import {
 } from 'mattermost-redux/selectors/entities/teams';
 import {getNewestThreadInTeam, getThread, getThreads} from 'mattermost-redux/selectors/entities/threads';
 import {getCurrentUser, getCurrentUserId, getUser, getIsManualStatusForUserId, isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/users';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import {loadChannelsForCurrentUser} from 'actions/channel_actions';
 import {loadCustomEmojisIfNeeded} from 'actions/emoji_actions';
@@ -920,14 +920,14 @@ export function handleLeaveTeamEvent(msg) {
                 redirectUserToDefaultTeam();
             }
         }
-        if (isGuest(currentUser.roles)) {
+        if (isPartner(currentUser.roles)) {
             dispatch(removeNotVisibleUsers());
         }
     } else {
         const team = getTeam(state, msg.data.team_id);
         const members = getChannelMembersInChannels(state);
         const isMember = Object.values(members).some((member) => member[msg.data.user_id]);
-        if (team && isGuest(currentUser.roles) && !isMember) {
+        if (team && isPartner(currentUser.roles) && !isMember) {
             dispatch(batchActions([
                 {
                     type: UserTypes.PROFILE_NO_LONGER_VISIBLE,
@@ -1120,7 +1120,7 @@ export function handleUserRemovedEvent(msg) {
             redirectUserToDefaultTeam();
         }
 
-        if (isGuest(currentUser.roles)) {
+        if (isPartner(currentUser.roles)) {
             dispatch(removeNotVisibleUsers());
         }
     } else if (msg.broadcast.channel_id === currentChannel.id) {
@@ -1138,7 +1138,7 @@ export function handleUserRemovedEvent(msg) {
         const channel = getChannel(state, msg.broadcast.channel_id);
         const members = getChannelMembersInChannels(state);
         const isMember = Object.values(members).some((member) => member[msg.data.user_id]);
-        if (channel && isGuest(currentUser.roles) && !isMember) {
+        if (channel && isPartner(currentUser.roles) && !isMember) {
             const actions = [
                 {
                     type: UserTypes.PROFILE_NO_LONGER_VISIBLE,
@@ -1171,7 +1171,7 @@ export function handleUserRemovedEvent(msg) {
 }
 
 export async function handleUserUpdatedEvent(msg) {
-    // This websocket event is sent to all non-guest users on the server, so be careful requesting data from the server
+    // This websocket event is sent to all non-partner users on the server, so be careful requesting data from the server
     // in response to it. That can overwhelm the server if every connected user makes such a request at the same time.
     // See https://mattermost.atlassian.net/browse/MM-40050 for more information.
 

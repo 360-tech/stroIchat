@@ -251,8 +251,8 @@ type ChannelStore interface {
 	GetMemberCountsByGroup(rctx request.CTX, channelID string, includeTimezones bool) ([]*model.ChannelMemberCountByGroup, error)
 	InvalidatePinnedPostCount(channelID string)
 	GetPinnedPostCount(channelID string, allowFromCache bool) (int64, error)
-	InvalidateGuestCount(channelID string)
-	GetGuestCount(channelID string, allowFromCache bool) (int64, error)
+	InvalidatePartnerCount(channelID string)
+	GetPartnerCount(channelID string, allowFromCache bool) (int64, error)
 	GetPinnedPosts(channelID string) (*model.PostList, error)
 	RemoveMember(rctx request.CTX, channelID string, userID string) error
 	RemoveMembers(rctx request.CTX, channelID string, userIds []string) error
@@ -270,8 +270,8 @@ type ChannelStore interface {
 	GetTeamMembersForChannel(rctx request.CTX, channelID string) ([]string, error)
 	GetMembersForUserWithPagination(userID string, page, perPage int) (model.ChannelMembersWithTeamData, error)
 	GetMembersForUserWithCursorPagination(userId string, perPage int, fromChanneID string) (model.ChannelMembersWithTeamData, error)
-	Autocomplete(rctx request.CTX, userID, term string, includeDeleted, isGuest bool) (model.ChannelListWithTeamData, error)
-	AutocompleteInTeam(rctx request.CTX, teamID, userID, term string, includeDeleted, isGuest bool) (model.ChannelList, error)
+	Autocomplete(rctx request.CTX, userID, term string, includeDeleted, isPartner bool) (model.ChannelListWithTeamData, error)
+	AutocompleteInTeam(rctx request.CTX, teamID, userID, term string, includeDeleted, isPartner bool) (model.ChannelList, error)
 	AutocompleteInTeamForSearch(teamID string, userID string, term string, includeDeleted bool) (model.ChannelList, error)
 	SearchAllChannels(term string, opts ChannelSearchOpts) (model.ChannelListWithTeamData, int64, error)
 	SearchInTeam(teamID string, term string, includeDeleted bool) (model.ChannelList, error)
@@ -486,7 +486,7 @@ type UserStore interface {
 	AnalyticsGetInactiveUsersCount() (int64, error)
 	AnalyticsGetExternalUsers(hostDomain string) (bool, error)
 	AnalyticsGetSystemAdminCount() (int64, error)
-	AnalyticsGetGuestCount() (int64, error)
+	AnalyticsGetPartnerCount() (int64, error)
 	GetProfilesNotInTeam(teamID string, groupConstrained bool, offset int, limit int, viewRestrictions *model.ViewUsersRestrictions) ([]*model.User, error)
 	GetEtagForProfilesNotInTeam(teamID string) string
 	ClearAllCustomRoleAssignments() error
@@ -496,9 +496,9 @@ type UserStore interface {
 	Count(options model.UserCountOptions) (int64, error)
 	GetTeamGroupUsers(teamID string) ([]*model.User, error)
 	GetChannelGroupUsers(channelID string) ([]*model.User, error)
-	PromoteGuestToUser(userID string) error
-	DemoteUserToGuest(userID string) (*model.User, error)
-	DeactivateGuests() ([]string, error)
+	PromotePartnerToUser(userID string) error
+	DemoteUserToPartner(userID string) (*model.User, error)
+	DeactivatePartners() ([]string, error)
 	AutocompleteUsersInChannel(rctx request.CTX, teamID, channelID, term string, options *model.UserSearchOptions) (*model.UserAutocompleteInChannel, error)
 	GetKnownUsers(userID string) ([]string, error)
 	IsEmpty(excludeBots bool) (bool, error)

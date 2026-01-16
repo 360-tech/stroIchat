@@ -48,7 +48,7 @@ context('LDAP SAML - Automated Tests (SAML TESTS)', () => {
             PublicCertificateFile: 'saml-public.crt',
             PrivateKeyFile: 'saml-private.key',
             IdAttribute: '',
-            GuestAttribute: '',
+            PartnerAttribute: '',
             EnableAdminAttribute: false,
             AdminAttribute: '',
             FirstNameAttribute: '',
@@ -57,7 +57,7 @@ context('LDAP SAML - Automated Tests (SAML TESTS)', () => {
             UsernameAttribute: 'Username',
             LoginButtonText: loginButtonText,
         },
-        GuestAccountsSettings: {
+        PartnerAccountsSettings: {
             Enable: true,
         },
     };

@@ -204,7 +204,7 @@
     "translation": "%v tilføjet til kanalen af %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v tilføjet til kanalen af %v."
   },
   {
@@ -440,7 +440,7 @@
     "translation": "Det er ikke tilladt for brugeren at lave bogmærker i kanalen."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunne ikke lave bogmærke i kanalen."
   },
   {
@@ -452,7 +452,7 @@
     "translation": "Kunne ikke slette bogmærket i kanalen."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunne ikke slette bogmærket i kanalen."
   },
   {
@@ -464,7 +464,7 @@
     "translation": "Kunne ikke opdatere bogmærket i kanalen."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunne ikke opdatere bogmærket i kanalen."
   },
   {
@@ -476,7 +476,7 @@
     "translation": "Kunne ikke opdatere sorteringsrækkefølgen af bogmærker i kanalen."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Kunne ikke opdatere sorteringsrækkefølgen af bogmærker i kanalen."
   },
   {
@@ -532,7 +532,7 @@
     "translation": "{{.Username}} afarkiverede kanalen."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Ugyldig opdatering af kanalmedlem: En bruger skal være gæst eller bruger, men ikke begge dele."
   },
   {
@@ -588,11 +588,11 @@
     "translation": "Du har ikke tilladelse til at opdatere navn, visningsnavn og formål med direkte beskeder eller gruppebeskeder."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Ugyldig opdatering af kanalmedlem: Du kan ikke tilføje eller fjerne gæsterollen manuelt."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Ugyldig opdatering af kanalmedlem: En gæst kan ikke blive teammedlem eller teamadministrator, gør venligst gæsten til bruger først."
   },
   {
@@ -600,7 +600,7 @@
     "translation": "Rollen administreres af et skema og kan derfor ikke anvendes direkte på et kanalmedlem."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Ugyldig opdatering af kanalmedlem: En gæst kan ikke gøres ansvarlig for en kanal. En systemadministrator skal først gøre gæsten til bruger."
   },
   {
@@ -616,7 +616,7 @@
     "translation": "Kan ikke indstille skemaet til kanalen, fordi det medfølgende skema ikke er et kanalskema."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Ugyldig opdatering af teammedlem: Du kan ikke tilføje eller fjerne gæsterollen manuelt."
   },
   {
@@ -636,7 +636,7 @@
     "translation": "{{.ConvertedByUsername}} oprettede denne kanal fra en gruppebesked med {{.GMMembers}}."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v sluttede sig til kanalen som gæst."
   },
   {

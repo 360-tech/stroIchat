@@ -4612,7 +4612,7 @@
     "translation": "Создание бота было отключено."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v добавлен(а) в канал как гость пользователем %v."
   },
   {
@@ -4628,7 +4628,7 @@
     "translation": "Ваша лицензия не поддерживает группы"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v присоединился к каналу как гость."
   },
   {
@@ -4832,7 +4832,7 @@
     "translation": "Неверный фильтр админа AD/LDAP."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Неверный фильтр гостя AD/LDAP."
   },
   {
@@ -4844,7 +4844,7 @@
     "translation": "Неверные AutocompleteData"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Неверный атрибут гостя. Должен быть в форме 'поле=значение'."
   },
   {
@@ -4852,11 +4852,11 @@
     "translation": "Неверный алгоритм подписи."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Недопустимые каналы."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Недопустимые адреса эл.почты."
   },
   {
@@ -4888,7 +4888,7 @@
     "translation": "Учетная запись бота не может создать другую учетную запись бота."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Недопустимое обновление участника канала: вы не можете добавлять или удалять гостевую роль вручную."
   },
   {
@@ -4960,7 +4960,7 @@
     "translation": "Эта команда управляется группами.  Этот пользователь не является частью группы, которая синхронизируется с этой командой."
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Ваша лицензия не поддерживает гостевые учётные записи"
   },
   {
@@ -4972,7 +4972,7 @@
     "translation": "Пагинация не выполняется для поиска в частных группах."
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Недопустимое обновление участника команды: пользователь должен быть гостем или пользователем, но не обоими."
   },
   {
@@ -4980,15 +4980,15 @@
     "translation": "Срок действия корпоративной лицензии истёк, и некоторые функции могут быть отключены. Пожалуйста, обновите лицензию."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Гостевые учётные записи отключены."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Ваша лицензия не поддерживает гостевые учётные записи."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Невозможно преобразовать пользователя в гостя, поскольку он уже является гостем."
   },
   {
@@ -5000,11 +5000,11 @@
     "translation": "Введите действительный адрес электронной почты или имя пользователя и/или пароль, или войдите в систему, используя другой метод."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Невозможно преобразовать гостя в обычного пользователя, потому что он не гость."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Вы не можете активировать гостевую учетную запись, потому что функция гостевого доступа не включена."
   },
   {
@@ -5012,7 +5012,7 @@
     "translation": "Указанный вами адрес электронной почты не принадлежит признанному домену. Пожалуйста, свяжитесь с вашим администратором или зарегистрируйтесь с другим адресом электронной почты."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Указанный вами адрес электронной почты не принадлежит признанному домену для гостевых учетных записей. Пожалуйста, свяжитесь с вашим администратором или зарегистрируйтесь с другим адресом электронной почты."
   },
   {
@@ -5196,11 +5196,11 @@
     "translation": "недопустимые символы в свойстве имя для группы"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Недопустимый канал."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Недопустимый адрес эл.почты."
   },
   {
@@ -5260,11 +5260,11 @@
     "translation": "Эта версия вашего браузера больше не поддерживается Mattermost"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Недопустимое обновление участника канала: пользователь должен быть гостем или пользователем, но не обоими."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Недопустимое обновление участника команды: вы не можете добавлять или удалять гостевую роль вручную."
   },
   {
@@ -5332,11 +5332,11 @@
     "translation": "Ошибка при добавлении участника(ов) команды."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Гостям ограничена возможность присоединяться к команде через ссылку-приглашение. Запросите гостевое приглашение по электронной почте для присоединения к команде."
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Гостевые учётные записи отключены."
   },
   {
@@ -5348,11 +5348,11 @@
     "translation": "Ошибка аннулирования e-mail приглашений."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Каналы в приглашении должны быть частью команды в приглашении."
   },
   {
-    "id": "api.team.invite_guests.invalid_guest_subtype.app_error",
+    "id": "api.team.invite_partners.invalid_partner_subtype.app_error",
     "translation": "Указан недопустимый подтип гостя."
   },
   {
@@ -5360,7 +5360,7 @@
     "translation": "Пагинация не выполняется для поиска в публичных группах."
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} пригласил вас в команду {{ .TeamDisplayName }} в качестве гостя"
   },
   {
@@ -5372,11 +5372,11 @@
     "translation": "Невозможно создать пользователя, недействительное приглашение."
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Гостевые учётные записи отключены"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Ваша лицензия не поддерживает гостевые учётные записи"
   },
   {
@@ -6988,7 +6988,7 @@
     "translation": "Не удалось сохранить учётную запись."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Не удалось обновить пользователя."
   },
   {
@@ -7056,7 +7056,7 @@
     "translation": "Возникла ошибка поиска учётной записи."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Не удалось обновить пользователя."
   },
   {
@@ -7256,7 +7256,7 @@
     "translation": "Нужна помощь или есть вопросы? Пишите нам на e-mail адрес "
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Вы были приглашены в качестве гостя в команду"
   },
   {
@@ -7352,7 +7352,7 @@
     "translation": "Добавить приложения в ваше рабочее пространство"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Тело запроса некорректно или отсутствует."
   },
   {
@@ -8292,11 +8292,11 @@
     "translation": "В настройки электронной почты есть не заданные значения."
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "Ваша лицензия не поддерживает гостевые учётные записи"
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "Гостевые учётные записи отключены"
   },
   {
@@ -9168,7 +9168,7 @@
     "translation": "Пакетный экспорт отчетов доступен только для Pro и Enterprise."
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "Неверное обновление участника команды: Гость не может стать участником команды или администратором команды, пожалуйста, сначала повысьте статус пользователя."
   },
   {
@@ -9352,7 +9352,7 @@
     "translation": "URL слишком длинный"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "Неверное обновление участника команды: гость не может быть установлен для команды, Системный администратор должен повышать или понижать пользователей до/из гостей."
   },
   {
@@ -9372,7 +9372,7 @@
     "translation": "Пользователю запрещено создавать закладки на каналах."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Не удалось создать закладку канала."
   },
   {
@@ -9380,7 +9380,7 @@
     "translation": "Не удалось создать закладку канала."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Не удалось удалить закладку канала."
   },
   {
@@ -9392,7 +9392,7 @@
     "translation": "Не удалось обновить закладку канала."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Не удалось обновить закладку канала."
   },
   {
@@ -9404,7 +9404,7 @@
     "translation": "Не удалось обновить порядок сортировки закладок канала."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Не удалось обновить порядок сортировки закладок канала."
   },
   {
@@ -9504,11 +9504,11 @@
     "translation": "Невозможно установить ссылку и файл в одну и ту же закладку."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Неверное обновление участника канала: Гость не может стать участником команды или администратором команды, пожалуйста, сначала повысьте его до пользователя."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Неверное обновление участника канала: Гость не может быть установлен для одиночного канала, Системный администратор должен повышать или понижать пользователей до/из гостей."
   },
   {
@@ -9916,7 +9916,7 @@
     "translation": "Не удалось восстановить вложения файлов в сообщении."
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "Роли пользователей не соответствуют статусу гостя."
   },
   {

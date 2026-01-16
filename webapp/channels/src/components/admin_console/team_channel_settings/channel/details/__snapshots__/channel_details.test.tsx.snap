@@ -102,7 +102,7 @@ exports[`admin_console/team_channel_settings/channel/ChannelDetails should match
       />
       <ChannelModeration
         channelPermissions={Array []}
-        guestAccountsEnabled={true}
+        partnerAccountsEnabled={true}
         isPublic={true}
         onChannelPermissionsChanged={[Function]}
         readOnly={false}
@@ -297,7 +297,7 @@ exports[`admin_console/team_channel_settings/channel/ChannelDetails should match
       />
       <ChannelModeration
         channelPermissions={Array []}
-        guestAccountsEnabled={true}
+        partnerAccountsEnabled={true}
         isPublic={true}
         onChannelPermissionsChanged={[Function]}
         readOnly={false}
@@ -511,7 +511,7 @@ exports[`admin_console/team_channel_settings/channel/ChannelDetails should match
       />
       <ChannelModeration
         channelPermissions={Array []}
-        guestAccountsEnabled={true}
+        partnerAccountsEnabled={true}
         isPublic={true}
         onChannelPermissionsChanged={[Function]}
         readOnly={false}
@@ -658,7 +658,7 @@ exports[`admin_console/team_channel_settings/channel/ChannelDetails should match
       />
       <ChannelModeration
         channelPermissions={Array []}
-        guestAccountsEnabled={true}
+        partnerAccountsEnabled={true}
         isPublic={true}
         onChannelPermissionsChanged={[Function]}
         readOnly={false}
@@ -824,7 +824,7 @@ exports[`admin_console/team_channel_settings/channel/ChannelDetails should match
       />
       <ChannelModeration
         channelPermissions={Array []}
-        guestAccountsEnabled={true}
+        partnerAccountsEnabled={true}
         isPublic={true}
         onChannelPermissionsChanged={[Function]}
         readOnly={false}
@@ -971,7 +971,7 @@ exports[`admin_console/team_channel_settings/channel/ChannelDetails should match
       />
       <ChannelModeration
         channelPermissions={Array []}
-        guestAccountsEnabled={true}
+        partnerAccountsEnabled={true}
         isPublic={true}
         onChannelPermissionsChanged={[Function]}
         readOnly={false}

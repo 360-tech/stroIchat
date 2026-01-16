@@ -409,7 +409,7 @@ describe('Selectors.Users', () => {
         const users = [user3, user4].sort(sortByUsername);
         expect(Selectors.getProfilesNotInTeam(testState, team1.id)).toEqual(users);
         expect(Selectors.getProfilesNotInTeam(testState, team1.id, {role: 'system_user'})).toEqual(users);
-        expect(Selectors.getProfilesNotInTeam(testState, team1.id, {role: 'system_guest'})).toEqual([]);
+        expect(Selectors.getProfilesNotInTeam(testState, team1.id, {role: 'system_partner'})).toEqual([]);
     });
 
     it('getProfilesNotInCurrentTeam', () => {

@@ -34,11 +34,11 @@ func TestCreateChannelBookmark(t *testing.T) {
 		CheckErrorID(t, err, "api.channel.bookmark.channel_bookmark.license.error")
 	})
 
-	// enable guest accounts and add the license
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	// enable partner accounts and add the license
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
-	guest, guestClient := th.CreateGuestAndClient(t)
+	partner, partnerClient := th.CreatePartnerAndClient(t)
 
 	t.Run("a user should be able to create a channel bookmark in a public channel", func(t *testing.T) {
 		channelBookmark := &model.ChannelBookmark{
@@ -143,7 +143,7 @@ func TestCreateChannelBookmark(t *testing.T) {
 		require.Nil(t, cb)
 	})
 
-	t.Run("a guest user should not be able to create a channel bookmark", func(t *testing.T) {
+	t.Run("a partner user should not be able to create a channel bookmark", func(t *testing.T) {
 		channelBookmark := &model.ChannelBookmark{
 			ChannelId:   th.BasicChannel.Id,
 			DisplayName: "Link bookmark test",
@@ -153,14 +153,14 @@ func TestCreateChannelBookmark(t *testing.T) {
 		}
 
 		// test in public channel
-		cb, resp, err := guestClient.CreateChannelBookmark(context.Background(), channelBookmark)
+		cb, resp, err := partnerClient.CreateChannelBookmark(context.Background(), channelBookmark)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, cb)
 
 		// test in private channel
 		channelBookmark.ChannelId = th.BasicPrivateChannel.Id
-		cb, resp, err = guestClient.CreateChannelBookmark(context.Background(), channelBookmark)
+		cb, resp, err = partnerClient.CreateChannelBookmark(context.Background(), channelBookmark)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, cb)
@@ -176,7 +176,7 @@ func TestCreateChannelBookmark(t *testing.T) {
 		}()
 
 		// DM
-		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 		require.Nil(t, dmErr)
 
 		channelBookmark := &model.ChannelBookmark{
@@ -193,7 +193,7 @@ func TestCreateChannelBookmark(t *testing.T) {
 		require.NotNil(t, cb)
 
 		// GM
-		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 		require.Nil(t, appErr)
 
 		channelBookmark.ChannelId = gm.Id
@@ -203,9 +203,9 @@ func TestCreateChannelBookmark(t *testing.T) {
 		require.NotNil(t, cb)
 	})
 
-	t.Run("a guest should not be able to create channel bookmarks on DMs and GMs", func(t *testing.T) {
+	t.Run("a partner should not be able to create channel bookmarks on DMs and GMs", func(t *testing.T) {
 		// DM
-		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 		require.Nil(t, dmErr)
 
 		channelBookmark := &model.ChannelBookmark{
@@ -216,17 +216,17 @@ func TestCreateChannelBookmark(t *testing.T) {
 			Emoji:       ":smile:",
 		}
 
-		cb, resp, err := guestClient.CreateChannelBookmark(context.Background(), channelBookmark)
+		cb, resp, err := partnerClient.CreateChannelBookmark(context.Background(), channelBookmark)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, cb)
 
 		// GM
-		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 		require.Nil(t, appErr)
 
 		channelBookmark.ChannelId = gm.Id
-		cb, resp, err = guestClient.CreateChannelBookmark(context.Background(), channelBookmark)
+		cb, resp, err = partnerClient.CreateChannelBookmark(context.Background(), channelBookmark)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, cb)
@@ -288,11 +288,11 @@ func TestEditChannelBookmark(t *testing.T) {
 		CheckErrorID(t, err, "api.channel.bookmark.channel_bookmark.license.error")
 	})
 
-	// enable guest accounts and add the license
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	// enable partner accounts and add the license
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
-	guest, guestClient := th.CreateGuestAndClient(t)
+	partner, partnerClient := th.CreatePartnerAndClient(t)
 
 	t.Run("a user editing a channel bookmark in public and private channels", func(t *testing.T) {
 		testCases := []struct {
@@ -334,16 +334,16 @@ func TestEditChannelBookmark(t *testing.T) {
 				expectedStatus:   http.StatusForbidden,
 			},
 			{
-				name:           "guest user in a public channel, should fail",
+				name:           "partner user in a public channel, should fail",
 				channelId:      th.BasicChannel.Id,
-				userClient:     guestClient,
+				userClient:     partnerClient,
 				expectedError:  true,
 				expectedStatus: http.StatusForbidden,
 			},
 			{
-				name:           "guest user in a private channel, should fail",
+				name:           "partner user in a private channel, should fail",
 				channelId:      th.BasicPrivateChannel.Id,
-				userClient:     guestClient,
+				userClient:     partnerClient,
 				expectedError:  true,
 				expectedStatus: http.StatusForbidden,
 			},
@@ -501,7 +501,7 @@ func TestEditChannelBookmark(t *testing.T) {
 		}()
 
 		// DM
-		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 		require.Nil(t, dmErr)
 
 		channelBookmark := &model.ChannelBookmark{
@@ -531,7 +531,7 @@ func TestEditChannelBookmark(t *testing.T) {
 		require.Equal(t, "http://edited.url", ucb.Updated.LinkUrl)
 
 		// GM
-		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 		require.Nil(t, appErr)
 
 		channelBookmark.ChannelId = gm.Id
@@ -549,9 +549,9 @@ func TestEditChannelBookmark(t *testing.T) {
 		require.Equal(t, "http://edited.url", gucb.Updated.LinkUrl)
 	})
 
-	t.Run("a guest should not be able to edit channel bookmarks on DMs and GMs", func(t *testing.T) {
+	t.Run("a partner should not be able to edit channel bookmarks on DMs and GMs", func(t *testing.T) {
 		// DM
-		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 		require.Nil(t, dmErr)
 
 		channelBookmark := &model.ChannelBookmark{
@@ -572,13 +572,13 @@ func TestEditChannelBookmark(t *testing.T) {
 			LinkUrl:     model.NewPointer("http://edited.url"),
 		}
 
-		ucb, resp, err := guestClient.UpdateChannelBookmark(context.Background(), cb.ChannelId, cb.Id, patch)
+		ucb, resp, err := partnerClient.UpdateChannelBookmark(context.Background(), cb.ChannelId, cb.Id, patch)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, ucb)
 
 		// GM
-		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 		require.Nil(t, appErr)
 
 		channelBookmark.ChannelId = gm.Id
@@ -587,7 +587,7 @@ func TestEditChannelBookmark(t *testing.T) {
 		CheckCreatedStatus(t, resp)
 		require.NotNil(t, cb)
 
-		gucb, resp, err := guestClient.UpdateChannelBookmark(context.Background(), gcb.ChannelId, gcb.Id, patch)
+		gucb, resp, err := partnerClient.UpdateChannelBookmark(context.Background(), gcb.ChannelId, gcb.Id, patch)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, gucb)
@@ -721,11 +721,11 @@ func TestUpdateChannelBookmarkSortOrder(t *testing.T) {
 		CheckErrorID(t, err, "api.channel.bookmark.channel_bookmark.license.error")
 	})
 
-	// enable guest accounts and add the license
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	// enable partner accounts and add the license
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
-	guest, guestClient := th.CreateGuestAndClient(t)
+	partner, partnerClient := th.CreatePartnerAndClient(t)
 
 	t.Run("a user updating a bookmark's order in public and private channels", func(t *testing.T) {
 		testCases := []struct {
@@ -775,20 +775,20 @@ func TestUpdateChannelBookmarkSortOrder(t *testing.T) {
 				expectedStatus:   http.StatusForbidden,
 			},
 			{
-				name:           "guest user in a public channel, should fail",
+				name:           "partner user in a public channel, should fail",
 				channelId:      th.BasicChannel.Id,
 				bookmarkId:     publicBookmark3.Id,
 				sortOrder:      2,
-				userClient:     guestClient,
+				userClient:     partnerClient,
 				expectedError:  true,
 				expectedStatus: http.StatusForbidden,
 			},
 			{
-				name:           "guest user in a private channel, should fail",
+				name:           "partner user in a private channel, should fail",
 				channelId:      th.BasicPrivateChannel.Id,
 				bookmarkId:     privateBookmark4.Id,
 				sortOrder:      2,
-				userClient:     guestClient,
+				userClient:     partnerClient,
 				expectedError:  true,
 				expectedStatus: http.StatusForbidden,
 			},
@@ -942,7 +942,7 @@ func TestUpdateChannelBookmarkSortOrder(t *testing.T) {
 		}()
 
 		// DM
-		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 		require.Nil(t, dmErr)
 
 		dmBookmark1 := createBookmark("one", dm.Id)
@@ -958,7 +958,7 @@ func TestUpdateChannelBookmarkSortOrder(t *testing.T) {
 		require.Equal(t, int64(1), bookmarks[1].SortOrder)
 
 		// GM
-		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 		require.Nil(t, appErr)
 
 		gmBookmark1 := createBookmark("one", gm.Id)
@@ -974,27 +974,27 @@ func TestUpdateChannelBookmarkSortOrder(t *testing.T) {
 		require.Equal(t, int64(1), bookmarks[1].SortOrder)
 	})
 
-	t.Run("a guest should not be able to edit channel bookmarks sort order on DMs and GMs", func(t *testing.T) {
+	t.Run("a partner should not be able to edit channel bookmarks sort order on DMs and GMs", func(t *testing.T) {
 		// DM
-		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 		require.Nil(t, dmErr)
 
 		dmBookmark1 := createBookmark("one", dm.Id)
 		_ = createBookmark("two", dm.Id)
 
-		bookmarks, resp, err := guestClient.UpdateChannelBookmarkSortOrder(context.Background(), dm.Id, dmBookmark1.Id, 1)
+		bookmarks, resp, err := partnerClient.UpdateChannelBookmarkSortOrder(context.Background(), dm.Id, dmBookmark1.Id, 1)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, bookmarks)
 
 		// GM
-		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 		require.Nil(t, appErr)
 
 		_ = createBookmark("one", gm.Id)
 		gmBookmark2 := createBookmark("two", gm.Id)
 
-		bookmarks, resp, err = guestClient.UpdateChannelBookmarkSortOrder(context.Background(), gm.Id, gmBookmark2.Id, 0)
+		bookmarks, resp, err = partnerClient.UpdateChannelBookmarkSortOrder(context.Background(), gm.Id, gmBookmark2.Id, 0)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, bookmarks)
@@ -1108,11 +1108,11 @@ func TestDeleteChannelBookmark(t *testing.T) {
 		CheckErrorID(t, err, "api.channel.bookmark.channel_bookmark.license.error")
 	})
 
-	// enable guest accounts and add the license
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	// enable partner accounts and add the license
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
-	guest, guestClient := th.CreateGuestAndClient(t)
+	partner, partnerClient := th.CreatePartnerAndClient(t)
 
 	t.Run("a user deleting bookmarks in public and private channels", func(t *testing.T) {
 		testCases := []struct {
@@ -1152,16 +1152,16 @@ func TestDeleteChannelBookmark(t *testing.T) {
 				expectedStatus:   http.StatusForbidden,
 			},
 			{
-				name:           "guest user in a public channel, should fail",
+				name:           "partner user in a public channel, should fail",
 				channelId:      th.BasicChannel.Id,
-				userClient:     guestClient,
+				userClient:     partnerClient,
 				expectedError:  true,
 				expectedStatus: http.StatusForbidden,
 			},
 			{
-				name:           "guest user in a private channel, should fail",
+				name:           "partner user in a private channel, should fail",
 				channelId:      th.BasicPrivateChannel.Id,
-				userClient:     guestClient,
+				userClient:     partnerClient,
 				expectedError:  true,
 				expectedStatus: http.StatusForbidden,
 			},
@@ -1291,7 +1291,7 @@ func TestDeleteChannelBookmark(t *testing.T) {
 		}()
 
 		// DM
-		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 		require.Nil(t, dmErr)
 
 		dmBookmark := &model.ChannelBookmark{
@@ -1312,7 +1312,7 @@ func TestDeleteChannelBookmark(t *testing.T) {
 		require.NotZero(t, ddmb.DeleteAt)
 
 		// GM
-		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 		require.Nil(t, appErr)
 
 		gmBookmark := &model.ChannelBookmark{
@@ -1333,9 +1333,9 @@ func TestDeleteChannelBookmark(t *testing.T) {
 		require.NotZero(t, dgmb.DeleteAt)
 	})
 
-	t.Run("a guest should not be able to delete channel bookmarks on DMs and GMs", func(t *testing.T) {
+	t.Run("a partner should not be able to delete channel bookmarks on DMs and GMs", func(t *testing.T) {
 		// DM
-		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+		dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 		require.Nil(t, dmErr)
 
 		dmBookmark := &model.ChannelBookmark{
@@ -1349,13 +1349,13 @@ func TestDeleteChannelBookmark(t *testing.T) {
 		dmb, appErr := th.App.CreateChannelBookmark(th.Context, dmBookmark, "")
 		require.Nil(t, appErr)
 
-		ddmb, resp, err := guestClient.DeleteChannelBookmark(context.Background(), dm.Id, dmb.Id)
+		ddmb, resp, err := partnerClient.DeleteChannelBookmark(context.Background(), dm.Id, dmb.Id)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, ddmb)
 
 		// GM
-		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+		gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 		require.Nil(t, appErr)
 
 		gmBookmark := &model.ChannelBookmark{
@@ -1369,7 +1369,7 @@ func TestDeleteChannelBookmark(t *testing.T) {
 		gmb, appErr := th.App.CreateChannelBookmark(th.Context, gmBookmark, "")
 		require.Nil(t, appErr)
 
-		dgmb, resp, err := guestClient.DeleteChannelBookmark(context.Background(), gm.Id, gmb.Id)
+		dgmb, resp, err := partnerClient.DeleteChannelBookmark(context.Background(), gm.Id, gmb.Id)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 		require.Nil(t, dgmb)
@@ -1479,11 +1479,11 @@ func TestListChannelBookmarksForChannel(t *testing.T) {
 		CheckErrorID(t, err, "api.channel.bookmark.channel_bookmark.license.error")
 	})
 
-	// enable guest accounts and add the license
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	// enable partner accounts and add the license
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
-	guest, guestClient := th.CreateGuestAndClient(t)
+	partner, partnerClient := th.CreatePartnerAndClient(t)
 
 	publicBookmark1 := createBookmark("one", th.BasicChannel.Id)
 	publicBookmark2 := createBookmark("two", th.BasicChannel.Id)
@@ -1499,19 +1499,19 @@ func TestListChannelBookmarksForChannel(t *testing.T) {
 	_, dErr = th.App.DeleteChannelBookmark(privateBookmark1.Id, "")
 	require.Nil(t, dErr)
 
-	// an open channel for which the guest is a member but the basic
+	// an open channel for which the partner is a member but the basic
 	// user is not
-	onlyGuestChannel := th.CreateChannelWithClient(th.SystemAdminClient, model.ChannelTypePrivate)
-	th.AddUserToChannel(guest, onlyGuestChannel)
-	guestBookmark := createBookmark("guest", onlyGuestChannel.Id)
+	onlyPartnerChannel := th.CreateChannelWithClient(th.SystemAdminClient, model.ChannelTypePrivate)
+	th.AddUserToChannel(partner, onlyPartnerChannel)
+	partnerBookmark := createBookmark("partner", onlyPartnerChannel.Id)
 
 	// DM
-	dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, guest.Id)
+	dm, dmErr := th.App.GetOrCreateDirectChannel(th.Context, th.BasicUser.Id, partner.Id)
 	require.Nil(t, dmErr)
 	dmBookmark := createBookmark("dm-one", dm.Id)
 
 	// GM
-	gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, guest.Id}, th.BasicUser.Id)
+	gm, appErr := th.App.CreateGroupChannel(th.Context, []string{th.BasicUser.Id, th.SystemAdminUser.Id, partner.Id}, th.BasicUser.Id)
 	require.Nil(t, appErr)
 	gmBookmark := createBookmark("gm-one", gm.Id)
 
@@ -1572,38 +1572,38 @@ func TestListChannelBookmarksForChannel(t *testing.T) {
 				expectedStatus:    http.StatusOK,
 			},
 			{
-				name:              "guest user, public channel without since, should retrieve all non deleted bookmarks",
+				name:              "partner user, public channel without since, should retrieve all non deleted bookmarks",
 				channelId:         th.BasicChannel.Id,
-				userClient:        guestClient,
+				userClient:        partnerClient,
 				expectedBookmarks: []string{publicBookmark2.Id, publicBookmark3.Id, publicBookmark4.Id},
 				expectedStatus:    http.StatusOK,
 			},
 			{
-				name:              "guest user, private channel without since, should retrieve all non deleted bookmarks",
+				name:              "partner user, private channel without since, should retrieve all non deleted bookmarks",
 				channelId:         th.BasicPrivateChannel.Id,
-				userClient:        guestClient,
+				userClient:        partnerClient,
 				expectedBookmarks: []string{privateBookmark2.Id, privateBookmark3.Id, privateBookmark4.Id},
 				expectedStatus:    http.StatusOK,
 			},
 			{
-				name:              "guest user, guest channel without since, should retrieve all non deleted bookmarks",
-				channelId:         onlyGuestChannel.Id,
-				userClient:        guestClient,
-				expectedBookmarks: []string{guestBookmark.Id},
+				name:              "partner user, partner channel without since, should retrieve all non deleted bookmarks",
+				channelId:         onlyPartnerChannel.Id,
+				userClient:        partnerClient,
+				expectedBookmarks: []string{partnerBookmark.Id},
 				expectedStatus:    http.StatusOK,
 			},
 			{
-				name:              "normal user, guest channel without since, should fail as user is not a member",
-				channelId:         onlyGuestChannel.Id,
+				name:              "normal user, partner channel without since, should fail as user is not a member",
+				channelId:         onlyPartnerChannel.Id,
 				userClient:        th.Client,
 				expectedBookmarks: []string{},
 				expectedError:     true,
 				expectedStatus:    http.StatusForbidden,
 			},
 			{
-				name:              "guest user, dm without since, should retrieve all non deleted bookmarks",
+				name:              "partner user, dm without since, should retrieve all non deleted bookmarks",
 				channelId:         dm.Id,
-				userClient:        guestClient,
+				userClient:        partnerClient,
 				expectedBookmarks: []string{dmBookmark.Id},
 				expectedStatus:    http.StatusOK,
 			},
@@ -1615,9 +1615,9 @@ func TestListChannelBookmarksForChannel(t *testing.T) {
 				expectedStatus:    http.StatusOK,
 			},
 			{
-				name:              "guest user, gm without since, should retrieve all non deleted bookmarks",
+				name:              "partner user, gm without since, should retrieve all non deleted bookmarks",
 				channelId:         gm.Id,
-				userClient:        guestClient,
+				userClient:        partnerClient,
 				expectedBookmarks: []string{gmBookmark.Id},
 				expectedStatus:    http.StatusOK,
 			},

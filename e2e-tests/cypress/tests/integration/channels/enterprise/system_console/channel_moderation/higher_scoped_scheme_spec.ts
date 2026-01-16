@@ -31,7 +31,7 @@ import {
 
 describe('MM-23102 - Channel Moderation - Higher Scoped Scheme', () => {
     let regularUser;
-    let guestUser;
+    let partnerUser;
     let testTeam;
     let testChannel;
 
@@ -48,11 +48,11 @@ describe('MM-23102 - Channel Moderation - Higher Scoped Scheme', () => {
             testTeam = team;
             testChannel = channel;
 
-            cy.apiCreateGuestUser({}).then(({guest}) => {
-                guestUser = guest;
+            cy.apiCreatePartnerUser({}).then(({partner}) => {
+                partnerUser = partner;
 
-                cy.apiAddUserToTeam(testTeam.id, guestUser.id).then(() => {
-                    cy.apiAddUserToChannel(testChannel.id, guestUser.id);
+                cy.apiAddUserToTeam(testTeam.id, partnerUser.id).then(() => {
+                    cy.apiAddUserToChannel(testChannel.id, partnerUser.id);
                 });
             });
         });
@@ -64,7 +64,7 @@ describe('MM-23102 - Channel Moderation - Higher Scoped Scheme', () => {
         disablePermission(checkboxesTitleToIdMap.MANAGE_MEMBERS_MEMBERS);
         disablePermission(checkboxesTitleToIdMap.CHANNEL_MENTIONS_MEMBERS);
 
-        // # check the channel mentions option for guests and save
+        // # check the channel mentions option for partners and save
         enablePermission(checkboxesTitleToIdMap.MANAGE_MEMBERS_MEMBERS);
         saveConfigForChannel();
 

@@ -133,7 +133,7 @@ export type MixedUnlinkedGroupRedux = MixedUnlinkedGroup & {
 
 export type UserWithGroup = UserProfile & {
     groups: Group[];
-    scheme_guest: boolean;
+    scheme_partner: boolean;
     scheme_user: boolean;
     scheme_admin: boolean;
 };

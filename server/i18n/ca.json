@@ -352,11 +352,11 @@
     "translation": "ID del canal no vàlid"
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "ID del canal no vàlid"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "ID del canal no vàlid"
   },
   {
@@ -1292,11 +1292,11 @@
     "translation": "Ha fallat l'inici de sessió perquè el teu compte s'ha desactivat.  Contacta amb un administrador."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "La teva llicència no suporta: Idap groups"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Els comptes de convidat estan desactivats"
   },
   {
@@ -1344,11 +1344,11 @@
     "translation": "Aquest servidor no permet els registres oberts.  Parla amb el teu administrador per rebre una invitació."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "La teva llicència no suporta comptes de convidats"
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Els comptes de convidats estan desactivats."
   },
   {
@@ -1576,7 +1576,7 @@
     "translation": "[{{ .SiteName}}] {{ .SenderName}} t'ha convidat a unir-te a l'equip {{.TeamDisplayName}}"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName}}] {{ .SenderName}} t'ha convidat a unir-te a l'equip {{.TeamDisplayName}}"
   },
   {
@@ -1664,7 +1664,7 @@
     "translation": "La teva llicència no és compatible amb l'actualització de l'esquema d'un equip"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Actualització del membre de l'equip invàlida: un usuari ha de ser convidat o usuari, però no els dos a la vegada."
   },
   {
@@ -2248,7 +2248,7 @@
     "translation": "No es poden migrar els usuaris d'AD/LDAP amb un camp especificat. S'ha detectat una entrada duplicada. Elimina tots els duplicats i torna-ho a provar."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Filtre d'AD/LDAP no vàlid"
   },
   {
@@ -2332,7 +2332,7 @@
     "translation": "Les invitacions per correu estan desactivades."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Els canals de la invitació han de pertànyer a l'equip que convida."
   },
   {
@@ -2384,15 +2384,15 @@
     "translation": "No tens els permisos adequats per editar la capçalera del canal."
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "La teva llicència no suporta comptes de convidats"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Els comptes de convidats estan desactivats."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Els convidats no poden unir-se a un equip mitjançant un enllaç d'invitació. Per favor, demaneu un email d'invitació a l'equip. "
   },
   {
@@ -3388,7 +3388,7 @@
     "translation": "Matriu buida sota 'image' a la petició"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "El correu electrònic que has proporcionat no pertany a un domini permès. Contacta amb el teu administrador o registra't amb un correu diferent."
   },
   {
@@ -3996,7 +3996,7 @@
     "translation": "El rol proporcionat és gestionat per un esquema i, per tant, no es pot aplicar directament a un membre de l'equip"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Actualització del membre de l'equip invàlida: no pots afegir o eliminar manualment el rol de convidat."
   },
   {
@@ -4016,11 +4016,11 @@
     "translation": "El rol proporcionat és gestionat per un esquema i, per tant, no es pot aplicar directament a un membre del canal"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Actualització del membre del canal invàlida: un usuari ha de ser convidat o usuari, però no els dos a la vegada."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Actualització del membre del canal invàlida: no pots afegir o eliminar manualment el rol de convidat."
   },
   {
@@ -4144,7 +4144,7 @@
     "translation": "No teniu els permisos apropiats"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v s'ha afegit al canal com a visitant."
   },
   {
@@ -4232,7 +4232,7 @@
     "translation": "%v afegit al canal per %v"
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v afegit al canal per %v"
   },
   {

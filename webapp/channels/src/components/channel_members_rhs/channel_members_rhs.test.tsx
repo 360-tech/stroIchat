@@ -205,7 +205,7 @@ describe('channel_members_rhs/channel_members_rhs', () => {
             />,
         );
 
-        expect(screen.getByText(/In this channel, you can only remove guests/)).toBeInTheDocument();
+        expect(screen.getByText(/In this channel, you can only remove partners/)).toBeInTheDocument();
         expect(screen.getByText(/channel admins/)).toBeInTheDocument();
     });
 

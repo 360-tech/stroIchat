@@ -232,8 +232,8 @@ export default class PermissionsTree extends React.PureComponent<Props, State> {
             integrationsGroup.permissions.push(Permissions.DELETE_OTHERS_EMOJIS);
         }
 
-        if (config.EnableGuestAccounts === 'true' && !teamsGroup.permissions.includes(Permissions.INVITE_GUEST)) {
-            teamsGroup.permissions.push(Permissions.INVITE_GUEST);
+        if (config.EnablePartnerAccounts === 'true' && !teamsGroup.permissions.includes(Permissions.INVITE_PARTNER)) {
+            teamsGroup.permissions.push(Permissions.INVITE_PARTNER);
         }
         if (scope === 'team_scope' && this.groups[0].id !== 'teams_team_scope') {
             this.groups[0].id = 'teams_team_scope';

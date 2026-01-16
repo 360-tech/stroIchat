@@ -36,23 +36,23 @@
             "isAdmin": true
         }
     },
-    "guests": {
-        "samlguest-1": {
-            "username": "samlguest-1",
+    "partners": {
+        "samlpartner-1": {
+            "username": "samlpartner-1",
             "password": "Password1",
-            "email": "samlguest-1@test.com",
+            "email": "samlpartner-1@test.com",
             "firstname": "saml1",
-            "lastname": "guest",
-            "userType": "Guest"
+            "lastname": "partner",
+            "userType": "Partner"
         },
-        "samlguest-2": {
-            "username": "samlguest-2",
+        "samlpartner-2": {
+            "username": "samlpartner-2",
             "password": "Password1",
-            "email": "samlguest-2@test.com",
+            "email": "samlpartner-2@test.com",
             "firstname": "saml2",
-            "lastname": "guest",
+            "lastname": "partner",
             "userType": null,
-            "isGuest": true
+            "isPartner": true
         }
     }
 }

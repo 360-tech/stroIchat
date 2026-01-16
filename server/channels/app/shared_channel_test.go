@@ -818,17 +818,17 @@ func TestTransformMentionsOnReceive(t *testing.T) {
 
 	t.Run("Colon mention of remote user", func(t *testing.T) {
 		// Create remote user that was synced
-		remoteUser := createUser("guest:remote1", &savedRemoteCluster.RemoteId)
+		remoteUser := createUser("partner:remote1", &savedRemoteCluster.RemoteId)
 
 		// Colon mention pointing to remote user (edge case)
 		mentionTransforms := map[string]string{
-			"guest:remote1": remoteUser.Id,
+			"partner:remote1": remoteUser.Id,
 		}
 
 		testTransformation(
-			"Hello @guest:remote1, welcome!",
+			"Hello @partner:remote1, welcome!",
 			mentionTransforms,
-			"Hello @guest:remote1, welcome!",
+			"Hello @partner:remote1, welcome!",
 			"Colon mention of remote user should use synced username",
 		)
 	})

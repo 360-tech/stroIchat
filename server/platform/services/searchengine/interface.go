@@ -34,7 +34,7 @@ type SearchEngineInterface interface {
 	// for private channels.
 	IndexChannel(rctx request.CTX, channel *model.Channel, userIDs, teamMemberIDs []string) *model.AppError
 	SyncBulkIndexChannels(rctx request.CTX, channels []*model.Channel, getUserIDsForChannel func(channel *model.Channel) ([]string, error), teamMemberIDs []string) *model.AppError
-	SearchChannels(teamId, userID, term string, isGuest, includeDeleted bool) ([]string, *model.AppError)
+	SearchChannels(teamId, userID, term string, isPartner, includeDeleted bool) ([]string, *model.AppError)
 	DeleteChannel(channel *model.Channel) *model.AppError
 	IndexUser(rctx request.CTX, user *model.User, teamsIds, channelsIds []string) *model.AppError
 	SearchUsersInChannel(teamId, channelId string, restrictedToChannels []string, term string, options *model.UserSearchOptions) ([]string, []string, *model.AppError)

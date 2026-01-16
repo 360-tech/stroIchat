@@ -14,7 +14,7 @@ const professionalPaidFeatures = [
     {sidebarName: 'AD/LDAP', featureDiscoveryTitle: 'LDAP'},
     {sidebarName: 'SAML 2.0', featureDiscoveryTitle: 'SAML'},
     {sidebarName: 'OpenID Connect', featureDiscoveryTitle: 'OpenID Connect'},
-    {sidebarName: 'Guest Access', featureDiscoveryTitle: 'guest accounts'},
+    {sidebarName: 'Partner Access', featureDiscoveryTitle: 'partner accounts'},
 ];
 
 const enterprisePaidFeatures = [

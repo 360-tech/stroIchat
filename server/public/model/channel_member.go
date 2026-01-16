@@ -63,7 +63,7 @@ type ChannelMember struct {
 	MsgCountRoot       int64     `json:"msg_count_root"`
 	NotifyProps        StringMap `json:"notify_props"`
 	LastUpdateAt       int64     `json:"last_update_at"`
-	SchemeGuest        bool      `json:"scheme_guest"`
+	SchemePartner        bool      `json:"scheme_partner"`
 	SchemeUser         bool      `json:"scheme_user"`
 	SchemeAdmin        bool      `json:"scheme_admin"`
 	ExplicitRoles      string    `json:"explicit_roles"`
@@ -82,7 +82,7 @@ func (o *ChannelMember) Auditable() map[string]any {
 		"msg_count_root":       o.MsgCountRoot,
 		"notify_props":         o.NotifyProps,
 		"last_update_at":       o.LastUpdateAt,
-		"scheme_guest":         o.SchemeGuest,
+		"scheme_partner":         o.SchemePartner,
 		"scheme_user":          o.SchemeUser,
 		"scheme_admin":         o.SchemeAdmin,
 		"explicit_roles":       o.ExplicitRoles,

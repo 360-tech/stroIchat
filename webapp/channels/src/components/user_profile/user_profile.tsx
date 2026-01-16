@@ -4,12 +4,12 @@
 import type {ReactNode} from 'react';
 import React, {useEffect} from 'react';
 
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import ProfilePopover from 'components/profile_popover';
 import SharedUserIndicator from 'components/shared_user_indicator';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 
 import {imageURLForUser, getUsername} from 'utils/utils';
 
@@ -100,7 +100,7 @@ export default function UserProfile({
             />
             }
             {(user && user.is_bot) && <BotTag/>}
-            {(user && isGuest(user.roles)) && <GuestTag/>}
+            {(user && isPartner(user.roles)) && <PartnerTag/>}
         </>
     );
 }

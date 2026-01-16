@@ -484,7 +484,7 @@ func (es *Service) SendInviteEmails(
 	return nil
 }
 
-func (es *Service) SendGuestInviteEmails(
+func (es *Service) SendPartnerInviteEmails(
 	team *model.Team,
 	channels []*model.Channel,
 	senderName string,
@@ -496,7 +496,7 @@ func (es *Service) SendGuestInviteEmails(
 	errorWhenNotSent bool,
 	isSystemAdmin bool,
 	isFirstAdmin bool,
-	guestSubtype string,
+	partnerSubtype string,
 ) error {
 	if es.perHourEmailRateLimiter == nil {
 		return NoRateLimiterError
@@ -513,13 +513,13 @@ func (es *Service) SendGuestInviteEmails(
 	}
 
 	// Set default subtype if not specified
-	if guestSubtype == "" {
-		guestSubtype = model.GuestSubtypeNotSpecified
+	if partnerSubtype == "" {
+		partnerSubtype = model.PartnerSubtypeNotSpecified
 	}
 
 	for _, invite := range invites {
 		if invite != "" {
-			subject := i18n.T("api.templates.invite_guest_subject",
+			subject := i18n.T("api.templates.invite_partner_subject",
 				map[string]any{"SenderName": senderName,
 					"TeamDisplayName": team.DisplayName,
 					"SiteName":        es.config().TeamSettings.SiteName})
@@ -527,7 +527,7 @@ func (es *Service) SendGuestInviteEmails(
 			data := es.NewEmailTemplateData("")
 			data.Props["SiteURL"] = siteURL
 			data.Props["Title"] = i18n.T("api.templates.invite_body.title", map[string]any{"SenderName": senderName, "TeamDisplayName": team.DisplayName})
-			data.Props["SubTitle"] = i18n.T("api.templates.invite_body_guest.subTitle")
+			data.Props["SubTitle"] = i18n.T("api.templates.invite_body_partner.subTitle")
 			data.Props["Button"] = i18n.T("api.templates.invite_body.button")
 			data.Props["SenderName"] = senderName
 			if message != "" {
@@ -544,14 +544,14 @@ func (es *Service) SendGuestInviteEmails(
 			}
 
 			token := model.NewToken(
-				TokenTypeGuestInvitation,
+				TokenTypePartnerInvitation,
 				model.MapToJSON(map[string]string{
-					"teamId":        team.Id,
-					"channels":      strings.Join(channelIDs, " "),
-					"email":         invite,
-					"guest":         "true",
-					"senderId":      senderUserId,
-					"guest_subtype": guestSubtype,
+					"teamId":         team.Id,
+					"channels":       strings.Join(channelIDs, " "),
+					"email":          invite,
+					"partner":        "true",
+					"senderId":       senderUserId,
+					"partner_subtype": partnerSubtype,
 				}),
 			)
 

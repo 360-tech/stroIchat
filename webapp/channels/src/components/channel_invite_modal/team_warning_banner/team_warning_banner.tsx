@@ -20,14 +20,14 @@ type UserProfileValue = Value & UserProfile;
 export type Props = {
     teamId: string;
     users: UserProfileValue[];
-    guests: UserProfileValue[];
+    partners: UserProfileValue[];
 }
 
 const TeamWarningBanner = (props: Props) => {
     const {
         teamId,
         users,
-        guests,
+        partners,
     } = props;
 
     const {formatMessage} = useIntl();
@@ -40,19 +40,19 @@ const TeamWarningBanner = (props: Props) => {
         }).join(', ');
     }, []);
 
-    const getGuestMessage = useCallback(() => {
-        if (guests.length === 0) {
+    const getPartnerMessage = useCallback(() => {
+        if (partners.length === 0) {
             return null;
         }
 
-        const commaSeparatedUsernames = getCommaSeparatedUsernames(guests);
-        const firstName = guests[0].username;
-        if (guests.length > 10) {
+        const commaSeparatedUsernames = getCommaSeparatedUsernames(partners);
+        const firstName = partners[0].username;
+        if (partners.length > 10) {
             return (
                 formatMessage(
                     {
-                        id: 'channel_invite.invite_team_members.guests.messageOverflow',
-                        defaultMessage: '{firstUser} and {others} are guest users and need to first be invited to the team before you can add them to the channel. Once they\'ve joined the team, you can add them to this channel.',
+                        id: 'channel_invite.invite_team_members.partners.messageOverflow',
+                        defaultMessage: '{firstUser} and {others} are partner users and need to first be invited to the team before you can add them to the channel. Once they\'ve joined the team, you can add them to this channel.',
                     },
                     {
                         firstUser: (
@@ -72,7 +72,7 @@ const TeamWarningBanner = (props: Props) => {
                                         id='channel_invite.invite_team_members.messageOthers'
                                         defaultMessage='{count} others'
                                         values={{
-                                            count: guests.length - 1,
+                                            count: partners.length - 1,
                                         }}
                                     />
                                 </span>
@@ -83,7 +83,7 @@ const TeamWarningBanner = (props: Props) => {
             );
         }
 
-        const guestsList = guests.map((user) => {
+        const partnersList = partners.map((user) => {
             return (
                 <AtMention
                     key={user.username}
@@ -95,12 +95,12 @@ const TeamWarningBanner = (props: Props) => {
         return (
             formatMessage(
                 {
-                    id: 'channel_invite.invite_team_members.guests.message',
-                    defaultMessage: '{count, plural, =1 {{firstUser} is a guest user and needs} other {{users} are guest users and need}} to first be invited to the team before you can add them to the channel. Once they\'ve joined the team, you can add them to this channel.',
+                    id: 'channel_invite.invite_team_members.partners.message',
+                    defaultMessage: '{count, plural, =1 {{firstUser} is a partner user and needs} other {{users} are partner users and need}} to first be invited to the team before you can add them to the channel. Once they\'ve joined the team, you can add them to this channel.',
                 },
                 {
-                    count: guests.length,
-                    users: (<FormattedList value={guestsList}/>),
+                    count: partners.length,
+                    users: (<FormattedList value={partnersList}/>),
                     firstUser: (
                         <AtMention
                             key={firstName}
@@ -111,7 +111,7 @@ const TeamWarningBanner = (props: Props) => {
                 },
             )
         );
-    }, [guests, formatMessage, getCommaSeparatedUsernames, team?.display_name]);
+    }, [partners, formatMessage, getCommaSeparatedUsernames, team?.display_name]);
 
     const getMessage = useCallback(() => {
         const commaSeparatedUsernames = getCommaSeparatedUsernames(users);
@@ -185,7 +185,7 @@ const TeamWarningBanner = (props: Props) => {
     return (
         <>
             {
-                (users.length > 0 || guests.length > 0) &&
+                (users.length > 0 || partners.length > 0) &&
                 <AlertBanner
                     id='teamWarningBanner'
                     mode='warning'
@@ -195,7 +195,7 @@ const TeamWarningBanner = (props: Props) => {
                             id='channel_invite.invite_team_members.title'
                             defaultMessage='{count, plural, =1 {1 user was} other {# users were}} not selected because they are not a part of this team'
                             values={{
-                                count: users.length + guests.length,
+                                count: users.length + partners.length,
                             }}
                         />
                     }
@@ -204,8 +204,8 @@ const TeamWarningBanner = (props: Props) => {
                         getMessage()
                     }
                     footerMessage={
-                        guests.length > 0 &&
-                        getGuestMessage()
+                        partners.length > 0 &&
+                        getPartnerMessage()
                     }
                 />
             }

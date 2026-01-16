@@ -8,7 +8,7 @@ import {matchPath, useLocation} from 'react-router-dom';
 
 import {savePreferences} from 'mattermost-redux/actions/preferences';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/common';
-import {isCurrentUserGuestUser, isCurrentUserSystemAdmin, isFirstAdmin} from 'mattermost-redux/selectors/entities/users';
+import {isCurrentUserPartnerUser, isCurrentUserSystemAdmin, isFirstAdmin} from 'mattermost-redux/selectors/entities/users';
 
 import {
     openInvitationsModal,
@@ -29,7 +29,7 @@ import {
     AutoTourStatus,
     FINISHED,
     OnboardingTourSteps,
-    OnboardingTourStepsForGuestUsers,
+    OnboardingTourStepsForPartnerUsers,
     TTNameMapToATStatusKey,
     TutorialTourName,
 } from 'components/tours';
@@ -80,7 +80,7 @@ const useGetTaskDetails = () => {
 
 export const useTasksList = () => {
     const isUserAdmin = useSelector((state: GlobalState) => isCurrentUserSystemAdmin(state));
-    const isGuestUser = useSelector((state: GlobalState) => isCurrentUserGuestUser(state));
+    const isPartnerUser = useSelector((state: GlobalState) => isCurrentUserPartnerUser(state));
     const isUserFirstAdmin = useSelector(isFirstAdmin);
 
     const list: Record<string, string> = {...OnboardingTasksName};
@@ -89,8 +89,8 @@ export const useTasksList = () => {
         delete list.VISIT_SYSTEM_CONSOLE;
     }
 
-    // invite other users is hidden for guest users
-    if (isGuestUser) {
+    // invite other users is hidden for partner users
+    if (isPartnerUser) {
         delete list.INVITE_PEOPLE;
     }
 
@@ -154,7 +154,7 @@ export const useHandleOnBoardingTaskTrigger = () => {
 
     const handleSaveData = useHandleOnBoardingTaskData();
     const currentUserId = useSelector(getCurrentUserId);
-    const isGuestUser = useSelector((state: GlobalState) => isCurrentUserGuestUser(state));
+    const isPartnerUser = useSelector((state: GlobalState) => isCurrentUserPartnerUser(state));
     const inAdminConsole = matchPath(pathname, {path: '/admin_console'}) != null;
     const inChannels = matchPath(pathname, {path: '/:team/channels/:chanelId'}) != null;
 
@@ -169,8 +169,8 @@ export const useHandleOnBoardingTaskTrigger = () => {
                     category: tourCategory,
                     name: currentUserId,
 
-                    // use SEND_MESSAGE when user is guest (channel creation and invitation are restricted), so only message box and the configure tips are shown
-                    value: isGuestUser ? OnboardingTourStepsForGuestUsers.SEND_MESSAGE.toString() : OnboardingTourSteps.CHANNELS_AND_DIRECT_MESSAGES.toString(),
+                    // use SEND_MESSAGE when user is partner (channel creation and invitation are restricted), so only message box and the configure tips are shown
+                    value: isPartnerUser ? OnboardingTourStepsForPartnerUsers.SEND_MESSAGE.toString() : OnboardingTourSteps.CHANNELS_AND_DIRECT_MESSAGES.toString(),
                 },
                 {
                     user_id: currentUserId,

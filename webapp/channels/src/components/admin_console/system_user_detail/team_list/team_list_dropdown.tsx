@@ -29,9 +29,9 @@ const TeamListDropdown = ({
 
     const isAdmin = team.scheme_admin;
     const isMember = team.scheme_user && !team.scheme_admin;
-    const isGuest = team.scheme_guest;
-    const showMakeTeamAdmin = !isAdmin && !isGuest;
-    const showMakeTeamMember = !isMember && !isGuest;
+    const isPartner = team.scheme_partner;
+    const showMakeTeamAdmin = !isAdmin && !isPartner;
+    const showMakeTeamMember = !isMember && !isPartner;
 
     const makeTeamAdminOnClick = useCallback(() => doMakeUserTeamAdmin(team.id), [team.id, doMakeUserTeamAdmin]);
     const makeTeamMemberOnClick = useCallback(() => doMakeUserTeamMember(team.id), [team.id, doMakeUserTeamMember]);

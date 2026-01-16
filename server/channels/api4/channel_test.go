@@ -205,26 +205,26 @@ func TestCreateChannel(t *testing.T) {
 		CheckBadRequestStatus(t, resp)
 	})
 
-	t.Run("Guest users", func(t *testing.T) {
+	t.Run("Partner users", func(t *testing.T) {
 		th.App.Srv().SetLicense(model.NewTestLicenseSKU(model.LicenseShortSkuEnterprise))
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.AllowEmailAccounts = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.AllowEmailAccounts = true })
 
-		guestUser := th.CreateUser()
-		appErr := th.App.VerifyUserEmail(guestUser.Id, guestUser.Email)
+		partnerUser := th.CreateUser()
+		appErr := th.App.VerifyUserEmail(partnerUser.Id, partnerUser.Email)
 		require.Nil(t, appErr)
 
-		appErr = th.App.DemoteUserToGuest(th.Context, guestUser)
+		appErr = th.App.DemoteUserToPartner(th.Context, partnerUser)
 		require.Nil(t, appErr)
 
-		_, _, appErr = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, guestUser.Id, "")
+		_, _, appErr = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, partnerUser.Id, "")
 		require.Nil(t, appErr)
 
-		guestClient := th.CreateClient()
-		_, _, err := guestClient.Login(context.Background(), guestUser.Username, guestUser.Password)
+		partnerClient := th.CreateClient()
+		_, _, err := partnerClient.Login(context.Background(), partnerUser.Username, partnerUser.Password)
 		require.NoError(t, err)
 		t.Cleanup(func() {
-			_, lErr := guestClient.Logout(context.Background())
+			_, lErr := partnerClient.Logout(context.Background())
 			require.NoError(t, lErr)
 		})
 
@@ -235,59 +235,59 @@ func TestCreateChannel(t *testing.T) {
 		public := &model.Channel{DisplayName: "Test API Name", Name: GenerateTestChannelName(), Type: model.ChannelTypeOpen, TeamId: team.Id}
 		private := &model.Channel{DisplayName: "Test API Name", Name: GenerateTestChannelName(), Type: model.ChannelTypePrivate, TeamId: team.Id}
 
-		t.Run("Guest user should not be able to create channels", func(t *testing.T) {
-			_, resp, err = guestClient.CreateChannel(context.Background(), public)
+		t.Run("Partner user should not be able to create channels", func(t *testing.T) {
+			_, resp, err = partnerClient.CreateChannel(context.Background(), public)
 			require.Error(t, err)
 			CheckForbiddenStatus(t, resp)
 
 			private.Name = GenerateTestChannelName()
-			_, resp, err = guestClient.CreateChannel(context.Background(), private)
+			_, resp, err = partnerClient.CreateChannel(context.Background(), private)
 			require.Error(t, err)
 			CheckForbiddenStatus(t, resp)
 		})
 
-		t.Run("Guest user should not be able to add channel members if they have no common channels", func(t *testing.T) {
+		t.Run("Partner user should not be able to add channel members if they have no common channels", func(t *testing.T) {
 			// Now actually create the channels with the main client
 			public, _, err = th.Client.CreateChannel(context.Background(), public)
 			require.NoError(t, err)
 			private, _, err = th.Client.CreateChannel(context.Background(), private)
 			require.NoError(t, err)
 
-			// Add the guest user to the private channel
-			_, _, err = th.Client.AddChannelMember(context.Background(), private.Id, guestUser.Id)
+			// Add the partner user to the private channel
+			_, _, err = th.Client.AddChannelMember(context.Background(), private.Id, partnerUser.Id)
 			require.NoError(t, err)
 
-			// Verify that the guest user can access the private channel they were added to
-			_, _, err = guestClient.GetChannel(context.Background(), private.Id, "")
+			// Verify that the partner user can access the private channel they were added to
+			_, _, err = partnerClient.GetChannel(context.Background(), private.Id, "")
 			require.NoError(t, err)
 
-			// Verify that the guest user cannot add members to the private channel
-			_, resp, err = guestClient.AddChannelMember(context.Background(), private.Id, userOutsideOfChannels.Id)
+			// Verify that the partner user cannot add members to the private channel
+			_, resp, err = partnerClient.AddChannelMember(context.Background(), private.Id, userOutsideOfChannels.Id)
 			require.Error(t, err)
 			CheckForbiddenStatus(t, resp)
 
-			// Add the guest user to the public channel
-			_, _, err = th.Client.AddChannelMember(context.Background(), public.Id, guestUser.Id)
+			// Add the partner user to the public channel
+			_, _, err = th.Client.AddChannelMember(context.Background(), public.Id, partnerUser.Id)
 			require.NoError(t, err)
 
-			// Verify that the guest user can access the public channel they were added to
-			_, _, err = guestClient.GetChannel(context.Background(), public.Id, "")
+			// Verify that the partner user can access the public channel they were added to
+			_, _, err = partnerClient.GetChannel(context.Background(), public.Id, "")
 			require.NoError(t, err)
 
-			// Verify that the guest user cannot add members to the public channel
-			_, resp, err = guestClient.AddChannelMember(context.Background(), public.Id, userOutsideOfChannels.Id)
+			// Verify that the partner user cannot add members to the public channel
+			_, resp, err = partnerClient.AddChannelMember(context.Background(), public.Id, userOutsideOfChannels.Id)
 			require.Error(t, err)
 			CheckForbiddenStatus(t, resp)
 
-			// Update team guest permissions to allow creating private channels
-			th.AddPermissionToRole(model.PermissionCreatePrivateChannel.Id, model.TeamGuestRoleId)
-			privateGuest := &model.Channel{DisplayName: "Test API Name", Name: GenerateTestChannelName(), Type: model.ChannelTypePrivate, TeamId: team.Id}
-			privateGuest, resp, err = guestClient.CreateChannel(context.Background(), privateGuest)
+			// Update team partner permissions to allow creating private channels
+			th.AddPermissionToRole(model.PermissionCreatePrivateChannel.Id, model.TeamPartnerRoleId)
+			privatePartner := &model.Channel{DisplayName: "Test API Name", Name: GenerateTestChannelName(), Type: model.ChannelTypePrivate, TeamId: team.Id}
+			privatePartner, resp, err = partnerClient.CreateChannel(context.Background(), privatePartner)
 			require.NoError(t, err)
 			CheckCreatedStatus(t, resp)
 
-			// Verify that the guest user can't add users they have no visibility to
-			_, resp, err = guestClient.AddChannelMember(context.Background(), privateGuest.Id, userOutsideOfChannels.Id)
+			// Verify that the partner user can't add users they have no visibility to
+			_, resp, err = partnerClient.AddChannelMember(context.Background(), privatePartner.Id, userOutsideOfChannels.Id)
 			require.Error(t, err)
 			CheckForbiddenStatus(t, resp)
 		})
@@ -1409,52 +1409,52 @@ func TestCreateDirectChannel(t *testing.T) {
 	CheckUnauthorizedStatus(t, resp)
 }
 
-func TestCreateDirectChannelAsGuest(t *testing.T) {
+func TestCreateDirectChannelAsPartner(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 	client := th.Client
 	user1 := th.BasicUser
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
 	id := model.NewId()
-	guest := &model.User{
+	partner := &model.User{
 		Email:         "success+" + id + "@simulator.amazonses.com",
 		Username:      "un_" + id,
 		Nickname:      "nn_" + id,
 		Password:      "Password1",
 		EmailVerified: true,
 	}
-	guest, appErr := th.App.CreateGuest(th.Context, guest)
+	partner, appErr := th.App.CreatePartner(th.Context, partner)
 	require.Nil(t, appErr)
 
-	_, _, err := client.Login(context.Background(), guest.Username, "Password1")
+	_, _, err := client.Login(context.Background(), partner.Username, "Password1")
 	require.NoError(t, err)
 
 	t.Run("Try to created DM with not visible user", func(t *testing.T) {
 		var resp *model.Response
-		_, resp, err = client.CreateDirectChannel(context.Background(), guest.Id, user1.Id)
+		_, resp, err = client.CreateDirectChannel(context.Background(), partner.Id, user1.Id)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 
-		_, resp, err = client.CreateDirectChannel(context.Background(), user1.Id, guest.Id)
+		_, resp, err = client.CreateDirectChannel(context.Background(), user1.Id, partner.Id)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 	})
 
 	t.Run("Creating DM with visible user", func(t *testing.T) {
-		th.LinkUserToTeam(guest, th.BasicTeam)
-		th.AddUserToChannel(guest, th.BasicChannel)
+		th.LinkUserToTeam(partner, th.BasicTeam)
+		th.AddUserToChannel(partner, th.BasicChannel)
 
-		_, _, err = client.CreateDirectChannel(context.Background(), guest.Id, user1.Id)
+		_, _, err = client.CreateDirectChannel(context.Background(), partner.Id, user1.Id)
 		require.NoError(t, err)
 	})
 }
@@ -1542,7 +1542,7 @@ func TestCreateGroupChannel(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestCreateGroupChannelAsGuest(t *testing.T) {
+func TestCreateGroupChannelAsPartner(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
@@ -1557,56 +1557,56 @@ func TestCreateGroupChannelAsGuest(t *testing.T) {
 	th.LinkUserToTeam(user3, th.BasicTeam)
 	th.AddUserToChannel(user3, th.BasicChannel)
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
 	id := model.NewId()
-	guest := &model.User{
+	partner := &model.User{
 		Email:         "success+" + id + "@simulator.amazonses.com",
 		Username:      "un_" + id,
 		Nickname:      "nn_" + id,
 		Password:      "Password1",
 		EmailVerified: true,
 	}
-	guest, appErr := th.App.CreateGuest(th.Context, guest)
+	partner, appErr := th.App.CreatePartner(th.Context, partner)
 	require.Nil(t, appErr)
 
-	_, _, err := client.Login(context.Background(), guest.Username, "Password1")
+	_, _, err := client.Login(context.Background(), partner.Username, "Password1")
 	require.NoError(t, err)
 
 	var resp *model.Response
 
 	t.Run("Try to created GM with not visible users", func(t *testing.T) {
-		_, resp, err = client.CreateGroupChannel(context.Background(), []string{guest.Id, user1.Id, user2.Id, user3.Id})
+		_, resp, err = client.CreateGroupChannel(context.Background(), []string{partner.Id, user1.Id, user2.Id, user3.Id})
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 
-		_, resp, err = client.CreateGroupChannel(context.Background(), []string{user1.Id, user2.Id, guest.Id, user3.Id})
+		_, resp, err = client.CreateGroupChannel(context.Background(), []string{user1.Id, user2.Id, partner.Id, user3.Id})
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 	})
 
 	t.Run("Try to created GM with visible and not visible users", func(t *testing.T) {
-		th.LinkUserToTeam(guest, th.BasicTeam)
-		th.AddUserToChannel(guest, th.BasicChannel)
+		th.LinkUserToTeam(partner, th.BasicTeam)
+		th.AddUserToChannel(partner, th.BasicChannel)
 
-		_, resp, err = client.CreateGroupChannel(context.Background(), []string{guest.Id, user1.Id, user3.Id, user4.Id, user5.Id})
+		_, resp, err = client.CreateGroupChannel(context.Background(), []string{partner.Id, user1.Id, user3.Id, user4.Id, user5.Id})
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 
-		_, resp, err = client.CreateGroupChannel(context.Background(), []string{user1.Id, user2.Id, guest.Id, user4.Id, user5.Id})
+		_, resp, err = client.CreateGroupChannel(context.Background(), []string{user1.Id, user2.Id, partner.Id, user4.Id, user5.Id})
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 	})
 
 	t.Run("Creating GM with visible users", func(t *testing.T) {
-		_, _, err = client.CreateGroupChannel(context.Background(), []string{guest.Id, user1.Id, user2.Id, user3.Id})
+		_, _, err = client.CreateGroupChannel(context.Background(), []string{partner.Id, user1.Id, user2.Id, user3.Id})
 		require.NoError(t, err)
 	})
 }
@@ -2015,32 +2015,32 @@ func TestGetPublicChannelsByIdsForTeam(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	t.Run("guest users should not be able to get channels", func(t *testing.T) {
+	t.Run("partner users should not be able to get channels", func(t *testing.T) {
 		th.App.Srv().SetLicense(model.NewTestLicenseSKU(model.LicenseShortSkuEnterprise))
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.AllowEmailAccounts = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.AllowEmailAccounts = true })
 
 		id := model.NewId()
-		guest := &model.User{
+		partner := &model.User{
 			Email:         "success+" + id + "@simulator.amazonses.com",
 			Username:      "un_" + id,
 			Nickname:      "nn_" + id,
 			Password:      "Password1",
 			EmailVerified: true,
 		}
-		guest, appErr := th.App.CreateGuest(th.Context, guest)
+		partner, appErr := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, appErr)
 
-		guestClient := th.CreateClient()
-		_, _, err := guestClient.Login(context.Background(), guest.Username, "Password1")
+		partnerClient := th.CreateClient()
+		_, _, err := partnerClient.Login(context.Background(), partner.Username, "Password1")
 		require.NoError(t, err)
 		t.Cleanup(func() {
-			_, lErr := guestClient.Logout(context.Background())
+			_, lErr := partnerClient.Logout(context.Background())
 			require.NoError(t, lErr)
 		})
 
 		input := []string{th.BasicChannel.Id, th.BasicChannel2.Id}
-		_, resp, err := guestClient.GetPublicChannelsByIdsForTeam(context.Background(), teamId, input)
+		_, resp, err := partnerClient.GetPublicChannelsByIdsForTeam(context.Background(), teamId, input)
 		require.Error(t, err)
 		CheckForbiddenStatus(t, resp)
 	})
@@ -2480,25 +2480,25 @@ func TestSearchChannels(t *testing.T) {
 		require.NotContains(t, channelNames, th.BasicChannel.Name)
 	})
 
-	t.Run("Guests only receive autocompletion for which accounts they are a member of", func(t *testing.T) {
+	t.Run("Partners only receive autocompletion for which accounts they are a member of", func(t *testing.T) {
 		th.App.Srv().SetLicense(model.NewTestLicense(""))
 		defer th.App.Srv().SetLicense(nil)
 
-		enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+		enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 		defer func() {
-			th.App.UpdateConfig(func(cfg *model.Config) { cfg.GuestAccountsSettings.Enable = &enableGuestAccounts })
+			th.App.UpdateConfig(func(cfg *model.Config) { cfg.PartnerAccountsSettings.Enable = &enablePartnerAccounts })
 		}()
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 
-		guest := th.CreateUser()
-		_, appErr := th.SystemAdminClient.DemoteUserToGuest(context.Background(), guest.Id)
+		partner := th.CreateUser()
+		_, appErr := th.SystemAdminClient.DemoteUserToPartner(context.Background(), partner.Id)
 		require.NoError(t, appErr)
 
-		_, resp, err := th.SystemAdminClient.AddTeamMember(context.Background(), th.BasicTeam.Id, guest.Id)
+		_, resp, err := th.SystemAdminClient.AddTeamMember(context.Background(), th.BasicTeam.Id, partner.Id)
 		require.NoError(t, err)
 		CheckCreatedStatus(t, resp)
 
-		_, resp, err = client.Login(context.Background(), guest.Username, guest.Password)
+		_, resp, err = client.Login(context.Background(), partner.Username, partner.Password)
 		require.NoError(t, err)
 		CheckOKStatus(t, resp)
 
@@ -2508,7 +2508,7 @@ func TestSearchChannels(t *testing.T) {
 
 		require.Empty(t, channelList)
 
-		_, resp, err = th.SystemAdminClient.AddChannelMember(context.Background(), th.BasicChannel2.Id, guest.Id)
+		_, resp, err = th.SystemAdminClient.AddChannelMember(context.Background(), th.BasicChannel2.Id, partner.Id)
 		require.NoError(t, err)
 		CheckCreatedStatus(t, resp)
 
@@ -4027,17 +4027,17 @@ func TestUpdateChannelMemberSchemeRoles(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
 	id := model.NewId()
-	guest := &model.User{
+	partner := &model.User{
 		Email:         th.GenerateTestEmail(),
 		Nickname:      "nn_" + id,
 		FirstName:     "f_" + id,
@@ -4045,10 +4045,10 @@ func TestUpdateChannelMemberSchemeRoles(t *testing.T) {
 		Password:      "Pa$$word11",
 		EmailVerified: true,
 	}
-	guest, appError := th.App.CreateGuest(th.Context, guest)
+	partner, appError := th.App.CreatePartner(th.Context, partner)
 	require.Nil(t, appError)
-	_, _, appError = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, guest.Id, "")
-	th.AddUserToChannel(guest, th.BasicChannel)
+	_, _, appError = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, partner.Id, "")
+	th.AddUserToChannel(partner, th.BasicChannel)
 
 	require.Nil(t, appError)
 
@@ -4061,21 +4061,21 @@ func TestUpdateChannelMemberSchemeRoles(t *testing.T) {
 	s1 := &model.SchemeRoles{
 		SchemeAdmin: false,
 		SchemeUser:  false,
-		SchemeGuest: false,
+		SchemePartner: false,
 	}
 	_, err := SystemAdminClient.UpdateChannelMemberSchemeRoles(context.Background(), th.BasicChannel.Id, th.BasicUser.Id, s1)
 	require.Error(t, err)
 
 	tm1, _, err := SystemAdminClient.GetChannelMember(context.Background(), th.BasicChannel.Id, th.BasicUser.Id, "")
 	require.NoError(t, err)
-	assert.Equal(t, false, tm1.SchemeGuest)
+	assert.Equal(t, false, tm1.SchemePartner)
 	assert.Equal(t, true, tm1.SchemeUser)
 	assert.Equal(t, false, tm1.SchemeAdmin)
 
 	s2 := &model.SchemeRoles{
 		SchemeAdmin: false,
 		SchemeUser:  true,
-		SchemeGuest: false,
+		SchemePartner: false,
 	}
 	_, err = SystemAdminClient.UpdateChannelMemberSchemeRoles(context.Background(), th.BasicChannel.Id, th.BasicUser.Id, s2)
 	require.NoError(t, err)
@@ -4096,35 +4096,35 @@ func TestUpdateChannelMemberSchemeRoles(t *testing.T) {
 
 	tm2, _, err := SystemAdminClient.GetChannelMember(context.Background(), th.BasicChannel.Id, th.BasicUser.Id, "")
 	require.NoError(t, err)
-	assert.Equal(t, false, tm2.SchemeGuest)
+	assert.Equal(t, false, tm2.SchemePartner)
 	assert.Equal(t, true, tm2.SchemeUser)
 	assert.Equal(t, false, tm2.SchemeAdmin)
 
-	// cannot set Guest to User for single channel
-	resp, err := SystemAdminClient.UpdateChannelMemberSchemeRoles(context.Background(), th.BasicChannel.Id, guest.Id, s2)
+	// cannot set Partner to User for single channel
+	resp, err := SystemAdminClient.UpdateChannelMemberSchemeRoles(context.Background(), th.BasicChannel.Id, partner.Id, s2)
 	require.Error(t, err)
 	CheckBadRequestStatus(t, resp)
 
 	s3 := &model.SchemeRoles{
 		SchemeAdmin: true,
 		SchemeUser:  true,
-		SchemeGuest: false,
+		SchemePartner: false,
 	}
 	_, err = SystemAdminClient.UpdateChannelMemberSchemeRoles(context.Background(), th.BasicChannel.Id, th.BasicUser.Id, s3)
 	require.NoError(t, err)
 
 	tm3, _, err := SystemAdminClient.GetChannelMember(context.Background(), th.BasicChannel.Id, th.BasicUser.Id, "")
 	require.NoError(t, err)
-	assert.Equal(t, false, tm3.SchemeGuest)
+	assert.Equal(t, false, tm3.SchemePartner)
 	assert.Equal(t, true, tm3.SchemeUser)
 	assert.Equal(t, true, tm3.SchemeAdmin)
 
 	s4 := &model.SchemeRoles{
 		SchemeAdmin: false,
 		SchemeUser:  false,
-		SchemeGuest: true,
+		SchemePartner: true,
 	}
-	// cannot set user to guest for a single channel
+	// cannot set user to partner for a single channel
 	resp, err = SystemAdminClient.UpdateChannelMemberSchemeRoles(context.Background(), th.BasicChannel.Id, th.BasicUser.Id, s4)
 	require.Error(t, err)
 	CheckBadRequestStatus(t, resp)
@@ -4132,7 +4132,7 @@ func TestUpdateChannelMemberSchemeRoles(t *testing.T) {
 	s5 := &model.SchemeRoles{
 		SchemeAdmin: false,
 		SchemeUser:  true,
-		SchemeGuest: true,
+		SchemePartner: true,
 	}
 	resp, err = SystemAdminClient.UpdateChannelMemberSchemeRoles(context.Background(), th.BasicChannel.Id, th.BasicUser.Id, s5)
 	require.Error(t, err)
@@ -4596,39 +4596,39 @@ func TestAddChannelMemberFromThread(t *testing.T) {
 	require.Truef(t, caught, "User should have received %s event", model.WebsocketEventThreadUpdated)
 }
 
-func TestAddChannelMemberGuestAccessControl(t *testing.T) {
+func TestAddChannelMemberPartnerAccessControl(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	// Enable guest accounts and add license
+	// Enable partner accounts and add license
 	th.App.UpdateConfig(func(cfg *model.Config) {
-		*cfg.GuestAccountsSettings.Enable = true
+		*cfg.PartnerAccountsSettings.Enable = true
 	})
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
-	// Create a guest user
-	guest, guestClient := th.CreateGuestAndClient(t)
+	// Create a partner user
+	partner, partnerClient := th.CreatePartnerAndClient(t)
 
-	// Create a public channel to which the guest doesn't belong
+	// Create a public channel to which the partner doesn't belong
 	publicChannel := th.CreatePublicChannel()
 
-	// Try to add another user to the channel using the guest's client
+	// Try to add another user to the channel using the partner's client
 	// This should fail with a permission error, validating our fix
-	_, resp, err := guestClient.AddChannelMember(context.Background(), publicChannel.Id, th.BasicUser2.Id)
+	_, resp, err := partnerClient.AddChannelMember(context.Background(), publicChannel.Id, th.BasicUser2.Id)
 	require.Error(t, err)
 	CheckForbiddenStatus(t, resp)
 
 	// Also verify that using user IDs in the request body doesn't bypass the check
-	_, resp, err = guestClient.AddChannelMembers(context.Background(), publicChannel.Id, "", []string{th.BasicUser2.Id})
+	_, resp, err = partnerClient.AddChannelMembers(context.Background(), publicChannel.Id, "", []string{th.BasicUser2.Id})
 	require.Error(t, err)
 	CheckForbiddenStatus(t, resp)
 
-	// Verify that the guest can get channel members for channels they belong to
-	channelWithGuest := th.CreatePublicChannel()
-	th.AddUserToChannel(guest, channelWithGuest)
+	// Verify that the partner can get channel members for channels they belong to
+	channelWithPartner := th.CreatePublicChannel()
+	th.AddUserToChannel(partner, channelWithPartner)
 
-	// Guest should be able to read members of channels they belong to
-	members, _, err := guestClient.GetChannelMembers(context.Background(), channelWithGuest.Id, 0, 100, "")
+	// Partner should be able to read members of channels they belong to
+	members, _, err := partnerClient.GetChannelMembers(context.Background(), channelWithPartner.Id, 0, 100, "")
 	require.NoError(t, err)
 	require.NotEmpty(t, members)
 }
@@ -5130,7 +5130,7 @@ func TestAutocompleteChannelsForSearch(t *testing.T) {
 	}
 }
 
-func TestAutocompleteChannelsForSearchGuestUsers(t *testing.T) {
+func TestAutocompleteChannelsForSearchPartnerUsers(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
@@ -5141,29 +5141,29 @@ func TestAutocompleteChannelsForSearchGuestUsers(t *testing.T) {
 		require.Nil(t, appErr)
 	}()
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
 	id := model.NewId()
-	guest := &model.User{
+	partner := &model.User{
 		Email:         "success+" + id + "@simulator.amazonses.com",
 		Username:      "un_" + id,
 		Nickname:      "nn_" + id,
 		Password:      "Password1",
 		EmailVerified: true,
 	}
-	guest, appErr := th.App.CreateGuest(th.Context, guest)
+	partner, appErr := th.App.CreatePartner(th.Context, partner)
 	require.Nil(t, appErr)
 
 	th.LoginSystemAdminWithClient(th.SystemAdminClient)
 
-	_, _, err := th.SystemAdminClient.AddTeamMember(context.Background(), th.BasicTeam.Id, guest.Id)
+	_, _, err := th.SystemAdminClient.AddTeamMember(context.Background(), th.BasicTeam.Id, partner.Id)
 	require.NoError(t, err)
 
 	// A private channel to make sure private channels are not used
@@ -5178,7 +5178,7 @@ func TestAutocompleteChannelsForSearchGuestUsers(t *testing.T) {
 		_, err = th.SystemAdminClient.DeleteChannel(context.Background(), town.Id)
 		require.NoError(t, err)
 	}()
-	_, _, err = th.SystemAdminClient.AddChannelMember(context.Background(), town.Id, guest.Id)
+	_, _, err = th.SystemAdminClient.AddChannelMember(context.Background(), town.Id, partner.Id)
 	require.NoError(t, err)
 
 	mypriv, _, err := th.SystemAdminClient.CreateChannel(context.Background(), &model.Channel{
@@ -5192,20 +5192,20 @@ func TestAutocompleteChannelsForSearchGuestUsers(t *testing.T) {
 		_, err = th.SystemAdminClient.DeleteChannel(context.Background(), mypriv.Id)
 		require.NoError(t, err)
 	}()
-	_, _, err = th.SystemAdminClient.AddChannelMember(context.Background(), mypriv.Id, guest.Id)
+	_, _, err = th.SystemAdminClient.AddChannelMember(context.Background(), mypriv.Id, partner.Id)
 	require.NoError(t, err)
 
-	dc1, _, err := th.SystemAdminClient.CreateDirectChannel(context.Background(), th.BasicUser.Id, guest.Id)
+	dc1, _, err := th.SystemAdminClient.CreateDirectChannel(context.Background(), th.BasicUser.Id, partner.Id)
 	require.NoError(t, err)
 	dc2, _, err := th.SystemAdminClient.CreateDirectChannel(context.Background(), th.BasicUser.Id, th.BasicUser2.Id)
 	require.NoError(t, err)
 
-	gc1, _, err := th.SystemAdminClient.CreateGroupChannel(context.Background(), []string{th.BasicUser.Id, th.BasicUser2.Id, guest.Id})
+	gc1, _, err := th.SystemAdminClient.CreateGroupChannel(context.Background(), []string{th.BasicUser.Id, th.BasicUser2.Id, partner.Id})
 	require.NoError(t, err)
 	gc2, _, err := th.SystemAdminClient.CreateGroupChannel(context.Background(), []string{th.BasicUser.Id, th.BasicUser2.Id, u1.Id})
 	require.NoError(t, err)
 
-	_, _, err = th.Client.Login(context.Background(), guest.Username, "Password1")
+	_, _, err = th.Client.Login(context.Background(), partner.Username, "Password1")
 	require.NoError(t, err)
 
 	for _, tc := range []struct {
@@ -5510,10 +5510,10 @@ func TestGetChannelModerations(t *testing.T) {
 		require.Equal(t, len(moderations), 5)
 		for _, moderation := range moderations {
 			if moderation.Name == "manage_members" || moderation.Name == "manage_bookmarks" {
-				require.Empty(t, moderation.Roles.Guests)
+				require.Empty(t, moderation.Roles.Partners)
 			} else {
-				require.Equal(t, moderation.Roles.Guests.Value, true)
-				require.Equal(t, moderation.Roles.Guests.Enabled, true)
+				require.Equal(t, moderation.Roles.Partners.Value, true)
+				require.Equal(t, moderation.Roles.Partners.Enabled, true)
 			}
 
 			require.Equal(t, moderation.Roles.Members.Value, true)
@@ -5527,8 +5527,8 @@ func TestGetChannelModerations(t *testing.T) {
 		_, appErr := th.App.UpdateTeamScheme(team)
 		require.Nil(t, appErr)
 
-		th.RemovePermissionFromRole(model.PermissionCreatePost.Id, scheme.DefaultChannelGuestRole)
-		defer th.AddPermissionToRole(model.PermissionCreatePost.Id, scheme.DefaultChannelGuestRole)
+		th.RemovePermissionFromRole(model.PermissionCreatePost.Id, scheme.DefaultChannelPartnerRole)
+		defer th.AddPermissionToRole(model.PermissionCreatePost.Id, scheme.DefaultChannelPartnerRole)
 
 		moderations, _, err := th.SystemAdminClient.GetChannelModerations(context.Background(), channel.Id, "")
 		require.NoError(t, err)
@@ -5536,8 +5536,8 @@ func TestGetChannelModerations(t *testing.T) {
 			if moderation.Name == model.PermissionCreatePost.Id {
 				require.Equal(t, moderation.Roles.Members.Value, true)
 				require.Equal(t, moderation.Roles.Members.Enabled, true)
-				require.Equal(t, moderation.Roles.Guests.Value, false)
-				require.Equal(t, moderation.Roles.Guests.Enabled, false)
+				require.Equal(t, moderation.Roles.Partners.Value, false)
+				require.Equal(t, moderation.Roles.Partners.Enabled, false)
 			}
 		}
 	})
@@ -5548,8 +5548,8 @@ func TestGetChannelModerations(t *testing.T) {
 		_, appErr := th.App.UpdateChannelScheme(th.Context, channel)
 		require.Nil(t, appErr)
 
-		th.RemovePermissionFromRole(model.PermissionCreatePost.Id, scheme.DefaultChannelGuestRole)
-		defer th.AddPermissionToRole(model.PermissionCreatePost.Id, scheme.DefaultChannelGuestRole)
+		th.RemovePermissionFromRole(model.PermissionCreatePost.Id, scheme.DefaultChannelPartnerRole)
+		defer th.AddPermissionToRole(model.PermissionCreatePost.Id, scheme.DefaultChannelPartnerRole)
 
 		moderations, _, err := th.SystemAdminClient.GetChannelModerations(context.Background(), channel.Id, "")
 		require.NoError(t, err)
@@ -5557,8 +5557,8 @@ func TestGetChannelModerations(t *testing.T) {
 			if moderation.Name == model.PermissionCreatePost.Id {
 				require.Equal(t, moderation.Roles.Members.Value, true)
 				require.Equal(t, moderation.Roles.Members.Enabled, true)
-				require.Equal(t, moderation.Roles.Guests.Value, false)
-				require.Equal(t, moderation.Roles.Guests.Enabled, true)
+				require.Equal(t, moderation.Roles.Partners.Value, false)
+				require.Equal(t, moderation.Roles.Partners.Enabled, true)
 			}
 		}
 	})
@@ -5574,11 +5574,11 @@ func TestGetChannelModerations(t *testing.T) {
 		_, appErr = th.App.UpdateChannelScheme(th.Context, channel)
 		require.Nil(t, appErr)
 
-		th.RemovePermissionFromRole(model.PermissionCreatePost.Id, scheme.DefaultChannelGuestRole)
-		th.RemovePermissionFromRole(model.PermissionCreatePost.Id, teamScheme.DefaultChannelGuestRole)
+		th.RemovePermissionFromRole(model.PermissionCreatePost.Id, scheme.DefaultChannelPartnerRole)
+		th.RemovePermissionFromRole(model.PermissionCreatePost.Id, teamScheme.DefaultChannelPartnerRole)
 
-		defer th.AddPermissionToRole(model.PermissionCreatePost.Id, scheme.DefaultChannelGuestRole)
-		defer th.AddPermissionToRole(model.PermissionCreatePost.Id, teamScheme.DefaultChannelGuestRole)
+		defer th.AddPermissionToRole(model.PermissionCreatePost.Id, scheme.DefaultChannelPartnerRole)
+		defer th.AddPermissionToRole(model.PermissionCreatePost.Id, teamScheme.DefaultChannelPartnerRole)
 
 		moderations, _, err := th.SystemAdminClient.GetChannelModerations(context.Background(), channel.Id, "")
 		require.NoError(t, err)
@@ -5586,8 +5586,8 @@ func TestGetChannelModerations(t *testing.T) {
 			if moderation.Name == model.PermissionCreatePost.Id {
 				require.Equal(t, moderation.Roles.Members.Value, true)
 				require.Equal(t, moderation.Roles.Members.Enabled, true)
-				require.Equal(t, moderation.Roles.Guests.Value, false)
-				require.Equal(t, moderation.Roles.Guests.Enabled, false)
+				require.Equal(t, moderation.Roles.Partners.Value, false)
+				require.Equal(t, moderation.Roles.Partners.Enabled, false)
 			}
 		}
 	})
@@ -5662,9 +5662,9 @@ func TestGetChannelModerations(t *testing.T) {
 		}
 	})
 
-	t.Run("Does not return an error if the team scheme has a blank DefaultChannelGuestRole field", func(t *testing.T) {
+	t.Run("Does not return an error if the team scheme has a blank DefaultChannelPartnerRole field", func(t *testing.T) {
 		scheme := th.SetupTeamScheme()
-		scheme.DefaultChannelGuestRole = ""
+		scheme.DefaultChannelPartnerRole = ""
 
 		mockStore := mocks.Store{}
 
@@ -5731,10 +5731,10 @@ func TestPatchChannelModerations(t *testing.T) {
 		require.Equal(t, len(moderations), 5)
 		for _, moderation := range moderations {
 			if moderation.Name == "manage_members" || moderation.Name == "manage_bookmarks" {
-				require.Empty(t, moderation.Roles.Guests)
+				require.Empty(t, moderation.Roles.Partners)
 			} else {
-				require.Equal(t, moderation.Roles.Guests.Value, true)
-				require.Equal(t, moderation.Roles.Guests.Enabled, true)
+				require.Equal(t, moderation.Roles.Partners.Value, true)
+				require.Equal(t, moderation.Roles.Partners.Enabled, true)
 			}
 
 			require.Equal(t, moderation.Roles.Members.Value, true)
@@ -5757,10 +5757,10 @@ func TestPatchChannelModerations(t *testing.T) {
 		require.Equal(t, len(moderations), 5)
 		for _, moderation := range moderations {
 			if moderation.Name == "manage_members" || moderation.Name == "manage_bookmarks" {
-				require.Empty(t, moderation.Roles.Guests)
+				require.Empty(t, moderation.Roles.Partners)
 			} else {
-				require.Equal(t, moderation.Roles.Guests.Value, true)
-				require.Equal(t, moderation.Roles.Guests.Enabled, true)
+				require.Equal(t, moderation.Roles.Partners.Value, true)
+				require.Equal(t, moderation.Roles.Partners.Enabled, true)
 			}
 
 			if moderation.Name == createPosts {
@@ -5799,10 +5799,10 @@ func TestPatchChannelModerations(t *testing.T) {
 		require.Equal(t, len(moderations), 5)
 		for _, moderation := range moderations {
 			if moderation.Name == "manage_members" || moderation.Name == "manage_bookmarks" {
-				require.Empty(t, moderation.Roles.Guests)
+				require.Empty(t, moderation.Roles.Partners)
 			} else {
-				require.Equal(t, moderation.Roles.Guests.Value, true)
-				require.Equal(t, moderation.Roles.Guests.Enabled, true)
+				require.Equal(t, moderation.Roles.Partners.Value, true)
+				require.Equal(t, moderation.Roles.Partners.Enabled, true)
 			}
 
 			require.Equal(t, moderation.Roles.Members.Value, true)
@@ -5818,10 +5818,10 @@ func TestPatchChannelModerations(t *testing.T) {
 		require.NotEqual(t, scheme.DeleteAt, int64(0))
 	})
 
-	t.Run("Does not return an error if the team scheme has a blank DefaultChannelGuestRole field", func(t *testing.T) {
+	t.Run("Does not return an error if the team scheme has a blank DefaultChannelPartnerRole field", func(t *testing.T) {
 		team := th.BasicTeam
 		scheme := th.SetupTeamScheme()
-		scheme.DefaultChannelGuestRole = ""
+		scheme.DefaultChannelPartnerRole = ""
 
 		mockStore := mocks.Store{}
 
@@ -5856,10 +5856,10 @@ func TestPatchChannelModerations(t *testing.T) {
 		require.Equal(t, len(moderations), 5)
 		for _, moderation := range moderations {
 			if moderation.Name == "manage_members" || moderation.Name == "manage_bookmarks" {
-				require.Empty(t, moderation.Roles.Guests)
+				require.Empty(t, moderation.Roles.Partners)
 			} else {
-				require.Equal(t, moderation.Roles.Guests.Value, false)
-				require.Equal(t, moderation.Roles.Guests.Enabled, false)
+				require.Equal(t, moderation.Roles.Partners.Value, false)
+				require.Equal(t, moderation.Roles.Partners.Enabled, false)
 			}
 
 			require.Equal(t, moderation.Roles.Members.Value, true)
@@ -5878,10 +5878,10 @@ func TestPatchChannelModerations(t *testing.T) {
 		require.Equal(t, len(moderations), 5)
 		for _, moderation := range moderations {
 			if moderation.Name == "manage_members" || moderation.Name == "manage_bookmarks" {
-				require.Empty(t, moderation.Roles.Guests)
+				require.Empty(t, moderation.Roles.Partners)
 			} else {
-				require.Equal(t, moderation.Roles.Guests.Value, false)
-				require.Equal(t, moderation.Roles.Guests.Enabled, false)
+				require.Equal(t, moderation.Roles.Partners.Value, false)
+				require.Equal(t, moderation.Roles.Partners.Enabled, false)
 			}
 
 			require.Equal(t, moderation.Roles.Members.Value, true)

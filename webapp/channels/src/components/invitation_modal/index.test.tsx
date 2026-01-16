@@ -18,7 +18,7 @@ describe('mapStateToProps', () => {
         entities: {
             general: {
                 config: {
-                    EnableGuestAccounts: 'true',
+                    EnablePartnerAccounts: 'true',
                     BuildEnterpriseReady: 'true',
                 },
                 license: {
@@ -59,7 +59,7 @@ describe('mapStateToProps', () => {
             },
             roles: {
                 roles: {
-                    test_user_role: {permissions: [Permissions.INVITE_GUEST]},
+                    test_user_role: {permissions: [Permissions.INVITE_PARTNER]},
                 },
             },
             cloud: {},
@@ -74,7 +74,7 @@ describe('mapStateToProps', () => {
         requests: {},
     } as unknown as GlobalState;
 
-    test('canInviteGuests is false when group_constrained is true', () => {
+    test('canInvitePartners is false when group_constrained is true', () => {
         const testState = {
             ...initialState,
             entities: {
@@ -92,17 +92,17 @@ describe('mapStateToProps', () => {
         } as unknown as GlobalState;
 
         const props = mapStateToProps(testState, {});
-        expect(props.canInviteGuests).toBe(false);
+        expect(props.canInvitePartners).toBe(false);
     });
 
-    test('canInviteGuests is false when BuildEnterpriseReady is false', () => {
+    test('canInvitePartners is false when BuildEnterpriseReady is false', () => {
         const testState = {
             ...initialState,
             entities: {
                 ...initialState.entities,
                 general: {
                     config: {
-                        EnableGuestAccounts: 'true',
+                        EnablePartnerAccounts: 'true',
                         BuildEnterpriseReady: 'false',
                     },
                     license: {
@@ -122,10 +122,10 @@ describe('mapStateToProps', () => {
         } as unknown as GlobalState;
 
         const props = mapStateToProps(testState, {});
-        expect(props.canInviteGuests).toBe(false);
+        expect(props.canInvitePartners).toBe(false);
     });
 
-    test('canInviteGuests is true when group_constrained is false', () => {
+    test('canInvitePartners is true when group_constrained is false', () => {
         const testState = {
             ...initialState,
             entities: {
@@ -146,7 +146,7 @@ describe('mapStateToProps', () => {
         } as unknown as GlobalState;
 
         const props = mapStateToProps(testState, {});
-        expect(props.canInviteGuests).toBe(true);
+        expect(props.canInvitePartners).toBe(true);
     });
 
     test('grabs the team info based on the ownProps channelToInvite value', () => {

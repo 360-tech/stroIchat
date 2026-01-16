@@ -11,14 +11,14 @@
 
 import {getAdminAccount} from '../../../support/env';
 
-function demoteUserToGuest(user, admin) {
-    // # Issue a Request to demote the user to guest
+function demoteUserToPartner(user, admin) {
+    // # Issue a Request to demote the user to partner
     const baseUrl = Cypress.config('baseUrl');
     cy.externalRequest({user: admin, method: 'post', baseUrl, path: `users/${user.id}/demote`});
 }
 
-function promoteGuestToUser(user, admin) {
-    // # Issue a Request to promote the guest to user
+function promotePartnerToUser(user, admin) {
+    // # Issue a Request to promote the partner to user
     const baseUrl = Cypress.config('baseUrl');
     cy.externalRequest({user: admin, method: 'post', baseUrl, path: `users/${user.id}/promote`});
 }
@@ -58,8 +58,8 @@ describe('Channel header menu', () => {
             // * The dropdown menu of the channel header should have 3 dividers;
             cy.get('.Menu__content').find('.menu-divider:visible').should('have.lengthOf', 3);
 
-            // # Demote the user to guest
-            demoteUserToGuest(testUser, admin);
+            // # Demote the user to partner
+            demoteUserToPartner(testUser, admin);
 
             // # Reload the browser
             cy.reload();
@@ -70,8 +70,8 @@ describe('Channel header menu', () => {
             // * The dropdown menu of the channel header should have 2 dividers because some options have disappeared;
             cy.get('.Menu__content').find('.menu-divider:visible').should('have.lengthOf', 2);
 
-            // # Promote the guest to user again
-            promoteGuestToUser(testUser, admin);
+            // # Promote the partner to user again
+            promotePartnerToUser(testUser, admin);
 
             // # Reload the browser
             cy.reload();

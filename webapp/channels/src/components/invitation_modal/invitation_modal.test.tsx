@@ -29,7 +29,7 @@ const defaultProps: Props = deepFreeze({
         regenerateTeamInviteId: jest.fn(),
 
         searchProfiles: jest.fn(),
-        sendGuestsInvites: jest.fn(),
+        sendPartnersInvites: jest.fn(),
         sendMembersInvites: jest.fn(),
         sendMembersInvitesToChannels: jest.fn(),
     },
@@ -44,7 +44,7 @@ const defaultProps: Props = deepFreeze({
     isAdmin: false,
     isCloud: false,
     canAddUsers: true,
-    canInviteGuests: true,
+    canInvitePartners: true,
     intl: {} as IntlShape,
     townSquareDisplayName: '',
     onExited: jest.fn(),
@@ -140,11 +140,11 @@ describe('InvitationModal', () => {
         expect(wrapper.find(ResultView).length).toBe(1);
     });
 
-    it('shows no permissions view when user can neither invite users nor guests', () => {
+    it('shows no permissions view when user can neither invite users nor partners', () => {
         props = {
             ...props,
             canAddUsers: false,
-            canInviteGuests: false,
+            canInvitePartners: false,
         };
         const wrapper = mountWithIntl(
             <Provider store={store}>
@@ -155,7 +155,7 @@ describe('InvitationModal', () => {
         expect(wrapper.find(NoPermissionsView).length).toBe(1);
     });
 
-    it('filters out policy_enforced channels when inviting guests', async () => {
+    it('filters out policy_enforced channels when inviting partners', async () => {
         // Create test channels with and without policy_enforced flag
         const regularChannel = TestHelper.getChannelMock({
             id: 'regular-channel',
@@ -196,11 +196,11 @@ describe('InvitationModal', () => {
         });
 
         // Call channelsLoader with empty search term
-        const guestChannels = await instance.channelsLoader('');
+        const partnerChannels = await instance.channelsLoader('');
 
-        // Verify only non-policy-enforced channels are returned for guests
-        expect(guestChannels.length).toBe(1);
-        expect(guestChannels[0].id).toBe('regular-channel');
+        // Verify only non-policy-enforced channels are returned for partners
+        expect(partnerChannels.length).toBe(1);
+        expect(partnerChannels[0].id).toBe('regular-channel');
 
         // Set invite type to MEMBER
         act(() => {
@@ -229,10 +229,10 @@ describe('InvitationModal', () => {
         });
 
         // Call channelsLoader with search term that matches both channels
-        const guestChannelsWithSearch = await instance.channelsLoader('channel');
+        const partnerChannelsWithSearch = await instance.channelsLoader('channel');
 
-        // Verify only non-policy-enforced channels are returned for guests
-        expect(guestChannelsWithSearch.length).toBe(1);
-        expect(guestChannelsWithSearch[0].id).toBe('regular-channel');
+        // Verify only non-policy-enforced channels are returned for partners
+        expect(partnerChannelsWithSearch.length).toBe(1);
+        expect(partnerChannelsWithSearch[0].id).toBe('regular-channel');
     });
 });

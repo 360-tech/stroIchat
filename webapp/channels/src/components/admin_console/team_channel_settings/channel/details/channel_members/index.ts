@@ -64,7 +64,7 @@ function makeMapStateToProps() {
                 member_count: 0,
                 channel_id: channelId,
                 pinnedpost_count: 0,
-                guest_count: 0,
+                partner_count: 0,
                 files_count: 0,
             };
             totalCount = stats.member_count;
@@ -93,7 +93,7 @@ function makeMapStateToProps() {
             usersToRemove,
             totalCount,
             searchTerm,
-            enableGuestAccounts: config.EnableGuestAccounts === 'true',
+            enablePartnerAccounts: config.EnablePartnerAccounts === 'true',
         };
     };
 }

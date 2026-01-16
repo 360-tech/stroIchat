@@ -20,7 +20,7 @@ describe('Team Settings', () => {
 
     before(() => {
         cy.apiUpdateConfig({
-            GuestAccountsSettings: {
+            PartnerAccountsSettings: {
                 Enable: false,
             },
             LdapSettings: {

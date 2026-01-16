@@ -118,7 +118,7 @@ func TestChannelStore(t *testing.T, rctx request.CTX, ss store.Store, s SqlStore
 	t.Run("GetMemberForPost", func(t *testing.T) { testChannelStoreGetMemberForPost(t, rctx, ss) })
 	t.Run("GetMemberCount", func(t *testing.T) { testGetMemberCount(t, rctx, ss) })
 	t.Run("GetMemberCountsByGroup", func(t *testing.T) { testGetMemberCountsByGroup(t, rctx, ss) })
-	t.Run("GetGuestCount", func(t *testing.T) { testGetGuestCount(t, rctx, ss) })
+	t.Run("GetPartnerCount", func(t *testing.T) { testGetPartnerCount(t, rctx, ss) })
 	t.Run("SearchMore", func(t *testing.T) { testChannelStoreSearchMore(t, rctx, ss) })
 	t.Run("SearchInTeam", func(t *testing.T) { testChannelStoreSearchInTeam(t, rctx, ss) })
 	t.Run("Autocomplete", func(t *testing.T) { testAutocomplete(t, rctx, ss, s) })
@@ -1326,13 +1326,13 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -1349,16 +1349,16 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       "channel_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       "channel_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       "channel_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       "channel_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -1391,19 +1391,19 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test channel_guest",
+				ExpectedRoles:         "test channel_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test channel_guest",
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test channel_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -1436,7 +1436,7 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				member := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1447,7 +1447,7 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				defer ss.Channel().RemoveMember(rctx, channel.Id, u1.Id)
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -1487,13 +1487,13 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -1510,16 +1510,16 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       ts.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       ts.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       ts.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       ts.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -1552,19 +1552,19 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + ts.DefaultChannelGuestRole,
+				ExpectedRoles:         "test " + ts.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test " + ts.DefaultChannelGuestRole,
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test " + ts.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -1597,7 +1597,7 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				member := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1608,7 +1608,7 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				defer ss.Channel().RemoveMember(rctx, channel.Id, u1.Id)
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -1647,13 +1647,13 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -1670,16 +1670,16 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       cs.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       cs.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       cs.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       cs.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -1712,19 +1712,19 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + cs.DefaultChannelGuestRole,
+				ExpectedRoles:         "test " + cs.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test " + cs.DefaultChannelGuestRole,
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test " + cs.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -1757,7 +1757,7 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				member := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1768,7 +1768,7 @@ func testChannelSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				defer ss.Channel().RemoveMember(rctx, channel.Id, u1.Id)
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -1834,13 +1834,13 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -1857,16 +1857,16 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       "channel_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       "channel_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       "channel_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       "channel_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -1899,19 +1899,19 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test channel_guest",
+				ExpectedRoles:         "test channel_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test channel_guest",
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test channel_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -1944,7 +1944,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				member := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1953,7 +1953,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				otherMember := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u2.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1969,7 +1969,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2009,13 +2009,13 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2032,16 +2032,16 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       ts.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       ts.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       ts.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       ts.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -2074,19 +2074,19 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + ts.DefaultChannelGuestRole,
+				ExpectedRoles:         "test " + ts.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test " + ts.DefaultChannelGuestRole,
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test " + ts.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -2119,7 +2119,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				member := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -2128,7 +2128,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				otherMember := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u2.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -2144,7 +2144,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2183,13 +2183,13 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2206,16 +2206,16 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       cs.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       cs.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       cs.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       cs.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -2248,19 +2248,19 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + cs.DefaultChannelGuestRole,
+				ExpectedRoles:         "test " + cs.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test " + cs.DefaultChannelGuestRole,
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test " + cs.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -2293,7 +2293,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				member := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -2302,7 +2302,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 				otherMember := &model.ChannelMember{
 					ChannelId:     channel.Id,
 					UserId:        u2.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -2317,7 +2317,7 @@ func testChannelSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Sto
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2382,13 +2382,13 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2405,16 +2405,16 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       "channel_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       "channel_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       "channel_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       "channel_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -2447,19 +2447,19 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test channel_guest",
+				ExpectedRoles:         "test channel_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test channel_guest",
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test channel_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -2489,7 +2489,7 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -2497,7 +2497,7 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				require.NoError(t, nErr)
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2545,13 +2545,13 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2568,16 +2568,16 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       ts.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       ts.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       ts.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       ts.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -2610,19 +2610,19 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + ts.DefaultChannelGuestRole,
+				ExpectedRoles:         "test " + ts.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test " + ts.DefaultChannelGuestRole,
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test " + ts.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -2652,7 +2652,7 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -2660,7 +2660,7 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				require.NoError(t, nErr)
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2707,13 +2707,13 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2730,16 +2730,16 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       cs.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       cs.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       cs.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       cs.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -2772,19 +2772,19 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + cs.DefaultChannelGuestRole,
+				ExpectedRoles:         "test " + cs.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test " + cs.DefaultChannelGuestRole,
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test " + cs.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -2814,7 +2814,7 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -2822,7 +2822,7 @@ func testChannelUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				require.NoError(t, nErr)
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2902,13 +2902,13 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2925,16 +2925,16 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       "channel_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       "channel_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       "channel_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       "channel_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -2967,19 +2967,19 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test channel_guest",
+				ExpectedRoles:         "test channel_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test channel_guest",
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test channel_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -3009,7 +3009,7 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -3021,7 +3021,7 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -3072,13 +3072,13 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -3095,16 +3095,16 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       ts.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       ts.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       ts.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       ts.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -3137,19 +3137,19 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + ts.DefaultChannelGuestRole,
+				ExpectedRoles:         "test " + ts.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test " + ts.DefaultChannelGuestRole,
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test " + ts.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -3179,7 +3179,7 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -3191,7 +3191,7 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -3240,13 +3240,13 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -3263,16 +3263,16 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "channel guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       cs.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       cs.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "channel guest explicit",
-				ExplicitRoles:       "channel_guest",
-				ExpectedRoles:       cs.DefaultChannelGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "channel partner explicit",
+				ExplicitRoles:       "channel_partner",
+				ExpectedRoles:       cs.DefaultChannelPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "channel admin implicit",
@@ -3305,19 +3305,19 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "channel guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "channel partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + cs.DefaultChannelGuestRole,
+				ExpectedRoles:         "test " + cs.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "channel guest explicit and explicit custom role",
-				ExplicitRoles:         "channel_guest test",
-				ExpectedRoles:         "test " + cs.DefaultChannelGuestRole,
+				Name:                  "channel partner explicit and explicit custom role",
+				ExplicitRoles:         "channel_partner test",
+				ExpectedRoles:         "test " + cs.DefaultChannelPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "channel admin implicit and explicit custom role",
@@ -3347,7 +3347,7 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -3358,7 +3358,7 @@ func testChannelUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.S
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -5717,7 +5717,7 @@ func testGetMemberCountsByGroup(t *testing.T, rctx request.CTX, ss store.Store) 
 	})
 }
 
-func testGetGuestCount(t *testing.T, rctx request.CTX, ss store.Store) {
+func testGetPartnerCount(t *testing.T, rctx request.CTX, ss store.Store) {
 	teamID := model.NewId()
 
 	c1 := model.Channel{
@@ -5753,21 +5753,21 @@ func testGetGuestCount(t *testing.T, rctx request.CTX, ss store.Store) {
 			ChannelId:   c1.Id,
 			UserId:      u1.Id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: false,
+			SchemePartner: false,
 		}
 		_, nErr = ss.Channel().SaveMember(rctx, &m1)
 		require.NoError(t, nErr)
 
-		count, channelErr := ss.Channel().GetGuestCount(c1.Id, false)
+		count, channelErr := ss.Channel().GetPartnerCount(c1.Id, false)
 		require.NoError(t, channelErr)
 		require.Equal(t, int64(0), count)
 	})
 
-	t.Run("Guest member does count", func(t *testing.T) {
+	t.Run("Partner member does count", func(t *testing.T) {
 		u2 := model.User{
 			Email:    MakeEmail(),
 			DeleteAt: 0,
-			Roles:    model.SystemGuestRoleId,
+			Roles:    model.SystemPartnerRoleId,
 		}
 		_, err := ss.User().Save(rctx, &u2)
 		require.NoError(t, err)
@@ -5778,12 +5778,12 @@ func testGetGuestCount(t *testing.T, rctx request.CTX, ss store.Store) {
 			ChannelId:   c1.Id,
 			UserId:      u2.Id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: true,
+			SchemePartner: true,
 		}
 		_, nErr = ss.Channel().SaveMember(rctx, &m2)
 		require.NoError(t, nErr)
 
-		count, channelErr := ss.Channel().GetGuestCount(c1.Id, false)
+		count, channelErr := ss.Channel().GetPartnerCount(c1.Id, false)
 		require.NoError(t, channelErr)
 		require.Equal(t, int64(1), count)
 	})
@@ -5792,7 +5792,7 @@ func testGetGuestCount(t *testing.T, rctx request.CTX, ss store.Store) {
 		u3 := model.User{
 			Email:    MakeEmail(),
 			DeleteAt: 0,
-			Roles:    model.SystemGuestRoleId,
+			Roles:    model.SystemPartnerRoleId,
 		}
 		_, err := ss.User().Save(rctx, &u3)
 		require.NoError(t, err)
@@ -5803,12 +5803,12 @@ func testGetGuestCount(t *testing.T, rctx request.CTX, ss store.Store) {
 			ChannelId:   c2.Id,
 			UserId:      u3.Id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: true,
+			SchemePartner: true,
 		}
 		_, nErr = ss.Channel().SaveMember(rctx, &m3)
 		require.NoError(t, nErr)
 
-		count, channelErr := ss.Channel().GetGuestCount(c1.Id, false)
+		count, channelErr := ss.Channel().GetPartnerCount(c1.Id, false)
 		require.NoError(t, channelErr)
 		require.Equal(t, int64(1), count)
 	})
@@ -5817,7 +5817,7 @@ func testGetGuestCount(t *testing.T, rctx request.CTX, ss store.Store) {
 		u4 := &model.User{
 			Email:    MakeEmail(),
 			DeleteAt: 10000,
-			Roles:    model.SystemGuestRoleId,
+			Roles:    model.SystemPartnerRoleId,
 		}
 		_, err := ss.User().Save(rctx, u4)
 		require.NoError(t, err)
@@ -5828,12 +5828,12 @@ func testGetGuestCount(t *testing.T, rctx request.CTX, ss store.Store) {
 			ChannelId:   c1.Id,
 			UserId:      u4.Id,
 			NotifyProps: model.GetDefaultChannelNotifyProps(),
-			SchemeGuest: true,
+			SchemePartner: true,
 		}
 		_, nErr = ss.Channel().SaveMember(rctx, &m4)
 		require.NoError(t, nErr)
 
-		count, channelErr := ss.Channel().GetGuestCount(c1.Id, false)
+		count, channelErr := ss.Channel().GetPartnerCount(c1.Id, false)
 		require.NoError(t, channelErr)
 		require.Equal(t, int64(1), count)
 	})
@@ -6393,14 +6393,14 @@ func testAutocomplete(t *testing.T, rctx request.CTX, ss store.Store, s SqlStore
 		UserID             string
 		Term               string
 		IncludeDeleted     bool
-		IsGuest            bool
+		IsPartner            bool
 		ExpectedChannelIds []string
 		ExpectedTeamNames  []string
 	}{
 		{"user 1, Channel A", m1.UserId, "ChannelA", false, false, []string{o1.Id, o2.Id, o6.Id}, []string{t1.Name, t2.Name, t1.Name}},
 		{"user 1, Channel B", m1.UserId, "ChannelB", false, false, []string{o4.Id}, []string{t2.Name}},
 		{"user 2, Channel A", m3.UserId, "ChannelA", false, false, []string{o3.Id, o1.Id, o2.Id, o6.Id}, []string{t2.Name, t1.Name, t1.Name, t1.Name}},
-		{"user 2 guest, Channel A", m3.UserId, "ChannelA", false, true, []string{o2.Id, o3.Id}, []string{t2.Name, t1.Name}},
+		{"user 2 partner, Channel A", m3.UserId, "ChannelA", false, true, []string{o2.Id, o3.Id}, []string{t2.Name, t1.Name}},
 		{"user 2, Channel B", m3.UserId, "ChannelB", false, false, nil, nil},
 		{"user 1, empty string", m1.UserId, "", false, false, []string{o1.Id, o2.Id, o4.Id, o6.Id}, []string{t1.Name, t2.Name, t2.Name, t1.Name}},
 		{"user 2, empty string", m3.UserId, "", false, false, []string{o1.Id, o2.Id, o3.Id, o6.Id}, []string{t1.Name, t2.Name, t1.Name, t1.Name}},
@@ -6408,7 +6408,7 @@ func testAutocomplete(t *testing.T, rctx request.CTX, ss store.Store, s SqlStore
 
 	for _, testCase := range testCases {
 		t.Run(testCase.Description, func(t *testing.T) {
-			channels, err2 := ss.Channel().Autocomplete(rctx, testCase.UserID, testCase.Term, testCase.IncludeDeleted, testCase.IsGuest)
+			channels, err2 := ss.Channel().Autocomplete(rctx, testCase.UserID, testCase.Term, testCase.IncludeDeleted, testCase.IsPartner)
 			require.NoError(t, err2)
 			var gotChannelIds []string
 			var gotTeamNames []string
@@ -7523,21 +7523,21 @@ func testChannelStoreMigrateChannelMembers(t *testing.T, rctx request.CTX, ss st
 	cm1b, err := ss.Channel().GetMember(rctx, cm1.ChannelId, cm1.UserId)
 	assert.NoError(t, err)
 	assert.Equal(t, "", cm1b.ExplicitRoles)
-	assert.False(t, cm1b.SchemeGuest)
+	assert.False(t, cm1b.SchemePartner)
 	assert.True(t, cm1b.SchemeUser)
 	assert.True(t, cm1b.SchemeAdmin)
 
 	cm2b, err := ss.Channel().GetMember(rctx, cm2.ChannelId, cm2.UserId)
 	assert.NoError(t, err)
 	assert.Equal(t, "", cm2b.ExplicitRoles)
-	assert.False(t, cm1b.SchemeGuest)
+	assert.False(t, cm1b.SchemePartner)
 	assert.True(t, cm2b.SchemeUser)
 	assert.False(t, cm2b.SchemeAdmin)
 
 	cm3b, err := ss.Channel().GetMember(rctx, cm3.ChannelId, cm3.UserId)
 	assert.NoError(t, err)
 	assert.Equal(t, "something_else", cm3b.ExplicitRoles)
-	assert.False(t, cm1b.SchemeGuest)
+	assert.False(t, cm1b.SchemePartner)
 	assert.False(t, cm3b.SchemeUser)
 	assert.False(t, cm3b.SchemeAdmin)
 }

@@ -259,11 +259,11 @@ func TestSharedChannelMembershipSyncSelfReferential(t *testing.T) {
 		_, appErr = th.App.AddUserToChannel(th.Context, systemAdmin, channel, false)
 		require.Nil(t, appErr)
 
-		// Add a guest user (should be synced)
-		guest := th.CreateGuest()
-		_, _, appErr = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, guest.Id, th.BasicUser.Id)
+		// Add a partner user (should be synced)
+		partner := th.CreatePartner()
+		_, _, appErr = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, partner.Id, th.BasicUser.Id)
 		require.Nil(t, appErr)
-		_, appErr = th.App.AddUserToChannel(th.Context, guest, channel, false)
+		_, appErr = th.App.AddUserToChannel(th.Context, partner, channel, false)
 		require.Nil(t, appErr)
 
 		sc := &model.SharedChannel{
@@ -294,8 +294,8 @@ func TestSharedChannelMembershipSyncSelfReferential(t *testing.T) {
 		syncHandler = NewSelfReferentialSyncHandler(t, service, selfCluster)
 
 		// Track when all expected batches are received
-		// Should include regular users + guest + BasicUser + bot + system admin
-		expectedTotal := numRegularUsers + 1 + 1 + 1 + 1 // regular users + guest + BasicUser + bot + system admin
+		// Should include regular users + partner + BasicUser + bot + system admin
+		expectedTotal := numRegularUsers + 1 + 1 + 1 + 1 // regular users + partner + BasicUser + bot + system admin
 		expectedBatches := (expectedTotal + batchSize - 1) / batchSize
 
 		syncHandler.OnBatchSync = func(userIds []string, messageNumber int32) {
@@ -354,8 +354,8 @@ func TestSharedChannelMembershipSyncSelfReferential(t *testing.T) {
 		assert.Contains(t, allSyncedUserIDs, bot.UserId, "Bot should be synced")
 		assert.Contains(t, allSyncedUserIDs, systemAdmin.Id, "System admin should be synced")
 
-		// Verify that guest WAS synced
-		assert.Contains(t, allSyncedUserIDs, guest.Id, "Guest user should be synced")
+		// Verify that partner WAS synced
+		assert.Contains(t, allSyncedUserIDs, partner.Id, "Partner user should be synced")
 
 		// Verify that regular users were synced
 		for _, regularUserID := range regularUserIDs {

@@ -29,20 +29,20 @@ func init() {
 	}
 
 	BuiltInSchemeManagedRoleIDs = append([]string{
-		SystemGuestRoleId,
+		SystemPartnerRoleId,
 		SystemUserRoleId,
 		SystemAdminRoleId,
 		SystemPostAllRoleId,
 		SystemPostAllPublicRoleId,
 		SystemUserAccessTokenRoleId,
 
-		TeamGuestRoleId,
+		TeamPartnerRoleId,
 		TeamUserRoleId,
 		TeamAdminRoleId,
 		TeamPostAllRoleId,
 		TeamPostAllPublicRoleId,
 
-		ChannelGuestRoleId,
+		ChannelPartnerRoleId,
 		ChannelUserRoleId,
 		ChannelAdminRoleId,
 
@@ -113,8 +113,8 @@ func init() {
 		},
 		PermissionSysconsoleWriteUserManagementUsers.Id: {
 			PermissionEditOtherUsers,
-			PermissionDemoteToGuest,
-			PermissionPromoteGuest,
+			PermissionDemoteToPartner,
+			PermissionPromotePartner,
 		},
 		PermissionSysconsoleWriteUserManagementChannels.Id: {
 			PermissionManagePublicChannelProperties,
@@ -205,7 +205,7 @@ func init() {
 		PermissionSysconsoleReadAuthenticationLdap.Id,
 		PermissionSysconsoleReadAuthenticationSaml.Id,
 		PermissionSysconsoleReadAuthenticationOpenid.Id,
-		PermissionSysconsoleReadAuthenticationGuestAccess.Id,
+		PermissionSysconsoleReadAuthenticationPartnerAccess.Id,
 	}
 
 	SystemReadOnlyAdminDefaultPermissions = []string{
@@ -248,7 +248,7 @@ func init() {
 		PermissionSysconsoleReadAuthenticationLdap.Id,
 		PermissionSysconsoleReadAuthenticationSaml.Id,
 		PermissionSysconsoleReadAuthenticationOpenid.Id,
-		PermissionSysconsoleReadAuthenticationGuestAccess.Id,
+		PermissionSysconsoleReadAuthenticationPartnerAccess.Id,
 		PermissionSysconsoleReadPlugins.Id,
 		PermissionSysconsoleReadIntegrationsIntegrationManagement.Id,
 		PermissionSysconsoleReadIntegrationsBotAccounts.Id,
@@ -329,7 +329,7 @@ func init() {
 		PermissionSysconsoleReadAuthenticationLdap.Id,
 		PermissionSysconsoleReadAuthenticationSaml.Id,
 		PermissionSysconsoleReadAuthenticationOpenid.Id,
-		PermissionSysconsoleReadAuthenticationGuestAccess.Id,
+		PermissionSysconsoleReadAuthenticationPartnerAccess.Id,
 		PermissionSysconsoleReadPlugins.Id,
 		PermissionSysconsoleReadIntegrationsIntegrationManagement.Id,
 		PermissionSysconsoleReadIntegrationsBotAccounts.Id,
@@ -363,7 +363,7 @@ type RoleType string
 type RoleScope string
 
 const (
-	SystemGuestRoleId            = "system_guest"
+	SystemPartnerRoleId            = "system_partner"
 	SystemUserRoleId             = "system_user"
 	SystemAdminRoleId            = "system_admin"
 	SystemPostAllRoleId          = "system_post_all"
@@ -374,13 +374,13 @@ const (
 	SystemManagerRoleId          = "system_manager"
 	SystemCustomGroupAdminRoleId = "system_custom_group_admin"
 
-	TeamGuestRoleId         = "team_guest"
+	TeamPartnerRoleId         = "team_partner"
 	TeamUserRoleId          = "team_user"
 	TeamAdminRoleId         = "team_admin"
 	TeamPostAllRoleId       = "team_post_all"
 	TeamPostAllPublicRoleId = "team_post_all_public"
 
-	ChannelGuestRoleId = "channel_guest"
+	ChannelPartnerRoleId = "channel_partner"
 	ChannelUserRoleId  = "channel_user"
 	ChannelAdminRoleId = "channel_admin"
 
@@ -400,7 +400,7 @@ const (
 	RoleScopeChannel RoleScope = "Channel"
 	RoleScopeGroup   RoleScope = "Group"
 
-	RoleTypeGuest RoleType = "Guest"
+	RoleTypePartner RoleType = "Partner"
 	RoleTypeUser  RoleType = "User"
 	RoleTypeAdmin RoleType = "Admin"
 )
@@ -561,7 +561,7 @@ func (r *Role) MergeChannelHigherScopedPermissions(higherScopedPermissions *Role
 
 		// For the channel admin role always look to the higher scope to determine if the role has their permission.
 		// The channel admin is a special case because they're not part of the UI to be "channel moderated", only
-		// channel members and channel guests are.
+		// channel members and channel partners are.
 		if higherScopedPermissions.RoleID == ChannelAdminRoleId && presentOnHigherScope {
 			mergedPermissions = append(mergedPermissions, cp.Id)
 			continue
@@ -709,7 +709,7 @@ func (r *Role) GetChannelModeratedPermissions(channelType ChannelType) map[strin
 	return moderatedPermissions
 }
 
-// RolePatchFromChannelModerationsPatch Creates and returns a RolePatch based on a slice of ChannelModerationPatches, roleName is expected to be either "members" or "guests".
+// RolePatchFromChannelModerationsPatch Creates and returns a RolePatch based on a slice of ChannelModerationPatches, roleName is expected to be either "members" or "partners".
 func (r *Role) RolePatchFromChannelModerationsPatch(channelModerationsPatch []*ChannelModerationPatch, roleName string) *RolePatch {
 	permissionsToAddToPatch := make(map[string]bool)
 
@@ -729,8 +729,8 @@ func (r *Role) RolePatchFromChannelModerationsPatch(channelModerationsPatch []*C
 					if channelModerationPatch.Roles.Members != nil && !*channelModerationPatch.Roles.Members {
 						permissionEnabled = false
 					}
-				} else if roleName == "guests" {
-					if channelModerationPatch.Roles.Guests != nil && !*channelModerationPatch.Roles.Guests {
+				} else if roleName == "partners" {
+					if channelModerationPatch.Roles.Partners != nil && !*channelModerationPatch.Roles.Partners {
 						permissionEnabled = false
 					}
 				}
@@ -749,7 +749,7 @@ func (r *Role) RolePatchFromChannelModerationsPatch(channelModerationsPatch []*C
 				permissionsToAddToPatch[permission] = true
 			}
 
-			if roleName == "guests" && channelModerationPatch.Roles.Guests != nil && *channelModerationPatch.Roles.Guests && *channelModerationPatch.Name == moderatedPermissionName {
+			if roleName == "partners" && channelModerationPatch.Roles.Partners != nil && *channelModerationPatch.Roles.Partners && *channelModerationPatch.Name == moderatedPermissionName {
 				permissionsToAddToPatch[permission] = true
 			}
 		}
@@ -841,10 +841,10 @@ func MakeDefaultRoles() map[string]*Role {
 		Permissions: []string{},
 	}
 
-	roles[ChannelGuestRoleId] = &Role{
-		Name:        "channel_guest",
-		DisplayName: "authentication.roles.channel_guest.name",
-		Description: "authentication.roles.channel_guest.description",
+	roles[ChannelPartnerRoleId] = &Role{
+		Name:        "channel_partner",
+		DisplayName: "authentication.roles.channel_partner.name",
+		Description: "authentication.roles.channel_partner.description",
 		Permissions: []string{
 			PermissionReadChannel.Id,
 			PermissionReadChannelContent.Id,
@@ -916,10 +916,10 @@ func MakeDefaultRoles() map[string]*Role {
 		BuiltIn:       true,
 	}
 
-	roles[TeamGuestRoleId] = &Role{
-		Name:        "team_guest",
-		DisplayName: "authentication.roles.team_guest.name",
-		Description: "authentication.roles.team_guest.description",
+	roles[TeamPartnerRoleId] = &Role{
+		Name:        "team_partner",
+		DisplayName: "authentication.roles.team_partner.name",
+		Description: "authentication.roles.team_partner.description",
 		Permissions: []string{
 			PermissionViewTeam.Id,
 		},
@@ -1062,10 +1062,10 @@ func MakeDefaultRoles() map[string]*Role {
 		BuiltIn:       true,
 	}
 
-	roles[SystemGuestRoleId] = &Role{
-		Name:        "system_guest",
-		DisplayName: "authentication.roles.global_guest.name",
-		Description: "authentication.roles.global_guest.description",
+	roles[SystemPartnerRoleId] = &Role{
+		Name:        "system_partner",
+		DisplayName: "authentication.roles.global_partner.name",
+		Description: "authentication.roles.global_partner.description",
 		Permissions: []string{
 			PermissionCreateDirectChannel.Id,
 			PermissionCreateGroupChannel.Id,

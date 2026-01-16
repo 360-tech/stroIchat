@@ -283,7 +283,7 @@ export default function ChannelMembersRHS({
                         variant='app'
                         message={formatMessage({
                             id: 'channel_members_rhs.default_channel_moderation_restrictions',
-                            defaultMessage: 'In this channel, you can only remove guests. Only <link>channel admins</link> can manage other members.',
+                            defaultMessage: 'In this channel, you can only remove partners. Only <link>channel admins</link> can manage other members.',
                         }, {
                             link: (msg: React.ReactNode) => (
                                 <ExternalLink

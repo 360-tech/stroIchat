@@ -184,17 +184,17 @@ func (us SqlUserStore) Save(rctx request.CTX, user *model.User) (*model.User, er
 	return user, nil
 }
 
-func (us SqlUserStore) DeactivateGuests() ([]string, error) {
+func (us SqlUserStore) DeactivatePartners() ([]string, error) {
 	curTime := model.GetMillis()
 	updateQuery := us.getQueryBuilder().Update("Users").
 		Set("UpdateAt", curTime).
 		Set("DeleteAt", curTime).
-		Where(sq.Eq{"Roles": "system_guest"}).
+		Where(sq.Eq{"Roles": "system_partner"}).
 		Where(sq.Eq{"DeleteAt": 0})
 
 	_, err := us.GetMaster().ExecBuilder(updateQuery)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to update Users with roles=system_guest")
+		return nil, errors.Wrap(err, "failed to update Users with roles=system_partner")
 	}
 
 	selectQuery := us.getQueryBuilder().
@@ -663,7 +663,7 @@ func applyMultiRoleFilters(query sq.SelectBuilder, systemRoles []string, teamRol
 			case model.SystemUserRoleId:
 				// If querying for a `system_user` ensure that the user is only a system_user.
 				sqOr = append(sqOr, sq.Eq{"Users.Roles": role})
-			case model.SystemGuestRoleId, model.SystemAdminRoleId, model.SystemUserManagerRoleId, model.SystemReadOnlyAdminRoleId, model.SystemManagerRoleId:
+			case model.SystemPartnerRoleId, model.SystemAdminRoleId, model.SystemUserManagerRoleId, model.SystemReadOnlyAdminRoleId, model.SystemManagerRoleId:
 				// If querying for any other roles search using a wildcard.
 				if isPostgreSQL {
 					sqOr = append(sqOr, sq.ILike{"Users.Roles": queryRole})
@@ -689,8 +689,8 @@ func applyMultiRoleFilters(query sq.SelectBuilder, systemRoles []string, teamRol
 				} else {
 					sqOr = append(sqOr, sq.And{sq.Eq{"cm.SchemeUser": true}, sq.Eq{"cm.SchemeAdmin": false}, sq.NotLike{"Users.Roles": wildcardSearchTerm(model.SystemAdminRoleId)}})
 				}
-			case model.ChannelGuestRoleId:
-				sqOr = append(sqOr, sq.Eq{"cm.SchemeGuest": true})
+			case model.ChannelPartnerRoleId:
+				sqOr = append(sqOr, sq.Eq{"cm.SchemePartner": true})
 			}
 		}
 	}
@@ -710,8 +710,8 @@ func applyMultiRoleFilters(query sq.SelectBuilder, systemRoles []string, teamRol
 				} else {
 					sqOr = append(sqOr, sq.And{sq.Eq{"tm.SchemeUser": true}, sq.Eq{"tm.SchemeAdmin": false}, sq.NotLike{"Users.Roles": wildcardSearchTerm(model.SystemAdminRoleId)}})
 				}
-			case model.TeamGuestRoleId:
-				sqOr = append(sqOr, sq.Eq{"tm.SchemeGuest": true})
+			case model.TeamPartnerRoleId:
+				sqOr = append(sqOr, sq.Eq{"tm.SchemePartner": true})
 			}
 		}
 	}
@@ -1797,11 +1797,11 @@ func (us SqlUserStore) AnalyticsGetExternalUsers(hostDomain string) (bool, error
 	return count > 0, nil
 }
 
-func (us SqlUserStore) AnalyticsGetGuestCount() (int64, error) {
+func (us SqlUserStore) AnalyticsGetPartnerCount() (int64, error) {
 	var count int64
-	err := us.GetReplica().Get(&count, "SELECT count(*) FROM Users WHERE Roles LIKE ? and DeleteAt = 0", "%system_guest%")
+	err := us.GetReplica().Get(&count, "SELECT count(*) FROM Users WHERE Roles LIKE ? and DeleteAt = 0", "%system_partner%")
 	if err != nil {
-		return int64(0), errors.Wrap(err, "failed to count guest Users")
+		return int64(0), errors.Wrap(err, "failed to count partner Users")
 	}
 	return count, nil
 }
@@ -1970,7 +1970,7 @@ func (us SqlUserStore) GetUsersBatchForIndexing(startTime int64, startFileID str
 				cm.LastUpdateAt,
 				cm.SchemeUser,
 				cm.SchemeAdmin,
-				(cm.SchemeGuest IS NOT NULL AND cm.SchemeGuest) as SchemeGuest
+				(cm.SchemePartner IS NOT NULL AND cm.SchemePartner) as SchemePartner
 			`).
 		From("ChannelMembers cm").
 		Join("Channels c ON cm.ChannelId = c.Id").
@@ -1996,7 +1996,7 @@ func (us SqlUserStore) GetUsersBatchForIndexing(startTime int64, startFileID str
 
 	teamMembers := []*model.TeamMember{}
 	teamMembersQuery, args, err := us.getQueryBuilder().
-		Select("TeamId, UserId, Roles, DeleteAt, (SchemeGuest IS NOT NULL AND SchemeGuest) as SchemeGuest, SchemeUser, SchemeAdmin").
+		Select("TeamId, UserId, Roles, DeleteAt, (SchemePartner IS NOT NULL AND SchemePartner) as SchemePartner, SchemeUser, SchemeAdmin").
 		From("TeamMembers").
 		Where(sq.Eq{"UserId": userIds, "DeleteAt": 0}).
 		ToSql()
@@ -2120,7 +2120,7 @@ func applyViewRestrictionsFilter(query sq.SelectBuilder, restrictions *model.Vie
 	return resultQuery
 }
 
-func (us SqlUserStore) PromoteGuestToUser(userId string) (err error) {
+func (us SqlUserStore) PromotePartnerToUser(userId string) (err error) {
 	transaction, err := us.GetMaster().Beginx()
 	if err != nil {
 		return errors.Wrap(err, "begin_transaction")
@@ -2135,7 +2135,7 @@ func (us SqlUserStore) PromoteGuestToUser(userId string) (err error) {
 	roles := user.GetRoles()
 
 	for idx, role := range roles {
-		if role == "system_guest" {
+		if role == "system_partner" {
 			roles[idx] = "system_user"
 		}
 	}
@@ -2148,7 +2148,7 @@ func (us SqlUserStore) PromoteGuestToUser(userId string) (err error) {
 
 	queryString, args, err := query.ToSql()
 	if err != nil {
-		return errors.Wrap(err, "promote_guest_to_user_tosql")
+		return errors.Wrap(err, "promote_partner_to_user_tosql")
 	}
 
 	if _, err = transaction.Exec(queryString, args...); err != nil {
@@ -2157,12 +2157,12 @@ func (us SqlUserStore) PromoteGuestToUser(userId string) (err error) {
 
 	query = us.getQueryBuilder().Update("ChannelMembers").
 		Set("SchemeUser", true).
-		Set("SchemeGuest", false).
+		Set("SchemePartner", false).
 		Where(sq.Eq{"UserId": userId})
 
 	queryString, args, err = query.ToSql()
 	if err != nil {
-		return errors.Wrap(err, "promote_guest_to_user_tosql")
+		return errors.Wrap(err, "promote_partner_to_user_tosql")
 	}
 
 	if _, err = transaction.Exec(queryString, args...); err != nil {
@@ -2171,12 +2171,12 @@ func (us SqlUserStore) PromoteGuestToUser(userId string) (err error) {
 
 	query = us.getQueryBuilder().Update("TeamMembers").
 		Set("SchemeUser", true).
-		Set("SchemeGuest", false).
+		Set("SchemePartner", false).
 		Where(sq.Eq{"UserId": userId})
 
 	queryString, args, err = query.ToSql()
 	if err != nil {
-		return errors.Wrap(err, "promote_guest_to_user_tosql")
+		return errors.Wrap(err, "promote_partner_to_user_tosql")
 	}
 
 	if _, err := transaction.Exec(queryString, args...); err != nil {
@@ -2189,7 +2189,7 @@ func (us SqlUserStore) PromoteGuestToUser(userId string) (err error) {
 	return nil
 }
 
-func (us SqlUserStore) DemoteUserToGuest(userID string) (_ *model.User, err error) {
+func (us SqlUserStore) DemoteUserToPartner(userID string) (_ *model.User, err error) {
 	transaction, err := us.GetMaster().Beginx()
 	if err != nil {
 		return nil, errors.Wrap(err, "begin_transaction")
@@ -2202,7 +2202,7 @@ func (us SqlUserStore) DemoteUserToGuest(userID string) (_ *model.User, err erro
 	}
 
 	curTime := model.GetMillis()
-	newRolesDBStr := model.SystemGuestRoleId
+	newRolesDBStr := model.SystemPartnerRoleId
 
 	query := us.getQueryBuilder().Update("Users").
 		Set("Roles", newRolesDBStr).
@@ -2211,7 +2211,7 @@ func (us SqlUserStore) DemoteUserToGuest(userID string) (_ *model.User, err erro
 
 	queryString, args, err := query.ToSql()
 	if err != nil {
-		return nil, errors.Wrap(err, "demote_user_to_guest_tosql")
+		return nil, errors.Wrap(err, "demote_user_to_partner_tosql")
 	}
 
 	if _, err = transaction.Exec(queryString, args...); err != nil {
@@ -2224,12 +2224,12 @@ func (us SqlUserStore) DemoteUserToGuest(userID string) (_ *model.User, err erro
 	query = us.getQueryBuilder().Update("ChannelMembers").
 		Set("SchemeUser", false).
 		Set("SchemeAdmin", false).
-		Set("SchemeGuest", true).
+		Set("SchemePartner", true).
 		Where(sq.Eq{"UserId": userID})
 
 	queryString, args, err = query.ToSql()
 	if err != nil {
-		return nil, errors.Wrap(err, "demote_user_to_guest_tosql")
+		return nil, errors.Wrap(err, "demote_user_to_partner_tosql")
 	}
 
 	if _, err = transaction.Exec(queryString, args...); err != nil {
@@ -2239,12 +2239,12 @@ func (us SqlUserStore) DemoteUserToGuest(userID string) (_ *model.User, err erro
 	query = us.getQueryBuilder().Update("TeamMembers").
 		Set("SchemeUser", false).
 		Set("SchemeAdmin", false).
-		Set("SchemeGuest", true).
+		Set("SchemePartner", true).
 		Where(sq.Eq{"UserId": userID})
 
 	queryString, args, err = query.ToSql()
 	if err != nil {
-		return nil, errors.Wrap(err, "demote_user_to_guest_tosql")
+		return nil, errors.Wrap(err, "demote_user_to_partner_tosql")
 	}
 
 	if _, err := transaction.Exec(queryString, args...); err != nil {
@@ -2338,7 +2338,7 @@ func (us SqlUserStore) GetUsersWithInvalidEmails(page int, perPage int, restrict
 	query := us.usersQuery.
 		LeftJoin("Bots ON Users.Id = Bots.UserId").
 		Where("Bots.UserId IS NULL").
-		Where("Users.Roles != 'system_guest'").
+		Where("Users.Roles != 'system_partner'").
 		Where("Users.DeleteAt = 0").
 		Where("(Users.AuthService = '' OR Users.AuthService IS NULL)")
 

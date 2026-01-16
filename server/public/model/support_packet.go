@@ -81,7 +81,7 @@ type SupportPacketStats struct {
 	DailyActiveUsers   int64 `yaml:"daily_active_users"`
 	MonthlyActiveUsers int64 `yaml:"monthly_active_users"`
 	DeactivatedUsers   int64 `yaml:"deactivated_users"`
-	Guests             int64 `yaml:"guests"`
+	Partners             int64 `yaml:"partners"`
 	BotAccounts        int64 `yaml:"bot_accounts"`
 	Posts              int64 `yaml:"posts"`
 	Channels           int64 `yaml:"channels"`

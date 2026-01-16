@@ -29,7 +29,7 @@ const InviteMembersButton = (props: Props): JSX.Element | null => {
     return (
         <TeamPermissionGate
             teamId={currentTeamId}
-            permissions={[Permissions.ADD_USER_TO_TEAM, Permissions.INVITE_GUEST]}
+            permissions={[Permissions.ADD_USER_TO_TEAM, Permissions.INVITE_PARTNER]}
         >
             <ToggleModalButton
                 ariaLabel={intl.formatMessage({id: 'sidebar_left.inviteMembers', defaultMessage: 'Invite Members'})}

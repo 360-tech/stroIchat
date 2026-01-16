@@ -240,7 +240,7 @@
     "system_read_only_admin": "read"
   },
   {
-    "section": "authentication.guest_access",
+    "section": "authentication.partner_access",
     "system_manager": "read",
     "system_user_manager": "read",
     "system_read_only_admin": "read"

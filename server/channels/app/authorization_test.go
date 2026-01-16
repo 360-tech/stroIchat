@@ -135,7 +135,7 @@ func TestCheckIfRolesGrantPermission(t *testing.T) {
 		{[]string{model.ChannelUserRoleId, model.SystemAdminRoleId}, model.PermissionManageSystem.Id, true},
 		{[]string{model.TeamUserRoleId, model.TeamAdminRoleId}, model.PermissionManageSlashCommands.Id, true},
 		{[]string{model.TeamAdminRoleId, model.TeamUserRoleId}, model.PermissionManageSlashCommands.Id, true},
-		{[]string{model.ChannelGuestRoleId}, model.PermissionReadChannelContent.Id, true},
+		{[]string{model.ChannelPartnerRoleId}, model.PermissionReadChannelContent.Id, true},
 	}
 
 	for _, testcase := range cases {

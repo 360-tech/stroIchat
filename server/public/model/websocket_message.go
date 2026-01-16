@@ -59,7 +59,7 @@ const (
 	WebsocketEventLicenseChanged                      WebsocketEventType = "license_changed"
 	WebsocketEventConfigChanged                       WebsocketEventType = "config_changed"
 	WebsocketEventOpenDialog                          WebsocketEventType = "open_dialog"
-	WebsocketEventGuestsDeactivated                   WebsocketEventType = "guests_deactivated"
+	WebsocketEventPartnersDeactivated                   WebsocketEventType = "partners_deactivated"
 	WebsocketEventUserActivationStatusChange          WebsocketEventType = "user_activation_status_change"
 	WebsocketEventReceivedGroup                       WebsocketEventType = "received_group"
 	WebsocketEventReceivedGroupAssociatedToTeam       WebsocketEventType = "received_group_associated_to_team"

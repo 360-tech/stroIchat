@@ -35,7 +35,7 @@ func GetMockStoreForSetupFunctions() *mocks.Store {
 	systemStore.On("GetByName", "FirstServerRunTimestamp").Return(&model.System{Name: "FirstServerRunTimestamp", Value: "10"}, nil)
 	systemStore.On("GetByName", "AdvancedPermissionsMigrationComplete").Return(&model.System{Name: "AdvancedPermissionsMigrationComplete", Value: "true"}, nil)
 	systemStore.On("GetByName", "EmojisPermissionsMigrationComplete").Return(&model.System{Name: "EmojisPermissionsMigrationComplete", Value: "true"}, nil)
-	systemStore.On("GetByName", "GuestRolesCreationMigrationComplete").Return(&model.System{Name: "GuestRolesCreationMigrationComplete", Value: "true"}, nil)
+	systemStore.On("GetByName", "PartnerRolesCreationMigrationComplete").Return(&model.System{Name: "PartnerRolesCreationMigrationComplete", Value: "true"}, nil)
 	systemStore.On("GetByName", "SystemConsoleRolesCreationMigrationComplete").Return(&model.System{Name: "SystemConsoleRolesCreationMigrationComplete", Value: "true"}, nil)
 	systemStore.On("GetByName", "PlaybookRolesCreationMigrationComplete").Return(&model.System{Name: "PlaybookRolesCreationMigrationComplete", Value: "true"}, nil)
 	systemStore.On("GetByName", "PostPriorityConfigDefaultTrueMigrationComplete").Return(&model.System{Name: "PostPriorityConfigDefaultTrueMigrationComplete", Value: "true"}, nil)
@@ -48,7 +48,7 @@ func GetMockStoreForSetupFunctions() *mocks.Store {
 	systemStore.On("GetByName", model.MigrationKeyApplyChannelManageDeleteToChannelUser).Return(&model.System{Name: model.MigrationKeyApplyChannelManageDeleteToChannelUser, Value: "true"}, nil)
 	systemStore.On("GetByName", model.MigrationKeyRemoveChannelManageDeleteFromTeamUser).Return(&model.System{Name: model.MigrationKeyRemoveChannelManageDeleteFromTeamUser, Value: "true"}, nil)
 	systemStore.On("GetByName", model.MigrationKeyViewMembersNewPermission).Return(&model.System{Name: model.MigrationKeyViewMembersNewPermission, Value: "true"}, nil)
-	systemStore.On("GetByName", model.MigrationKeyAddManageGuestsPermissions).Return(&model.System{Name: model.MigrationKeyAddManageGuestsPermissions, Value: "true"}, nil)
+	systemStore.On("GetByName", model.MigrationKeyAddManagePartnersPermissions).Return(&model.System{Name: model.MigrationKeyAddManagePartnersPermissions, Value: "true"}, nil)
 	systemStore.On("GetByName", model.MigrationKeyChannelModerationsPermissions).Return(&model.System{Name: model.MigrationKeyChannelModerationsPermissions, Value: "true"}, nil)
 	systemStore.On("GetByName", model.MigrationKeyAddUseGroupMentionsPermission).Return(&model.System{Name: model.MigrationKeyAddUseGroupMentionsPermission, Value: "true"}, nil)
 	systemStore.On("GetByName", model.MigrationKeyAddSystemConsolePermissions).Return(&model.System{Name: model.MigrationKeyAddSystemConsolePermissions, Value: "true"}, nil)
@@ -97,7 +97,7 @@ func GetMockStoreForSetupFunctions() *mocks.Store {
 
 	userStore := mocks.UserStore{}
 	userStore.On("Count", mock.AnythingOfType("model.UserCountOptions")).Return(int64(1), nil)
-	userStore.On("DeactivateGuests").Return(nil, nil)
+	userStore.On("DeactivatePartners").Return(nil, nil)
 	userStore.On("ClearCaches").Return(nil)
 
 	postStore := mocks.PostStore{}

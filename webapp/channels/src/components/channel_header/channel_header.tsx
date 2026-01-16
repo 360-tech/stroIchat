@@ -138,8 +138,8 @@ class ChannelHeader extends React.PureComponent<Props> {
             isChannelMuted,
             dmUser,
             rhsState,
-            hasGuests,
-            hideGuestTags,
+            hasPartners,
+            hidePartnerTags,
         } = this.props;
         if (!channel) {
             return null;
@@ -147,14 +147,14 @@ class ChannelHeader extends React.PureComponent<Props> {
 
         const ariaLabelChannelHeader = this.props.intl.formatMessage({id: 'accessibility.sections.channelHeader', defaultMessage: 'channel header region'});
 
-        let hasGuestsText: ReactNode = '';
-        if (hasGuests && !hideGuestTags) {
-            hasGuestsText = (
-                <span className='has-guest-header'>
+        let hasPartnersText: ReactNode = '';
+        if (hasPartners && !hidePartnerTags) {
+            hasPartnersText = (
+                <span className='has-partner-header'>
                     <span tabIndex={0}>
                         <FormattedMessage
-                            id='channel_header.channelHasGuests'
-                            defaultMessage='Channel has guests'
+                            id='channel_header.channelHasPartners'
+                            defaultMessage='Channel has partners'
                         />
                     </span>
                 </span>
@@ -176,12 +176,12 @@ class ChannelHeader extends React.PureComponent<Props> {
         const isGroup = (channel.type === Constants.GM_CHANNEL);
 
         if (isGroup) {
-            if (hasGuests && !hideGuestTags) {
-                hasGuestsText = (
-                    <span className='has-guest-header'>
+            if (hasPartners && !hidePartnerTags) {
+                hasPartnersText = (
+                    <span className='has-partner-header'>
                         <FormattedMessage
-                            id='channel_header.groupMessageHasGuests'
-                            defaultMessage='This group message has guests'
+                            id='channel_header.groupMessageHasPartners'
+                            defaultMessage='This group message has partners'
                         />
                     </span>
                 );
@@ -378,7 +378,7 @@ class ChannelHeader extends React.PureComponent<Props> {
                                     className='channel-header__description'
                                 >
                                     {dmHeaderTextStatus}
-                                    {hasGuestsText}
+                                    {hasPartnersText}
                                     <ChannelHeaderText
                                         teamId={teamId}
                                         channel={channel}

@@ -255,7 +255,7 @@ exports[`components/admin_console/permission_schemes_settings/permission_team_sc
           license={
             Object {
               "CustomPermissionsSchemes": "true",
-              "GuestAccountsPermissions": "true",
+              "PartnerAccountsPermissions": "true",
               "IsLicensed": "true",
             }
           }
@@ -383,7 +383,7 @@ Object {
       "delete_post",
     ],
   },
-  "channel_guest": Object {
+  "channel_partner": Object {
     "permissions": Array [
       "delete_post",
     ],
@@ -393,9 +393,9 @@ Object {
       "add_reaction",
     ],
   },
-  "guests": Object {
-    "displayName": "Guests",
-    "name": "guests",
+  "partners": Object {
+    "displayName": "Partners",
+    "name": "partners",
     "permissions": Array [
       "edit_post",
       "delete_post",
@@ -422,7 +422,7 @@ Object {
       "add_user_to_team",
     ],
   },
-  "team_guest": Object {
+  "team_partner": Object {
     "permissions": Array [
       "edit_post",
     ],
@@ -435,7 +435,7 @@ Object {
 }
 `;
 
-exports[`components/admin_console/permission_schemes_settings/permission_team_scheme_settings/permission_team_scheme_settings should match snapshot on edit without guest permissions 1`] = `
+exports[`components/admin_console/permission_schemes_settings/permission_team_scheme_settings/permission_team_scheme_settings should match snapshot on edit without partner permissions 1`] = `
 <div
   className="wrapper--fixed"
 >
@@ -677,7 +677,7 @@ exports[`components/admin_console/permission_schemes_settings/permission_team_sc
           license={
             Object {
               "CustomPermissionsSchemes": "true",
-              "GuestAccountsPermissions": "true",
+              "PartnerAccountsPermissions": "true",
               "IsLicensed": "true",
             }
           }
@@ -772,7 +772,7 @@ exports[`components/admin_console/permission_schemes_settings/permission_team_sc
 </div>
 `;
 
-exports[`components/admin_console/permission_schemes_settings/permission_team_scheme_settings/permission_team_scheme_settings should match snapshot on edit without guest permissions 2`] = `
+exports[`components/admin_console/permission_schemes_settings/permission_team_scheme_settings/permission_team_scheme_settings should match snapshot on edit without partner permissions 2`] = `
 Object {
   "all_users": Object {
     "displayName": "All members",
@@ -782,15 +782,15 @@ Object {
   "channel_admin": Object {
     "permissions": Array [],
   },
-  "channel_guest": Object {
+  "channel_partner": Object {
     "permissions": Array [],
   },
   "channel_user": Object {
     "permissions": Array [],
   },
-  "guests": Object {
-    "displayName": "Guests",
-    "name": "guests",
+  "partners": Object {
+    "displayName": "Partners",
+    "name": "partners",
     "permissions": Array [],
   },
   "playbook_admin": Object {
@@ -805,7 +805,7 @@ Object {
   "team_admin": Object {
     "permissions": Array [],
   },
-  "team_guest": Object {
+  "team_partner": Object {
     "permissions": Array [],
   },
   "team_user": Object {
@@ -969,29 +969,29 @@ exports[`components/admin_console/permission_schemes_settings/permission_team_sc
       </AdminPanelWithButton>
       <AdminPanelTogglable
         className="permissions-block"
-        id="guests"
+        id="partners"
         onToggle={[Function]}
         open={true}
         subtitle={
           Object {
-            "defaultMessage": "Permissions granted to guest users.",
-            "id": "admin.permissions.systemScheme.GuestsDescription",
+            "defaultMessage": "Permissions granted to partner users.",
+            "id": "admin.permissions.systemScheme.PartnersDescription",
           }
         }
         title={
           Object {
-            "defaultMessage": "Guests",
-            "id": "admin.permissions.systemScheme.GuestsTitle",
+            "defaultMessage": "Partners",
+            "id": "admin.permissions.systemScheme.PartnersTitle",
           }
         }
       >
-        <Connect(GuestPermissionsTree)
+        <Connect(PartnerPermissionsTree)
           onToggle={[Function]}
           readOnly={true}
           role={
             Object {
-              "displayName": "Guests",
-              "name": "guests",
+              "displayName": "Partners",
+              "name": "partners",
               "permissions": Array [],
             }
           }
@@ -1191,15 +1191,15 @@ Object {
   "channel_admin": Object {
     "permissions": Array [],
   },
-  "channel_guest": Object {
+  "channel_partner": Object {
     "permissions": Array [],
   },
   "channel_user": Object {
     "permissions": Array [],
   },
-  "guests": Object {
-    "displayName": "Guests",
-    "name": "guests",
+  "partners": Object {
+    "displayName": "Partners",
+    "name": "partners",
     "permissions": Array [],
   },
   "playbook_admin": Object {
@@ -1214,7 +1214,7 @@ Object {
   "team_admin": Object {
     "permissions": Array [],
   },
-  "team_guest": Object {
+  "team_partner": Object {
     "permissions": Array [],
   },
   "team_user": Object {
@@ -1378,29 +1378,29 @@ exports[`components/admin_console/permission_schemes_settings/permission_team_sc
       </AdminPanelWithButton>
       <AdminPanelTogglable
         className="permissions-block"
-        id="guests"
+        id="partners"
         onToggle={[Function]}
         open={true}
         subtitle={
           Object {
-            "defaultMessage": "Permissions granted to guest users.",
-            "id": "admin.permissions.systemScheme.GuestsDescription",
+            "defaultMessage": "Permissions granted to partner users.",
+            "id": "admin.permissions.systemScheme.PartnersDescription",
           }
         }
         title={
           Object {
-            "defaultMessage": "Guests",
-            "id": "admin.permissions.systemScheme.GuestsTitle",
+            "defaultMessage": "Partners",
+            "id": "admin.permissions.systemScheme.PartnersTitle",
           }
         }
       >
-        <Connect(GuestPermissionsTree)
+        <Connect(PartnerPermissionsTree)
           onToggle={[Function]}
           readOnly={false}
           role={
             Object {
-              "displayName": "Guests",
-              "name": "guests",
+              "displayName": "Partners",
+              "name": "partners",
               "permissions": Array [],
             }
           }
@@ -1497,7 +1497,7 @@ exports[`components/admin_console/permission_schemes_settings/permission_team_sc
           license={
             Object {
               "CustomPermissionsSchemes": "true",
-              "GuestAccountsPermissions": "true",
+              "PartnerAccountsPermissions": "true",
               "IsLicensed": "true",
             }
           }
@@ -1602,15 +1602,15 @@ Object {
   "channel_admin": Object {
     "permissions": Array [],
   },
-  "channel_guest": Object {
+  "channel_partner": Object {
     "permissions": Array [],
   },
   "channel_user": Object {
     "permissions": Array [],
   },
-  "guests": Object {
-    "displayName": "Guests",
-    "name": "guests",
+  "partners": Object {
+    "displayName": "Partners",
+    "name": "partners",
     "permissions": Array [],
   },
   "playbook_admin": Object {
@@ -1625,7 +1625,7 @@ Object {
   "team_admin": Object {
     "permissions": Array [],
   },
-  "team_guest": Object {
+  "team_partner": Object {
     "permissions": Array [],
   },
   "team_user": Object {
@@ -1642,7 +1642,7 @@ Object {
   "openRoles": Object {
     "all_users": true,
     "channel_admin": true,
-    "guests": true,
+    "partners": true,
     "playbook_admin": true,
     "team_admin": true,
   },
@@ -1668,15 +1668,15 @@ Object {
   "channel_admin": Object {
     "permissions": Array [],
   },
-  "channel_guest": Object {
+  "channel_partner": Object {
     "permissions": Array [],
   },
   "channel_user": Object {
     "permissions": Array [],
   },
-  "guests": Object {
-    "displayName": "Guests",
-    "name": "guests",
+  "partners": Object {
+    "displayName": "Partners",
+    "name": "partners",
     "permissions": Array [],
   },
   "playbook_admin": Object {
@@ -1691,7 +1691,7 @@ Object {
   "team_admin": Object {
     "permissions": Array [],
   },
-  "team_guest": Object {
+  "team_partner": Object {
     "permissions": Array [],
   },
   "team_user": Object {
@@ -1855,29 +1855,29 @@ exports[`components/admin_console/permission_schemes_settings/permission_team_sc
       </AdminPanelWithButton>
       <AdminPanelTogglable
         className="permissions-block"
-        id="guests"
+        id="partners"
         onToggle={[Function]}
         open={true}
         subtitle={
           Object {
-            "defaultMessage": "Permissions granted to guest users.",
-            "id": "admin.permissions.systemScheme.GuestsDescription",
+            "defaultMessage": "Permissions granted to partner users.",
+            "id": "admin.permissions.systemScheme.PartnersDescription",
           }
         }
         title={
           Object {
-            "defaultMessage": "Guests",
-            "id": "admin.permissions.systemScheme.GuestsTitle",
+            "defaultMessage": "Partners",
+            "id": "admin.permissions.systemScheme.PartnersTitle",
           }
         }
       >
-        <Connect(GuestPermissionsTree)
+        <Connect(PartnerPermissionsTree)
           onToggle={[Function]}
           readOnly={false}
           role={
             Object {
-              "displayName": "Guests",
-              "name": "guests",
+              "displayName": "Partners",
+              "name": "partners",
               "permissions": Array [],
             }
           }
@@ -1974,7 +1974,7 @@ exports[`components/admin_console/permission_schemes_settings/permission_team_sc
           license={
             Object {
               "CustomPermissionsSchemes": "true",
-              "GuestAccountsPermissions": "true",
+              "PartnerAccountsPermissions": "true",
               "IsLicensed": "true",
             }
           }

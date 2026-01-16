@@ -1432,13 +1432,13 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -1455,16 +1455,16 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "team guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       "team_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "team partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       "team_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "team guest explicit",
-				ExplicitRoles:       "team_guest",
-				ExpectedRoles:       "team_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "team partner explicit",
+				ExplicitRoles:       "team_partner",
+				ExpectedRoles:       "team_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "team admin implicit",
@@ -1497,19 +1497,19 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "team guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "team partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test team_guest",
+				ExpectedRoles:         "test team_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "team guest explicit and explicit custom role",
-				ExplicitRoles:         "team_guest test",
-				ExpectedRoles:         "test team_guest",
+				Name:                  "team partner explicit and explicit custom role",
+				ExplicitRoles:         "team_partner test",
+				ExpectedRoles:         "test team_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "team admin implicit and explicit custom role",
@@ -1542,7 +1542,7 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				member := &model.TeamMember{
 					TeamId:        team.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1553,7 +1553,7 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -1583,13 +1583,13 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -1606,16 +1606,16 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "team guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       ts.DefaultTeamGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "team partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       ts.DefaultTeamPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "team guest explicit",
-				ExplicitRoles:       "team_guest",
-				ExpectedRoles:       ts.DefaultTeamGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "team partner explicit",
+				ExplicitRoles:       "team_partner",
+				ExpectedRoles:       ts.DefaultTeamPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "team admin implicit",
@@ -1648,19 +1648,19 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "team guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "team partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + ts.DefaultTeamGuestRole,
+				ExpectedRoles:         "test " + ts.DefaultTeamPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "team guest explicit and explicit custom role",
-				ExplicitRoles:         "team_guest test",
-				ExpectedRoles:         "test " + ts.DefaultTeamGuestRole,
+				Name:                  "team partner explicit and explicit custom role",
+				ExplicitRoles:         "team_partner test",
+				ExpectedRoles:         "test " + ts.DefaultTeamPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "team admin implicit and explicit custom role",
@@ -1693,7 +1693,7 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				member := &model.TeamMember{
 					TeamId:        team.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1704,7 +1704,7 @@ func testTeamSaveMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -1788,13 +1788,13 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -1811,16 +1811,16 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "team guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       "team_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "team partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       "team_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "team guest explicit",
-				ExplicitRoles:       "team_guest",
-				ExpectedRoles:       "team_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "team partner explicit",
+				ExplicitRoles:       "team_partner",
+				ExpectedRoles:       "team_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "team admin implicit",
@@ -1853,19 +1853,19 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "team guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "team partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test team_guest",
+				ExpectedRoles:         "test team_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "team guest explicit and explicit custom role",
-				ExplicitRoles:         "team_guest test",
-				ExpectedRoles:         "test team_guest",
+				Name:                  "team partner explicit and explicit custom role",
+				ExplicitRoles:         "team_partner test",
+				ExpectedRoles:         "test team_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "team admin implicit and explicit custom role",
@@ -1898,7 +1898,7 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 				member := &model.TeamMember{
 					TeamId:        team.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1906,7 +1906,7 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 				otherMember := &model.TeamMember{
 					TeamId:        team.Id,
 					UserId:        u2.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -1921,7 +1921,7 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -1951,13 +1951,13 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -1974,16 +1974,16 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "team guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       ts.DefaultTeamGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "team partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       ts.DefaultTeamPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "team guest explicit",
-				ExplicitRoles:       "team_guest",
-				ExpectedRoles:       ts.DefaultTeamGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "team partner explicit",
+				ExplicitRoles:       "team_partner",
+				ExpectedRoles:       ts.DefaultTeamPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "team admin implicit",
@@ -2016,19 +2016,19 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "team guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "team partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + ts.DefaultTeamGuestRole,
+				ExpectedRoles:         "test " + ts.DefaultTeamPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "team guest explicit and explicit custom role",
-				ExplicitRoles:         "team_guest test",
-				ExpectedRoles:         "test " + ts.DefaultTeamGuestRole,
+				Name:                  "team partner explicit and explicit custom role",
+				ExplicitRoles:         "team_partner test",
+				ExpectedRoles:         "test " + ts.DefaultTeamPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "team admin implicit and explicit custom role",
@@ -2061,7 +2061,7 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 				member := &model.TeamMember{
 					TeamId:        team.Id,
 					UserId:        u1.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -2069,7 +2069,7 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 				otherMember := &model.TeamMember{
 					TeamId:        team.Id,
 					UserId:        u2.Id,
-					SchemeGuest:   tc.SchemeGuest,
+					SchemePartner:   tc.SchemePartner,
 					SchemeUser:    tc.SchemeUser,
 					SchemeAdmin:   tc.SchemeAdmin,
 					ExplicitRoles: tc.ExplicitRoles,
@@ -2083,7 +2083,7 @@ func testTeamSaveMultipleMembers(t *testing.T, rctx request.CTX, ss store.Store)
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2121,13 +2121,13 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2144,16 +2144,16 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "team guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       "team_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "team partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       "team_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "team guest explicit",
-				ExplicitRoles:       "team_guest",
-				ExpectedRoles:       "team_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "team partner explicit",
+				ExplicitRoles:       "team_partner",
+				ExpectedRoles:       "team_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "team admin implicit",
@@ -2186,19 +2186,19 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "team guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "team partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test team_guest",
+				ExpectedRoles:         "test team_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "team guest explicit and explicit custom role",
-				ExplicitRoles:         "team_guest test",
-				ExpectedRoles:         "test team_guest",
+				Name:                  "team partner explicit and explicit custom role",
+				ExplicitRoles:         "team_partner test",
+				ExpectedRoles:         "test team_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "team admin implicit and explicit custom role",
@@ -2228,7 +2228,7 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -2238,7 +2238,7 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2272,13 +2272,13 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2295,16 +2295,16 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "team guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       ts.DefaultTeamGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "team partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       ts.DefaultTeamPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "team guest explicit",
-				ExplicitRoles:       "team_guest",
-				ExpectedRoles:       ts.DefaultTeamGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "team partner explicit",
+				ExplicitRoles:       "team_partner",
+				ExpectedRoles:       ts.DefaultTeamPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "team admin implicit",
@@ -2337,19 +2337,19 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "team guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "team partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + ts.DefaultTeamGuestRole,
+				ExpectedRoles:         "test " + ts.DefaultTeamPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "team guest explicit and explicit custom role",
-				ExplicitRoles:         "team_guest test",
-				ExpectedRoles:         "test " + ts.DefaultTeamGuestRole,
+				Name:                  "team partner explicit and explicit custom role",
+				ExplicitRoles:         "team_partner test",
+				ExpectedRoles:         "test " + ts.DefaultTeamPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "team admin implicit and explicit custom role",
@@ -2379,7 +2379,7 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -2389,7 +2389,7 @@ func testTeamUpdateMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2435,13 +2435,13 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2458,16 +2458,16 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "team guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       "team_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "team partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       "team_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "team guest explicit",
-				ExplicitRoles:       "team_guest",
-				ExpectedRoles:       "team_guest",
-				ExpectedSchemeGuest: true,
+				Name:                "team partner explicit",
+				ExplicitRoles:       "team_partner",
+				ExpectedRoles:       "team_partner",
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "team admin implicit",
@@ -2500,19 +2500,19 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "team guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "team partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test team_guest",
+				ExpectedRoles:         "test team_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "team guest explicit and explicit custom role",
-				ExplicitRoles:         "team_guest test",
-				ExpectedRoles:         "test team_guest",
+				Name:                  "team partner explicit and explicit custom role",
+				ExplicitRoles:         "team_partner test",
+				ExpectedRoles:         "test team_partner",
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "team admin implicit and explicit custom role",
@@ -2542,7 +2542,7 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -2555,7 +2555,7 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -2593,13 +2593,13 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 
 		testCases := []struct {
 			Name                  string
-			SchemeGuest           bool
+			SchemePartner           bool
 			SchemeUser            bool
 			SchemeAdmin           bool
 			ExplicitRoles         string
 			ExpectedRoles         string
 			ExpectedExplicitRoles string
-			ExpectedSchemeGuest   bool
+			ExpectedSchemePartner   bool
 			ExpectedSchemeUser    bool
 			ExpectedSchemeAdmin   bool
 		}{
@@ -2616,16 +2616,16 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 				ExpectedSchemeUser: true,
 			},
 			{
-				Name:                "team guest implicit",
-				SchemeGuest:         true,
-				ExpectedRoles:       ts.DefaultTeamGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "team partner implicit",
+				SchemePartner:         true,
+				ExpectedRoles:       ts.DefaultTeamPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
-				Name:                "team guest explicit",
-				ExplicitRoles:       "team_guest",
-				ExpectedRoles:       ts.DefaultTeamGuestRole,
-				ExpectedSchemeGuest: true,
+				Name:                "team partner explicit",
+				ExplicitRoles:       "team_partner",
+				ExpectedRoles:       ts.DefaultTeamPartnerRole,
+				ExpectedSchemePartner: true,
 			},
 			{
 				Name:                "team admin implicit",
@@ -2658,19 +2658,19 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 				ExpectedSchemeUser:    true,
 			},
 			{
-				Name:                  "team guest implicit and explicit custom role",
-				SchemeGuest:           true,
+				Name:                  "team partner implicit and explicit custom role",
+				SchemePartner:           true,
 				ExplicitRoles:         "test",
-				ExpectedRoles:         "test " + ts.DefaultTeamGuestRole,
+				ExpectedRoles:         "test " + ts.DefaultTeamPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
-				Name:                  "team guest explicit and explicit custom role",
-				ExplicitRoles:         "team_guest test",
-				ExpectedRoles:         "test " + ts.DefaultTeamGuestRole,
+				Name:                  "team partner explicit and explicit custom role",
+				ExplicitRoles:         "team_partner test",
+				ExpectedRoles:         "test " + ts.DefaultTeamPartnerRole,
 				ExpectedExplicitRoles: "test",
-				ExpectedSchemeGuest:   true,
+				ExpectedSchemePartner:   true,
 			},
 			{
 				Name:                  "team admin implicit and explicit custom role",
@@ -2700,7 +2700,7 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 
 		for _, tc := range testCases {
 			t.Run(tc.Name, func(t *testing.T) {
-				member.SchemeGuest = tc.SchemeGuest
+				member.SchemePartner = tc.SchemePartner
 				member.SchemeUser = tc.SchemeUser
 				member.SchemeAdmin = tc.SchemeAdmin
 				member.ExplicitRoles = tc.ExplicitRoles
@@ -2712,7 +2712,7 @@ func testTeamUpdateMultipleMembers(t *testing.T, rctx request.CTX, ss store.Stor
 
 				assert.Equal(t, tc.ExpectedRoles, member.Roles)
 				assert.Equal(t, tc.ExpectedExplicitRoles, member.ExplicitRoles)
-				assert.Equal(t, tc.ExpectedSchemeGuest, member.SchemeGuest)
+				assert.Equal(t, tc.ExpectedSchemePartner, member.SchemePartner)
 				assert.Equal(t, tc.ExpectedSchemeUser, member.SchemeUser)
 				assert.Equal(t, tc.ExpectedSchemeAdmin, member.SchemeAdmin)
 			})
@@ -3027,14 +3027,14 @@ func testGetTeamMember(t *testing.T, rctx request.CTX, ss store.Store) {
 
 	assert.Equal(t, s2.DefaultTeamUserRole, m3.Roles)
 
-	m4 := &model.TeamMember{TeamId: t2.Id, UserId: model.NewId(), SchemeGuest: true}
+	m4 := &model.TeamMember{TeamId: t2.Id, UserId: model.NewId(), SchemePartner: true}
 	_, nErr = ss.Team().SaveMember(rctx, m4, -1)
 	require.NoError(t, nErr)
 
 	m5, err := ss.Team().GetMember(rctx, m4.TeamId, m4.UserId)
 	require.NoError(t, err)
 
-	assert.Equal(t, s2.DefaultTeamGuestRole, m5.Roles)
+	assert.Equal(t, s2.DefaultTeamPartnerRole, m5.Roles)
 }
 
 func testGetTeamMembersByIds(t *testing.T, rctx request.CTX, ss store.Store) {

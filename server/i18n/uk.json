@@ -4720,19 +4720,19 @@
     "translation": "Невірне старе значення, воно не повинно бути встановлене, коли операція не є атомарною."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Некоректні електронні адреси."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Невірна електронна адреса."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Недійсні канали."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Недійсний канал."
   },
   {
@@ -4744,7 +4744,7 @@
     "translation": "Неправильний алгоритм підпису."
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Неправильний атрибут Гість. Має бути у вигляді 'field=value'."
   },
   {
@@ -4780,7 +4780,7 @@
     "translation": "Групу не можна асоціювати з каналом, поки вона не буде спочатку асоційована з батьківською командою, синхронізованою з групою."
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Недійсний фільтр гостей AD/LDAP."
   },
   {
@@ -5172,7 +5172,7 @@
     "translation": "Сервер зайнятий, некритичні сервіси тимчасово недоступні."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Вказана вами електронна адреса не належить до дозволених доменів для гостьових акаунтів. Будь ласка, зверніться до адміністратора або зареєструйтеся з іншою адресою."
   },
   {
@@ -5180,7 +5180,7 @@
     "translation": "Вказана вами електронна адреса не належить до дозволених доменів. Будь ласка, зверніться до адміністратора або зареєструйтеся з іншою адресою."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Ви не можете активувати гостьовий обліковий запис, оскільки функція Гостьовий доступ не ввімкнена."
   },
   {
@@ -5188,7 +5188,7 @@
     "translation": "Не вдалося розібрати токен для скидання пароля"
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Неможливо перетворити гостя на звичайного користувача, оскільки він не є гостем."
   },
   {
@@ -5208,15 +5208,15 @@
     "translation": "Введіть дійсну електронну адресу та/або пароль"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Ваша ліцензія не підтримує гостьові облікові записи"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Гостьові облікові записи вимкнено"
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Неможливо перетворити користувача на гостя, оскільки він вже є гостем."
   },
   {
@@ -5224,11 +5224,11 @@
     "translation": "Не вдалося створити користувача, недійсне запрошення."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Ваша ліцензія не підтримує гостьові акаунти."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Гостьові акаунти вимкнено."
   },
   {
@@ -5244,11 +5244,11 @@
     "translation": "Термін дії вашої ліцензії на Enterprise версію закінчився, і деякі функції можуть бути вимкнені. Будь ласка, поновіть ліцензію."
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} запросив вас приєднатися до команди {{ .TeamDisplayName }} як гостя"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Неправильне оновлення члена команди: користувач повинен бути гостем або користувачем, але не обома."
   },
   {
@@ -5264,7 +5264,7 @@
     "translation": "Неможливо видалити користувача з команди, обмеженої групою."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Канали запрошення мають бути частиною команди запрошення."
   },
   {
@@ -5276,15 +5276,15 @@
     "translation": "У вас немає дозволів, щоб отримати список всіх команд"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Ваша ліцензія не підтримує гостьові облікові записи"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Гостьові акаунти вимкнено."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Гостям обмежена можливість приєднання до команди через запрошувальне посилання. Будь ласка, запросіть гостьове запрошення через електронну пошту для приєднання до команди."
   },
   {
@@ -5388,7 +5388,7 @@
     "translation": "У слові команди відсутній початковий символ косої риски"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Неправильне оновлення члена команди: Ви не можете додати або видалити роль гостя вручну."
   },
   {
@@ -5396,11 +5396,11 @@
     "translation": "Канал за замовчуванням не можна зробити приватним."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Невірне оновлення учасника каналу: користувач повинен бути гостем або користувачем, але не обома."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Невірне оновлення члена каналу: Ви не можете вручну додавати або видаляти роль гостя."
   },
   {
@@ -5432,7 +5432,7 @@
     "translation": "Ваша ліцензія не підтримує модерацію каналів"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v приєднався(лась) до каналу як гість."
   },
   {
@@ -5452,7 +5452,7 @@
     "translation": "Помилка при додаванні учасника(ів) каналу."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v додано до каналу як гостя користувачем %v."
   },
   {
@@ -6684,7 +6684,7 @@
     "translation": "Відсутній team_id в тілі запиту"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Некоректне оновлення учасника каналу: гостя не можна зробити членом команди або адміністратором команди, будь ласка, спочатку зробіть його користувачем."
   },
   {
@@ -6696,7 +6696,7 @@
     "translation": "У користувача відсутні права створювати закладки каналів."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Не вдалося створити закладку каналу."
   },
   {
@@ -6708,7 +6708,7 @@
     "translation": "Не вдалося видалити закладку каналу."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Не вдалося видалити закладку каналу."
   },
   {
@@ -6720,7 +6720,7 @@
     "translation": "Не вдалося оновити закладку каналу."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Не вдалося оновити закладку каналу."
   },
   {
@@ -6732,7 +6732,7 @@
     "translation": "Не вдалося оновити порядок сортування закладок каналів."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Не вдалося оновити порядок сортування закладок каналів."
   },
   {
@@ -6784,7 +6784,7 @@
     "translation": "У вас відсутні права на зміну назви, display_name та призначення особистих або групових повідомлень."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Некоректне оновлення учасника каналу: гостя не можна призначити для одного каналу, системний адміністратор повинен підвищувати або знижувати користувачів у статусі до/з гостя."
   },
   {
@@ -7668,7 +7668,7 @@
     "translation": "Не вдалося перевірити межі зображення. Роздільна здатність занадто висока."
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "Недійсне оновлення учасника команди: гість не може стати учасником команди або адміністратором команди, спочатку підвищте його до користувача."
   },
   {
@@ -7736,7 +7736,7 @@
     "translation": "Нагадування"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Вас запросили як гостя для співпраці з командою"
   },
   {
@@ -7824,7 +7824,7 @@
     "translation": "Завантажити додаток Mattermost"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "Неправильне оновлення учасника команди: гостя не можна призначити для однієї команди, системний адміністратор повинен підвищувати або знижувати користувачів до/з статусу гостя."
   },
   {
@@ -7968,15 +7968,15 @@
     "translation": "Невідоме джерело імпорту."
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "Гостьові облікові записи вимкнено"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Недійсне або відсутнє тіло запиту."
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "Ваша ліцензія не підтримує гостьові облікові записи"
   },
   {
@@ -8992,7 +8992,7 @@
     "translation": "Виникла помилка при пошуку облікового запису."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Не вдалося оновити користувача."
   },
   {
@@ -9164,7 +9164,7 @@
     "translation": "Не вдалося перетворити бота на користувача."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Не вдалося оновити користувача."
   },
   {
@@ -10044,7 +10044,7 @@
     "translation": "Не вдалось створити каталог для власних зображень емодзі"
   },
   {
-    "id": "app.import.validate_user_import_data.guest_roles_conflict.error",
+    "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
     "translation": "Ролі користувачів не відповідають статусу гостя."
   },
   {
@@ -10444,7 +10444,7 @@
     "translation": "Неправильний тип тесту: {{.TestType}}"
   },
   {
-    "id": "api.team.invite_guests.policy_enforced_channel.app_error",
+    "id": "api.team.invite_partners.policy_enforced_channel.app_error",
     "translation": "Неможливо запросити користувачів-гостей до цього каналу, оскільки він має обмеження доступу на основі атрибутів користувача."
   },
   {

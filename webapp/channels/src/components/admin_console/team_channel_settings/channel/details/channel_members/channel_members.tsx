@@ -32,7 +32,7 @@ type Props = {
     totalCount: number;
     searchTerm: string;
     loading?: boolean;
-    enableGuestAccounts: boolean;
+    enablePartnerAccounts: boolean;
 
     onAddCallback: (users: UserProfile[]) => void;
     onRemoveCallback: (user: UserProfile) => void;
@@ -180,11 +180,11 @@ export default class ChannelMembers extends React.PureComponent<Props, State> {
                     />
                 ),
                 values: {
-                    [GeneralConstants.SYSTEM_GUEST_ROLE]: {
+                    [GeneralConstants.SYSTEM_PARTNER_ROLE]: {
                         name: (
                             <FormattedMessage
-                                id='admin.user_grid.guest'
-                                defaultMessage='Guest'
+                                id='admin.user_grid.partner'
+                                defaultMessage='Partner'
                             />
                         ),
                         value: false,
@@ -217,12 +217,12 @@ export default class ChannelMembers extends React.PureComponent<Props, State> {
                         value: false,
                     },
                 },
-                keys: [GeneralConstants.SYSTEM_GUEST_ROLE, GeneralConstants.CHANNEL_USER_ROLE, GeneralConstants.CHANNEL_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE],
+                keys: [GeneralConstants.SYSTEM_PARTNER_ROLE, GeneralConstants.CHANNEL_USER_ROLE, GeneralConstants.CHANNEL_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE],
             },
         };
 
-        if (!this.props.enableGuestAccounts) {
-            delete filterOptions.role.values[GeneralConstants.SYSTEM_GUEST_ROLE];
+        if (!this.props.enablePartnerAccounts) {
+            delete filterOptions.role.values[GeneralConstants.SYSTEM_PARTNER_ROLE];
             filterOptions.role.keys = [GeneralConstants.CHANNEL_USER_ROLE, GeneralConstants.CHANNEL_ADMIN_ROLE, GeneralConstants.SYSTEM_ADMIN_ROLE];
         }
         const filterProps = {

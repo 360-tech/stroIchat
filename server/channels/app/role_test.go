@@ -94,7 +94,7 @@ func testPermissionInheritance(t *testing.T, testCallback func(t *testing.T, th 
 
 	// Defer resetting the system scheme permissions
 	systemSchemeRoles, appErr := th.App.GetRolesByNames([]string{
-		model.ChannelGuestRoleId,
+		model.ChannelPartnerRoleId,
 		model.ChannelUserRoleId,
 		model.ChannelAdminRoleId,
 	})
@@ -153,8 +153,8 @@ func testPermissionInheritance(t *testing.T, testCallback func(t *testing.T, th 
 	records, e := r.ReadAll()
 	require.NoError(t, e)
 
-	test := func(higherScopedGuest, higherScopedUser, higherScopedAdmin string) {
-		for _, roleNameUnderTest := range []string{higherScopedGuest, higherScopedUser, higherScopedAdmin} {
+	test := func(higherScopedPartner, higherScopedUser, higherScopedAdmin string) {
+		for _, roleNameUnderTest := range []string{higherScopedPartner, higherScopedUser, higherScopedAdmin} {
 			for i, row := range records {
 				// skip csv header
 				if i == 0 {
@@ -205,8 +205,8 @@ func testPermissionInheritance(t *testing.T, testCallback func(t *testing.T, th 
 				// get channel role
 				var channelRoleName string
 				switch roleNameUnderTest {
-				case higherScopedGuest:
-					channelRoleName = channelScheme.DefaultChannelGuestRole
+				case higherScopedPartner:
+					channelRoleName = channelScheme.DefaultChannelPartnerRole
 				case higherScopedUser:
 					channelRoleName = channelScheme.DefaultChannelUserRole
 				case higherScopedAdmin:
@@ -238,7 +238,7 @@ func testPermissionInheritance(t *testing.T, testCallback func(t *testing.T, th 
 	}
 
 	// test 24 combinations where the higher-scoped scheme is the SYSTEM scheme
-	test(model.ChannelGuestRoleId, model.ChannelUserRoleId, model.ChannelAdminRoleId)
+	test(model.ChannelPartnerRoleId, model.ChannelUserRoleId, model.ChannelAdminRoleId)
 
 	// create a team scheme
 	teamScheme, appErr := th.App.CreateScheme(&model.Scheme{
@@ -258,5 +258,5 @@ func testPermissionInheritance(t *testing.T, testCallback func(t *testing.T, th 
 	require.Nil(t, appErr)
 
 	// test 24 combinations where the higher-scoped scheme is a TEAM scheme
-	test(teamScheme.DefaultChannelGuestRole, teamScheme.DefaultChannelUserRole, teamScheme.DefaultChannelAdminRole)
+	test(teamScheme.DefaultChannelPartnerRole, teamScheme.DefaultChannelUserRole, teamScheme.DefaultChannelAdminRole)
 }

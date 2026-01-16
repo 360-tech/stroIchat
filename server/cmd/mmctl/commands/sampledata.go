@@ -29,7 +29,7 @@ import (
 
 const (
 	deactivatedUser = "deactivated"
-	guestUser       = "guest"
+	partnerUser       = "partner"
 	attachmentsDir  = "attachments"
 )
 
@@ -60,7 +60,7 @@ func init() {
 	SampledataCmd.Flags().IntP("teams", "t", 2, "The number of sample teams.")
 	SampledataCmd.Flags().Int("channels-per-team", 10, "The number of sample channels per team.")
 	SampledataCmd.Flags().IntP("users", "u", 15, "The number of sample users.")
-	SampledataCmd.Flags().IntP("guests", "g", 1, "The number of sample guests.")
+	SampledataCmd.Flags().IntP("partners", "g", 1, "The number of sample partners.")
 	SampledataCmd.Flags().Int("deactivated-users", 0, "The number of deactivated users.")
 	SampledataCmd.Flags().Int("team-memberships", 2, "The number of sample team memberships per user.")
 	SampledataCmd.Flags().Int("channel-memberships", 5, "The number of sample channel memberships per user in a team.")
@@ -196,7 +196,7 @@ func sampledataCmdF(c client.Client, command *cobra.Command, args []string) erro
 	channelsPerTeam, _ := command.Flags().GetInt("channels-per-team")
 	users, _ := command.Flags().GetInt("users")
 	deactivatedUsers, _ := command.Flags().GetInt("deactivated-users")
-	guests, _ := command.Flags().GetInt("guests")
+	partners, _ := command.Flags().GetInt("partners")
 	teamMemberships, _ := command.Flags().GetInt("team-memberships")
 	channelMemberships, _ := command.Flags().GetInt("channel-memberships")
 	postsPerChannel, _ := command.Flags().GetInt("posts-per-channel")
@@ -294,7 +294,7 @@ func sampledataCmdF(c client.Client, command *cobra.Command, args []string) erro
 		}
 	}
 
-	allUsers := make([]string, users+guests+deactivatedUsers)
+	allUsers := make([]string, users+partners+deactivatedUsers)
 	allUsersIndex := 0
 	for i := range users {
 		userLine := createUser(i, teamMemberships, channelMemberships, teamsAndChannels, profileImages, "")
@@ -304,8 +304,8 @@ func sampledataCmdF(c client.Client, command *cobra.Command, args []string) erro
 		allUsers[allUsersIndex] = *userLine.User.Username
 		allUsersIndex++
 	}
-	for i := range guests {
-		userLine := createUser(i, teamMemberships, channelMemberships, teamsAndChannels, profileImages, guestUser)
+	for i := range partners {
+		userLine := createUser(i, teamMemberships, channelMemberships, teamsAndChannels, profileImages, partnerUser)
 		if err := encoder.Encode(userLine); err != nil {
 			return fmt.Errorf("cannot encode user line: %w", err)
 		}

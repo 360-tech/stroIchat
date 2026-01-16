@@ -20,8 +20,8 @@ context('Okta', () => {
     const loginButtonText = 'SAML';
 
     const regular1 = users.regulars['samluser-1'];
-    const guest1 = users.guests['samlguest-1'];
-    const guest2 = users.guests['samlguest-2'];
+    const partner1 = users.partners['samlpartner-1'];
+    const partner2 = users.partners['samlpartner-2'];
     const admin1 = users.admins['samladmin-1'];
     const admin2 = users.admins['samladmin-2'];
 
@@ -52,7 +52,7 @@ context('Okta', () => {
             PublicCertificateFile: 'saml-public.crt',
             PrivateKeyFile: 'saml-private.key',
             IdAttribute: '',
-            GuestAttribute: '',
+            PartnerAttribute: '',
             EnableAdminAttribute: false,
             AdminAttribute: '',
             FirstNameAttribute: '',
@@ -61,7 +61,7 @@ context('Okta', () => {
             UsernameAttribute: 'Username',
             LoginButtonText: loginButtonText,
         },
-        GuestAccountsSettings: {
+        PartnerAccountsSettings: {
             Enable: true,
         },
     };
@@ -134,11 +134,11 @@ context('Okta', () => {
             });
         });
 
-        it('Saml login new and existing MM guest user(userType=Guest)', () => {
+        it('Saml login new and existing MM partner user(userType=Partner)', () => {
             cy.apiAdminLogin();
 
-            testSettings.user = guest1;
-            newConfig.SamlSettings.GuestAttribute = 'UserType=Guest';
+            testSettings.user = partner1;
+            newConfig.SamlSettings.PartnerAttribute = 'UserType=Partner';
 
             cy.apiUpdateConfig(newConfig).then(() => {
                 //login new user
@@ -169,11 +169,11 @@ context('Okta', () => {
             });
         });
 
-        it('Saml login new and existing MM guest(isGuest=true)', () => {
+        it('Saml login new and existing MM partner(isPartner=true)', () => {
             cy.apiAdminLogin();
 
-            testSettings.user = guest2;
-            newConfig.SamlSettings.GuestAttribute = 'IsGuest=true';
+            testSettings.user = partner2;
+            newConfig.SamlSettings.PartnerAttribute = 'IsPartner=true';
 
             cy.apiUpdateConfig(newConfig).then(() => {
                 //login new user
@@ -274,7 +274,7 @@ context('Okta', () => {
             });
         });
 
-        it('Saml login invited Guest user to a team', () => {
+        it('Saml login invited Partner user to a team', () => {
             cy.apiAdminLogin();
             testSettings.user = regular1;
 
@@ -291,12 +291,12 @@ context('Okta', () => {
                                 //logout regular1
                                 cy.oktaDeleteSession(oktaUserId);
                                 cy.doSamlLogout(testSettings).then(() => {
-                                    testSettings.user = guest1;
+                                    testSettings.user = partner1;
                                     cy.oktaGetOrCreateUser(testSettings.user).then((_oktaUserId) => {
                                         cy.visit(inviteUrl).then(() => {
                                             cy.oktaDeleteSession(_oktaUserId);
 
-                                            //login the guest
+                                            //login the partner
                                             cy.doSamlLogin(testSettings).then(() => {
                                                 cy.doOktaLogin(testSettings.user).then(() => {
                                                     cy.doLogoutFromSignUp();

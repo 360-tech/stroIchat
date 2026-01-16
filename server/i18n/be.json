@@ -428,11 +428,11 @@
     "translation": "Крама прыкладанняў."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Няправiльныя каналы."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Няправiльны канал."
   },
   {
@@ -792,11 +792,11 @@
     "translation": "Няправільнае апісанне."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Няправільныя адрасы электроннай пошты."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Няправільны адрас электроннай пошты."
   },
   {
@@ -2120,7 +2120,7 @@
     "translation": "Адсутнічае сертыфікат пастаўшчыка уліковых дадзеных. Вы забыліся яго загрузіць?"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Няправільны атрыбут госця. Павінен быць у форме 'поле=значэнне'."
   },
   {
@@ -2680,7 +2680,7 @@
     "translation": "памылка пры атрыманні групы ldap"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Няверны фільтр госця AD/LDAP."
   },
   {
@@ -2900,7 +2900,7 @@
     "translation": "Не ўдалося захаваць уліковы запіс."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Не ўдалося абнавіць карыстальніка."
   },
   {
@@ -2980,7 +2980,7 @@
     "translation": "Узнікла памылка пошуку ўліковага запісу."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Не ўдалося абнавіць карыстальніка."
   },
   {
@@ -4888,7 +4888,7 @@
     "translation": "Поле '{{.Field}}' павінна быць усталявана праз правайдэра аўтэнтыфікацыі карыстальніка."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Указаны вамі адрас электроннай пошты не належыць прызнанаму дамену для гасцявых уліковых запісаў. Калі ласка, звяжыцеся з вашым адміністратарам ці зарэгіструйцеся з іншым адрасам электроннай пошты."
   },
   {
@@ -4932,7 +4932,7 @@
     "translation": "Вы не можаце дэактываваць сябе самастойна, таму што гэтая функцыя не ўключана. Калі ласка, звяжыцеся са сваім сістэмным адміністратарам."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Вы не можаце актываваць гасцявы ўліковы запіс, таму што функцыя гасцявога доступу не ўключана."
   },
   {
@@ -4992,7 +4992,7 @@
     "translation": "Токен скіду пароля не ўяўляецца сапраўдным."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Немагчыма пераўтварыць госця ў звычайнага карыстальніка, таму што ён не госць."
   },
   {
@@ -5060,11 +5060,11 @@
     "translation": "Уваход не атрымаўся, паколькі ваш уліковы запіс адключаны. Калі ласка, звяжыцеся з адміністратарам."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Ваша ліцэнзія не падтрымлівае гасцявыя ўліковыя запісы"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Гасцявыя ўліковыя запісы адключаныя"
   },
   {
@@ -5116,7 +5116,7 @@
     "translation": "AD/LDAP недаступны на гэтым сэрвэры."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Немагчыма пераўтварыць карыстальніка ў госця, паколькі ён ужо з'яўляецца госцем."
   },
   {
@@ -5152,11 +5152,11 @@
     "translation": "Немагчыма стварыць карыстальніка, несапраўднае запрашэнне."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Ваша ліцэнзія не падтрымлівае гасцявыя ўліковыя запісы."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Гасцявыя ўліковыя запісы адключаныя."
   },
   {
@@ -5644,11 +5644,11 @@
     "translation": "[{{ .SiteName }}] {{ .SenderName }} запрасіў вас у каманду {{ .TeamDisplayName }}"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} запрасіў вас у каманду {{ .TeamDisplayName }} у якасці госця"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Вы былі запрошаны ў якасці госця ў каманду"
   },
   {
@@ -6996,7 +6996,7 @@
     "translation": "Абраная роля кіруецца схемай і не можа быць ужытая наўпрост да ўдзельніка каманды."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Недапушчальнае абнаўленне ўдзельніка каманды: вы не можаце дадаваць ці выдаляць гасцявую ролю ўручную."
   },
   {
@@ -7016,11 +7016,11 @@
     "translation": "Абраная роля кіруецца схемай і не можа быць ужытая наўпрост да ўдзельніка канала."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Недапушчальнае абнаўленне ўдзельніка канала: карыстальнік павінен быць госцем ці карыстальнікам, але не абодвума."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Недапушчальнае абнаўленне ўдзельніка канала: Вы не можаце дадаваць ці выдаляць гасцявую ролю ўручную."
   },
   {
@@ -7148,7 +7148,7 @@
     "translation": "У вас няма адпаведных правоў."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v далучыўся да канала як госць."
   },
   {
@@ -7232,7 +7232,7 @@
     "translation": "%v дададзены(а) у канал карыстальнікам %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v дададзены(а) ў канал як госць карыстальнікам %v."
   },
   {
@@ -7340,7 +7340,7 @@
     "translation": "Ваша ліцэнзія не падтрымлівае змену схемы каманды"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Недапушчальнае абнаўленне ўдзельніка каманды: карыстальнік павінен быць госцем ці карыстальнікам, але не абодвума."
   },
   {
@@ -7464,11 +7464,11 @@
     "translation": "Запрашэнні па электроннай пошце адключаныя."
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Цела запыту некарэктнае ці адсутнічае."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Каналы ў запрашэнні павінны быць часткай каманды ў запрашэнні."
   },
   {
@@ -7520,15 +7520,15 @@
     "translation": "У вас няма правоў для атрымання спісу ўсіх каманд"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Ваша ліцэнзія не падтрымлівае гасцявыя ўліковыя запісы"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Гасцявыя ўліковыя запісы адключаныя."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Гасцям абмежавана магчымасць далучацца да каманды праз спасылку-запрашэнне. Запытайце гасцёўня запрашэнне па электроннай пошце для далучэння да каманды."
   },
   {

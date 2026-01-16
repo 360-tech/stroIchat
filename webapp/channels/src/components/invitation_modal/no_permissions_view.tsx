@@ -35,7 +35,7 @@ export default function NoPermissionsView(props: Props) {
                     <div className='NoPermissionsView__description'>
                         <FormattedMessage
                             id='invite_modal.no_permissions.description'
-                            defaultMessage='You do not have permissions to add users or guests. If this seems like an error, please reach out to your system administrator.'
+                            defaultMessage='You do not have permissions to add users or partners. If this seems like an error, please reach out to your system administrator.'
                         />
                     </div>
                     <AccessDeniedSvg

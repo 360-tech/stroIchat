@@ -40,7 +40,7 @@ describe('components/admin_console/team_channel_settings/group/UsersToRemove', (
         searchTerm: '',
         scope,
         scopeId: 'team',
-        enableGuestAccounts: true,
+        enablePartnerAccounts: true,
         filters: {},
 
         actions: {
@@ -60,11 +60,11 @@ describe('components/admin_console/team_channel_settings/group/UsersToRemove', (
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot with guests disabled', () => {
+    test('should match snapshot with partners disabled', () => {
         const wrapper = shallow(
             <UsersToRemove
                 {...baseProps}
-                enableGuestAccounts={false}
+                enablePartnerAccounts={false}
             />,
         );
         expect(wrapper).toMatchSnapshot();

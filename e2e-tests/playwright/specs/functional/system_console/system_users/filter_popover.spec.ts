@@ -61,9 +61,9 @@ test('MM-T5521-8 Should be able to filter users with role filter', async ({pw}) 
     // # Log in as admin
     const {systemConsolePage} = await pw.testBrowser.login(adminUser);
 
-    // # Create a guest user
-    const guestUser = await adminClient.createUser(pw.random.user(), '', '');
-    await adminClient.updateUserRoles(guestUser.id, 'system_guest');
+    // # Create a partner user
+    const partnerUser = await adminClient.createUser(pw.random.user(), '', '');
+    await adminClient.updateUserRoles(partnerUser.id, 'system_partner');
 
     // # Create a regular user
     const regularUser = await adminClient.createUser(pw.random.user(), '', '');
@@ -84,8 +84,8 @@ test('MM-T5521-8 Should be able to filter users with role filter', async ({pw}) 
     await systemConsolePage.systemUsersFilterPopover.openRoleMenu();
     await systemConsolePage.systemUsersRoleMenu.toBeVisible();
 
-    // # Select the Guest role from the role filter
-    await systemConsolePage.systemUsersRoleMenu.clickMenuItem('Guest');
+    // # Select the Partner role from the role filter
+    await systemConsolePage.systemUsersRoleMenu.clickMenuItem('Partner');
     await systemConsolePage.systemUsersRoleMenu.close();
 
     // # Save the filter and close the popover
@@ -93,16 +93,16 @@ test('MM-T5521-8 Should be able to filter users with role filter', async ({pw}) 
     await systemConsolePage.systemUsersFilterPopover.close();
     await systemConsolePage.systemUsers.isLoadingComplete();
 
-    // # Search for the guest user with the filter already applied
-    await systemConsolePage.systemUsers.enterSearchText(guestUser.email);
+    // # Search for the partner user with the filter already applied
+    await systemConsolePage.systemUsers.enterSearchText(partnerUser.email);
 
-    // * Verify that guest user is visible as a 'Guest' role filter was applied
-    await systemConsolePage.systemUsers.verifyRowWithTextIsFound(guestUser.email);
+    // * Verify that partner user is visible as a 'Partner' role filter was applied
+    await systemConsolePage.systemUsers.verifyRowWithTextIsFound(partnerUser.email);
 
     // # Search for the regular user with the filter already applied
     await systemConsolePage.systemUsers.enterSearchText(regularUser.email);
 
-    // * Verify that regular user is not visible as 'Guest' role filter was applied
+    // * Verify that regular user is not visible as 'Partner' role filter was applied
     await systemConsolePage.systemUsers.verifyRowWithTextIsFound('No data');
 });
 

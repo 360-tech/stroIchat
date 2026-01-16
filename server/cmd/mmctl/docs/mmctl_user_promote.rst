@@ -3,24 +3,24 @@
 mmctl user promote
 ------------------
 
-Promote guests to users
+Promote partners to users
 
 Synopsis
 ~~~~~~~~
 
 
-Convert a guest into a regular user.
+Convert a partner into a regular user.
 
 ::
 
-  mmctl user promote [guests] [flags]
+  mmctl user promote [partners] [flags]
 
 Examples
 ~~~~~~~~
 
 ::
 
-    user promote guest1 guest2
+    user promote partner1 partner2
 
 Options
 ~~~~~~~

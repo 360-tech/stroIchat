@@ -83,8 +83,8 @@ export function SystemUsersFilterPopover(props: Props) {
             filterRole = RoleFilters.Admin;
         } else if (roleFilter === RoleFilters.Member) {
             filterRole = RoleFilters.Member;
-        } else if (roleFilter === RoleFilters.Guest) {
-            filterRole = RoleFilters.Guest;
+        } else if (roleFilter === RoleFilters.Partner) {
+            filterRole = RoleFilters.Partner;
         }
 
         setFilterState({...filterState, filterRole});

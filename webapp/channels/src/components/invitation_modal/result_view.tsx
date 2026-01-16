@@ -50,8 +50,8 @@ export default function ResultView(props: Props) {
     } else {
         inviteType = (
             <FormattedMessage
-                id='invite_modal.invited_guests'
-                defaultMessage='Guests'
+                id='invite_modal.invited_partners'
+                defaultMessage='Partners'
             />
         );
     }

@@ -15,7 +15,7 @@ interface SAMLUser {
     firstname: string;
     lastname: string;
     userType: string;
-    isGuest?: boolean;
+    isPartner?: boolean;
 }
 
 interface TestSettings {
@@ -27,12 +27,12 @@ interface TestSettings {
 }
 
 /**
- * checkCreateTeamPage checks that the "create a team" element is visible in the page if user is not a Guest.
+ * checkCreateTeamPage checks that the "create a team" element is visible in the page if user is not a Partner.
  * Otherwise it should not exist.
  * @param {TestSettings} settings - Settings object
  */
 function checkCreateTeamPage(settings: TestSettings) {
-    if (settings.user.userType === 'Guest' || settings.user.isGuest) {
+    if (settings.user.userType === 'Partner' || settings.user.isPartner) {
         cy.findByText('Create a team').scrollIntoView().should('not.exist');
     } else {
         cy.findByText('Create a team').scrollIntoView().should('be.visible');

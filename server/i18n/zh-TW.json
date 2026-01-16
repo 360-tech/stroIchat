@@ -4708,19 +4708,19 @@
     "translation": "舊值無效，當操作必須全部一同完成時，應設定此值。"
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "電子郵件無效。"
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "電子郵件無效。"
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "無效的頻道。"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "頻道無效。"
   },
   {
@@ -4732,7 +4732,7 @@
     "translation": "簽章演算法無效。"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "訪客屬性無效，必須為此格式：「欄位=值」。"
   },
   {
@@ -4768,7 +4768,7 @@
     "translation": "在與父群組同步的團隊連結之前，群組不能跟頻道連結。"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "AD/LDAP 訪客過濾條件無效。"
   },
   {
@@ -5160,7 +5160,7 @@
     "translation": "伺服器忙碌中，非必要服務將暫時無法使用。"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "您提供的電子郵件地址不屬於一個可接受訪客帳號的網域。請聯絡系統管理員或使用另一個不同的電子郵件地址註冊。"
   },
   {
@@ -5168,7 +5168,7 @@
     "translation": "您提供的電子郵件地址不屬於一個可接受的網域。請聯絡系統管理員或使用另一個不同的電子郵件地址註冊。"
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "訪客存取未被啟用，無法啟用訪客帳號。"
   },
   {
@@ -5176,7 +5176,7 @@
     "translation": "無法解析密碼重設代符"
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "由於使用者不是訪客，無法將訪客轉換成一般使用者。"
   },
   {
@@ -5196,15 +5196,15 @@
     "translation": "請輸入有效的電子郵件地址與密碼"
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "授權不支援訪客帳號"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "已停用訪客帳號"
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "由於使用者已是訪客，無法將使用者轉換成訪客。"
   },
   {
@@ -5212,11 +5212,11 @@
     "translation": "無法建立使用者，邀請無效。"
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "授權不支援訪客帳號。"
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "訪客帳號已停用。"
   },
   {
@@ -5232,11 +5232,11 @@
     "translation": "企業授權已過期，部份功能已被停用。請立即更新授權。"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} 邀請您以訪客身份加入 {{ .TeamDisplayName }}"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "無效的團隊成員更動：使用者角色必須在使用者與訪客間取一。"
   },
   {
@@ -5252,7 +5252,7 @@
     "translation": "無法從群組限制團隊中移除使用者。"
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "邀請的頻道必須屬於邀請的團隊。"
   },
   {
@@ -5264,15 +5264,15 @@
     "translation": "權限不足以列出所有團隊"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "授權不支援訪客帳號"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "訪客帳號已停用。"
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "訪客受限為只能經由邀請連結加入團隊。請向團隊詢問訪客電子郵件邀請。"
   },
   {
@@ -5380,7 +5380,7 @@
     "translation": "命令觸發關鍵字缺少起始的斜線字元"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "團隊成員更新無效：無法手動增減訪客角色。"
   },
   {
@@ -5388,11 +5388,11 @@
     "translation": "不能將預設頻道設為私人。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "頻道成員更動無效：使用者角色必須在使用者與訪客間取一。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "頻道成員更動無效：無法手動增減訪客角色。"
   },
   {
@@ -5424,7 +5424,7 @@
     "translation": "現有授權不支援頻道管理"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v 已以訪客身份加入頻道。"
   },
   {
@@ -5444,7 +5444,7 @@
     "translation": "新增頻道成員時發生錯誤。"
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v 已將 %v 以訪客身份加入頻道。"
   },
   {
@@ -7016,7 +7016,7 @@
     "translation": "無法透過名稱取得這麼多身份。一次至多能請求 {{.MaxNames}} 個身份。"
   },
   {
-    "id": "api.team.update_team_member_roles.guest.app_error",
+    "id": "api.team.update_team_member_roles.partner.app_error",
     "translation": "無效的團隊成員更新：訪客無法成為團隊成員或團隊管理員，請先將其升級為使用者。"
   },
   {
@@ -7304,7 +7304,7 @@
     "translation": "我們無法計算未啟用使用者的數量。"
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "更新使用者失敗。"
   },
   {
@@ -8812,7 +8812,7 @@
     "translation": "無法將帳號切換至 {{.Service}}。使用電子信箱 {{.Email}} 的帳號已經存在。"
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "更新使用者失敗。"
   },
   {
@@ -9104,19 +9104,19 @@
     "translation": "更新檢視過的公告失敗"
   },
   {
-    "id": "api.team.invite_guests_to_channels.disabled.error",
+    "id": "api.team.invite_partners_to_channels.disabled.error",
     "translation": "已停用訪客帳號"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "無效或缺少請求本文。"
   },
   {
-    "id": "api.team.invite_guests_to_channels.license.error",
+    "id": "api.team.invite_partners_to_channels.license.error",
     "translation": "授權不支援訪客帳號"
   },
   {
-    "id": "api.team.update_team_member_roles.user_and_guest.app_error",
+    "id": "api.team.update_team_member_roles.user_and_partner.app_error",
     "translation": "團隊成員更新無效：無法為單一團隊設定訪客，系統管理員必須將訪客升級為使用者，或將使用者降級為訪客。"
   },
   {
@@ -9128,7 +9128,7 @@
     "translation": "Mattermost 是什麼？"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "您已被邀請為團隊協作的訪客"
   },
   {
@@ -9172,11 +9172,11 @@
     "translation": "訊息已移動：{{.Link}}\n"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "頻道成員變更無效：訪客無法成為團隊成員或管理者，請先將其升級為使用者。"
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "頻道成員更新無效：無法為單一頻道設定訪客，系統管理員必須將訪客升級為使用者，或將使用者降級為訪客。"
   },
   {
@@ -9228,7 +9228,7 @@
     "translation": "使用者不允許建立頻道書籤。"
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "建立頻道書籤失敗。"
   },
   {
@@ -9240,7 +9240,7 @@
     "translation": "刪除頻道書籤失敗。"
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "刪除頻道書籤失敗。"
   },
   {
@@ -9252,7 +9252,7 @@
     "translation": "更新頻道書籤失敗。"
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "更新頻道書籤失敗。"
   },
   {
@@ -9260,7 +9260,7 @@
     "translation": "更新頻道書籤失敗。"
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "更新頻道書籤的排序順序失敗。"
   },
   {

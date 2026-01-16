@@ -3021,22 +3021,22 @@ func TestFillInPostProps(t *testing.T) {
 		defer th.TearDown()
 
 		id := model.NewId()
-		guest := &model.User{
+		partner := &model.User{
 			Email:         "success+" + id + "@simulator.amazonses.com",
 			Username:      "un_" + id,
 			Nickname:      "nn_" + id,
 			Password:      "Password1",
 			EmailVerified: true,
 		}
-		guest, err := th.App.CreateGuest(th.Context, guest)
+		partner, err := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, err)
-		th.LinkUserToTeam(guest, th.BasicTeam)
+		th.LinkUserToTeam(partner, th.BasicTeam)
 
 		channel := th.CreateChannel(th.Context, th.BasicTeam)
-		th.AddUserToChannel(guest, channel)
+		th.AddUserToChannel(partner, channel)
 
 		post1, err := th.App.CreatePost(th.Context, &model.Post{
-			UserId:    guest.Id,
+			UserId:    partner.Id,
 			ChannelId: channel.Id,
 			Message:   "test123123 @group1 @group2 blah blah blah",
 		}, channel, model.CreatePostFlags{SetOnline: true})
@@ -3048,29 +3048,29 @@ func TestFillInPostProps(t *testing.T) {
 		assert.Equal(t, post1.Props, model.StringInterface{})
 	})
 
-	t.Run("should add disable group highlight to post props for guest user", func(t *testing.T) {
+	t.Run("should add disable group highlight to post props for partner user", func(t *testing.T) {
 		mainHelper.Parallel(t)
 		th := Setup(t).InitBasic()
 		defer th.TearDown()
 		th.App.Srv().SetLicense(model.NewTestLicense("ldap"))
 
 		id := model.NewId()
-		guest := &model.User{
+		partner := &model.User{
 			Email:         "success+" + id + "@simulator.amazonses.com",
 			Username:      "un_" + id,
 			Nickname:      "nn_" + id,
 			Password:      "Password1",
 			EmailVerified: true,
 		}
-		guest, err := th.App.CreateGuest(th.Context, guest)
+		partner, err := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, err)
-		th.LinkUserToTeam(guest, th.BasicTeam)
+		th.LinkUserToTeam(partner, th.BasicTeam)
 
 		channel := th.CreateChannel(th.Context, th.BasicTeam)
-		th.AddUserToChannel(guest, channel)
+		th.AddUserToChannel(partner, channel)
 
 		post1, err := th.App.CreatePost(th.Context, &model.Post{
-			UserId:    guest.Id,
+			UserId:    partner.Id,
 			ChannelId: channel.Id,
 			Message:   "test123123 @group1 @group2 blah blah blah",
 		}, channel, model.CreatePostFlags{SetOnline: true})

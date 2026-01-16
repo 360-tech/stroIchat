@@ -900,7 +900,7 @@ func (os *OpensearchInterfaceImpl) SyncBulkIndexChannels(rctx request.CTX, chann
 	return nil
 }
 
-func (os *OpensearchInterfaceImpl) SearchChannels(teamId, userID string, term string, isGuest, includeDeleted bool) ([]string, *model.AppError) {
+func (os *OpensearchInterfaceImpl) SearchChannels(teamId, userID string, term string, isPartner, includeDeleted bool) ([]string, *model.AppError) {
 	os.mutex.RLock()
 	defer os.mutex.RUnlock()
 
@@ -938,7 +938,7 @@ func (os *OpensearchInterfaceImpl) SearchChannels(teamId, userID string, term st
 		query.Filter = append(query.Filter, types.Query{Term: map[string]types.TermQuery{"team_member_ids": {Value: userID}}})
 	}
 
-	if !isGuest {
+	if !isPartner {
 		query.Filter = append(query.Filter, types.Query{
 			Bool: &types.BoolQuery{
 				Should: []types.Query{

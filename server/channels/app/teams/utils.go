@@ -67,8 +67,8 @@ func (ts *TeamService) IsTeamEmailAllowed(user *model.User, team *model.Team) bo
 }
 
 func (ts *TeamService) GetAllowedDomains(user *model.User, team *model.Team) []string {
-	if user.IsGuest() {
-		return []string{*ts.config().GuestAccountsSettings.RestrictCreationToDomains}
+	if user.IsPartner() {
+		return []string{*ts.config().PartnerAccountsSettings.RestrictCreationToDomains}
 	}
 	// First check per team allowedDomains, then app wide restrictions
 	return []string{team.AllowedDomains, *ts.config().TeamSettings.RestrictCreationToDomains}

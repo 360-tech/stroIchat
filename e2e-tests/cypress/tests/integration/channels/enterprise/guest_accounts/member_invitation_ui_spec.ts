@@ -7,7 +7,7 @@
 // - Use element ID when selecting an element. Create one if none.
 // ***************************************************************
 
-// Group: @channels @enterprise @guest_account
+// Group: @channels @enterprise @partner_account
 
 /**
  * Note: This test requires Enterprise license to be uploaded
@@ -17,7 +17,7 @@ import {getRandomId, stubClipboard} from '../../../../utils';
 import {getAdminAccount} from '../../../../support/env';
 import * as TIMEOUTS from '../../../../fixtures/timeouts';
 
-describe('Guest Account - Member Invitation Flow', () => {
+describe('Partner Account - Member Invitation Flow', () => {
     const sysadmin = getAdminAccount();
     let testTeam: Cypress.Team;
     let testUser: Cypress.UserProfile;
@@ -26,12 +26,12 @@ describe('Guest Account - Member Invitation Flow', () => {
         // # Login as sysadmin
         cy.apiAdminLogin();
 
-        // * Check if server has license for Guest Accounts
-        cy.apiRequireLicenseForFeature('GuestAccounts');
+        // * Check if server has license for Partner Accounts
+        cy.apiRequireLicenseForFeature('PartnerAccounts');
 
-        // # Enable GuestAccountSettings
+        // # Enable PartnerAccountSettings
         cy.apiUpdateConfig({
-            GuestAccountsSettings: {
+            PartnerAccountsSettings: {
                 Enable: true,
             },
             ServiceSettings: {
@@ -180,7 +180,7 @@ describe('Guest Account - Member Invitation Flow', () => {
         });
     });
 
-    it('MM-T1329 Invite Members - Invite People - Existing Guest not on the team', () => {
+    it('MM-T1329 Invite Members - Invite People - Existing Partner not on the team', () => {
         cy.apiCreateTeam('team', 'Team').then(({team}) => {
             // # Login as new user
             loginAsNewUser(team);

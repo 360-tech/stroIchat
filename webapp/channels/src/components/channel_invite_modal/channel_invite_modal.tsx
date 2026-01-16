@@ -18,7 +18,7 @@ import type {RelationOneToOne} from '@mattermost/types/utilities';
 import {Client4} from 'mattermost-redux/client';
 import type {ActionResult} from 'mattermost-redux/types/actions';
 import {filterGroupsMatchingTerm} from 'mattermost-redux/utils/group_utils';
-import {displayUsername, filterProfilesStartingWithTerm, isGuest} from 'mattermost-redux/utils/user_utils';
+import {displayUsername, filterProfilesStartingWithTerm, isPartner} from 'mattermost-redux/utils/user_utils';
 
 import AlertBanner from 'components/alert_banner';
 import useAccessControlAttributes, {EntityType} from 'components/common/hooks/useAccessControlAttributes';
@@ -29,7 +29,7 @@ import ProfilePicture from 'components/profile_picture';
 import ToggleModalButton from 'components/toggle_modal_button';
 import AlertTag from 'components/widgets/tag/alert_tag';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 import TagGroup from 'components/widgets/tag/tag_group';
 
 import Constants, {ModalIdentifiers} from 'utils/constants';
@@ -67,7 +67,7 @@ export type Props = {
     // Dictionaries of userid mapped users to exclude or include from this list
     excludeUsers?: Record<string, UserProfileValue>;
     includeUsers?: Record<string, UserProfileValue>;
-    canInviteGuests?: boolean;
+    canInvitePartners?: boolean;
     emailInvitationsEnabled?: boolean;
     groups: Group[];
     isGroupsEnabled: boolean;
@@ -92,7 +92,7 @@ const isUser = (option: UserProfileValue | GroupValue): option is UserProfileVal
 const ChannelInviteModalComponent = (props: Props) => {
     const [selectedUsers, setSelectedUsers] = useState<UserProfileValue[]>([]);
     const [usersNotInTeam, setUsersNotInTeam] = useState<UserProfileValue[]>([]);
-    const [guestsNotInTeam, setGuestsNotInTeam] = useState<UserProfileValue[]>([]);
+    const [partnersNotInTeam, setPartnersNotInTeam] = useState<UserProfileValue[]>([]);
     const [term, setTerm] = useState('');
     const [show, setShow] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -126,8 +126,8 @@ const ChannelInviteModalComponent = (props: Props) => {
         if (isUser(value)) {
             const profile = value;
             if (!props.membersInTeam || !props.membersInTeam[profile.id]) {
-                if (isGuest(profile.roles)) {
-                    setGuestsNotInTeam((prevState) => {
+                if (isPartner(profile.roles)) {
+                    setPartnersNotInTeam((prevState) => {
                         if (prevState.findIndex((p) => p.id === profile.id) === -1) {
                             return [...prevState, profile];
                         }
@@ -151,7 +151,7 @@ const ChannelInviteModalComponent = (props: Props) => {
                 return prevState;
             });
         }
-    }, [props.membersInTeam, isGuest]);
+    }, [props.membersInTeam, isPartner]);
 
     // Get excluded users
     const excludedUsers = useMemo(() => {
@@ -421,7 +421,7 @@ const ChannelInviteModalComponent = (props: Props) => {
                             <span>
                                 {displayName}
                                 {option.is_bot && <BotTag/>}
-                                {isGuest(option.roles) && <GuestTag className='popoverlist'/>}
+                                {isPartner(option.roles) && <PartnerTag className='popoverlist'/>}
                                 {displayName === option.username ? null : <span className='channel-invite__username ml-2 light'>
                                     {'@'}{option.username}
                                 </span>
@@ -544,18 +544,18 @@ const ChannelInviteModalComponent = (props: Props) => {
         props.actions.closeModal(ModalIdentifiers.CHANNEL_INVITE);
     };
 
-    const InviteModalLink = (props: {inviteAsGuest?: boolean; children: React.ReactNode; id?: string; abacChannelPolicyEnforced?: boolean}) => {
+    const InviteModalLink = (props: {inviteAsPartner?: boolean; children: React.ReactNode; id?: string; abacChannelPolicyEnforced?: boolean}) => {
         return (
             <ToggleModalButton
-                className={`${props.inviteAsGuest ? 'invite-as-guest' : ''} btn btn-link`}
+                className={`${props.inviteAsPartner ? 'invite-as-partner' : ''} btn btn-link`}
                 modalId={ModalIdentifiers.INVITATION}
                 dialogType={InvitationModal}
                 dialogProps={{
                     channelToInvite: channel,
                     initialValue: term,
-                    inviteAsGuest: props.inviteAsGuest,
+                    inviteAsPartner: props.inviteAsPartner,
                     focusOriginElement: 'customNoOptionsMessageLink',
-                    canInviteGuests: Boolean(!props.abacChannelPolicyEnforced),
+                    canInvitePartners: Boolean(!props.abacChannelPolicyEnforced),
                 }}
                 onClick={closeMembersInviteModal}
                 id={props.id}
@@ -616,11 +616,11 @@ const ChannelInviteModalComponent = (props: Props) => {
         />
     );
 
-    const inviteGuestLink = (
-        <InviteModalLink inviteAsGuest={true}>
+    const invitePartnerLink = (
+        <InviteModalLink inviteAsPartner={true}>
             <FormattedMessage
-                id='channel_invite.invite_guest'
-                defaultMessage='Invite as a Guest'
+                id='channel_invite.invite_partner'
+                defaultMessage='Invite as a Partner'
             />
         </InviteModalLink>
     );
@@ -685,11 +685,11 @@ const ChannelInviteModalComponent = (props: Props) => {
                 <div className='channel-invite__content'>
                     {content}
                     <TeamWarningBanner
-                        guests={guestsNotInTeam}
+                        partners={partnersNotInTeam}
                         teamId={channel.team_id}
                         users={usersNotInTeam}
                     />
-                    {(props.emailInvitationsEnabled && !channel.policy_enforced) && inviteGuestLink}
+                    {(props.emailInvitationsEnabled && !channel.policy_enforced) && invitePartnerLink}
                 </div>
             </div>
         </GenericModal>

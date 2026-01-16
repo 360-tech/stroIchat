@@ -822,7 +822,7 @@ func (es *ElasticsearchInterfaceImpl) SyncBulkIndexChannels(rctx request.CTX, ch
 	return nil
 }
 
-func (es *ElasticsearchInterfaceImpl) SearchChannels(teamId, userID string, term string, isGuest, includeDeleted bool) ([]string, *model.AppError) {
+func (es *ElasticsearchInterfaceImpl) SearchChannels(teamId, userID string, term string, isPartner, includeDeleted bool) ([]string, *model.AppError) {
 	es.mutex.RLock()
 	defer es.mutex.RUnlock()
 
@@ -860,7 +860,7 @@ func (es *ElasticsearchInterfaceImpl) SearchChannels(teamId, userID string, term
 		query.Filter = append(query.Filter, types.Query{Term: map[string]types.TermQuery{"team_member_ids": {Value: userID}}})
 	}
 
-	if !isGuest {
+	if !isPartner {
 		query.Filter = append(query.Filter, types.Query{
 			Bool: &types.BoolQuery{
 				Should: []types.Query{

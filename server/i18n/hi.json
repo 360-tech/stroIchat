@@ -880,11 +880,11 @@
     "translation": "[{{ .SiteName }}] {{ .SenderName }} ने आपको {{ .TeamDisplayName }} टीम में शामिल होने के लिए आमंत्रित किया है"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }} ने आपको अतिथि के रूप में {{ .TeamDisplayName }} टीम में शामिल होने के लिए आमंत्रित किया"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "टीम के साथ सहयोग करने के लिए आपको अतिथि के रूप में आमंत्रित किया गया था"
   },
   {
@@ -1172,7 +1172,7 @@
     "translation": "%v चैनल में %v द्वारा जोड़ा गया।"
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v ने चैनल में %v द्वारा अतिथि के रूप में जोड़ा।"
   },
   {
@@ -1228,7 +1228,7 @@
     "translation": "प्रदान की गई भूमिका एक योजना द्वारा प्रबंधित की जाती है और इसलिए इसे सीधे चैनल सदस्य पर लागू नहीं किया जा सकता है।"
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "अमान्य चैनल सदस्य अद्यतन: आप अतिथि भूमिका को मैन्युअल रूप से जोड़ या हटा नहीं सकते हैं।"
   },
   {
@@ -2328,7 +2328,7 @@
     "translation": "फ़ील्ड '{{.Field}}' को उपयोगकर्ता के लॉगिन प्रदाता के माध्यम से सेट किया जाना चाहिए।"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "आपके द्वारा प्रदान किया गया ईमेल अतिथि अकाऊंत के लिए स्वीकृत डोमेन से संबंधित नहीं है। कृपया अपने व्यवस्थापक से संपर्क करें या किसी दूसरे ईमेल से साइन अप करें।"
   },
   {
@@ -2584,7 +2584,7 @@
     "translation": "ईमेल आमंत्रण अक्षम हैं।"
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "आमंत्रण के चैनल आमंत्रण की टीम का हिस्सा होना चाहिए।"
   },
   {
@@ -2620,15 +2620,15 @@
     "translation": "आपके पास सभी टीमों को लिस्ट करने के लिए उपयुक्त अनुमति नहीं है"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "आपका लाइसेंस अतिथि अकाऊंत का समर्थन नहीं करता"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "अतिथि अकाऊंत अक्षम हैं।"
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "मेहमानों को एक आमंत्रण लिंक के माध्यम से टीम में शामिल होने से प्रतिबंधित किया गया है। कृपया टीम को अतिथि ईमेल आमंत्रण का अनुरोध करें।"
   },
   {
@@ -3064,7 +3064,7 @@
     "translation": "रीसेट पासवर्ड टोकन मान्य प्रतीत नहीं होता है।"
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "अतिथि को नियमित उपयोगकर्ता में बदलने में असमर्थ क्योंकि वह अतिथि नहीं है।"
   },
   {
@@ -3112,7 +3112,7 @@
     "translation": "आपके पास उचित अनुमतियां नहीं हैं।"
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v अतिथि के रूप में चैनल में शामिल हुए।"
   },
   {
@@ -3638,7 +3638,7 @@
     "translation": "लॉगिन विफल हुआ क्योंकि आपका अकाऊंत निष्क्रिय कर दिया गया है। कृपया किसी व्यवस्थापक से संपर्क करें."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "आपका लाइसेंस अतिथि अकाऊंत का समर्थन नहीं करता"
   },
   {
@@ -3985,7 +3985,7 @@
     "translation": "प्रदान की गई भूमिका एक स्कीम द्वारा प्रबंधित की जाती है और इसलिए इसे सीधे टीम सदस्य पर लागू नहीं किया जा सकता है।"
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "अमान्य टीम सदस्य अपडेट: आप अतिथि भूमिका को मैन्युअल रूप से जोड़ या हटा नहीं सकते हैं।"
   },
   {
@@ -3993,7 +3993,7 @@
     "translation": "स्कीम को चैनल पर सेट करने में असमर्थ क्योंकि आपूर्ति की गई स्कीम एक चैनल स्कीम नहीं है।"
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "अमान्य चैनल सदस्य अपडेट: उपयोगकर्ता को अतिथि या उपयोगकर्ता होना चाहिए, लेकिन दोनों नहीं।"
   },
   {
@@ -4505,7 +4505,7 @@
     "translation": "इस सर्वर पर AD/LDAP उपलब्ध नहीं है।"
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "उपयोक्ता को अतिथि में बदलने में असमर्थ क्योंकि वह पहले से ही अतिथि है."
   },
   {
@@ -4541,11 +4541,11 @@
     "translation": "उपयोगकर्ता बनाने में असमर्थ, अमान्य आमंत्रण।"
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "आपका लाइसेंस अतिथि खातों का समर्थन नहीं करता है।"
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "अतिथि खाते अक्षम हैं।"
   },
   {
@@ -4661,7 +4661,7 @@
     "translation": "आपका लाइसेंस टीम की योजना को अपडेट करने का समर्थन नहीं करता"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "अमान्य टीम सदस्य अद्यतन: उपयोगकर्ता को अतिथि या उपयोगकर्ता होना चाहिए, लेकिन दोनों नहीं।"
   },
   {
@@ -4721,7 +4721,7 @@
     "translation": "चैनल स्थानांतरण संदेश पोस्ट करने में विफल।"
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "अमान्य या अनुपलब्ध अनुरोध निकाय।"
   },
   {
@@ -5417,7 +5417,7 @@
     "translation": "कस्टम अनुमति योजनाएं वर्तमान लाइसेंस द्वारा समर्थित नहीं हैं"
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "आप अतिथि खाते को सक्रिय नहीं कर सकते क्योंकि अतिथि पहुंच सुविधा सक्षम नहीं है।"
   },
   {
@@ -5437,7 +5437,7 @@
     "translation": "निष्क्रिय खाता ईमेल सफलतापूर्वक भेजने में विफल"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "अतिथि खाते अक्षम हैं"
   },
   {
@@ -6349,7 +6349,7 @@
     "translation": "एलडीएपी समूह पुनर्प्राप्त करने में त्रुटि"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "अमान्य AD/LDAP अतिथि फ़िल्टर।"
   },
   {
@@ -6924,7 +6924,7 @@
     "translation": "पहचान प्रदाता सार्वजनिक प्रमाणपत्र गुम है। क्या आप इसे अपलोड करना भूल गए?"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "अमान्य अतिथि विशेषता। 'field=value' के रूप में होना चाहिए।"
   },
   {
@@ -7220,11 +7220,11 @@
     "translation": "अमान्य चैनल आईडी।"
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "अमान्य ईमेल।"
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "अमान्य चैनल।"
   },
   {
@@ -7772,11 +7772,11 @@
     "translation": "के लिये पता लापता।"
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "अमान्य ईमेल।"
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "अमान्य चैनल।"
   },
   {

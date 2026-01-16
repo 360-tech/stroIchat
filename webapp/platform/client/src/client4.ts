@@ -642,14 +642,14 @@ export default class Client4 {
         );
     };
 
-    promoteGuestToUser = (userId: string) => {
+    promotePartnerToUser = (userId: string) => {
         return this.doFetch<StatusOK>(
             `${this.getUserRoute(userId)}/promote`,
             {method: 'post'},
         );
     };
 
-    demoteUserToGuest = (userId: string) => {
+    demoteUserToPartner = (userId: string) => {
         return this.doFetch<StatusOK>(
             `${this.getUserRoute(userId)}/demote`,
             {method: 'post'},
@@ -1492,9 +1492,9 @@ export default class Client4 {
         );
     };
 
-    sendEmailGuestInvitesToChannels = (teamId: string, channelIds: string[], emails: string[], message: string) => {
+    sendEmailPartnerInvitesToChannels = (teamId: string, channelIds: string[], emails: string[], message: string) => {
         return this.doFetch<StatusOK>(
-            `${this.getTeamRoute(teamId)}/invite-guests/email`,
+            `${this.getTeamRoute(teamId)}/invite-partners/email`,
             {method: 'post', body: JSON.stringify({emails, channels: channelIds, message})},
         );
     };
@@ -1518,10 +1518,10 @@ export default class Client4 {
         );
     };
 
-    sendEmailGuestInvitesToChannelsGracefully = async (teamId: string, channelIds: string[], emails: string[], message: string, guestSubtype?: string) => {
+    sendEmailPartnerInvitesToChannelsGracefully = async (teamId: string, channelIds: string[], emails: string[], message: string, partnerSubtype?: string) => {
         return this.doFetch<TeamInviteWithError[]>(
-            `${this.getTeamRoute(teamId)}/invite-guests/email?graceful=true`,
-            {method: 'post', body: JSON.stringify({emails, channels: channelIds, message, guest_subtype: guestSubtype || ''})},
+            `${this.getTeamRoute(teamId)}/invite-partners/email?graceful=true`,
+            {method: 'post', body: JSON.stringify({emails, channels: channelIds, message, partner_subtype: partnerSubtype || ''})},
         );
     };
 

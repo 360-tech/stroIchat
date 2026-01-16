@@ -417,19 +417,19 @@ func TestCreatePostForPriority(t *testing.T) {
 		CheckBadRequestStatus(t, resp)
 	})
 
-	t.Run("should return forbidden when persistent notification is disabled for guest users", func(t *testing.T) {
-		originalSetting := *th.App.Config().ServiceSettings.AllowPersistentNotificationsForGuests
+	t.Run("should return forbidden when persistent notification is disabled for partner users", func(t *testing.T) {
+		originalSetting := *th.App.Config().ServiceSettings.AllowPersistentNotificationsForPartners
 		th.App.UpdateConfig(func(cfg *model.Config) {
-			*cfg.ServiceSettings.AllowPersistentNotificationsForGuests = false
+			*cfg.ServiceSettings.AllowPersistentNotificationsForPartners = false
 		})
 		defer th.App.UpdateConfig(func(cfg *model.Config) {
-			*cfg.ServiceSettings.AllowPersistentNotificationsForGuests = originalSetting
+			*cfg.ServiceSettings.AllowPersistentNotificationsForPartners = originalSetting
 		})
 
-		appErr := th.App.DemoteUserToGuest(th.Context, th.BasicUser)
+		appErr := th.App.DemoteUserToPartner(th.Context, th.BasicUser)
 		require.Nil(t, appErr)
 		defer func() {
-			appErr = th.App.PromoteGuestToUser(th.Context, th.BasicUser, th.SystemAdminUser.Id)
+			appErr = th.App.PromotePartnerToUser(th.Context, th.BasicUser, th.SystemAdminUser.Id)
 			require.Nil(t, appErr)
 		}()
 

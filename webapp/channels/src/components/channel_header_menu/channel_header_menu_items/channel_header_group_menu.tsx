@@ -13,7 +13,7 @@ import type {Channel} from '@mattermost/types/channels';
 import type {UserProfile} from '@mattermost/types/users';
 
 import {Permissions} from 'mattermost-redux/constants';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import ChannelMoveToSubMenu from 'components/channel_move_to_sub_menu';
 import * as Menu from 'components/menu';
@@ -74,13 +74,13 @@ const ChannelHeaderGroupMenu = ({channel, user, isMuted, isMobile, isFavorite, p
                     channel={channel}
                 />
             )}
-            {(!isArchived && isGuest(user.roles)) && (
+            {(!isArchived && isPartner(user.roles)) && (
                 <EditConversationHeader
                     leadingElement={<CogOutlineIcon size='18px'/>}
                     channel={channel}
                 />
             )}
-            {(!isArchived && !isGroupConstrained && !isGuest(user.roles)) && (
+            {(!isArchived && !isGroupConstrained && !isPartner(user.roles)) && (
                 <Menu.SubMenu
                     id={'channelSettings'}
                     labels={
@@ -102,7 +102,7 @@ const ChannelHeaderGroupMenu = ({channel, user, isMuted, isMobile, isFavorite, p
                     />
                 </Menu.SubMenu>
             )}
-            {!isArchived && !isGuest(user.roles) && isChannelBookmarksEnabled && (
+            {!isArchived && !isPartner(user.roles) && isChannelBookmarksEnabled && (
                 <MenuItemChannelBookmarks
                     channel={channel}
                 />

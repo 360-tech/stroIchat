@@ -488,19 +488,19 @@
     "translation": "شناسه کانال نامعتبر است."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "ایمیل نامعتبر است."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "ایمیل نامعتبر است."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "کانال نامعتبر است."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "کانال نامعتبر است."
   },
   {
@@ -704,7 +704,7 @@
     "translation": "شناسه ارائه دهنده هویت موجود نیست. فراموش کردید که آن را بارگذاری کنید؟"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "ویژگی مهمان نامعتبر است. باید به شکل 'field=value' باشد."
   },
   {
@@ -1712,7 +1712,7 @@
     "translation": "خطای بازیابی گروه ldap"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "فیلتر مهمان AD/LDAP نامعتبر است."
   },
   {
@@ -2892,7 +2892,7 @@
     "translation": "هیچ کانالی پیدا نشد."
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "حساب های مهمان غیرفعال شده است"
   },
   {
@@ -2944,7 +2944,7 @@
     "translation": "AD/LDAP در این سرور موجود نیست."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "کاربر نمی تواند به مهمان تبدیل شود زیرا از قبل مهمان است."
   },
   {
@@ -2980,11 +2980,11 @@
     "translation": "ایجاد کاربر امکان پذیر نیست ، دعوت نامه نامعتبر است."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "مجوز شما از حساب های مهمان پشتیبانی نمی کند."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "حساب های مهمان غیرفعال شده است."
   },
   {
@@ -4424,11 +4424,11 @@
     "translation": "[{{ .SiteName }}] {{ .SenderName }}از شما برای پیوستن به تیم {{ .TeamDisplayName }} دعوت کرده است"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{ .SiteName }}] {{ .SenderName }}از شما دعوت کرد به عنوان مهمان به تیم {{ .TeamDisplayName }} بپیوندید"
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "شما به عنوان یک مهمان برای همکاری با تیم دعوت شده اید"
   },
   {
@@ -4632,11 +4632,11 @@
     "translation": "دعوت نامه های ایمیل غیرفعال است."
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "متن درخواست نامعتبر است یا وجود ندارد."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "کانال های دعوت باید بخشی از تیم دعوت باشند."
   },
   {
@@ -4692,15 +4692,15 @@
     "translation": "شما مجوزهای مناسب برای لیست همه تیم ها را ندارید"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "مجوز شما از حساب های مهمان پشتیبانی نمی کند"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "حساب های مهمان غیرفعال شده است."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "میهمانان از طریق پیوند دعوت به عضویت تیم محدود می شوند. لطفاً از تیم دعوت نامه الکترونیکی مهمان بخواهید."
   },
   {
@@ -4776,7 +4776,7 @@
     "translation": "در یافتن حساب با خطایی مواجه شدیم."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "کاربر به روز نشد."
   },
   {
@@ -5288,7 +5288,7 @@
     "translation": "فیلد '{{.Field}}' باید از طریق ارائه دهنده ورود به سیستم کاربر تنظیم شود."
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "ایمیلی که ارائه کردید به دامنه پذیرفته شده برای حساب های مهمان تعلق ندارد. لطفاً با سرپرست خود تماس بگیرید یا با ایمیل دیگری ثبت نام کنید."
   },
   {
@@ -5336,7 +5336,7 @@
     "translation": "نمی توانید خود را غیرفعال کنید زیرا این ویژگی فعال نیست. لطفا با سرپرست سیستم خود تماس بگیرید."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "نمی توانید حساب مهمان را فعال کنید زیرا ویژگی دسترسی مهمان فعال نیست."
   },
   {
@@ -5396,7 +5396,7 @@
     "translation": "به نظر نمی رسد توکن تنظیم مجدد رمز عبورمعتبر باشد."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "تبدیل مهمان به کاربر عادی امکان پذیر نیست زیرا مهمان نیست."
   },
   {
@@ -5464,7 +5464,7 @@
     "translation": "ورود به سیستم انجام نشد زیرا حساب شما غیرفعال شده است. لطفاً با یک مدیر تماس بگیرید."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "مجوز شما از حساب های مهمان پشتیبانی نمی کند"
   },
   {
@@ -6114,7 +6114,7 @@
     "translation": "امکان ذخیره اکانت وجود ندارد."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "کاربر به روز نشد."
   },
   {
@@ -6190,7 +6190,7 @@
     "translation": "مجوز شما از به روزرسانی طرح تیم پشتیبانی نمی کند"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "به روزرسانی عضو تیم نامعتبر: کاربر باید مهمان یا کاربر باشد اما نه هر دو."
   },
   {
@@ -7568,7 +7568,7 @@
     "translation": "نقش ارائه شده توسط یک طرح مدیریت می شود و بنابراین نمی تواند مستقیماً برای یک عضو تیم اعمال شود."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "به روزرسانی عضو تیم نامعتبر است: شما نمی توانید نقش مهمان را به صورت دستی اضافه یا حذف کنید."
   },
   {
@@ -7588,11 +7588,11 @@
     "translation": "نقش ارائه شده توسط یک طرح مدیریت می شود و بنابراین نمی تواند مستقیماً روی یک عضو کانال اعمال شود."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "به روزرسانی عضو کانال نامعتبر است: کاربر باید مهمان یا کاربر باشد اما هر دو نیست."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "به روزرسانی عضو کانال نامعتبر است: شما نمی توانید نقش مهمان را به صورت دستی اضافه یا حذف کنید."
   },
   {
@@ -7724,7 +7724,7 @@
     "translation": "شما مجوزهای مناسب را ندارید."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v به عنوان مهمان به کانال پیوست."
   },
   {
@@ -7816,7 +7816,7 @@
     "translation": "%v توسط %v به کانال اضافه شد."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v به عنوان میهمان توسط %v به کانال اضافه شد."
   },
   {

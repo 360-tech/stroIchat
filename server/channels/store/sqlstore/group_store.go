@@ -1090,7 +1090,7 @@ func (s *SqlGroupStore) TeamMembersToRemove(teamID *string) ([]*model.TeamMember
 		"TeamMembers.DeleteAt",
 		"TeamMembers.SchemeUser",
 		"TeamMembers.SchemeAdmin",
-		"(TeamMembers.SchemeGuest IS NOT NULL AND TeamMembers.SchemeGuest) AS SchemeGuest",
+		"(TeamMembers.SchemePartner IS NOT NULL AND TeamMembers.SchemePartner) AS SchemePartner",
 	).
 		From("TeamMembers").
 		Join("Teams ON Teams.Id = TeamMembers.TeamId").
@@ -1270,7 +1270,7 @@ func (s *SqlGroupStore) ChannelMembersToRemove(channelID *string) ([]*model.Chan
 		"ChannelMembers.LastUpdateAt",
 		"ChannelMembers.SchemeUser",
 		"ChannelMembers.SchemeAdmin",
-		"(ChannelMembers.SchemeGuest IS NOT NULL AND ChannelMembers.SchemeGuest) AS SchemeGuest",
+		"(ChannelMembers.SchemePartner IS NOT NULL AND ChannelMembers.SchemePartner) AS SchemePartner",
 	).
 		From("ChannelMembers").
 		Join("Channels ON Channels.Id = ChannelMembers.ChannelId").
@@ -1647,7 +1647,7 @@ func (s *SqlGroupStore) teamMembersMinusGroupMembersQuery(teamID string, groupID
 	} else {
 		builder = s.getQueryBuilder().Select().
 			Columns(getUsersColumns()...).
-			Column("coalesce(TeamMembers.SchemeGuest, false) SchemeGuest").
+			Column("coalesce(TeamMembers.SchemePartner, false) SchemePartner").
 			Column("TeamMembers.SchemeAdmin").
 			Column("TeamMembers.SchemeUser")
 
@@ -1677,7 +1677,7 @@ func (s *SqlGroupStore) teamMembersMinusGroupMembersQuery(teamID string, groupID
 		Where(fmt.Sprintf("Users.Id NOT IN (%s)", query))
 
 	if !isCount {
-		builder = builder.GroupBy("Users.Id, TeamMembers.SchemeGuest, TeamMembers.SchemeAdmin, TeamMembers.SchemeUser")
+		builder = builder.GroupBy("Users.Id, TeamMembers.SchemePartner, TeamMembers.SchemeAdmin, TeamMembers.SchemeUser")
 	}
 
 	return builder
@@ -1721,7 +1721,7 @@ func (s *SqlGroupStore) channelMembersMinusGroupMembersQuery(channelID string, g
 	} else {
 		builder = builder.Columns(getUsersColumns()...)
 		builder = builder.Columns(
-			"COALESCE(ChannelMembers.SchemeGuest, FALSE) SchemeGuest",
+			"COALESCE(ChannelMembers.SchemePartner, FALSE) SchemePartner",
 			"ChannelMembers.SchemeAdmin",
 			"ChannelMembers.SchemeUser",
 		)
@@ -1751,7 +1751,7 @@ func (s *SqlGroupStore) channelMembersMinusGroupMembersQuery(channelID string, g
 		Where(fmt.Sprintf("Users.Id NOT IN (%s)", query))
 
 	if !isCount {
-		builder = builder.GroupBy("Users.Id, ChannelMembers.SchemeGuest, ChannelMembers.SchemeAdmin, ChannelMembers.SchemeUser")
+		builder = builder.GroupBy("Users.Id, ChannelMembers.SchemePartner, ChannelMembers.SchemeAdmin, ChannelMembers.SchemeUser")
 	}
 
 	return builder

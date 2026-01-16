@@ -70,20 +70,20 @@ const usesLDAP = async (
 
 // // commented out for now.
 // // @see discussion here: https://github.com/mattermost/mattermost-webapp/pull/9822#discussion_r806879385
-// const fetchGuestAccounts = async (
+// const fetchPartnerAccounts = async (
 //     config: Partial<AdminConfig>,
 //     analytics: AnalyticsState | undefined,
 // ) => {
-//     if (config.TeamSettings?.EnableOpenServer && config.GuestAccountsSettings?.Enable) {
+//     if (config.TeamSettings?.EnableOpenServer && config.PartnerAccountsSettings?.Enable) {
 //         let usersArray = await fetch(`${Client4.getBaseRoute()}/users/invalid_emails`).then((result) => result.json());
 
 //         // this setting is just a string with a list of domains, or an empty string
-//         if (config.GuestAccountsSettings?.RestrictCreationToDomains) {
-//             const domainList = config.GuestAccountsSettings?.RestrictCreationToDomains;
+//         if (config.PartnerAccountsSettings?.RestrictCreationToDomains) {
+//             const domainList = config.PartnerAccountsSettings?.RestrictCreationToDomains;
 //             usersArray = usersArray.filter(({email}: Record<string, unknown>) => domainList.includes((email as string).split('@')[1]));
 //         }
 
-//         // if guest accounts make up more than 5% of the user base show the info accordion
+//         // if partner accounts make up more than 5% of the user base show the info accordion
 //         if (analytics && usersArray.length > (analytics.totalUsers as number * 0.05)) {
 //             return ItemStatus.INFO;
 //         }
@@ -92,26 +92,26 @@ const usesLDAP = async (
 //     return ItemStatus.OK;
 // };
 
-// const guestAccounts = async (
+// const partnerAccounts = async (
 //     config: Partial<AdminConfig>,
 //     formatMessage: ReturnType<typeof useIntl>['formatMessage'],
 //     options: Options,
 // ): Promise<ItemModel> => {
-//     const status = await fetchGuestAccounts(config, options.analytics);
+//     const status = await fetchPartnerAccounts(config, options.analytics);
 //     return {
-//         id: 'guest-accounts',
+//         id: 'partner-accounts',
 //         title: formatMessage({
-//             id: 'admin.reporting.workspace_optimization.ease_of_management.guests_accounts.title',
-//             defaultMessage: 'Guest Accounts recommended',
+//             id: 'admin.reporting.workspace_optimization.ease_of_management.partners_accounts.title',
+//             defaultMessage: 'Partner Accounts recommended',
 //         }),
 //         description: formatMessage({
-//             id: 'admin.reporting.workspace_optimization.ease_of_management.guests_accounts.description',
-//             defaultMessage: 'Several user accounts are using different domains than your Site URL. You can control user access to channels and teams with guest accounts. We recommend starting an Enterprise trial and enabling Guest Access.',
+//             id: 'admin.reporting.workspace_optimization.ease_of_management.partners_accounts.description',
+//             defaultMessage: 'Several user accounts are using different domains than your Site URL. You can control user access to channels and teams with partner accounts. We recommend starting an Enterprise trial and enabling Partner Access.',
 //         }),
 //         ...options.trialOrEnterpriseCtaConfig,
-//         infoUrl: 'https://docs.mattermost.com/onboard/guest-accounts.html',
+//         infoUrl: 'https://docs.mattermost.com/onboard/partner-accounts.html',
 //         infoText: formatMessage({id: 'admin.reporting.workspace_optimization.cta.learnMore', defaultMessage: 'Learn more'}),
-//         telemetryAction: 'guest-accounts',
+//         telemetryAction: 'partner-accounts',
 //         status,
 //         scoreImpact: 6,
 //         impactModifier: impactModifiers[status],
@@ -126,7 +126,7 @@ export const runEaseOfUseChecks = async (
     const checks = [
         usesLDAP,
 
-        // guestAccounts,
+        // partnerAccounts,
     ];
 
     const results = await Promise.all(checks.map((check) => check(config, formatMessage, options)));

@@ -10,7 +10,7 @@ export type TeamMembership = TeamUnread & {
     roles: string;
     delete_at: number;
     scheme_admin: boolean;
-    scheme_guest: boolean;
+    scheme_partner: boolean;
     scheme_user: boolean;
 };
 

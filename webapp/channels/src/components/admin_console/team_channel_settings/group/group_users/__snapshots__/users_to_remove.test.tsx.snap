@@ -43,7 +43,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemove shou
         "options": Object {
           "role": Object {
             "keys": Array [
-              "system_guest",
+              "system_partner",
               "team_user",
               "team_admin",
               "system_admin",
@@ -60,10 +60,10 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemove shou
                 />,
                 "value": false,
               },
-              "system_guest": Object {
+              "system_partner": Object {
                 "name": <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest"
-                  id="admin.user_grid.guest"
+                  defaultMessage="Partner"
+                  id="admin.user_grid.partner"
                 />,
                 "value": false,
               },
@@ -148,7 +148,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemove shou
         "options": Object {
           "role": Object {
             "keys": Array [
-              "system_guest",
+              "system_partner",
               "team_user",
               "team_admin",
               "system_admin",
@@ -165,10 +165,10 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemove shou
                 />,
                 "value": false,
               },
-              "system_guest": Object {
+              "system_partner": Object {
                 "name": <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest"
-                  id="admin.user_grid.guest"
+                  defaultMessage="Partner"
+                  id="admin.user_grid.partner"
                 />,
                 "value": false,
               },
@@ -253,7 +253,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemove shou
         "options": Object {
           "role": Object {
             "keys": Array [
-              "system_guest",
+              "system_partner",
               "team_user",
               "team_admin",
               "system_admin",
@@ -270,10 +270,10 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemove shou
                 />,
                 "value": false,
               },
-              "system_guest": Object {
+              "system_partner": Object {
                 "name": <Memo(MemoizedFormattedMessage)
-                  defaultMessage="Guest"
-                  id="admin.user_grid.guest"
+                  defaultMessage="Partner"
+                  id="admin.user_grid.partner"
                 />,
                 "value": false,
               },
@@ -315,7 +315,7 @@ exports[`components/admin_console/team_channel_settings/group/UsersToRemove shou
 </div>
 `;
 
-exports[`components/admin_console/team_channel_settings/group/UsersToRemove should match snapshot with guests disabled 1`] = `
+exports[`components/admin_console/team_channel_settings/group/UsersToRemove should match snapshot with partners disabled 1`] = `
 <div
   className="UsersToRemove"
 >

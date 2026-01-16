@@ -75,14 +75,14 @@ export default class LeaveTeamModal extends React.PureComponent<Props, State> {
             numOfPublicChannels,
         } = this.props;
 
-        const isGuest = UserUtils.isGuest(currentUser.roles);
+        const isPartner = UserUtils.isPartner(currentUser.roles);
 
         let modalMessage;
-        if (isGuest) {
+        if (isPartner) {
             if (numOfPublicChannels !== 0 && numOfPrivateChannels !== 0) {
                 modalMessage = (
                     <FormattedMessage
-                        id='leave_team_modal_guest.description'
+                        id='leave_team_modal_partner.description'
                         defaultMessage='<strong>You will be removed from {num_of_public_channels} public {num_of_public_channels,plural,one {channel} other {channels}} and {num_of_private_channels} private {num_of_private_channels,plural,one {channel} other {channels}} on this team.</strong> You won&apos;t be able to rejoin it without an invitation from another team member. Are you sure?'
                         values={{
                             num_of_public_channels: numOfPublicChannels,
@@ -94,7 +94,7 @@ export default class LeaveTeamModal extends React.PureComponent<Props, State> {
             } else if (numOfPublicChannels === 0) {
                 modalMessage = (
                     <FormattedMessage
-                        id='leave_team_modal_guest_only_private.description'
+                        id='leave_team_modal_partner_only_private.description'
                         defaultMessage='<strong>You will be removed from {num_of_private_channels} private {num_of_private_channels,plural,one {channel} other {channels}} on this team.</strong> You won&apos;t be able to rejoin it without an invitation from another team member. Are you sure?'
                         values={{
                             num_of_private_channels: numOfPrivateChannels,
@@ -105,7 +105,7 @@ export default class LeaveTeamModal extends React.PureComponent<Props, State> {
             } else {
                 modalMessage = (
                     <FormattedMessage
-                        id='leave_team_modal_guest_only_public.description'
+                        id='leave_team_modal_partner_only_public.description'
                         defaultMessage='<strong>You will be removed from {num_of_public_channels} public {num_of_public_channels,plural,one {channel} other {channels}} on this team.</strong> You won&apos;t be able to rejoin it without an invitation from another team member. Are you sure?'
                         values={{
                             num_of_public_channels: numOfPublicChannels,

@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {savePreferences} from 'mattermost-redux/actions/preferences';
 import {getCurrentRelativeTeamUrl} from 'mattermost-redux/selectors/entities/teams';
-import {getCurrentUserId, isCurrentUserGuestUser} from 'mattermost-redux/selectors/entities/users';
+import {getCurrentUserId, isCurrentUserPartnerUser} from 'mattermost-redux/selectors/entities/users';
 
 import {close as closeLhs, open as openLhs} from 'actions/views/lhs';
 import {switchToChannels} from 'actions/views/onboarding_tasks';
@@ -28,13 +28,13 @@ import {
 } from './constant';
 
 export const useGetTourSteps = (tourCategory: string) => {
-    const isGuestUser = useSelector((state: GlobalState) => isCurrentUserGuestUser(state));
+    const isPartnerUser = useSelector((state: GlobalState) => isCurrentUserPartnerUser(state));
 
     let tourSteps: Record<string, number> = TTNameMapToTourSteps[tourCategory];
 
-    if (tourCategory === TutorialTourName.ONBOARDING_TUTORIAL_STEP && isGuestUser) {
-        // restrict the 'learn more about messaging' tour when user is guest (townSquare, channel creation and user invite are restricted to guests)
-        tourSteps = TTNameMapToTourSteps[TutorialTourName.ONBOARDING_TUTORIAL_STEP_FOR_GUESTS];
+    if (tourCategory === TutorialTourName.ONBOARDING_TUTORIAL_STEP && isPartnerUser) {
+        // restrict the 'learn more about messaging' tour when user is partner (townSquare, channel creation and user invite are restricted to partners)
+        tourSteps = TTNameMapToTourSteps[TutorialTourName.ONBOARDING_TUTORIAL_STEP_FOR_PARTNERS];
     }
     return tourSteps;
 };

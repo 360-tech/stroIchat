@@ -6,7 +6,7 @@
 import React from 'react';
 import {FormattedMessage, defineMessage, defineMessages} from 'react-intl';
 
-import {AccountMultipleOutlineIcon, ChartBarIcon, CogOutlineIcon, FlaskOutlineIcon, InformationOutlineIcon, PowerPlugOutlineIcon, ServerVariantIcon, ShieldOutlineIcon, SitemapIcon} from '@mattermost/compass-icons/components';
+import {AccountMultipleOutlineIcon, ChartBarIcon, CogOutlineIcon, FlaskOutlineIcon, InformationOutlineIcon, ServerVariantIcon, ShieldOutlineIcon, SitemapIcon} from '@mattermost/compass-icons/components';
 
 import {RESOURCE_KEYS} from 'mattermost-redux/constants/permissions_sysconsole';
 
@@ -28,9 +28,7 @@ import {
 } from 'actions/admin_actions';
 
 import ContentFlaggingSettings from 'components/admin_console/content_flagging/content_flagging_settings';
-import CustomPluginSettings from 'components/admin_console/custom_plugin_settings';
 import CustomProfileAttributes from 'components/admin_console/custom_profile_attributes/custom_profile_attributes';
-import PluginManagement from 'components/admin_console/plugin_management';
 import SystemAnalytics from 'components/analytics/system_analytics';
 import {searchableStrings as systemAnalyticsSearchableStrings} from 'components/analytics/system_analytics/system_analytics';
 import TeamAnalytics from 'components/analytics/team_analytics';
@@ -49,14 +47,13 @@ import {getRestrictedIndicator, it, usesLegacyOauth, validators} from './admin_d
 import BrandImageSetting from './brand_image_setting/brand_image_setting';
 import ClientSideUserIdsSetting from './client_side_userids_setting';
 import ClusterSettings, {searchableStrings as clusterSearchableStrings} from './cluster_settings';
-import CustomEnableDisableGuestAccountsSetting from './custom_enable_disable_guest_accounts_setting';
 import CustomURLSchemesSetting from './custom_url_schemes_setting';
 import DatabaseSettings, {searchableStrings as databaseSearchableStrings} from './database_settings';
 import ElasticSearchSettings, {searchableStrings as elasticSearchSearchableStrings} from './elasticsearch_settings';
 import {
     AnnouncementBannerFeatureDiscovery,
     GitLabFeatureDiscovery,
-    GuestAccessFeatureDiscovery,
+    PartnerAccessFeatureDiscovery,
     LDAPFeatureDiscovery,
     OpenIDCustomFeatureDiscovery,
     OpenIDFeatureDiscovery,
@@ -2640,13 +2637,13 @@ const AdminDefinition: AdminDefinitionType = {
                         },
                         {
                             type: 'bool',
-                            key: 'ServiceSettings.AllowPersistentNotificationsForGuests',
-                            label: defineMessage({id: 'admin.posts.persistentNotificationsGuests.title', defaultMessage: 'Allow guests to send persistent notifications'}),
-                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsGuests.desc', defaultMessage: 'Whether a guest is able to require persistent notifications.'}),
+                            key: 'ServiceSettings.AllowPersistentNotificationsForPartners',
+                            label: defineMessage({id: 'admin.posts.persistentNotificationsPartners.title', defaultMessage: 'Allow partners to send persistent notifications'}),
+                            help_text: defineMessage({id: 'admin.posts.persistentNotificationsPartners.desc', defaultMessage: 'Whether a partner is able to require persistent notifications.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                             isHidden: it.any(
-                                it.configIsFalse('GuestAccountsSettings', 'Enable'),
+                                it.configIsFalse('PartnerAccountsSettings', 'Enable'),
                                 it.configIsFalse('ServiceSettings', 'PostPriority'),
                                 it.configIsFalse('ServiceSettings', 'AllowPersistentNotifications'),
                             ),
@@ -3040,7 +3037,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'text',
                             key: 'TeamSettings.RestrictCreationToDomains',
                             label: defineMessage({id: 'admin.team.restrictTitle', defaultMessage: 'Restrict new system and team members to specified email domains:'}),
-                            help_text: defineMessage({id: 'admin.team.restrictGuestDescription', defaultMessage: 'New user accounts are restricted to the above specified email domain (e.g. "360tech.pro") or list of comma-separated domains (e.g. "corp.360tech.pro, 360tech.pro"). New teams can only be created by users from the above domain(s). This setting affects email login for users. For Guest users, please add domains under Signup > Guest Access.'}),
+                            help_text: defineMessage({id: 'admin.team.restrictPartnerDescription', defaultMessage: 'New user accounts are restricted to the above specified email domain (e.g. "360tech.pro") or list of comma-separated domains (e.g. "corp.360tech.pro, 360tech.pro"). New teams can only be created by users from the above domain(s). This setting affects email login for users. For Partner users, please add domains under Signup > Partner Access.'}),
                             placeholder: defineMessage({id: 'admin.team.restrictExample', defaultMessage: 'E.g.: "corp.360tech.pro, 360tech.pro"'}),
                             isHidden: it.any(
                                 it.not(it.licensed),
@@ -3247,12 +3244,12 @@ const AdminDefinition: AdminDefinitionType = {
                         },
                         {
                             type: 'bool',
-                            key: 'SamlSettings.IgnoreGuestsLdapSync',
-                            label: defineMessage({id: 'admin.saml.ignoreGuestsLdapSyncTitle', defaultMessage: 'Ignore Guest Users when Synchronizing with AD/LDAP'}),
-                            help_text: defineMessage({id: 'admin.saml.ignoreGuestsLdapSyncDesc', defaultMessage: 'When true, Stroichat will ignore Guest Users who are identified by the Guest Attribute, when synchronizing with AD/LDAP for user deactivation and removal and Guest deactivation will need to be managed manually via System Console > Users.'}),
+                            key: 'SamlSettings.IgnorePartnersLdapSync',
+                            label: defineMessage({id: 'admin.saml.ignorePartnersLdapSyncTitle', defaultMessage: 'Ignore Partner Users when Synchronizing with AD/LDAP'}),
+                            help_text: defineMessage({id: 'admin.saml.ignorePartnersLdapSyncDesc', defaultMessage: 'When true, Stroichat will ignore Partner Users who are identified by the Partner Attribute, when synchronizing with AD/LDAP for user deactivation and removal and Partner deactivation will need to be managed manually via System Console > Users.'}),
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
-                                it.configIsFalse('GuestAccountsSettings', 'Enable'),
+                                it.configIsFalse('PartnerAccountsSettings', 'Enable'),
                                 it.stateIsFalse('SamlSettings.EnableSyncWithLdap'),
                                 it.stateIsFalse('SamlSettings.Enable'),
                             ),
@@ -3527,14 +3524,14 @@ const AdminDefinition: AdminDefinitionType = {
                         },
                         {
                             type: 'text',
-                            key: 'SamlSettings.GuestAttribute',
-                            label: defineMessage({id: 'admin.saml.guestAttrTitle', defaultMessage: 'Guest Attribute:'}),
-                            placeholder: defineMessage({id: 'admin.saml.guestAttrEx', defaultMessage: 'E.g.: "usertype=Guest" or "isGuest=true"'}),
-                            help_text: defineMessage({id: 'admin.saml.guestAttrDesc', defaultMessage: '(Optional) Requires Guest Access to be enabled before being applied. The attribute in the SAML Assertion that will be used to apply a guest role to users in Stroichat. Guests are prevented from accessing teams or channels upon logging in until they are assigned a team and at least one channel. Note: If this attribute is removed/changed from your guest user in SAML and the user is still active, they will not be promoted to a member and will retain their Guest role. Guests can be promoted in **System Console > User Management**. Existing members that are identified by this attribute as a guest will be demoted from a member to a guest when they are asked to login next. The next login is based upon Session lengths set in **System Console > Session Lengths**. It is highly recommend to manually demote users to guests in **System Console > User Management ** to ensure access is restricted immediately.'}),
+                            key: 'SamlSettings.PartnerAttribute',
+                            label: defineMessage({id: 'admin.saml.partnerAttrTitle', defaultMessage: 'Partner Attribute:'}),
+                            placeholder: defineMessage({id: 'admin.saml.partnerAttrEx', defaultMessage: 'E.g.: "usertype=Partner" or "isPartner=true"'}),
+                            help_text: defineMessage({id: 'admin.saml.partnerAttrDesc', defaultMessage: '(Optional) Requires Partner Access to be enabled before being applied. The attribute in the SAML Assertion that will be used to apply a partner role to users in Stroichat. Partners are prevented from accessing teams or channels upon logging in until they are assigned a team and at least one channel. Note: If this attribute is removed/changed from your partner user in SAML and the user is still active, they will not be promoted to a member and will retain their Partner role. Partners can be promoted in **System Console > User Management**. Existing members that are identified by this attribute as a partner will be demoted from a member to a partner when they are asked to login next. The next login is based upon Session lengths set in **System Console > Session Lengths**. It is highly recommend to manually demote users to partners in **System Console > User Management ** to ensure access is restricted immediately.'}),
                             help_text_markdown: true,
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.SAML)),
-                                it.configIsFalse('GuestAccountsSettings', 'Enable'),
+                                it.configIsFalse('PartnerAccountsSettings', 'Enable'),
                                 it.stateIsFalse('SamlSettings.Enable'),
                             ),
                         },
@@ -4374,108 +4371,7 @@ const AdminDefinition: AdminDefinitionType = {
                 },
                 restrictedIndicator: getRestrictedIndicator(true),
             },
-            guest_access: {
-                url: 'authentication/guest_access',
-                title: defineMessage({id: 'admin.sidebar.guest_access', defaultMessage: 'Guest Access'}),
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('GuestAccounts')),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.GUEST_ACCESS)),
-                ),
-                schema: {
-                    id: 'GuestAccountsSettings',
-                    name: defineMessage({id: 'admin.authentication.guest_access', defaultMessage: 'Guest Access'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: CustomEnableDisableGuestAccountsSetting,
-                            key: 'GuestAccountsSettings.Enable',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.GUEST_ACCESS)),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'GuestAccountsSettings.HideTags',
-                            label: defineMessage({id: 'admin.guest_access.hideTags', defaultMessage: 'Hide guest tag'}),
-                            help_text: defineMessage({id: 'admin.guest_access.hideTagsDescription', defaultMessage: 'When true, the "guest" tag will not be shown next to the name of all guest users in the Stroichat chat interface.'}),
-                            help_text_markdown: false,
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.GUEST_ACCESS)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GuestAccountsSettings.RestrictCreationToDomains',
-                            label: defineMessage({id: 'admin.guest_access.whitelistedDomainsTitle', defaultMessage: 'Whitelisted Guest Domains:'}),
-                            help_text: defineMessage({id: 'admin.guest_access.whitelistedDomainsDescription', defaultMessage: '(Optional) Guest accounts can be created at the system level from this list of allowed guest domains.'}),
-                            help_text_markdown: true,
-                            placeholder: defineMessage({id: 'admin.guest_access.whitelistedDomainsExample', defaultMessage: 'E.g.: "company.com, othercorp.org"'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.GUEST_ACCESS)),
-                        },
-                        {
-                            type: 'bool',
-                            key: 'GuestAccountsSettings.EnforceMultifactorAuthentication',
-                            label: defineMessage({id: 'admin.guest_access.mfaTitle', defaultMessage: 'Enforce Multi-factor Authentication: '}),
-                            help_text: defineMessage({id: 'admin.guest_access.mfaDescriptionMFANotEnabled', defaultMessage: '[Multi-factor authentication](./mfa) is currently not enabled.'}),
-                            help_text_markdown: true,
-                            isHidden: it.configIsTrue('ServiceSettings', 'EnableMultifactorAuthentication'),
-                            isDisabled: () => true,
-                        },
-                        {
-                            type: 'bool',
-                            key: 'GuestAccountsSettings.EnforceMultifactorAuthentication',
-                            label: defineMessage({id: 'admin.guest_access.mfaTitle', defaultMessage: 'Enforce Multi-factor Authentication: '}),
-                            help_text: defineMessage({id: 'admin.guest_access.mfaDescriptionMFANotEnforced', defaultMessage: '[Multi-factor authentication](./mfa) is currently not enforced.'}),
-                            help_text_markdown: true,
-                            isHidden: it.any(
-                                it.configIsFalse('ServiceSettings', 'EnableMultifactorAuthentication'),
-                                it.configIsTrue('ServiceSettings', 'EnforceMultifactorAuthentication'),
-                            ),
-                            isDisabled: () => true,
-                        },
-                        {
-                            type: 'bool',
-                            key: 'GuestAccountsSettings.EnforceMultifactorAuthentication',
-                            label: defineMessage({id: 'admin.guest_access.mfaTitle', defaultMessage: 'Enforce Multi-factor Authentication: '}),
-                            help_text: defineMessage({id: 'admin.guest_access.mfaDescription', defaultMessage: 'When true, <link>multi-factor authentication</link> for guests is required for login. New guest users will be required to configure MFA on signup. Logged in guest users without MFA configured are redirected to the MFA setup page until configuration is complete.\n \nIf your system has guest users with login methods other than AD/LDAP and email, MFA must be enforced with the authentication provider outside of Stroichat.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.MULTI_FACTOR_AUTH}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
-                            help_text_markdown: false,
-                            isHidden: it.any(
-                                it.configIsFalse('ServiceSettings', 'EnableMultifactorAuthentication'),
-                                it.configIsFalse('ServiceSettings', 'EnforceMultifactorAuthentication'),
-                            ),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.GUEST_ACCESS)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(),
-            },
-            guest_access_feature_discovery: {
-                isDiscovery: true,
-                url: 'authentication/guest_access',
-                title: defineMessage({id: 'admin.sidebar.guest_access', defaultMessage: 'Guest Access'}),
-                isHidden: it.any(
-                    it.licensedForFeature('GuestAccounts'),
-                ),
-                schema: {
-                    id: 'GuestAccountsSettings',
-                    name: defineMessage({id: 'admin.authentication.guest_access', defaultMessage: 'Guest Access'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: GuestAccessFeatureDiscovery,
-                            key: 'GuestAccessFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true),
-            },
+
         },
     },
     // plugins: {

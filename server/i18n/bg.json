@@ -436,19 +436,19 @@
     "translation": "Невалиден id на канал."
   },
   {
-    "id": "model.guest.is_valid.emails.app_error",
+    "id": "model.partner.is_valid.emails.app_error",
     "translation": "Невалидни ел.пощи."
   },
   {
-    "id": "model.guest.is_valid.email.app_error",
+    "id": "model.partner.is_valid.email.app_error",
     "translation": "Грешна ел.поща."
   },
   {
-    "id": "model.guest.is_valid.channels.app_error",
+    "id": "model.partner.is_valid.channels.app_error",
     "translation": "Невалидни канали."
   },
   {
-    "id": "model.guest.is_valid.channel.app_error",
+    "id": "model.partner.is_valid.channel.app_error",
     "translation": "Невалиден канал."
   },
   {
@@ -648,7 +648,7 @@
     "translation": "Липсва публичен сертификат на доставчика на самоличност. Забравихте ли да го качите?"
   },
   {
-    "id": "model.config.is_valid.saml_guest_attribute.app_error",
+    "id": "model.config.is_valid.saml_partner_attribute.app_error",
     "translation": "Невалиден атрибут на гост. Трябва да е във формата „поле=стойност“."
   },
   {
@@ -1672,7 +1672,7 @@
     "translation": "грешка при извличане на ldap група"
   },
   {
-    "id": "ent.ldap.validate_guest_filter.app_error",
+    "id": "ent.ldap.validate_partner_filter.app_error",
     "translation": "Невалиден AD/LDAP филтър за гости."
   },
   {
@@ -3160,7 +3160,7 @@
     "translation": "Профилът не може да бъде запазен."
   },
   {
-    "id": "app.user.promote_guest.user_update.app_error",
+    "id": "app.user.promote_partner.user_update.app_error",
     "translation": "Неуспешно актуализиране на потребителя."
   },
   {
@@ -3228,7 +3228,7 @@
     "translation": "Срещнахме грешка при намирането на профила."
   },
   {
-    "id": "app.user.demote_user_to_guest.user_update.app_error",
+    "id": "app.user.demote_user_to_partner.user_update.app_error",
     "translation": "Неуспешно актуализиране на потребителя."
   },
   {
@@ -3596,7 +3596,7 @@
     "translation": "[{{.SiteName}}] {{.SenderName}} ви покани да се присъедините към екипа {{.TeamDisplayName}}"
   },
   {
-    "id": "api.templates.invite_guest_subject",
+    "id": "api.templates.invite_partner_subject",
     "translation": "[{{.SiteName}}] {{.SenderName}} ви покани да се присъедините към екипа {{.TeamDisplayName}} като гост"
   },
   {
@@ -3688,7 +3688,7 @@
     "translation": "Вашият лиценз не поддържа актуализиране схемата на екипа"
   },
   {
-    "id": "api.team.update_team_member_roles.guest_and_user.app_error",
+    "id": "api.team.update_team_member_roles.partner_and_user.app_error",
     "translation": "Невалидна актуализация на члена на екипа: Потребителят трябва да е гост или потребител, но не и двамата."
   },
   {
@@ -3808,7 +3808,7 @@
     "translation": "Поканите по ел.поща са забранени."
   },
   {
-    "id": "api.team.invite_guests.channel_in_invalid_team.app_error",
+    "id": "api.team.invite_partners.channel_in_invalid_team.app_error",
     "translation": "Каналите в поканата трябва да са част от канещият екип."
   },
   {
@@ -3864,15 +3864,15 @@
     "translation": "Нямате подходящи права, за да видите всички екипи"
   },
   {
-    "id": "api.team.demote_user_to_guest.license.error",
+    "id": "api.team.demote_user_to_partner.license.error",
     "translation": "Вашият лиценз не поддържа профили за гости"
   },
   {
-    "id": "api.team.demote_user_to_guest.disabled.error",
+    "id": "api.team.demote_user_to_partner.disabled.error",
     "translation": "Профилите за гости са забранени."
   },
   {
-    "id": "api.team.add_user_to_team_from_invite.guest.app_error",
+    "id": "api.team.add_user_to_team_from_invite.partner.app_error",
     "translation": "Присъединяването към екипа на гости е ограничено чрез връзка за покана. Моля, заявете покана за гост по ел.поща до екипа."
   },
   {
@@ -4494,7 +4494,7 @@
     "translation": "Персонализирани схеми за права не се поддържат от настоящия лиценз"
   },
   {
-    "id": "api.user.update_user.accepted_guest_domain.app_error",
+    "id": "api.user.update_user.accepted_partner_domain.app_error",
     "translation": "Имейлът, който сте предоставили, не принадлежи на приеман домейн за гост профили. Моля, свържете се с вашия администратор или се регистрирайте с друга ел.поща."
   },
   {
@@ -4542,7 +4542,7 @@
     "translation": "Не можете да се деактивирате, защото тази функция не е разрешена. Моля, свържете се със системния си администратор."
   },
   {
-    "id": "api.user.update_active.cannot_enable_guest_when_guest_feature_is_disabled.app_error",
+    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
     "translation": "Не можете да активирате профил за гости, тъй като функцията за достъп на гости не е разрешена."
   },
   {
@@ -4598,7 +4598,7 @@
     "translation": "Изглежда, че маркерът за нулиране на паролата не е валиден."
   },
   {
-    "id": "api.user.promote_guest_to_user.no_guest.app_error",
+    "id": "api.user.promote_partner_to_user.no_partner.app_error",
     "translation": "Не можа да се преобразува гостът в обикновен потребител, защото не е гост."
   },
   {
@@ -4662,11 +4662,11 @@
     "translation": "Влизането не бе успешно, защото профилът ви е деактивиран. Моля, свържете се с администратор."
   },
   {
-    "id": "api.user.login.guest_accounts.license.error",
+    "id": "api.user.login.partner_accounts.license.error",
     "translation": "Вашият лиценз не поддържа профили за гости"
   },
   {
-    "id": "api.user.login.guest_accounts.disabled.error",
+    "id": "api.user.login.partner_accounts.disabled.error",
     "translation": "Профилите за гости са забранени"
   },
   {
@@ -4702,7 +4702,7 @@
     "translation": "AD/LDAP не е налично на този сървър."
   },
   {
-    "id": "api.user.demote_user_to_guest.already_guest.app_error",
+    "id": "api.user.demote_user_to_partner.already_partner.app_error",
     "translation": "Не може да се преобразува потребителят в гост, защото вече е гост."
   },
   {
@@ -4738,11 +4738,11 @@
     "translation": "Не можа да се създаде потребител, невалидна покана."
   },
   {
-    "id": "api.user.create_user.guest_accounts.license.app_error",
+    "id": "api.user.create_user.partner_accounts.license.app_error",
     "translation": "Вашият лиценз не поддържа профили за гости."
   },
   {
-    "id": "api.user.create_user.guest_accounts.disabled.app_error",
+    "id": "api.user.create_user.partner_accounts.disabled.app_error",
     "translation": "Профилите за гости са забранени."
   },
   {
@@ -6648,7 +6648,7 @@
     "translation": "Предоставената роля се управлява от схема и следователно не може да се прилага директно към член на екипа."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Невалидно обновяване на член от екипа: Не можете да добавяте или премахвате ролята на гостите ръчно."
   },
   {
@@ -6668,11 +6668,11 @@
     "translation": "Предоставената роля се управлява от схема и следователно не може да се прилага директно към член на канала."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Невалидно обновяване на члена на канала: Потребителят трябва да е гост или потребител, но не и двете."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Невалидно обновяване на член на канала: Не можете да добавяте или премахвате ролята на гостите ръчно."
   },
   {
@@ -6800,7 +6800,7 @@
     "translation": "Нямате необходимите права."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v се присъедини към канала като гост."
   },
   {
@@ -6888,7 +6888,7 @@
     "translation": "%v беше добавен в канала от %v."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v беше добавен в канала като гост от %v."
   },
   {
@@ -7320,7 +7320,7 @@
     "translation": "Ако не сте Вие, можете спокойно да игнорирате това писмо."
   },
   {
-    "id": "api.team.invite_guests_to_channels.invalid_body.app_error",
+    "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
     "translation": "Невалидно или липсващо тяло на заявката."
   },
   {
@@ -7336,7 +7336,7 @@
     "translation": "Връзката за нулиране на паролата изтича след 24 часа."
   },
   {
-    "id": "api.templates.invite_body_guest.subTitle",
+    "id": "api.templates.invite_body_partner.subTitle",
     "translation": "Поканени сте като гост да си сътрудничите с екипа"
   },
   {
@@ -8024,7 +8024,7 @@
     "translation": "Потребителя не е упълномощен да създава отметки на канали."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Неуспешно създаване отметките на канала."
   },
   {
@@ -8036,7 +8036,7 @@
     "translation": "Неуспешно изтриване отметките на канала."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Неуспешно изтриване отметките на канала."
   },
   {
@@ -8048,7 +8048,7 @@
     "translation": "Неуспешно актуализиране отметките на канала."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Неуспешно актуализиране отметките на канала."
   },
   {
@@ -8060,7 +8060,7 @@
     "translation": "Неуспешно актуализиране реда на сортиране за отметките на канала."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Неуспешно актуализиране реда на сортиране за отметките на канала."
   },
   {
@@ -8096,11 +8096,11 @@
     "translation": "Неуспешно актуализиране реда на сортиране за отметките на канала."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest.app_error",
+    "id": "api.channel.update_channel_member_roles.partner.app_error",
     "translation": "Невалидно обновяване член на канала: Гост не може да бъде член или администратор на екип, моля, първо го повишете в потребител."
   },
   {
-    "id": "api.channel.update_channel_member_roles.user_and_guest.app_error",
+    "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
     "translation": "Невалидно обновяване член на канала: Гост не може да бъде зададен за един канал, системен администратор трябва да повиши или понижи потребителите до/от гости."
   },
   {

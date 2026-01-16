@@ -41,7 +41,7 @@ const AddMembersButton: React.FC<AddMembersButtonProps> = ({totalUsers, usersLim
     return (
         <TeamPermissionGate
             teamId={currentTeamId}
-            permissions={[Permissions.ADD_USER_TO_TEAM, Permissions.INVITE_GUEST]}
+            permissions={[Permissions.ADD_USER_TO_TEAM, Permissions.INVITE_PARTNER]}
         >
             {inviteUsers ? (
                 <LessThanMaxFreeUsers

@@ -12,7 +12,7 @@ import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {haveISystemPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getSortedListableTeams, getTeamMemberships} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import {addUserToTeam} from 'actions/team_actions';
 
@@ -30,7 +30,7 @@ function mapStateToProps(state: GlobalState) {
     return {
         currentUserId: currentUser.id,
         currentUserRoles: currentUser.roles || '',
-        currentUserIsGuest: isGuest(currentUser.roles),
+        currentUserIsPartner: isPartner(currentUser.roles),
         customDescriptionText: config.CustomDescriptionText,
         isMemberOfTeam: myTeamMemberships && myTeamMemberships.length > 0,
         listableTeams: getSortedListableTeams(state, currentUser.locale),

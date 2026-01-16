@@ -10,7 +10,7 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import type {isCollapsedThreadsEnabled} from 'mattermost-redux/selectors/entities/preferences';
 import type {ActionResult} from 'mattermost-redux/types/actions';
-import {isGuest, isAdmin, isSystemAdmin} from 'mattermost-redux/utils/user_utils';
+import {isPartner, isAdmin, isSystemAdmin} from 'mattermost-redux/utils/user_utils';
 
 import ConfirmModal from 'components/confirm_modal';
 import * as Menu from 'components/menu';
@@ -144,11 +144,11 @@ class TeamMembersDropdown extends React.PureComponent<Props, State> {
 
         let currentRoles = null;
 
-        if (isGuest(user.roles)) {
+        if (isPartner(user.roles)) {
             currentRoles = (
                 <FormattedMessage
-                    id='team_members_dropdown.guest'
-                    defaultMessage='Guest'
+                    id='team_members_dropdown.partner'
+                    defaultMessage='Partner'
                 />
             );
         } else if (user.roles.length > 0 && isSystemAdmin(user.roles)) {
@@ -175,8 +175,8 @@ class TeamMembersDropdown extends React.PureComponent<Props, State> {
         }
 
         const me = this.props.currentUser;
-        let showMakeMember = !isGuest(user.roles) && (isAdmin(teamMember.roles) || teamMember.scheme_admin) && !isSystemAdmin(user.roles);
-        let showMakeAdmin = !isGuest(user.roles) && !isAdmin(teamMember.roles) && !isSystemAdmin(user.roles) && !teamMember.scheme_admin;
+        let showMakeMember = !isPartner(user.roles) && (isAdmin(teamMember.roles) || teamMember.scheme_admin) && !isSystemAdmin(user.roles);
+        let showMakeAdmin = !isPartner(user.roles) && !isAdmin(teamMember.roles) && !isSystemAdmin(user.roles) && !teamMember.scheme_admin;
 
         if (user.delete_at > 0) {
             currentRoles = (

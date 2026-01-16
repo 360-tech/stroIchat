@@ -122,11 +122,11 @@ let mockState = {
             profiles: {
                 currentUserId: {
                     id: 'currentUserId',
-                    roles: 'system_guest',
+                    roles: 'system_partner',
                 },
                 user: {
                     id: 'user',
-                    roles: 'system_guest',
+                    roles: 'system_partner',
                 },
             },
             statuses: {
@@ -135,7 +135,7 @@ let mockState = {
         },
         roles: {
             roles: {
-                system_guest: {
+                system_partner: {
                     permissions: ['view_members'],
                 },
             },
@@ -368,8 +368,8 @@ describe('handleUserRemovedEvent', () => {
         const expectedAction = {
             meta: {batch: true},
             payload: [
-                {type: 'RECEIVED_PROFILE_NOT_IN_TEAM', data: {id: 'otherTeam', user_id: 'guestId'}},
-                {type: 'REMOVE_MEMBER_FROM_TEAM', data: {team_id: 'otherTeam', user_id: 'guestId'}},
+                {type: 'RECEIVED_PROFILE_NOT_IN_TEAM', data: {id: 'otherTeam', user_id: 'partnerId'}},
+                {type: 'REMOVE_MEMBER_FROM_TEAM', data: {team_id: 'otherTeam', user_id: 'partnerId'}},
             ],
             type: 'BATCHING_REDUCER.BATCH',
         };
@@ -378,7 +378,7 @@ describe('handleUserRemovedEvent', () => {
                 channel_id: currentChannelId,
             },
             broadcast: {
-                user_id: 'guestId',
+                user_id: 'partnerId',
             },
         };
 
@@ -390,8 +390,8 @@ describe('handleUserRemovedEvent', () => {
         const expectedAction = {
             meta: {batch: true},
             payload: [
-                {type: 'RECEIVED_PROFILE_NOT_IN_TEAM', data: {id: 'otherTeam', user_id: 'guestId'}},
-                {type: 'REMOVE_MEMBER_FROM_TEAM', data: {team_id: 'otherTeam', user_id: 'guestId'}},
+                {type: 'RECEIVED_PROFILE_NOT_IN_TEAM', data: {id: 'otherTeam', user_id: 'partnerId'}},
+                {type: 'REMOVE_MEMBER_FROM_TEAM', data: {team_id: 'otherTeam', user_id: 'partnerId'}},
             ],
             type: 'BATCHING_REDUCER.BATCH',
         };
@@ -400,7 +400,7 @@ describe('handleUserRemovedEvent', () => {
                 channel_id: currentChannelId,
             },
             broadcast: {
-                user_id: 'guestId',
+                user_id: 'partnerId',
             },
         };
 
@@ -410,7 +410,7 @@ describe('handleUserRemovedEvent', () => {
                 entities: {
                     roles: {
                         roles: {
-                            system_guest: {
+                            system_partner: {
                                 permissions: [],
                             },
                         },
@@ -427,7 +427,7 @@ describe('handleUserRemovedEvent', () => {
                 entities: {
                     roles: {
                         roles: {
-                            system_guest: {
+                            system_partner: {
                                 permissions: ['view_members'],
                             },
                         },

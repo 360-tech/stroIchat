@@ -126,7 +126,7 @@ describe('channel_info_rhs/about_area_dm', () => {
                 position: 'my position',
             } as UserProfile,
             display_name: 'my_username',
-            is_guest: false,
+            is_partner: false,
             status: Constants.UserStatuses.ONLINE,
         },
         actions: {
@@ -188,12 +188,12 @@ describe('channel_info_rhs/about_area_dm', () => {
         expect(container.querySelector('.Tag')).toHaveTextContent('BOT');
     });
 
-    test('should display guest tag', () => {
+    test('should display partner tag', () => {
         const props = {
             ...defaultProps,
             dmUser: {
                 ...defaultProps.dmUser,
-                is_guest: true,
+                is_partner: true,
             },
         };
         const {container} = renderWithContext(

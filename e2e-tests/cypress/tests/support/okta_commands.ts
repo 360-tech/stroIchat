@@ -16,7 +16,7 @@ interface Profile {
     login: string;
     userType: string;
     isAdmin: string;
-    isGuest: string;
+    isPartner: string;
 }
 
 interface User {
@@ -26,13 +26,13 @@ interface User {
     login: string;
     userType: string;
     isAdmin: string;
-    isGuest: string;
+    isPartner: string;
     password: string;
 }
 
 export interface UserCollection {
     admins: Record<string, Partial<User>>;
-    guests: Record<string, Partial<User>>;
+    partners: Record<string, Partial<User>>;
     regulars: Record<string, Partial<User>>;
 }
 
@@ -54,7 +54,7 @@ function buildProfile(user: User): Profile {
         login: user.email,
         userType: user.userType,
         isAdmin: user.isAdmin,
-        isGuest: user.isGuest,
+        isPartner: user.isPartner,
     };
     return profile;
 }
@@ -256,7 +256,7 @@ function oktaAddUsers(users: UserCollection) {
         });
     });
 
-    Object.values(users.guests).forEach((_user: User) => {
+    Object.values(users.partners).forEach((_user: User) => {
         cy.oktaGetUser(_user.email).then((uId) => {
             userId = uId;
             if (userId == null) {
@@ -300,7 +300,7 @@ function oktaRemoveUsers(users: UserCollection) {
         });
     });
 
-    Object.values(users.guests).forEach((_user: User) => {
+    Object.values(users.partners).forEach((_user: User) => {
         cy.oktaGetUser(_user.email).then((_uId) => {
             userId = _uId;
             if (userId != null) {

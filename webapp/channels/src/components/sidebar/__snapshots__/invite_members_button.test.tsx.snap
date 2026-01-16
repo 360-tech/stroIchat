@@ -18,7 +18,7 @@ exports[`components/sidebar/invite_members_button should match snapshot 1`] = `
       permissions={
         Array [
           "add_user_to_team",
-          "invite_guest",
+          "invite_partner",
         ]
       }
       teamId="team_id2sss"

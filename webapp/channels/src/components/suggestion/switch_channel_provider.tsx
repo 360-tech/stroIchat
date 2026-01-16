@@ -47,7 +47,7 @@ import {
 import type {ActionResult} from 'mattermost-redux/types/actions';
 import {sortChannelsByTypeAndDisplayName, isChannelMuted} from 'mattermost-redux/utils/channel_utils';
 import {getPreferenceKey} from 'mattermost-redux/utils/preference_utils';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import {getPostDraft} from 'selectors/rhs';
 import globalStore from 'stores/redux_store';
@@ -57,7 +57,7 @@ import CustomStatusEmoji from 'components/custom_status/custom_status_emoji';
 import ProfilePicture from 'components/profile_picture';
 import SharedChannelIndicator from 'components/shared_channel_indicator';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 
 import {Constants, StoragePrefixes} from 'utils/constants';
 import {getIntl} from 'utils/i18n';
@@ -271,8 +271,8 @@ export const SwitchChannelSuggestion = React.forwardRef<HTMLLIElement, Props>(({
     if (channel.type === Constants.DM_CHANNEL && teammate) {
         if (teammate && teammate.is_bot) {
             tag = <BotTag/>;
-        } else if (isGuest(teammate ? teammate.roles : '')) {
-            tag = <GuestTag/>;
+        } else if (isPartner(teammate ? teammate.roles : '')) {
+            tag = <PartnerTag/>;
         }
 
         customStatus = (

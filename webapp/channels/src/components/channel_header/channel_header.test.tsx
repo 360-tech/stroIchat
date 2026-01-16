@@ -41,7 +41,7 @@ describe('components/ChannelHeader', () => {
         gmMembers: undefined,
         rhsState: RHSStates.CHANNEL_INFO,
         isChannelMuted: false,
-        hasGuests: false,
+        hasPartners: false,
         pinnedPostsCount: 0,
         customStatus: undefined,
         timestampUnits: [
@@ -49,7 +49,7 @@ describe('components/ChannelHeader', () => {
             'minute',
             'hour',
         ],
-        hideGuestTags: false,
+        hidePartnerTags: false,
         remoteNames: [],
         sharedChannelsPluginsEnabled: false,
         intl: {

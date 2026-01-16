@@ -73,7 +73,7 @@ function mapStateToProps(state: GlobalState, props: Props) {
         usersToRemove,
         totalCount,
         searchTerm,
-        enableGuestAccounts: config.EnableGuestAccounts === 'true',
+        enablePartnerAccounts: config.EnablePartnerAccounts === 'true',
     };
 }
 function mapDispatchToProps(dispatch: Dispatch) {

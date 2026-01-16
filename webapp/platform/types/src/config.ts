@@ -75,7 +75,7 @@ export type ClientConfig = {
     EnableFileAttachments: string;
     EnableFile: string;
     EnableGifPicker: string;
-    EnableGuestAccounts: string;
+    EnablePartnerAccounts: string;
     EnableIncomingWebhooks: string;
     EnableJoinLeaveMessageByDefault: string;
     EnableLatex: string;
@@ -133,10 +133,10 @@ export type ClientConfig = {
     ForgotPasswordLink: string;
     GiphySdkKey: string;
     GoogleDeveloperKey: string;
-    GuestAccountsEnforceMultifactorAuthentication: string;
+    PartnerAccountsEnforceMultifactorAuthentication: string;
     HasImageProxy: string;
     HelpLink: string;
-    HideGuestTags: string;
+    HidePartnerTags: string;
     IosAppDownloadLink: string;
     IosLatestVersion: string;
     IosMinVersion: string;
@@ -211,7 +211,7 @@ export type ClientConfig = {
     AllowPersistentNotifications: string;
     PersistentNotificationMaxRecipients: string;
     PersistentNotificationIntervalMinutes: string;
-    AllowPersistentNotificationsForGuests: string;
+    AllowPersistentNotificationsForPartners: string;
     DelayChannelAutocomplete: 'true' | 'false';
     WranglerPermittedWranglerRoles: string;
     WranglerAllowedEmailDomain: string;
@@ -271,8 +271,8 @@ export type LicenseFeatures = {
     message_export?: boolean;
     custom_permissions_schemes?: boolean;
     custom_terms_of_service?: boolean;
-    guest_accounts?: boolean;
-    guest_accounts_permissions?: boolean;
+    partner_accounts?: boolean;
+    partner_accounts_permissions?: boolean;
     id_loaded?: boolean;
     lock_teammate_name_display?: boolean;
     cloud?: boolean;
@@ -406,7 +406,7 @@ export type ServiceSettings = {
     EnableCustomGroups: boolean;
     AllowSyncedDrafts: boolean;
     AllowPersistentNotifications: boolean;
-    AllowPersistentNotificationsForGuests: boolean;
+    AllowPersistentNotificationsForPartners: boolean;
     PersistentNotificationIntervalMinutes: number;
     PersistentNotificationMaxCount: number;
     PersistentNotificationMaxRecipients: number;
@@ -697,7 +697,7 @@ export type LdapSettings = {
     BindPassword: string;
     UserFilter: string;
     GroupFilter: string;
-    GuestFilter: string;
+    PartnerFilter: string;
     EnableAdminFilter: boolean;
     AdminFilter: string;
     GroupDisplayNameAttribute: string;
@@ -743,7 +743,7 @@ export type SamlSettings = {
     Enable: boolean;
     EnableSyncWithLdap: boolean;
     EnableSyncWithLdapIncludeAuth: boolean;
-    IgnoreGuestsLdapSync: boolean;
+    IgnorePartnerPartnersLdapSync: boolean;
     Verify: boolean;
     Encrypt: boolean;
     SignRequest: boolean;
@@ -760,7 +760,7 @@ export type SamlSettings = {
     PublicCertificateFile: string;
     PrivateKeyFile: string;
     IdAttribute: string;
-    GuestAttribute: string;
+    PartnerAttribute: string;
     EnableAdminAttribute: boolean;
     AdminAttribute: string;
     FirstNameAttribute: string;
@@ -935,7 +935,7 @@ export type DisplaySettings = {
     MaxMarkdownNodes: number;
 };
 
-export type GuestAccountsSettings = {
+export type PartnerAccountsSettings = {
     Enable: boolean;
     HideTags: boolean;
     AllowEmailAccounts: boolean;
@@ -1042,7 +1042,7 @@ export type AdminConfig = {
     JobSettings: JobSettings;
     PluginSettings: PluginSettings;
     DisplaySettings: DisplaySettings;
-    GuestAccountsSettings: GuestAccountsSettings;
+    PartnerAccountsSettings: PartnerAccountsSettings;
     ImageProxySettings: ImageProxySettings;
     CloudSettings: CloudSettings;
     FeatureFlags: FeatureFlags;

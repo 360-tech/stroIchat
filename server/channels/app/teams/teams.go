@@ -144,12 +144,12 @@ func (ts *TeamService) JoinUserToTeam(rctx request.CTX, team *model.Team, user *
 	tm := &model.TeamMember{
 		TeamId:      team.Id,
 		UserId:      user.Id,
-		SchemeGuest: user.IsGuest(),
-		SchemeUser:  !user.IsGuest(),
+		SchemePartner: user.IsPartner(),
+		SchemeUser:  !user.IsPartner(),
 		CreateAt:    model.GetMillis(),
 	}
 
-	if !user.IsGuest() {
+	if !user.IsPartner() {
 		userShouldBeAdmin, err := ts.userIsInAdminRoleGroup(user.Id, team.Id, model.GroupSyncableTypeTeam)
 		if err != nil {
 			return nil, false, err

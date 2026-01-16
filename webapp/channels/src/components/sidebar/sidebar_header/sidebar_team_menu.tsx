@@ -50,8 +50,8 @@ export default function SidebarTeamMenu(props: Props) {
     const havePermissionToCreateTeam = useSelector((state: GlobalState) => haveISystemPermission(state, {permission: Permissions.CREATE_TEAM}));
     const havePermissionToManageTeam = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.MANAGE_TEAM));
     const havePermissionToAddUserToTeam = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.ADD_USER_TO_TEAM));
-    const havePermissionToInviteGuest = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.INVITE_GUEST));
-    const isGuestAccessEnabled = config?.EnableGuestAccounts === 'true';
+    const havePermissionToInvitePartner = useSelector((state: GlobalState) => haveICurrentTeamPermission(state, Permissions.INVITE_PARTNER));
+    const isPartnerAccessEnabled = config?.EnablePartnerAccounts === 'true';
     const isTeamGroupConstrained = Boolean(props.currentTeam?.group_constrained);
     const isLicensedForLDAPGroups = license?.LDAPGroups === 'true';
     const experimentalPrimaryTeam = config.ExperimentalPrimaryTeam;
@@ -80,7 +80,7 @@ export default function SidebarTeamMenu(props: Props) {
                 id: 'sidebarTeamMenu',
             }}
         >
-            {((isGuestAccessEnabled && havePermissionToInviteGuest) || havePermissionToAddUserToTeam) && (
+            {((isPartnerAccessEnabled && havePermissionToInvitePartner) || havePermissionToAddUserToTeam) && (
                 <InvitePeopleMenuItem/>
             )}
             {isTeamGroupConstrained && isLicensedForLDAPGroups && havePermissionToManageTeam && (

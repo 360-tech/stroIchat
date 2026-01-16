@@ -287,7 +287,7 @@ describe('components/channel_invite_modal', () => {
             },
             profilesNotInCurrentChannel: [users[0]],
             includeUsers: {'user-1': users[0]},
-            membersInTeam: {'user-1': {user_id: 'user-1', team_id: channel.team_id, roles: '', delete_at: 0, scheme_admin: false, scheme_guest: false, scheme_user: true, mention_count: 0, mention_count_root: 0, msg_count: 0, msg_count_root: 0} as TeamMembership},
+            membersInTeam: {'user-1': {user_id: 'user-1', team_id: channel.team_id, roles: '', delete_at: 0, scheme_admin: false, scheme_partner: false, scheme_user: true, mention_count: 0, mention_count_root: 0, msg_count: 0, msg_count_root: 0} as TeamMembership},
         };
 
         const {getByText} = renderWithContext(
@@ -335,7 +335,7 @@ describe('components/channel_invite_modal', () => {
             },
             profilesNotInCurrentChannel: [users[0]],
             includeUsers: {'user-1': users[0]},
-            membersInTeam: {'user-1': {user_id: 'user-1', team_id: channel.team_id, roles: '', delete_at: 0, scheme_admin: false, scheme_guest: false, scheme_user: true, mention_count: 0, mention_count_root: 0, msg_count: 0, msg_count_root: 0} as TeamMembership},
+            membersInTeam: {'user-1': {user_id: 'user-1', team_id: channel.team_id, roles: '', delete_at: 0, scheme_admin: false, scheme_partner: false, scheme_user: true, mention_count: 0, mention_count_root: 0, msg_count: 0, msg_count_root: 0} as TeamMembership},
         };
 
         const {getByText} = renderWithContext(
@@ -378,7 +378,7 @@ describe('components/channel_invite_modal', () => {
             onAddCallback,
             profilesNotInCurrentChannel: [users[0]],
             includeUsers: {'user-1': users[0]},
-            membersInTeam: {'user-1': {user_id: 'user-1', team_id: channel.team_id, roles: '', delete_at: 0, scheme_admin: false, scheme_guest: false, scheme_user: true, mention_count: 0, mention_count_root: 0, msg_count: 0, msg_count_root: 0} as TeamMembership},
+            membersInTeam: {'user-1': {user_id: 'user-1', team_id: channel.team_id, roles: '', delete_at: 0, scheme_admin: false, scheme_partner: false, scheme_user: true, mention_count: 0, mention_count_root: 0, msg_count: 0, msg_count_root: 0} as TeamMembership},
 
         };
 
@@ -443,10 +443,10 @@ describe('components/channel_invite_modal', () => {
         });
     });
 
-    test('should send the invite as guest param through the link', () => {
+    test('should send the invite as partner param through the link', () => {
         const props = {
             ...baseProps,
-            canInviteGuests: true,
+            canInvitePartners: true,
             emailInvitationsEnabled: true,
         };
         const wrapper = shallowWithIntl(
@@ -457,13 +457,13 @@ describe('components/channel_invite_modal', () => {
 
         expect(invitationLink).toHaveLength(1);
 
-        expect(invitationLink.prop('inviteAsGuest')).toBeTruthy();
+        expect(invitationLink.prop('inviteAsPartner')).toBeTruthy();
     });
 
-    test('should hide the invite as guest param when can not invite guests', () => {
+    test('should hide the invite as partner param when can not invite partners', () => {
         const props = {
             ...baseProps,
-            canInviteGuests: false,
+            canInvitePartners: false,
             emailInvitationsEnabled: false,
         };
         const wrapper = shallowWithIntl(
@@ -715,7 +715,7 @@ describe('components/channel_invite_modal', () => {
         expect(getProfilesNotInChannelMock).not.toHaveBeenCalled();
     });
 
-    test('should hide the invite as guest link when channel has policy_enforced', () => {
+    test('should hide the invite as partner link when channel has policy_enforced', () => {
         const channelWithPolicy = {
             ...channel,
             policy_enforced: true,
@@ -724,7 +724,7 @@ describe('components/channel_invite_modal', () => {
         const props = {
             ...baseProps,
             channel: channelWithPolicy,
-            canInviteGuests: true,
+            canInvitePartners: true,
             emailInvitationsEnabled: true,
         };
 
@@ -732,14 +732,14 @@ describe('components/channel_invite_modal', () => {
             <ChannelInviteModal {...props}/>,
         );
 
-        // Check that the invite as guest link is not shown
+        // Check that the invite as partner link is not shown
         const invitationLinks = wrapper.find('InviteModalLink');
 
-        // There should be no InviteModalLink with inviteAsGuest=true
-        const guestInviteLinks = invitationLinks.findWhere(
-            (node) => node.prop('inviteAsGuest') === true,
+        // There should be no InviteModalLink with inviteAsPartner=true
+        const partnerInviteLinks = invitationLinks.findWhere(
+            (node) => node.prop('inviteAsPartner') === true,
         );
-        expect(guestInviteLinks).toHaveLength(0);
+        expect(partnerInviteLinks).toHaveLength(0);
     });
 
     test('should NOT filter out groups when  NOT ABAC is enforced', async () => {

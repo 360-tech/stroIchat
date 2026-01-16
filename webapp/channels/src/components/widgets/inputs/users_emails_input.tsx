@@ -14,7 +14,7 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import {Client4} from 'mattermost-redux/client';
 import {isEmail} from 'mattermost-redux/utils/helpers';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import FormattedMarkdownMessage from 'components/formatted_markdown_message';
 import CloseCircleSolidIcon from 'components/widgets/icons/close_circle_solid_icon';
@@ -22,7 +22,7 @@ import MailIcon from 'components/widgets/icons/mail_icon';
 import MailPlusIcon from 'components/widgets/icons/mail_plus_icon';
 import LoadingSpinner from 'components/widgets/loading/loading_spinner';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 import Avatar from 'components/widgets/users/avatar';
 
 import {getDisplayName, getLongDisplayNameParts, imageURLForUser} from 'utils/utils';
@@ -138,15 +138,15 @@ export class UsersEmailsInput extends React.PureComponent<Props, State> {
 
     formatOptionLabel = (user: UserProfile | EmailInvite, options: FormatOptionLabelMeta<UserProfile | EmailInvite>) => {
         const profileImg = imageURLForUser((user as UserProfile).id, (user as UserProfile).last_picture_update);
-        let guestBadge = null;
+        let partnerBadge = null;
         let botBadge = null;
 
         if ((user as UserProfile).is_bot) {
             botBadge = <BotTag/>;
         }
 
-        if (!isEmail((user as EmailInvite).value) && isGuest((user as UserProfile).roles)) {
-            guestBadge = <GuestTag/>;
+        if (!isEmail((user as EmailInvite).value) && isPartner((user as UserProfile).roles)) {
+            partnerBadge = <PartnerTag/>;
         }
 
         if (options.context === 'menu') {
@@ -162,7 +162,7 @@ export class UsersEmailsInput extends React.PureComponent<Props, State> {
                     />
                     {this.renderUserName(user as UserProfile)}
                     {botBadge}
-                    {guestBadge}
+                    {partnerBadge}
                 </>
             );
         }
@@ -185,7 +185,7 @@ export class UsersEmailsInput extends React.PureComponent<Props, State> {
                 />
                 {getDisplayName(user as UserProfile)}
                 {botBadge}
-                {guestBadge}
+                {partnerBadge}
             </>
         );
     };

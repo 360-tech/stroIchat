@@ -23,7 +23,7 @@ export default function UsersToRemoveRole(props: GroupUsersRoleProps) {
     const intl = useIntl();
     const {user, membership, scope} = props;
 
-    let role = 'guest';
+    let role = 'partner';
     if (user.roles?.includes('system_admin')) {
         role = 'system_admin';
     } else if (membership) {
@@ -64,7 +64,7 @@ export default function UsersToRemoveRole(props: GroupUsersRoleProps) {
         break;
 
     default:
-        localizedRole = intl.formatMessage({id: 'admin.user_grid.guest', defaultMessage: 'Guest'});
+        localizedRole = intl.formatMessage({id: 'admin.user_grid.partner', defaultMessage: 'Partner'});
     }
 
     return (

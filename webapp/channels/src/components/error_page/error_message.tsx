@@ -12,10 +12,10 @@ type Props = {
     type?: string | null;
     message?: string;
     service?: string;
-    isGuest?: boolean;
+    isPartner?: boolean;
 }
 
-const ErrorMessage: React.FC<Props> = ({type, message, service, isGuest}: Props) => {
+const ErrorMessage: React.FC<Props> = ({type, message, service, isPartner}: Props) => {
     let errorMessage = null;
     if (type) {
         switch (type) {
@@ -82,10 +82,10 @@ const ErrorMessage: React.FC<Props> = ({type, message, service, isGuest}: Props)
         case ErrorPageTypes.CHANNEL_NOT_FOUND:
             errorMessage = (
                 <p>
-                    {isGuest ? (
+                    {isPartner ? (
                         <FormattedMessage
-                            id='error.channel_not_found.message_guest'
-                            defaultMessage='Your guest account has no channels assigned. Please contact an administrator.'
+                            id='error.channel_not_found.message_partner'
+                            defaultMessage='Your partner account has no channels assigned. Please contact an administrator.'
                         />
                     ) : (
                         <FormattedMessage

@@ -122,7 +122,7 @@ describe('channels', () => {
                 data: {
                     channel_id: 'channel1',
                     member_count: 2,
-                    guest_count: 3,
+                    partner_count: 3,
                     pinnedpost_count: 4,
                     files_count: 5,
                 },
@@ -133,7 +133,7 @@ describe('channels', () => {
                 channel1: {
                     channel_id: 'channel1',
                     member_count: 2,
-                    guest_count: 3,
+                    partner_count: 3,
                     pinnedpost_count: 4,
                     files_count: 5,
                 },
@@ -146,7 +146,7 @@ describe('channels', () => {
                     channel1: {
                         channel_id: 'channel1',
                         member_count: 1,
-                        guest_count: 1,
+                        partner_count: 1,
                         pinnedpost_count: 1,
                         files_count: 1,
                     },
@@ -157,7 +157,7 @@ describe('channels', () => {
                 data: {
                     channel_id: 'channel1',
                     member_count: 2,
-                    guest_count: 3,
+                    partner_count: 3,
                     pinnedpost_count: 4,
                     files_count: 5,
                 },
@@ -168,7 +168,7 @@ describe('channels', () => {
                 channel1: {
                     channel_id: 'channel1',
                     member_count: 2,
-                    guest_count: 3,
+                    partner_count: 3,
                     pinnedpost_count: 4,
                     files_count: 5,
                 },
@@ -181,7 +181,7 @@ describe('channels', () => {
                     channel1: {
                         channel_id: 'channel1',
                         member_count: 2,
-                        guest_count: 3,
+                        partner_count: 3,
                         pinnedpost_count: 4,
                         files_count: 5,
                     },
@@ -192,7 +192,7 @@ describe('channels', () => {
                 data: {
                     channel_id: 'channel1',
                     member_count: 2,
-                    guest_count: 3,
+                    partner_count: 3,
                     pinnedpost_count: 4,
                     files_count: 5,
                 },
@@ -791,7 +791,7 @@ describe('channels', () => {
                             name: Permissions.CHANNEL_MODERATED_PERMISSIONS.CREATE_REACTIONS,
                             roles: {
                                 members: true,
-                                guests: false,
+                                partners: false,
                             },
                         },
                     ],
@@ -800,7 +800,7 @@ describe('channels', () => {
 
             expect(nextState.channelModerations.channel1[0].name).toEqual(Permissions.CHANNEL_MODERATED_PERMISSIONS.CREATE_REACTIONS);
             expect(nextState.channelModerations.channel1[0].roles.members).toEqual(true);
-            expect(nextState.channelModerations.channel1[0].roles.guests).toEqual(false);
+            expect(nextState.channelModerations.channel1[0].roles.partners).toEqual(false);
         });
     });
 

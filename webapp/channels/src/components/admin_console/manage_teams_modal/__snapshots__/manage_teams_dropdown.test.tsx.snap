@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ManageTeamsDropdown should match snapshot for guest 1`] = `
+exports[`ManageTeamsDropdown should match snapshot for partner 1`] = `
 <MenuWrapper
   animationComponent={[Function]}
   className=""
 >
   <a>
     <span>
-      Guest
+      Partner
        
     </span>
     <span

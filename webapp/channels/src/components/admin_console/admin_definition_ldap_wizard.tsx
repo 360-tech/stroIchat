@@ -327,15 +327,15 @@ export const ldapWizardAdminDefinition: LDAPAdminDefinitionConfigSchemaSettings 
                     },
                     {
                         type: 'text',
-                        key: 'LdapSettings.GuestFilter',
-                        label: defineMessage({id: 'admin.ldap.guestFilterTitle', defaultMessage: 'Guest Filter:'}),
-                        help_text: defineMessage({id: 'admin.ldap.guestFilterFilterDesc', defaultMessage: '(Optional) Requires Guest Access to be enabled before being applied. Enter an AD/LDAP filter to use when searching for guest objects.'}),
+                        key: 'LdapSettings.PartnerFilter',
+                        label: defineMessage({id: 'admin.ldap.partnerFilterTitle', defaultMessage: 'Partner Filter:'}),
+                        help_text: defineMessage({id: 'admin.ldap.partnerFilterFilterDesc', defaultMessage: '(Optional) Requires Partner Access to be enabled before being applied. Enter an AD/LDAP filter to use when searching for partner objects.'}),
                         // eslint-disable-next-line formatjs/no-multiple-whitespaces
-                        help_text_more_info: defineMessage({id: 'admin.ldap.guestFilterFilterDescHover', defaultMessage: 'Only the users selected by the query will be able to access Stroichat as Guests. Guests are prevented from accessing teams or channels upon logging in until they are assigned a team and at least one channel.\n \nNote: If this filter is removed/changed, active guests will not be promoted to a member and will retain their Guest role. Guests can be promoted in System Console > User Management. Existing members that are identified by this attribute as a guest will be demoted from a member to a guest when they are asked to login next. The next login is based upon Session lengths set in System Console > Session Lengths. It is highly recommend to manually demote users to guests in System Console > User Management  to ensure access is restricted immediately.'}),
-                        placeholder: defineMessage({id: 'admin.ldap.guestFilterEx', defaultMessage: 'E.g.: "(objectClass=user)"'}),
+                        help_text_more_info: defineMessage({id: 'admin.ldap.partnerFilterFilterDescHover', defaultMessage: 'Only the users selected by the query will be able to access Stroichat as Partners. Partners are prevented from accessing teams or channels upon logging in until they are assigned a team and at least one channel.\n \nNote: If this filter is removed/changed, active partners will not be promoted to a member and will retain their Partner role. Partners can be promoted in System Console > User Management. Existing members that are identified by this attribute as a partner will be demoted from a member to a partner when they are asked to login next. The next login is based upon Session lengths set in System Console > Session Lengths. It is highly recommend to manually demote users to partners in System Console > User Management  to ensure access is restricted immediately.'}),
+                        placeholder: defineMessage({id: 'admin.ldap.partnerFilterEx', defaultMessage: 'E.g.: "(objectClass=user)"'}),
                         isDisabled: it.any(
                             it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.LDAP)),
-                            it.configIsFalse('GuestAccountsSettings', 'Enable'),
+                            it.configIsFalse('PartnerAccountsSettings', 'Enable'),
                             it.all(
                                 it.stateIsFalse('LdapSettings.Enable'),
                                 it.stateIsFalse('LdapSettings.EnableSync'),

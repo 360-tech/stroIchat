@@ -105,51 +105,51 @@ func TestUpdateSessionOnPromoteDemote(t *testing.T) {
 
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
-	t.Run("Promote Guest to User updates the session", func(t *testing.T) {
-		guest := th.CreateGuest()
+	t.Run("Promote Partner to User updates the session", func(t *testing.T) {
+		partner := th.CreatePartner()
 
-		session, err := th.App.CreateSession(th.Context, &model.Session{UserId: guest.Id, Props: model.StringMap{model.SessionPropIsGuest: "true"}})
+		session, err := th.App.CreateSession(th.Context, &model.Session{UserId: partner.Id, Props: model.StringMap{model.SessionPropIsPartner: "true"}})
 		require.Nil(t, err)
 
 		rsession, err := th.App.GetSession(session.Token)
 		require.Nil(t, err)
-		assert.Equal(t, "true", rsession.Props[model.SessionPropIsGuest])
+		assert.Equal(t, "true", rsession.Props[model.SessionPropIsPartner])
 
-		err = th.App.PromoteGuestToUser(th.Context, guest, th.BasicUser.Id)
+		err = th.App.PromotePartnerToUser(th.Context, partner, th.BasicUser.Id)
 		require.Nil(t, err)
 
 		rsession, err = th.App.GetSession(session.Token)
 		require.Nil(t, err)
-		assert.Equal(t, "false", rsession.Props[model.SessionPropIsGuest])
+		assert.Equal(t, "false", rsession.Props[model.SessionPropIsPartner])
 
 		th.App.ClearSessionCacheForUser(session.UserId)
 
 		rsession, err = th.App.GetSession(session.Token)
 		require.Nil(t, err)
-		assert.Equal(t, "false", rsession.Props[model.SessionPropIsGuest])
+		assert.Equal(t, "false", rsession.Props[model.SessionPropIsPartner])
 	})
 
-	t.Run("Demote User to Guest updates the session", func(t *testing.T) {
+	t.Run("Demote User to Partner updates the session", func(t *testing.T) {
 		user := th.CreateUser()
 
-		session, err := th.App.CreateSession(th.Context, &model.Session{UserId: user.Id, Props: model.StringMap{model.SessionPropIsGuest: "false"}})
+		session, err := th.App.CreateSession(th.Context, &model.Session{UserId: user.Id, Props: model.StringMap{model.SessionPropIsPartner: "false"}})
 		require.Nil(t, err)
 
 		rsession, err := th.App.GetSession(session.Token)
 		require.Nil(t, err)
-		assert.Equal(t, "false", rsession.Props[model.SessionPropIsGuest])
+		assert.Equal(t, "false", rsession.Props[model.SessionPropIsPartner])
 
-		err = th.App.DemoteUserToGuest(th.Context, user)
+		err = th.App.DemoteUserToPartner(th.Context, user)
 		require.Nil(t, err)
 
 		rsession, err = th.App.GetSession(session.Token)
 		require.Nil(t, err)
-		assert.Equal(t, "true", rsession.Props[model.SessionPropIsGuest])
+		assert.Equal(t, "true", rsession.Props[model.SessionPropIsPartner])
 
 		th.App.ClearSessionCacheForUser(session.UserId)
 		rsession, err = th.App.GetSession(session.Token)
 		require.Nil(t, err)
-		assert.Equal(t, "true", rsession.Props[model.SessionPropIsGuest])
+		assert.Equal(t, "true", rsession.Props[model.SessionPropIsPartner])
 	})
 }
 

@@ -56,7 +56,7 @@
     "translation": "მითითებული როლი იმართება სქემის მიერა და ამიტომაც პირდაპირ ვერ მიენიჭება გუნდის წევრს."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "გუნდის წევრის არასწორი განახლება: თქვენ არ შეგიძლიათ ხელით დაამატოთ ან წაშალოთ სტუმრის როლი."
   },
   {
@@ -76,11 +76,11 @@
     "translation": "მითითებული როლი იმართება სქემის მიერა და ამიტომაც ვერ მიენიჭება პირდაპირ არხის წევრს."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "არხის წევრის არასწორი განახლება: მომხამრებელი უნდა იყოს მომხმარებელი ან სტუმარი და არა ორივე."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "არხის წევრის არასწორი განახლება: თქვენ არ შეგიძლიათ ხელით დაამატოთ ან წაშალოთ სტუმრის როლი."
   },
   {
@@ -260,7 +260,7 @@
     "translation": "თქვენ არ გაქვთ შესაბამისი უფლებები."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v შემოვიდა არხზე, როგორც სტუმარი."
   },
   {
@@ -348,7 +348,7 @@
     "translation": "%v დაემატა არხს %v-ის მიერ."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v დაემატა არხს %v-ის რეკომენდაციით."
   },
   {

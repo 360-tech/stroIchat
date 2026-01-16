@@ -4,11 +4,11 @@
 import React from 'react';
 
 import {Client4} from 'mattermost-redux/client';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import usePrefixedIds, {joinIds} from 'components/common/hooks/usePrefixedIds';
 import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import PartnerTag from 'components/widgets/tag/partner_tag';
 import Avatar from 'components/widgets/users/avatar';
 
 import * as Utils from 'utils/utils';
@@ -26,7 +26,7 @@ const GenericUserSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Us
         name: null,
         description: null,
         botTag: null,
-        guestTag: null,
+        partnerTag: null,
     });
 
     const username = item.username;
@@ -45,7 +45,7 @@ const GenericUserSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Us
             ref={ref}
             {...props}
             aria-labelledby={ids.name}
-            aria-describedby={joinIds(ids.description, ids.botTag, ids.guestTag)}
+            aria-describedby={joinIds(ids.description, ids.botTag, ids.partnerTag)}
         >
             <Avatar
                 size='xxs'
@@ -63,7 +63,7 @@ const GenericUserSuggestion = React.forwardRef<HTMLLIElement, SuggestionProps<Us
                 <span id={ids.description}>{description}</span>
             </div>
             {item.is_bot && <span id={ids.botTag}><BotTag/></span>}
-            {isGuest(item.roles) && <span id={ids.guestTag}><GuestTag/></span>}
+            {isPartner(item.roles) && <span id={ids.partnerTag}><PartnerTag/></span>}
         </SuggestionContainer>
     );
 });

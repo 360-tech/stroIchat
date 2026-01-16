@@ -739,7 +739,7 @@ const settingKeyToTestNameMap: Record<string, string> = {
     'LdapSettings.BaseDN': 'BaseDN',
     'LdapSettings.UserFilter': 'UserFilter',
     'LdapSettings.GroupFilter': 'GroupFilter',
-    'LdapSettings.GuestFilter': 'GuestFilter',
+    'LdapSettings.PartnerFilter': 'PartnerFilter',
     'LdapSettings.AdminFilter': 'AdminFilter',
     'LdapSettings.IdAttribute': 'IdAttribute',
     'LdapSettings.LoginIdAttribute': 'LoginIdAttribute',
@@ -755,7 +755,7 @@ const settingKeyToTestNameMap: Record<string, string> = {
 };
 
 // Helper functions to categorize test types
-const filterTestNames = new Set(['BaseDN', 'UserFilter', 'GroupFilter', 'GuestFilter', 'AdminFilter']);
+const filterTestNames = new Set(['BaseDN', 'UserFilter', 'GroupFilter', 'PartnerFilter', 'AdminFilter']);
 const attributeTestNames = new Set(['IdAttribute', 'LoginIdAttribute', 'UsernameAttribute', 'EmailAttribute', 'FirstNameAttribute', 'LastNameAttribute', 'NicknameAttribute', 'PositionAttribute', 'PictureAttribute']);
 const groupAttributeTestNames = new Set(['GroupDisplayNameAttribute', 'GroupIdAttribute']);
 

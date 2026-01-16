@@ -63,7 +63,7 @@ function makeMapStateToProps() {
             total = members.length;
         }
 
-        const enableGuestAccounts = getConfig(state)?.EnableGuestAccounts === 'true';
+        const enablePartnerAccounts = getConfig(state)?.EnablePartnerAccounts === 'true';
 
         return {
             ...props,
@@ -72,7 +72,7 @@ function makeMapStateToProps() {
             searchTerm,
             scope,
             memberships,
-            enableGuestAccounts,
+            enablePartnerAccounts,
             filters,
         };
     };

@@ -58,7 +58,7 @@ func TestLicenseFeaturesSetDefaults(t *testing.T) {
 	CheckTrue(t, *f.DataRetention)
 	CheckTrue(t, *f.MessageExport)
 	CheckTrue(t, *f.CustomPermissionsSchemes)
-	CheckTrue(t, *f.GuestAccountsPermissions)
+	CheckTrue(t, *f.PartnerAccountsPermissions)
 	CheckTrue(t, *f.IDLoadedPushNotifications)
 	CheckTrue(t, *f.SharedChannels)
 	CheckTrue(t, *f.RemoteClusterService)
@@ -83,8 +83,8 @@ func TestLicenseFeaturesSetDefaults(t *testing.T) {
 	*f.DataRetention = true
 	*f.MessageExport = true
 	*f.CustomPermissionsSchemes = true
-	*f.GuestAccounts = true
-	*f.GuestAccountsPermissions = true
+	*f.PartnerAccounts = true
+	*f.PartnerAccountsPermissions = true
 	*f.EmailNotificationContents = true
 	*f.IDLoadedPushNotifications = true
 	*f.SharedChannels = true
@@ -107,8 +107,8 @@ func TestLicenseFeaturesSetDefaults(t *testing.T) {
 	CheckTrue(t, *f.DataRetention)
 	CheckTrue(t, *f.MessageExport)
 	CheckTrue(t, *f.CustomPermissionsSchemes)
-	CheckTrue(t, *f.GuestAccounts)
-	CheckTrue(t, *f.GuestAccountsPermissions)
+	CheckTrue(t, *f.PartnerAccounts)
+	CheckTrue(t, *f.PartnerAccountsPermissions)
 	CheckTrue(t, *f.IDLoadedPushNotifications)
 	CheckTrue(t, *f.SharedChannels)
 	CheckTrue(t, *f.RemoteClusterService)

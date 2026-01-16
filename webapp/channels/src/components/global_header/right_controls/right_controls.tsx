@@ -7,9 +7,9 @@ import styled from 'styled-components';
 
 import type {ProductIdentifier} from '@mattermost/types/products';
 
-import {isCurrentUserGuestUser} from 'mattermost-redux/selectors/entities/users';
+import {isCurrentUserPartnerUser} from 'mattermost-redux/selectors/entities/users';
 
-import {OnboardingTourSteps, OnboardingTourStepsForGuestUsers} from 'components/tours';
+import {OnboardingTourSteps, OnboardingTourStepsForPartnerUsers} from 'components/tours';
 import {
     CustomizeYourExperienceTour,
     useShowOnboardingTutorialStep,
@@ -50,9 +50,9 @@ export type Props = {
 }
 
 const RightControls = ({productId = null}: Props): JSX.Element => {
-    // guest validation to see which point the messaging tour tip starts
-    const isGuestUser = useSelector((state: GlobalState) => isCurrentUserGuestUser(state));
-    const tourStep = isGuestUser ? OnboardingTourStepsForGuestUsers.CUSTOMIZE_EXPERIENCE : OnboardingTourSteps.CUSTOMIZE_EXPERIENCE;
+    // partner validation to see which point the messaging tour tip starts
+    const isPartnerUser = useSelector((state: GlobalState) => isCurrentUserPartnerUser(state));
+    const tourStep = isPartnerUser ? OnboardingTourStepsForPartnerUsers.CUSTOMIZE_EXPERIENCE : OnboardingTourSteps.CUSTOMIZE_EXPERIENCE;
 
     const showCustomizeTip = useShowOnboardingTutorialStep(tourStep);
 

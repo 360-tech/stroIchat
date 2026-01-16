@@ -12,7 +12,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
     const channelPermissions: ChannelPermissions[] = [{
         name: 'create_post',
         roles: {
-            guests: {
+            partners: {
                 value: true,
                 enabled: true,
             },
@@ -38,7 +38,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 onChannelPermissionsChanged={onChannelPermissionsChanged}
                 teamSchemeID={teamSchemeID}
                 teamSchemeDisplayName={teamSchemeDisplayName}
-                guestAccountsEnabled={true}
+                partnerAccountsEnabled={true}
                 readOnly={false}
                 isPublic={true}
             />,
@@ -51,13 +51,13 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             <ChannelModerationTableRow
                 key={channelPermissions[0].name}
                 name={channelPermissions[0].name}
-                guests={channelPermissions[0].roles.guests?.value}
-                guestsDisabled={!channelPermissions[0].roles.guests?.enabled}
+                partners={channelPermissions[0].roles.partners?.value}
+                partnersDisabled={!channelPermissions[0].roles.partners?.enabled}
                 members={channelPermissions[0].roles.members.value}
                 membersDisabled={!channelPermissions[0].roles.members.enabled}
                 onClick={onChannelPermissionsChanged}
                 errorMessages={jest.fn().mockResolvedValue([])}
-                guestAccountsEnabled={true}
+                partnerAccountsEnabled={true}
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -68,7 +68,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             {
                 name: 'create_post',
                 roles: {
-                    guests: {
+                    partners: {
                         value: true,
                         enabled: true,
                     },
@@ -85,7 +85,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             {
                 name: 'use_channel_mentions',
                 roles: {
-                    guests: {
+                    partners: {
                         value: false,
                         enabled: false,
                     },
@@ -106,7 +106,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 onChannelPermissionsChanged={onChannelPermissionsChanged}
                 teamSchemeID={teamSchemeID}
                 teamSchemeDisplayName={teamSchemeDisplayName}
-                guestAccountsEnabled={true}
+                partnerAccountsEnabled={true}
                 isPublic={true}
                 readOnly={false}
             />,
@@ -119,7 +119,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             {
                 name: 'create_post',
                 roles: {
-                    guests: {
+                    partners: {
                         value: false,
                         enabled: true,
                     },
@@ -136,7 +136,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             {
                 name: 'use_channel_mentions',
                 roles: {
-                    guests: {
+                    partners: {
                         value: false,
                         enabled: false,
                     },
@@ -157,7 +157,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 onChannelPermissionsChanged={onChannelPermissionsChanged}
                 teamSchemeID={teamSchemeID}
                 teamSchemeDisplayName={teamSchemeDisplayName}
-                guestAccountsEnabled={true}
+                partnerAccountsEnabled={true}
                 isPublic={false}
                 readOnly={false}
             />,
@@ -170,7 +170,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             {
                 name: 'create_post',
                 roles: {
-                    guests: {
+                    partners: {
                         value: true,
                         enabled: true,
                     },
@@ -187,7 +187,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             {
                 name: 'use_channel_mentions',
                 roles: {
-                    guests: {
+                    partners: {
                         value: false,
                         enabled: false,
                     },
@@ -208,7 +208,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 onChannelPermissionsChanged={onChannelPermissionsChanged}
                 teamSchemeID={teamSchemeID}
                 teamSchemeDisplayName={teamSchemeDisplayName}
-                guestAccountsEnabled={true}
+                partnerAccountsEnabled={true}
                 isPublic={true}
                 readOnly={false}
             />,
@@ -221,7 +221,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             {
                 name: 'create_post',
                 roles: {
-                    guests: {
+                    partners: {
                         value: false,
                         enabled: true,
                     },
@@ -238,7 +238,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             {
                 name: 'use_channel_mentions',
                 roles: {
-                    guests: {
+                    partners: {
                         value: false,
                         enabled: false,
                     },
@@ -259,7 +259,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 onChannelPermissionsChanged={onChannelPermissionsChanged}
                 teamSchemeID={teamSchemeID}
                 teamSchemeDisplayName={teamSchemeDisplayName}
-                guestAccountsEnabled={true}
+                partnerAccountsEnabled={true}
                 isPublic={false}
                 readOnly={false}
             />,
@@ -274,7 +274,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 onChannelPermissionsChanged={onChannelPermissionsChanged}
                 teamSchemeID={undefined}
                 teamSchemeDisplayName={undefined}
-                guestAccountsEnabled={false}
+                partnerAccountsEnabled={false}
                 isPublic={false}
                 readOnly={false}
             />,
@@ -287,13 +287,13 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             <ChannelModerationTableRow
                 key={channelPermissions[0].name}
                 name={channelPermissions[0].name}
-                guests={channelPermissions[0].roles.guests?.value}
-                guestsDisabled={!channelPermissions[0].roles.guests?.enabled}
+                partners={channelPermissions[0].roles.partners?.value}
+                partnersDisabled={!channelPermissions[0].roles.partners?.enabled}
                 members={channelPermissions[0].roles.members.value}
                 membersDisabled={!channelPermissions[0].roles.members.enabled}
                 onClick={onChannelPermissionsChanged}
                 errorMessages={jest.fn().mockResolvedValue([])}
-                guestAccountsEnabled={false}
+                partnerAccountsEnabled={false}
             />,
         );
         expect(wrapper).toMatchSnapshot();
@@ -307,7 +307,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={false}
                     readOnly={false}
                 />,
@@ -320,14 +320,14 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             expect(result).toEqual(output);
         });
 
-        test('Should return error message when create_post guests disabled', () => {
+        test('Should return error message when create_post partners disabled', () => {
             const wrapper = shallow(
                 <ChannelModeration
                     channelPermissions={channelPermissions}
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={false}
                     readOnly={false}
                 />,
@@ -336,7 +336,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             const input: ChannelPermissions = {
                 name: 'create_post',
                 roles: {
-                    guests: {
+                    partners: {
                         value: true,
                         enabled: false,
                     },
@@ -361,7 +361,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={false}
                     readOnly={false}
                 />,
@@ -370,7 +370,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             const input: ChannelPermissions = {
                 name: 'create_post',
                 roles: {
-                    guests: {
+                    partners: {
                         value: true,
                         enabled: true,
                     },
@@ -388,14 +388,14 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             expect(result.length).toEqual(1);
         });
 
-        test('Should return 1 error message when create_post members and guests disabled', () => {
+        test('Should return 1 error message when create_post members and partners disabled', () => {
             const wrapper = shallow(
                 <ChannelModeration
                     channelPermissions={channelPermissions}
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={false}
                     readOnly={false}
                 />,
@@ -404,7 +404,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
             const input: ChannelPermissions = {
                 name: 'create_post',
                 roles: {
-                    guests: {
+                    partners: {
                         value: true,
                         enabled: false,
                     },
@@ -427,7 +427,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'create_post',
                     roles: {
-                        guests: {
+                        partners: {
                             value: true,
                             enabled: true,
                         },
@@ -444,7 +444,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'use_channel_mentions',
                     roles: {
-                        guests: {
+                        partners: {
                             value: true,
                             enabled: true,
                         },
@@ -465,7 +465,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={false}
                     readOnly={false}
                 />,
@@ -481,7 +481,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'create_post',
                     roles: {
-                        guests: {
+                        partners: {
                             value: false,
                             enabled: true,
                         },
@@ -498,7 +498,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'use_channel_mentions',
                     roles: {
-                        guests: {
+                        partners: {
                             value: false,
                             enabled: false,
                         },
@@ -519,7 +519,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={false}
                     readOnly={false}
                 />,
@@ -535,7 +535,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'create_post',
                     roles: {
-                        guests: {
+                        partners: {
                             value: false,
                             enabled: true,
                         },
@@ -552,7 +552,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'use_channel_mentions',
                     roles: {
-                        guests: {
+                        partners: {
                             value: false,
                             enabled: false,
                         },
@@ -573,7 +573,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={true}
                     readOnly={false}
                 />,
@@ -589,7 +589,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'create_post',
                     roles: {
-                        guests: {
+                        partners: {
                             value: true,
                             enabled: true,
                         },
@@ -606,7 +606,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'use_channel_mentions',
                     roles: {
-                        guests: {
+                        partners: {
                             value: false,
                             enabled: false,
                         },
@@ -627,7 +627,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={true}
                     readOnly={false}
                 />,
@@ -643,7 +643,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'create_post',
                     roles: {
-                        guests: {
+                        partners: {
                             value: true,
                             enabled: true,
                         },
@@ -660,7 +660,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                 {
                     name: 'use_channel_mentions',
                     roles: {
-                        guests: {
+                        partners: {
                             value: false,
                             enabled: false,
                         },
@@ -681,7 +681,7 @@ describe('admin_console/team_channel_settings/channel/ChannelModeration', () => 
                     onChannelPermissionsChanged={onChannelPermissionsChanged}
                     teamSchemeID={teamSchemeID}
                     teamSchemeDisplayName={teamSchemeDisplayName}
-                    guestAccountsEnabled={true}
+                    partnerAccountsEnabled={true}
                     isPublic={true}
                     readOnly={false}
                 />,

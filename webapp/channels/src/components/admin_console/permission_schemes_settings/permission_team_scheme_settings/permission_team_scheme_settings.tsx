@@ -31,7 +31,7 @@ import {PermissionsScope, ModalIdentifiers, DocLinks, ModeratedPermissions} from
 
 import TeamInList from './team_in_list';
 
-import GuestPermissionsTree, {GUEST_INCLUDED_PERMISSIONS} from '../guest_permissions_tree';
+import PartnerPermissionsTree, {PARTNER_INCLUDED_PERMISSIONS} from '../partner_permissions_tree';
 import PermissionsTree, {EXCLUDED_PERMISSIONS} from '../permissions_tree';
 import PermissionsTreePlaybooks from '../permissions_tree_playbooks';
 
@@ -74,7 +74,7 @@ type State = {
         team_admin: boolean;
         channel_admin: boolean;
         playbook_admin: boolean;
-        guests: boolean;
+        partners: boolean;
     };
     urlParams: URLSearchParams;
     schemeName: string | undefined;
@@ -97,7 +97,7 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
                 team_admin: true,
                 channel_admin: true,
                 playbook_admin: true,
-                guests: true,
+                partners: true,
             },
             urlParams: new URLSearchParams(props.location.search),
             schemeName: undefined,
@@ -111,10 +111,10 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
 
     componentDidMount() {
         const rolesNeeded = [
-            GeneralConstants.TEAM_GUEST_ROLE,
+            GeneralConstants.TEAM_PARTNER_ROLE,
             GeneralConstants.TEAM_USER_ROLE,
             GeneralConstants.TEAM_ADMIN_ROLE,
-            GeneralConstants.CHANNEL_GUEST_ROLE,
+            GeneralConstants.CHANNEL_PARTNER_ROLE,
             GeneralConstants.CHANNEL_USER_ROLE,
             GeneralConstants.CHANNEL_ADMIN_ROLE,
             GeneralConstants.PLAYBOOK_ADMIN_ROLE,
@@ -125,10 +125,10 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
         if (this.props.schemeId) {
             this.props.actions.loadScheme(this.props.schemeId).then((result) => {
                 this.props.actions.loadRolesIfNeeded([
-                    result.data.default_team_guest_role,
+                    result.data.default_team_partner_role,
                     result.data.default_team_user_role,
                     result.data.default_team_admin_role,
-                    result.data.default_channel_guest_role,
+                    result.data.default_channel_partner_role,
                     result.data.default_channel_user_role,
                     result.data.default_channel_admin_role,
                     result.data.default_playbook_admin_role,
@@ -151,10 +151,10 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
         if (props.schemeId) {
             if (props.scheme !== null &&
                 props.teams !== null &&
-                props.roles[props.scheme.default_team_guest_role] &&
+                props.roles[props.scheme.default_team_partner_role] &&
                 props.roles[props.scheme.default_team_user_role] &&
                 props.roles[props.scheme.default_team_admin_role] &&
-                props.roles[props.scheme.default_channel_guest_role] &&
+                props.roles[props.scheme.default_channel_partner_role] &&
                 props.roles[props.scheme.default_channel_user_role] &&
                 props.roles[props.scheme.default_channel_admin_role] &&
                 props.roles[props.scheme.default_playbook_admin_role] &&
@@ -163,10 +163,10 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
                 return true;
             }
             return false;
-        } else if (props.roles.team_guest &&
+        } else if (props.roles.team_partner &&
             props.roles.team_user &&
             props.roles.team_admin &&
-            props.roles.channel_guest &&
+            props.roles.channel_partner &&
             props.roles.channel_user &&
             props.roles.channel_admin &&
             props.roles.playbook_admin &&
@@ -212,10 +212,10 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
             return this.state.roles;
         }
 
-        let teamGuest;
+        let teamPartner;
         let teamUser;
         let teamAdmin;
-        let channelGuest;
+        let channelPartner;
         let channelUser;
         let channelAdmin;
         let playbookAdmin;
@@ -224,10 +224,10 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
 
         if (this.props.schemeId && this.props.scheme) {
             if (this.isLoaded(this.props)) {
-                teamGuest = this.props.roles[this.props.scheme.default_team_guest_role];
+                teamPartner = this.props.roles[this.props.scheme.default_team_partner_role];
                 teamUser = this.props.roles[this.props.scheme.default_team_user_role];
                 teamAdmin = this.props.roles[this.props.scheme.default_team_admin_role];
-                channelGuest = this.props.roles[this.props.scheme.default_channel_guest_role];
+                channelPartner = this.props.roles[this.props.scheme.default_channel_partner_role];
                 channelUser = this.props.roles[this.props.scheme.default_channel_user_role];
                 channelAdmin = this.props.roles[this.props.scheme.default_channel_admin_role];
                 playbookAdmin = this.props.roles[this.props.scheme.default_playbook_admin_role];
@@ -235,10 +235,10 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
                 runMember = this.props.roles[this.props.scheme.default_run_member_role];
             }
         } else if (this.isLoaded(this.props)) {
-            teamGuest = this.props.roles.team_guest;
+            teamPartner = this.props.roles.team_partner;
             teamUser = this.props.roles.team_user;
             teamAdmin = this.props.roles.team_admin;
-            channelGuest = this.props.roles.channel_guest;
+            channelPartner = this.props.roles.channel_partner;
             channelUser = this.props.roles.channel_user;
             channelAdmin = this.props.roles.channel_admin;
             playbookAdmin = this.props.roles.playbook_admin;
@@ -253,9 +253,9 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
             playbook_admin: playbookAdmin,
             playbook_member: playbookMember,
             run_member: runMember,
-            team_guest: teamGuest,
+            team_partner: teamPartner,
             team_user: teamUser,
-            channel_guest: channelGuest,
+            channel_partner: channelPartner,
             channel_user: channelUser,
             all_users: {
                 name: 'all_users',
@@ -267,36 +267,36 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
                     ...(runMember?.permissions || []),
                 ],
             },
-            guests: {
-                name: 'guests',
-                displayName: 'Guests',
-                permissions: teamGuest?.permissions.concat(channelGuest?.permissions || []),
+            partners: {
+                name: 'partners',
+                displayName: 'Partners',
+                permissions: teamPartner?.permissions.concat(channelPartner?.permissions || []),
             },
         };
     };
 
-    deriveRolesFromGuests = (teamGuest: Role, channelGuest: Role, role: Role): RolesMap => {
+    deriveRolesFromPartners = (teamPartner: Role, channelPartner: Role, role: Role): RolesMap => {
         return {
-            team_guest: {
-                ...teamGuest,
+            team_partner: {
+                ...teamPartner,
                 permissions: role.permissions.filter((p) => PermissionsScope[p] === 'team_scope'),
             },
-            channel_guest: {
-                ...channelGuest,
+            channel_partner: {
+                ...channelPartner,
                 permissions: role.permissions.filter((p) => PermissionsScope[p] === 'channel_scope'),
             },
         };
     };
 
-    restoreGuestPermissions = (teamGuest: Role, channelGuest: Role, roles: RolesMap) => {
-        for (const permission of teamGuest.permissions) {
-            if (!GUEST_INCLUDED_PERMISSIONS.includes(permission)) {
-                roles.team_guest.permissions.push(permission);
+    restorePartnerPermissions = (teamPartner: Role, channelPartner: Role, roles: RolesMap) => {
+        for (const permission of teamPartner.permissions) {
+            if (!PARTNER_INCLUDED_PERMISSIONS.includes(permission)) {
+                roles.team_partner.permissions.push(permission);
             }
         }
-        for (const permission of channelGuest.permissions) {
-            if (!GUEST_INCLUDED_PERMISSIONS.includes(permission)) {
-                roles.channel_guest.permissions.push(permission);
+        for (const permission of channelPartner.permissions) {
+            if (!PARTNER_INCLUDED_PERMISSIONS.includes(permission)) {
+                roles.channel_partner.permissions.push(permission);
             }
         }
         return roles;
@@ -355,14 +355,14 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
         let playbookMember = roles?.playbook_member;
         let runMember = roles?.run_member;
         const allUsers = roles?.all_users;
-        const guests = roles?.guests;
+        const partners = roles?.partners;
 
         const schemeName = this.state.schemeName || (this.props.scheme && this.props.scheme.display_name) || '';
         const schemeDescription = this.state.schemeDescription || (this.props.scheme && this.props.scheme.description) || '';
         let teamUser = null;
         let channelUser = null;
-        let teamGuest = null;
-        let channelGuest = null;
+        let teamPartner = null;
+        let channelPartner = null;
         let schemeId = null;
 
         this.setState({saving: true});
@@ -386,19 +386,19 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
             runMember = derived.run_member;
         }
 
-        if (roles && roles.team_guest && roles.channel_guest && guests) {
-            let derivedGuests = this.deriveRolesFromGuests(
-                roles.team_guest,
-                roles.channel_guest,
-                guests as Role,
+        if (roles && roles.team_partner && roles.channel_partner && partners) {
+            let derivedPartners = this.deriveRolesFromPartners(
+                roles.team_partner,
+                roles.channel_partner,
+                partners as Role,
             );
-            derivedGuests = this.restoreGuestPermissions(
-                roles.team_guest,
-                roles.channel_guest,
-                derivedGuests,
+            derivedPartners = this.restorePartnerPermissions(
+                roles.team_partner,
+                roles.channel_partner,
+                derivedPartners,
             );
-            teamGuest = derivedGuests.team_guest;
-            channelGuest = derivedGuests.channel_guest;
+            teamPartner = derivedPartners.team_partner;
+            channelPartner = derivedPartners.channel_partner;
         }
 
         if (this.props.schemeId) {
@@ -421,20 +421,20 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
             const newScheme = result.data;
             schemeId = newScheme.id;
             await this.props.actions.loadRolesIfNeeded([
-                newScheme.default_team_guest_role,
+                newScheme.default_team_partner_role,
                 newScheme.default_team_user_role,
                 newScheme.default_team_admin_role,
-                newScheme.default_channel_guest_role,
+                newScheme.default_channel_partner_role,
                 newScheme.default_channel_user_role,
                 newScheme.default_channel_admin_role,
                 newScheme.default_playbook_admin_role,
                 newScheme.default_playbook_member_role,
                 newScheme.default_run_member_role,
             ]);
-            teamGuest = {...teamGuest, id: this.props.roles[newScheme.default_team_guest_role].id};
+            teamPartner = {...teamPartner, id: this.props.roles[newScheme.default_team_partner_role].id};
             teamUser = {...teamUser, id: this.props.roles[newScheme.default_team_user_role].id};
             teamAdmin = {...teamAdmin, id: this.props.roles[newScheme.default_team_admin_role].id} as Role;
-            channelGuest = {...channelGuest, id: this.props.roles[newScheme.default_channel_guest_role].id};
+            channelPartner = {...channelPartner, id: this.props.roles[newScheme.default_channel_partner_role].id};
             channelUser = {...channelUser, id: this.props.roles[newScheme.default_channel_user_role].id};
             channelAdmin = {...channelAdmin, id: this.props.roles[newScheme.default_channel_admin_role].id} as Role;
             playbookAdmin = {...playbookAdmin, id: this.props.roles[newScheme.default_playbook_admin_role].id} as Role;
@@ -454,10 +454,10 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
         promises.push(teamUserPromise);
         promises.push(channelUserPromise);
 
-        if (this.haveGuestAccountsPermissions()) {
-            const teamGuestPromise = this.props.actions.editRole(teamGuest as Role);
-            const channelGuestPromise = this.props.actions.editRole(channelGuest as Role);
-            promises.push(teamGuestPromise, channelGuestPromise);
+        if (this.havePartnerAccountsPermissions()) {
+            const teamPartnerPromise = this.props.actions.editRole(teamPartner as Role);
+            const channelPartnerPromise = this.props.actions.editRole(channelPartner as Role);
+            promises.push(teamPartnerPromise, channelPartnerPromise);
         }
 
         const currentTeams = new Set((this.state.teams || this.props.teams || []).map((team) => team.id));
@@ -494,7 +494,7 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
         this.props.history.push('/admin_console/user_management/permissions');
     };
 
-    toggleRole = (roleId: 'all_users' | 'team_admin' | 'channel_admin' | 'guests' | 'playbook_admin') => {
+    toggleRole = (roleId: 'all_users' | 'team_admin' | 'channel_admin' | 'partners' | 'playbook_admin') => {
         const newOpenRoles = {...this.state.openRoles};
         newOpenRoles[roleId] = !newOpenRoles[roleId];
         this.setState({openRoles: newOpenRoles});
@@ -569,8 +569,8 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
         this.setState({addTeamOpen: false});
     };
 
-    haveGuestAccountsPermissions = () => {
-        return this.props.license.GuestAccountsPermissions === 'true';
+    havePartnerAccountsPermissions = () => {
+        return this.props.license.PartnerAccountsPermissions === 'true';
     };
 
     render = () => {
@@ -711,22 +711,22 @@ export default class PermissionTeamSchemeSettings extends React.PureComponent<Pr
                             </div>
                         </AdminPanelWithButton>
 
-                        {this.props.license && this.props.config.EnableGuestAccounts === 'true' &&
+                        {this.props.license && this.props.config.EnablePartnerAccounts === 'true' &&
                             <AdminPanelTogglable
                                 className='permissions-block'
-                                open={this.state.openRoles.guests}
-                                id='guests'
-                                onToggle={() => this.toggleRole('guests')}
-                                title={defineMessage({id: 'admin.permissions.systemScheme.GuestsTitle', defaultMessage: 'Guests'})}
-                                subtitle={defineMessage({id: 'admin.permissions.systemScheme.GuestsDescription', defaultMessage: 'Permissions granted to guest users.'})}
+                                open={this.state.openRoles.partners}
+                                id='partners'
+                                onToggle={() => this.toggleRole('partners')}
+                                title={defineMessage({id: 'admin.permissions.systemScheme.PartnersTitle', defaultMessage: 'Partners'})}
+                                subtitle={defineMessage({id: 'admin.permissions.systemScheme.PartnersDescription', defaultMessage: 'Permissions granted to partner users.'})}
                             >
-                                <GuestPermissionsTree
+                                <PartnerPermissionsTree
                                     selected={this.state.selectedPermission}
-                                    role={roles?.guests}
+                                    role={roles?.partners}
                                     scope={'team_scope'}
                                     onToggle={this.togglePermission}
                                     selectRow={this.selectRow}
-                                    readOnly={this.props.isDisabled || !this.haveGuestAccountsPermissions()}
+                                    readOnly={this.props.isDisabled || !this.havePartnerAccountsPermissions()}
                                 />
                             </AdminPanelTogglable>
                         }

@@ -23,7 +23,7 @@ export const InvitePeopleTour = () => {
         <p>
             <FormattedMessage
                 id='onboardingTour.invitePeople.Description'
-                defaultMessage={'Invite members of your organization or external guests to the team and start collaborating with them.'}
+                defaultMessage={'Invite members of your organization or external partners to the team and start collaborating with them.'}
             />
         </p>
     );

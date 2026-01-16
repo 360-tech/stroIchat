@@ -13,7 +13,7 @@ import * as TeamActions from 'mattermost-redux/actions/teams';
 import {getChannelMembersInChannels} from 'mattermost-redux/selectors/entities/channels';
 import {getTeamMember} from 'mattermost-redux/selectors/entities/teams';
 import {isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/users';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import {addUsersToTeam} from 'actions/team_actions';
 
@@ -35,12 +35,12 @@ export function sendMembersInvites(teamId: string, users: UserProfile[], emails:
         const usersToAdd = [];
         for (const user of users) {
             const member = getTeamMember(state, teamId, user.id);
-            if (isGuest(user.roles)) {
+            if (isPartner(user.roles)) {
                 notSent.push({
                     user,
                     reason: defineMessage({
-                        id: 'invite.members.user-is-guest',
-                        defaultMessage: 'Contact your admin to make this guest a full member.',
+                        id: 'invite.members.user-is-partner',
+                        defaultMessage: 'Contact your admin to make this partner a full member.',
                     }),
                 });
             } else if (member) {
@@ -151,20 +151,20 @@ export function sendMembersInvites(teamId: string, users: UserProfile[], emails:
     };
 }
 
-export async function sendGuestInviteForUser(
+export async function sendPartnerInviteForUser(
     dispatch: DispatchFunc,
     user: UserProfile,
     teamId: string,
     channels: Channel[],
     members: RelationOneToOne<Channel, Record<string, ChannelMembership>>,
 ): Promise<({sent: InviteResult} | {notSent: InviteResult})> {
-    if (!isGuest(user.roles)) {
+    if (!isPartner(user.roles)) {
         return {
             notSent: {
                 user,
                 reason: defineMessage({
-                    id: 'invite.members.user-is-not-guest',
-                    defaultMessage: 'This person is already a member of the workspace. Invite them as a member instead of a guest.',
+                    id: 'invite.members.user-is-not-partner',
+                    defaultMessage: 'This person is already a member of the workspace. Invite them as a member instead of a partner.',
                 }),
             },
         };
@@ -186,7 +186,7 @@ export async function sendGuestInviteForUser(
             notSent: {
                 user,
                 reason: defineMessage({
-                    id: 'invite.guests.already-all-channels-member',
+                    id: 'invite.partners.already-all-channels-member',
                     defaultMessage: 'This person is already a member of all the channels.',
                 }),
             },
@@ -206,8 +206,8 @@ export async function sendGuestInviteForUser(
             notSent: {
                 user,
                 reason: defineMessage({
-                    id: 'invite.guests.unable-to-add-the-user-to-the-channels',
-                    defaultMessage: 'Unable to add the guest to the channels.',
+                    id: 'invite.partners.unable-to-add-the-user-to-the-channels',
+                    defaultMessage: 'Unable to add the partner to the channels.',
                 }),
             },
         };
@@ -218,7 +218,7 @@ export async function sendGuestInviteForUser(
             notSent: {
                 user,
                 reason: defineMessage({
-                    id: 'invite.guests.already-some-channels-member',
+                    id: 'invite.partners.already-some-channels-member',
                     defaultMessage: 'This person is already a member of some of the channels.',
                 }),
             },
@@ -228,8 +228,8 @@ export async function sendGuestInviteForUser(
         sent: {
             user,
             reason: defineMessage({
-                id: 'invite.guests.new-member',
-                defaultMessage: 'This guest has been added to the team and {count, plural, one {channel} other {channels}}.',
+                id: 'invite.partners.new-member',
+                defaultMessage: 'This partner has been added to the team and {count, plural, one {channel} other {channels}}.',
                 values: {
                     count: channels.length,
                 },
@@ -238,20 +238,20 @@ export async function sendGuestInviteForUser(
     };
 }
 
-export function sendGuestsInvites(
+export function sendPartnersInvites(
     teamId: string,
     channels: Channel[],
     users: UserProfile[],
     emails: string[],
     message: string,
-    guestSubtype?: string,
+    partnerSubtype?: string,
 ): ActionFuncAsync<InviteResults> {
     return async (dispatch, getState) => {
         const state = getState();
         const sent = [];
         const notSent = [];
         const members = getChannelMembersInChannels(state);
-        const results = await Promise.all(users.map((user) => sendGuestInviteForUser(dispatch, user, teamId, channels, members)));
+        const results = await Promise.all(users.map((user) => sendPartnerInviteForUser(dispatch, user, teamId, channels, members)));
 
         for (const result of results) {
             if ('sent' in result && result.sent) {
@@ -265,15 +265,15 @@ export function sendGuestsInvites(
         if (emails.length > 0) {
             let response;
             try {
-                response = await dispatch(TeamActions.sendEmailGuestInvitesToChannelsGracefully(teamId, channels.map((x) => x.id), emails, message, guestSubtype));
+                response = await dispatch(TeamActions.sendEmailPartnerInvitesToChannelsGracefully(teamId, channels.map((x) => x.id), emails, message, partnerSubtype));
             } catch (e) {
                 response = {
                     data: emails.map((email) => ({
                         email,
                         error: {
                             error: defineMessage({
-                                id: 'invite.guests.unable-to-add-the-user-to-the-channels',
-                                defaultMessage: 'Unable to add the guest to the channels.',
+                                id: 'invite.partners.unable-to-add-the-user-to-the-channels',
+                                defaultMessage: 'Unable to add the partner to the channels.',
                             }),
                         },
                     })) as unknown as TeamInviteWithError[],
@@ -315,7 +315,7 @@ export function sendGuestsInvites(
                         sent.push({
                             email: res.email,
                             reason: defineMessage({
-                                id: 'invite.guests.added-to-channel',
+                                id: 'invite.partners.added-to-channel',
                                 defaultMessage: 'An invitation email has been sent.',
                             }),
                         });
@@ -351,12 +351,12 @@ export function sendMembersInvitesToChannels(
         const usersToAdd = [];
         for (const user of users) {
             const member = getTeamMember(state, teamId, user.id);
-            if (isGuest(user.roles)) {
+            if (isPartner(user.roles)) {
                 notSent.push({
                     user,
                     reason: defineMessage({
-                        id: 'invite.members.user-is-guest',
-                        defaultMessage: 'Contact your admin to make this guest a full member.',
+                        id: 'invite.members.user-is-partner',
+                        defaultMessage: 'Contact your admin to make this partner a full member.',
                     }),
                 });
             } else if (member) {

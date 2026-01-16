@@ -12,7 +12,7 @@ import {getCurrentUser} from 'mattermost-redux/selectors/entities/common';
 import {haveIChannelPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 import {getProfilesInCurrentChannel, getStatusForUserId, getUser} from 'mattermost-redux/selectors/entities/users';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import {muteChannel, unmuteChannel} from 'actions/channel_actions';
 import {openModal} from 'actions/views/modals';
@@ -30,7 +30,7 @@ import type {Props} from './channel_info_rhs';
 
 const EMPTY_CHANNEL_STATS = {
     member_count: 0,
-    guest_count: 0,
+    partner_count: 0,
     pinnedpost_count: 0,
     files_count: 0,
 };
@@ -72,7 +72,7 @@ function mapStateToProps(state: GlobalState) {
         props.dmUser = {
             user,
             display_name: getDisplayNameByUser(state, user),
-            is_guest: isGuest(user.roles),
+            is_partner: isPartner(user.roles),
             status: getStatusForUserId(state, user.id),
         };
     }

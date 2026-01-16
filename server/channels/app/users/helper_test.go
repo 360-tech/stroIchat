@@ -106,14 +106,14 @@ func (th *TestHelper) InitBasic() *TestHelper {
 }
 
 func (th *TestHelper) CreateUser() *model.User {
-	return th.CreateUserOrGuest(false)
+	return th.CreateUserOrPartner(false)
 }
 
-func (th *TestHelper) CreateGuest() *model.User {
-	return th.CreateUserOrGuest(true)
+func (th *TestHelper) CreatePartner() *model.User {
+	return th.CreateUserOrPartner(true)
 }
 
-func (th *TestHelper) CreateUserOrGuest(guest bool) *model.User {
+func (th *TestHelper) CreateUserOrPartner(partner bool) *model.User {
 	id := model.NewId()
 
 	user := &model.User{
@@ -125,8 +125,8 @@ func (th *TestHelper) CreateUserOrGuest(guest bool) *model.User {
 	}
 
 	var err error
-	if guest {
-		if user, err = th.service.CreateUser(th.Context, user, UserCreateOptions{Guest: true}); err != nil {
+	if partner {
+		if user, err = th.service.CreateUser(th.Context, user, UserCreateOptions{Partner: true}); err != nil {
 			panic(err)
 		}
 	} else {

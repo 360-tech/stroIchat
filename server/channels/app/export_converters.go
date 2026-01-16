@@ -107,8 +107,8 @@ func importDirectChannelMembersFromChannelMembers(members []*model.ChannelMember
 		if member.SchemeAdmin {
 			dcm.SchemeAdmin = &member.SchemeAdmin
 		}
-		if member.SchemeGuest {
-			dcm.SchemeGuest = &member.SchemeGuest
+		if member.SchemePartner {
+			dcm.SchemePartner = &member.SchemePartner
 		}
 		if member.LastViewedAt != 0 {
 			dcm.LastViewedAt = &member.LastViewedAt
@@ -198,8 +198,8 @@ func importUserTeamDataFromTeamMember(member *model.TeamMemberForExport) *import
 	if member.SchemeUser {
 		rolesList = append(rolesList, model.TeamUserRoleId)
 	}
-	if member.SchemeGuest {
-		rolesList = append(rolesList, model.TeamGuestRoleId)
+	if member.SchemePartner {
+		rolesList = append(rolesList, model.TeamPartnerRoleId)
 	}
 	roles := strings.Join(rolesList, " ")
 	return &imports.UserTeamImportData{
@@ -216,8 +216,8 @@ func importUserChannelDataFromChannelMemberAndPreferences(member *model.ChannelM
 	if member.SchemeUser {
 		rolesList = append(rolesList, model.ChannelUserRoleId)
 	}
-	if member.SchemeGuest {
-		rolesList = append(rolesList, model.ChannelGuestRoleId)
+	if member.SchemePartner {
+		rolesList = append(rolesList, model.ChannelPartnerRoleId)
 	}
 	props := member.NotifyProps
 	notifyProps := imports.UserChannelNotifyPropsImportData{}
@@ -358,13 +358,13 @@ func importLineFromScheme(scheme *model.Scheme, rolesMap map[string]*model.Role)
 	if scheme.Scope == model.SchemeScopeTeam {
 		data.DefaultTeamAdminRole = importRoleDataFromRole(rolesMap[scheme.DefaultTeamAdminRole])
 		data.DefaultTeamUserRole = importRoleDataFromRole(rolesMap[scheme.DefaultTeamUserRole])
-		data.DefaultTeamGuestRole = importRoleDataFromRole(rolesMap[scheme.DefaultTeamGuestRole])
+		data.DefaultTeamPartnerRole = importRoleDataFromRole(rolesMap[scheme.DefaultTeamPartnerRole])
 	}
 
 	if scheme.Scope == model.SchemeScopeTeam || scheme.Scope == model.SchemeScopeChannel {
 		data.DefaultChannelAdminRole = importRoleDataFromRole(rolesMap[scheme.DefaultChannelAdminRole])
 		data.DefaultChannelUserRole = importRoleDataFromRole(rolesMap[scheme.DefaultChannelUserRole])
-		data.DefaultChannelGuestRole = importRoleDataFromRole(rolesMap[scheme.DefaultChannelGuestRole])
+		data.DefaultChannelPartnerRole = importRoleDataFromRole(rolesMap[scheme.DefaultChannelPartnerRole])
 	}
 
 	return &imports.LineImportData{

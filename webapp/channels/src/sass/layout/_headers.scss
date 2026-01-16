@@ -183,8 +183,8 @@
                     display: flex;
                 }
 
-                //show divider between guests label and placeholder on hover
-                &:has(.header-placeholder) .has-guest-header {
+                //show divider between partners label and placeholder on hover
+                &:has(.header-placeholder) .has-partner-header {
                     &::after {
                         height: 20px;
                         border-left: solid 1px rgba(var(--center-channel-color-rgb), 0.12);
@@ -283,7 +283,7 @@
         margin: 0 8px 0 4px;
     }
 
-    .GuestTag {
+    .PartnerTag {
         position: relative;
         top: -1px;
     }
@@ -399,9 +399,9 @@
             }
         }
 
-        //show guests divider if description is set
+        //show partners divider if description is set
         &:has(.header-description__text){
-            .has-guest-header {
+            .has-partner-header {
                 &::after {
                     height: 20px;
                     border-left: solid 1px rgba(var(--center-channel-color-rgb), 0.12);
@@ -505,7 +505,7 @@
         }
     }
 
-    .has-guest-header {
+    .has-partner-header {
         height: 16px;
         color: rgba(var(--center-channel-color-rgb), 0.75);
         line-height: 16px;

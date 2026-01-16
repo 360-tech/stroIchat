@@ -311,11 +311,11 @@
         ]
     },
     {
-        "section": "authentication.guest_access",
+        "section": "authentication.partner_access",
         "disabledInputs": [
             {
-                "path": "/admin_console/authentication/guest_access",
-                "selector": "GuestAccountsSettings.Enablefalse"
+                "path": "/admin_console/authentication/partner_access",
+                "selector": "PartnerAccountsSettings.Enablefalse"
             }
         ]
     },

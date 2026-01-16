@@ -51,7 +51,7 @@ export interface ChannelDetailsProps {
     allGroups: Record<string, Group>;
     channelPermissions: ChannelPermissions[];
     teamScheme?: Scheme;
-    guestAccountsEnabled: boolean;
+    partnerAccountsEnabled: boolean;
     channelModerationEnabled: boolean;
     channelGroupsEnabled: boolean;
     abacSupported: boolean;
@@ -610,7 +610,7 @@ export default class ChannelDetails extends React.PureComponent<ChannelDetailsPr
                     name: p.name,
                     roles: {
                         ...(p.roles.members && p.roles.members.enabled && {members: p.roles.members!.value}),
-                        ...(p.roles.guests && p.roles.guests.enabled && {guests: p.roles.guests!.value}),
+                        ...(p.roles.partners && p.roles.partners.enabled && {partners: p.roles.partners!.value}),
                     },
                 };
             });
@@ -1340,7 +1340,7 @@ export default class ChannelDetails extends React.PureComponent<ChannelDetailsPr
                         onChannelPermissionsChanged={this.channelPermissionsChanged}
                         teamSchemeID={teamScheme?.id}
                         teamSchemeDisplayName={teamScheme?.display_name}
-                        guestAccountsEnabled={this.props.guestAccountsEnabled}
+                        partnerAccountsEnabled={this.props.partnerAccountsEnabled}
                         isPublic={channel.type === Constants.OPEN_CHANNEL}
                         readOnly={this.props.isDisabled}
                     />

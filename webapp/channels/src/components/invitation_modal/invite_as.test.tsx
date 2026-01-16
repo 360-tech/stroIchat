@@ -27,7 +27,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
         setInviteAs: jest.fn(),
         inviteType: InviteType.MEMBER,
         titleClass: 'title',
-        canInviteGuests: true,
+        canInvitePartners: true,
     };
 
     const state = {
@@ -81,7 +81,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
         expect(wrapper.find(RadioGroup).length).toBe(1);
     });
 
-    test('guest radio-button is disabled and shows the badge guest restricted feature to invite guest when is NOT free trial for cloud', () => {
+    test('partner radio-button is disabled and shows the badge partner restricted feature to invite partner when is NOT free trial for cloud', () => {
         const state = {
             entities: {
                 admin: {
@@ -127,8 +127,8 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(true);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(true);
 
         const badgeText = wrapper.find('.Tag span.tag-text').text();
         expect(badgeText).toBe('Professional feature- try it out free');
@@ -180,14 +180,14 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(true);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(true);
 
         const badgeText = wrapper.find('.Tag span.tag-text').text();
         expect(badgeText).toBe('Upgrade');
     });
 
-    test('guest radio-button is disabled and shows the badge guest restricted feature to invite guest when is NOT free trial for self hosted starter', () => {
+    test('partner radio-button is disabled and shows the badge partner restricted feature to invite partner when is NOT free trial for self hosted starter', () => {
         const state = {
             entities: {
                 admin: {
@@ -219,8 +219,8 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(true);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(true);
 
         const badgeText = wrapper.find('.Tag span.tag-text').text();
         expect(badgeText).toBe('Professional feature- try it out free');
@@ -258,14 +258,14 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(true);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(true);
 
         const badgeText = wrapper.find('.Tag span.tag-text').text();
         expect(badgeText).toBe('Upgrade');
     });
 
-    test('shows the badge guest highligh feature to invite guest when IS FREE trial for cloud', () => {
+    test('shows the badge partner highligh feature to invite partner when IS FREE trial for cloud', () => {
         const state = {
             entities: {
                 admin: {
@@ -304,14 +304,14 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(false);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(false);
 
         const badgeText = wrapper.find('.Tag span.tag-text').text();
         expect(badgeText).toBe('Professional feature');
     });
 
-    test('shows the badge guest highligh feature to invite guest when IS FREE trial for self hosted starter', () => {
+    test('shows the badge partner highligh feature to invite partner when IS FREE trial for self hosted starter', () => {
         const state = {
             entities: {
                 admin: {
@@ -344,20 +344,20 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(false);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(false);
 
         const badgeText = wrapper.find('.Tag span.tag-text').text();
         expect(badgeText).toBe('Professional feature');
     });
 
-    test('guest radio-button is disabled when canInviteGuests prop is false', () => {
-        const propsWithCanInviteGuestsFalse = {
+    test('partner radio-button is disabled when canInvitePartners prop is false', () => {
+        const propsWithCanInvitePartnersFalse = {
             ...props,
-            canInviteGuests: false,
+            canInvitePartners: false,
         };
 
-        // Use a state where normally guests would be allowed (paid subscription)
+        // Use a state where normally partners would be allowed (paid subscription)
         const paidState = {
             entities: {
                 admin: {
@@ -399,21 +399,21 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
         const store = mockStore(paidState);
         const wrapper = mountWithIntl(
             <Provider store={store}>
-                <InviteAs {...propsWithCanInviteGuestsFalse}/>
+                <InviteAs {...propsWithCanInvitePartnersFalse}/>
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(true);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(true);
     });
 
-    test('guest radio-button is enabled when canInviteGuests prop is true and other conditions allow it', () => {
-        const propsWithCanInviteGuestsTrue = {
+    test('partner radio-button is enabled when canInvitePartners prop is true and other conditions allow it', () => {
+        const propsWithCanInvitePartnersTrue = {
             ...props,
-            canInviteGuests: true,
+            canInvitePartners: true,
         };
 
-        // Use a state where guests would be allowed (paid subscription)
+        // Use a state where partners would be allowed (paid subscription)
         const paidState = {
             entities: {
                 admin: {
@@ -455,16 +455,16 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
         const store = mockStore(paidState);
         const wrapper = mountWithIntl(
             <Provider store={store}>
-                <InviteAs {...propsWithCanInviteGuestsTrue}/>
+                <InviteAs {...propsWithCanInvitePartnersTrue}/>
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(false);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(false);
     });
 
-    test('guest radio-button is disabled when canInviteGuests prop is undefined and defaults to system behavior', () => {
-        // Test with starter plan where guests should be disabled by default
+    test('partner radio-button is disabled when canInvitePartners prop is undefined and defaults to system behavior', () => {
+        // Test with starter plan where partners should be disabled by default
         const state = {
             entities: {
                 admin: {
@@ -510,7 +510,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
             </Provider>,
         );
 
-        const guestRadioButton = wrapper.find('input[value="GUEST"]');
-        expect(guestRadioButton.props().disabled).toBe(true);
+        const partnerRadioButton = wrapper.find('input[value="GUEST"]');
+        expect(partnerRadioButton.props().disabled).toBe(true);
     });
 });

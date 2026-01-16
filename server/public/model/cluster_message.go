@@ -14,7 +14,7 @@ const (
 	ClusterEventInvalidateCacheForChannelMembersNotifyProps ClusterEvent = "inv_channel_members_notify_props"
 	ClusterEventInvalidateCacheForChannelByName             ClusterEvent = "inv_channel_name"
 	ClusterEventInvalidateCacheForChannel                   ClusterEvent = "inv_channel"
-	ClusterEventInvalidateCacheForChannelGuestCount         ClusterEvent = "inv_channel_guest_count"
+	ClusterEventInvalidateCacheForChannelPartnerCount         ClusterEvent = "inv_channel_partner_count"
 	ClusterEventInvalidateCacheForUser                      ClusterEvent = "inv_user"
 	ClusterEventInvalidateWebConnCacheForUser               ClusterEvent = "inv_user_teams"
 	ClusterEventClearSessionCacheForUser                    ClusterEvent = "clear_session_user"

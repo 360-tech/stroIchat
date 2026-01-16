@@ -174,9 +174,9 @@ func (a *App) getSupportPacketStats(rctx request.CTX) (*model.FileData, error) {
 		rErr = multierror.Append(errors.Wrap(err, "failed to get deactivated user count"))
 	}
 
-	stats.Guests, err = a.Srv().Store().User().AnalyticsGetGuestCount()
+	stats.Partners, err = a.Srv().Store().User().AnalyticsGetPartnerCount()
 	if err != nil {
-		rErr = multierror.Append(errors.Wrap(err, "failed to get guest count"))
+		rErr = multierror.Append(errors.Wrap(err, "failed to get partner count"))
 	}
 
 	stats.BotAccounts, err = a.Srv().Store().User().Count(model.UserCountOptions{IncludeBotAccounts: true, ExcludeRegularUsers: true})

@@ -147,7 +147,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         let errorMessage;
 
         if (server_error_id === 'store.sql_user.save.max_accounts.app_error' ||
-            server_error_id === 'api.team.add_user_to_team_from_invite.guest.app_error') {
+            server_error_id === 'api.team.add_user_to_team_from_invite.partner.app_error') {
             errorMessage = message;
         }
 

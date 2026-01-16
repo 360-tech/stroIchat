@@ -336,7 +336,7 @@ const (
 	AuditEventDeleteTeam                  = "deleteTeam"                  // delete team
 	AuditEventImportTeam                  = "importTeam"                  // import team data from external source
 	AuditEventInvalidateAllEmailInvites   = "invalidateAllEmailInvites"   // invalidate all pending email invitations
-	AuditEventInviteGuestsToChannels      = "inviteGuestsToChannels"      // invite guest users to specific channels
+	AuditEventInvitePartnersToChannels      = "invitePartnersToChannels"      // invite partner users to specific channels
 	AuditEventInviteUsersToTeam           = "inviteUsersToTeam"           // invite users to team
 	AuditEventLocalCreateTeam             = "localCreateTeam"             // create team locally
 	AuditEventLocalDeleteTeam             = "localDeleteTeam"             // delete team locally
@@ -381,7 +381,7 @@ const (
 	AuditEventCreateUser                   = "createUser"                   // create user account
 	AuditEventCreateUserAccessToken        = "createUserAccessToken"        // create personal access token for user API access
 	AuditEventDeleteUser                   = "deleteUser"                   // delete user account
-	AuditEventDemoteUserToGuest            = "demoteUserToGuest"            // demote regular user to guest account with limited permissions
+	AuditEventDemoteUserToPartner            = "demoteUserToPartner"            // demote regular user to partner account with limited permissions
 	AuditEventDisableUserAccessToken       = "disableUserAccessToken"       // disable user personal access token
 	AuditEventEnableUserAccessToken        = "enableUserAccessToken"        // enable user personal access token
 	AuditEventExtendSessionExpiry          = "extendSessionExpiry"          // extend user session expiration time
@@ -392,7 +392,7 @@ const (
 	AuditEventMigrateAuthToLdap            = "migrateAuthToLdap"            // migrate user authentication method to LDAP
 	AuditEventMigrateAuthToSaml            = "migrateAuthToSaml"            // migrate user authentication method to SAML
 	AuditEventPatchUser                    = "patchUser"                    // update user properties
-	AuditEventPromoteGuestToUser           = "promoteGuestToUser"           // promote guest account to regular user
+	AuditEventPromotePartnerToUser           = "promotePartnerToUser"           // promote partner account to regular user
 	AuditEventResetPassword                = "resetPassword"                // reset user password
 	AuditEventResetPasswordFailedAttempts  = "resetPasswordFailedAttempts"  // reset failed password attempt counter
 	AuditEventRevokeAllSessionsAllUsers    = "revokeAllSessionsAllUsers"    // revoke all active sessions for all users

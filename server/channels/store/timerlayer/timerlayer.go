@@ -893,10 +893,10 @@ func (s *TimerLayerChannelStore) AnalyticsTypeCount(teamID string, channelType m
 	return result, err
 }
 
-func (s *TimerLayerChannelStore) Autocomplete(rctx request.CTX, userID string, term string, includeDeleted bool, isGuest bool) (model.ChannelListWithTeamData, error) {
+func (s *TimerLayerChannelStore) Autocomplete(rctx request.CTX, userID string, term string, includeDeleted bool, isPartner bool) (model.ChannelListWithTeamData, error) {
 	start := time.Now()
 
-	result, err := s.ChannelStore.Autocomplete(rctx, userID, term, includeDeleted, isGuest)
+	result, err := s.ChannelStore.Autocomplete(rctx, userID, term, includeDeleted, isPartner)
 
 	elapsed := float64(time.Since(start)) / float64(time.Second)
 	if s.Root.Metrics != nil {
@@ -909,10 +909,10 @@ func (s *TimerLayerChannelStore) Autocomplete(rctx request.CTX, userID string, t
 	return result, err
 }
 
-func (s *TimerLayerChannelStore) AutocompleteInTeam(rctx request.CTX, teamID string, userID string, term string, includeDeleted bool, isGuest bool) (model.ChannelList, error) {
+func (s *TimerLayerChannelStore) AutocompleteInTeam(rctx request.CTX, teamID string, userID string, term string, includeDeleted bool, isPartner bool) (model.ChannelList, error) {
 	start := time.Now()
 
-	result, err := s.ChannelStore.AutocompleteInTeam(rctx, teamID, userID, term, includeDeleted, isGuest)
+	result, err := s.ChannelStore.AutocompleteInTeam(rctx, teamID, userID, term, includeDeleted, isPartner)
 
 	elapsed := float64(time.Since(start)) / float64(time.Second)
 	if s.Root.Metrics != nil {
@@ -1611,10 +1611,10 @@ func (s *TimerLayerChannelStore) GetForPost(postID string) (*model.Channel, erro
 	return result, err
 }
 
-func (s *TimerLayerChannelStore) GetGuestCount(channelID string, allowFromCache bool) (int64, error) {
+func (s *TimerLayerChannelStore) GetPartnerCount(channelID string, allowFromCache bool) (int64, error) {
 	start := time.Now()
 
-	result, err := s.ChannelStore.GetGuestCount(channelID, allowFromCache)
+	result, err := s.ChannelStore.GetPartnerCount(channelID, allowFromCache)
 
 	elapsed := float64(time.Since(start)) / float64(time.Second)
 	if s.Root.Metrics != nil {
@@ -1622,7 +1622,7 @@ func (s *TimerLayerChannelStore) GetGuestCount(channelID string, allowFromCache 
 		if err == nil {
 			success = "true"
 		}
-		s.Root.Metrics.ObserveStoreMethodDuration("ChannelStore.GetGuestCount", success, elapsed)
+		s.Root.Metrics.ObserveStoreMethodDuration("ChannelStore.GetPartnerCount", success, elapsed)
 	}
 	return result, err
 }
@@ -2151,10 +2151,10 @@ func (s *TimerLayerChannelStore) InvalidateChannelByName(teamID string, name str
 	}
 }
 
-func (s *TimerLayerChannelStore) InvalidateGuestCount(channelID string) {
+func (s *TimerLayerChannelStore) InvalidatePartnerCount(channelID string) {
 	start := time.Now()
 
-	s.ChannelStore.InvalidateGuestCount(channelID)
+	s.ChannelStore.InvalidatePartnerCount(channelID)
 
 	elapsed := float64(time.Since(start)) / float64(time.Second)
 	if s.Root.Metrics != nil {
@@ -2162,7 +2162,7 @@ func (s *TimerLayerChannelStore) InvalidateGuestCount(channelID string) {
 		if true {
 			success = "true"
 		}
-		s.Root.Metrics.ObserveStoreMethodDuration("ChannelStore.InvalidateGuestCount", success, elapsed)
+		s.Root.Metrics.ObserveStoreMethodDuration("ChannelStore.InvalidatePartnerCount", success, elapsed)
 	}
 }
 
@@ -11467,10 +11467,10 @@ func (s *TimerLayerUserStore) AnalyticsGetExternalUsers(hostDomain string) (bool
 	return result, err
 }
 
-func (s *TimerLayerUserStore) AnalyticsGetGuestCount() (int64, error) {
+func (s *TimerLayerUserStore) AnalyticsGetPartnerCount() (int64, error) {
 	start := time.Now()
 
-	result, err := s.UserStore.AnalyticsGetGuestCount()
+	result, err := s.UserStore.AnalyticsGetPartnerCount()
 
 	elapsed := float64(time.Since(start)) / float64(time.Second)
 	if s.Root.Metrics != nil {
@@ -11478,7 +11478,7 @@ func (s *TimerLayerUserStore) AnalyticsGetGuestCount() (int64, error) {
 		if err == nil {
 			success = "true"
 		}
-		s.Root.Metrics.ObserveStoreMethodDuration("UserStore.AnalyticsGetGuestCount", success, elapsed)
+		s.Root.Metrics.ObserveStoreMethodDuration("UserStore.AnalyticsGetPartnerCount", success, elapsed)
 	}
 	return result, err
 }
@@ -11578,10 +11578,10 @@ func (s *TimerLayerUserStore) Count(options model.UserCountOptions) (int64, erro
 	return result, err
 }
 
-func (s *TimerLayerUserStore) DeactivateGuests() ([]string, error) {
+func (s *TimerLayerUserStore) DeactivatePartners() ([]string, error) {
 	start := time.Now()
 
-	result, err := s.UserStore.DeactivateGuests()
+	result, err := s.UserStore.DeactivatePartners()
 
 	elapsed := float64(time.Since(start)) / float64(time.Second)
 	if s.Root.Metrics != nil {
@@ -11589,15 +11589,15 @@ func (s *TimerLayerUserStore) DeactivateGuests() ([]string, error) {
 		if err == nil {
 			success = "true"
 		}
-		s.Root.Metrics.ObserveStoreMethodDuration("UserStore.DeactivateGuests", success, elapsed)
+		s.Root.Metrics.ObserveStoreMethodDuration("UserStore.DeactivatePartners", success, elapsed)
 	}
 	return result, err
 }
 
-func (s *TimerLayerUserStore) DemoteUserToGuest(userID string) (*model.User, error) {
+func (s *TimerLayerUserStore) DemoteUserToPartner(userID string) (*model.User, error) {
 	start := time.Now()
 
-	result, err := s.UserStore.DemoteUserToGuest(userID)
+	result, err := s.UserStore.DemoteUserToPartner(userID)
 
 	elapsed := float64(time.Since(start)) / float64(time.Second)
 	if s.Root.Metrics != nil {
@@ -11605,7 +11605,7 @@ func (s *TimerLayerUserStore) DemoteUserToGuest(userID string) (*model.User, err
 		if err == nil {
 			success = "true"
 		}
-		s.Root.Metrics.ObserveStoreMethodDuration("UserStore.DemoteUserToGuest", success, elapsed)
+		s.Root.Metrics.ObserveStoreMethodDuration("UserStore.DemoteUserToPartner", success, elapsed)
 	}
 	return result, err
 }
@@ -12359,10 +12359,10 @@ func (s *TimerLayerUserStore) PermanentDelete(rctx request.CTX, userID string) e
 	return err
 }
 
-func (s *TimerLayerUserStore) PromoteGuestToUser(userID string) error {
+func (s *TimerLayerUserStore) PromotePartnerToUser(userID string) error {
 	start := time.Now()
 
-	err := s.UserStore.PromoteGuestToUser(userID)
+	err := s.UserStore.PromotePartnerToUser(userID)
 
 	elapsed := float64(time.Since(start)) / float64(time.Second)
 	if s.Root.Metrics != nil {
@@ -12370,7 +12370,7 @@ func (s *TimerLayerUserStore) PromoteGuestToUser(userID string) error {
 		if err == nil {
 			success = "true"
 		}
-		s.Root.Metrics.ObserveStoreMethodDuration("UserStore.PromoteGuestToUser", success, elapsed)
+		s.Root.Metrics.ObserveStoreMethodDuration("UserStore.PromotePartnerToUser", success, elapsed)
 	}
 	return err
 }

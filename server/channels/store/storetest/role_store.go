@@ -25,8 +25,8 @@ func TestRoleStore(t *testing.T, rctx request.CTX, ss store.Store, s SqlStore) {
 	t.Run("Delete", func(t *testing.T) { testRoleStoreDelete(t, rctx, ss) })
 	t.Run("PermanentDeleteAll", func(t *testing.T) { testRoleStorePermanentDeleteAll(t, rctx, ss) })
 	t.Run("LowerScopedChannelSchemeRoles_AllChannelSchemeRoles", func(t *testing.T) { testRoleStoreLowerScopedChannelSchemeRoles(t, rctx, ss) })
-	t.Run("ChannelHigherScopedPermissionsBlankTeamSchemeChannelGuest", func(t *testing.T) {
-		testRoleStoreChannelHigherScopedPermissionsBlankTeamSchemeChannelGuest(t, rctx, ss, s)
+	t.Run("ChannelHigherScopedPermissionsBlankTeamSchemeChannelPartner", func(t *testing.T) {
+		testRoleStoreChannelHigherScopedPermissionsBlankTeamSchemeChannelPartner(t, rctx, ss, s)
 	})
 }
 
@@ -452,8 +452,8 @@ func testRoleStoreLowerScopedChannelSchemeRoles(t *testing.T, rctx request.CTX, 
 	defer ss.Channel().Delete(channel2.Id, 0)
 
 	t.Run("ChannelRolesUnderTeamRole", func(t *testing.T) {
-		t.Run("guest role for the right team's channels are returned", func(t *testing.T) {
-			actualRoles, err := ss.Role().ChannelRolesUnderTeamRole(teamScheme1.DefaultChannelGuestRole)
+		t.Run("partner role for the right team's channels are returned", func(t *testing.T) {
+			actualRoles, err := ss.Role().ChannelRolesUnderTeamRole(teamScheme1.DefaultChannelPartnerRole)
 			require.NoError(t, err)
 
 			var actualRoleNames []string
@@ -461,8 +461,8 @@ func testRoleStoreLowerScopedChannelSchemeRoles(t *testing.T, rctx request.CTX, 
 				actualRoleNames = append(actualRoleNames, role.Name)
 			}
 
-			require.Contains(t, actualRoleNames, channelScheme1.DefaultChannelGuestRole)
-			require.NotContains(t, actualRoleNames, channelScheme2.DefaultChannelGuestRole)
+			require.Contains(t, actualRoleNames, channelScheme1.DefaultChannelPartnerRole)
+			require.NotContains(t, actualRoleNames, channelScheme2.DefaultChannelPartnerRole)
 		})
 
 		t.Run("user role for the right team's channels are returned", func(t *testing.T) {
@@ -493,7 +493,7 @@ func testRoleStoreLowerScopedChannelSchemeRoles(t *testing.T, rctx request.CTX, 
 	})
 
 	t.Run("AllChannelSchemeRoles", func(t *testing.T) {
-		t.Run("guest role for the right team's channels are returned", func(t *testing.T) {
+		t.Run("partner role for the right team's channels are returned", func(t *testing.T) {
 			actualRoles, err := ss.Role().AllChannelSchemeRoles()
 			require.NoError(t, err)
 
@@ -503,8 +503,8 @@ func testRoleStoreLowerScopedChannelSchemeRoles(t *testing.T, rctx request.CTX, 
 			}
 
 			allRoleNames := []string{
-				channelScheme1.DefaultChannelGuestRole,
-				channelScheme2.DefaultChannelGuestRole,
+				channelScheme1.DefaultChannelPartnerRole,
+				channelScheme2.DefaultChannelPartnerRole,
 
 				channelScheme1.DefaultChannelUserRole,
 				channelScheme2.DefaultChannelUserRole,
@@ -520,7 +520,7 @@ func testRoleStoreLowerScopedChannelSchemeRoles(t *testing.T, rctx request.CTX, 
 	})
 }
 
-func testRoleStoreChannelHigherScopedPermissionsBlankTeamSchemeChannelGuest(t *testing.T, rctx request.CTX, ss store.Store, s SqlStore) {
+func testRoleStoreChannelHigherScopedPermissionsBlankTeamSchemeChannelPartner(t *testing.T, rctx request.CTX, ss store.Store, s SqlStore) {
 	teamScheme := &model.Scheme{
 		DisplayName: model.NewId(),
 		Name:        model.NewId(),
@@ -580,15 +580,15 @@ func testRoleStoreChannelHigherScopedPermissionsBlankTeamSchemeChannelGuest(t *t
 	roleMapBefore, err := ss.Role().ChannelHigherScopedPermissions([]string{channelSchemeUserRole.Name})
 	require.NoError(t, err)
 
-	// blank-out the guest role to simulate an old team scheme, ensure it's blank
-	result, sqlErr := s.GetMaster().Exec(fmt.Sprintf("UPDATE Schemes SET DefaultChannelGuestRole = '' WHERE Id = '%s'", teamScheme.Id))
+	// blank-out the partner role to simulate an old team scheme, ensure it's blank
+	result, sqlErr := s.GetMaster().Exec(fmt.Sprintf("UPDATE Schemes SET DefaultChannelPartnerRole = '' WHERE Id = '%s'", teamScheme.Id))
 	require.NoError(t, sqlErr)
 	rows, serr := result.RowsAffected()
 	require.NoError(t, serr)
 	require.Equal(t, int64(1), rows)
 	teamScheme, err = ss.Scheme().Get(teamScheme.Id)
 	require.NoError(t, err)
-	require.Equal(t, "", teamScheme.DefaultChannelGuestRole)
+	require.Equal(t, "", teamScheme.DefaultChannelPartnerRole)
 
 	// trigger a cache clear
 	_, err = ss.Role().Save(channelSchemeUserRole)

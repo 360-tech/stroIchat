@@ -79,10 +79,10 @@ func (a *App) CreateScheme(scheme *model.Scheme) (*model.Scheme, *model.AppError
 	// Clear any user-provided values for trusted properties.
 	scheme.DefaultTeamAdminRole = ""
 	scheme.DefaultTeamUserRole = ""
-	scheme.DefaultTeamGuestRole = ""
+	scheme.DefaultTeamPartnerRole = ""
 	scheme.DefaultChannelAdminRole = ""
 	scheme.DefaultChannelUserRole = ""
-	scheme.DefaultChannelGuestRole = ""
+	scheme.DefaultChannelPartnerRole = ""
 	scheme.DefaultPlaybookAdminRole = ""
 	scheme.DefaultPlaybookMemberRole = ""
 	scheme.DefaultRunAdminRole = ""

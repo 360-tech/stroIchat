@@ -61,7 +61,7 @@ function mapStateToProps(state: GlobalState, ownProps: OwnProps) {
 
     const abacSupported = false;
 
-    const guestAccountsEnabled = config.EnableGuestAccounts === 'true';
+    const partnerAccountsEnabled = config.EnablePartnerAccounts === 'true';
     const channelID = ownProps.match.params.channel_id;
     const channel = getChannel(state, channelID);
     const team = channel ? getTeam(state, channel.team_id) : undefined;
@@ -79,7 +79,7 @@ function mapStateToProps(state: GlobalState, ownProps: OwnProps) {
         allGroups,
         channelPermissions,
         teamScheme,
-        guestAccountsEnabled,
+        partnerAccountsEnabled,
         channelModerationEnabled,
         channelGroupsEnabled,
         abacSupported,

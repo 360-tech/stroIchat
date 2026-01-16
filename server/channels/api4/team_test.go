@@ -2540,14 +2540,14 @@ func TestAddTeamMember(t *testing.T) {
 	th.App.Srv().SetLicense(model.NewTestLicense(""))
 	defer th.App.Srv().SetLicense(nil)
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { cfg.GuestAccountsSettings.Enable = &enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { cfg.PartnerAccountsSettings.Enable = &enablePartnerAccounts })
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 
-	guest := th.CreateUser()
-	_, err := th.SystemAdminClient.DemoteUserToGuest(context.Background(), guest.Id)
+	partner := th.CreateUser()
+	_, err := th.SystemAdminClient.DemoteUserToPartner(context.Background(), partner.Id)
 	require.NoError(t, err)
 
 	appErr := th.App.RemoveUserFromTeam(th.Context, th.BasicTeam.Id, th.BasicUser2.Id, "")
@@ -2711,7 +2711,7 @@ func TestAddTeamMember(t *testing.T) {
 
 	th.App.Srv().SetLicense(model.NewTestLicense(""))
 	defer th.App.Srv().SetLicense(nil)
-	_, _, err = client.Login(context.Background(), guest.Email, guest.Password)
+	_, _, err = client.Login(context.Background(), partner.Email, partner.Password)
 	require.NoError(t, err)
 
 	_, resp, err = client.AddTeamMemberFromInvite(context.Background(), "", team.InviteId)
@@ -2779,17 +2779,17 @@ func TestAddTeamMember(t *testing.T) {
 	})
 }
 
-func TestAddTeamMemberGuestPermissions(t *testing.T) {
+func TestAddTeamMemberPartnerPermissions(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
 	defaultRolePermissions := th.SaveDefaultRolePermissions()
@@ -2797,22 +2797,22 @@ func TestAddTeamMemberGuestPermissions(t *testing.T) {
 		th.RestoreDefaultRolePermissions(defaultRolePermissions)
 	}()
 
-	t.Run("should be able to add guest user to team when you have permission to", func(t *testing.T) {
-		th.AddPermissionToRole(model.PermissionInviteGuest.Id, model.TeamUserRoleId)
+	t.Run("should be able to add partner user to team when you have permission to", func(t *testing.T) {
+		th.AddPermissionToRole(model.PermissionInvitePartner.Id, model.TeamUserRoleId)
 
-		guestUser := th.CreateGuestUser(t)
+		partnerUser := th.CreatePartnerUser(t)
 
-		member, _, err := th.Client.AddTeamMember(context.Background(), th.BasicTeam.Id, guestUser.Id)
+		member, _, err := th.Client.AddTeamMember(context.Background(), th.BasicTeam.Id, partnerUser.Id)
 		assert.NoError(t, err)
 		assert.NotNil(t, member)
 	})
 
-	t.Run("should not be able to add guest user to team when you don't have permissino to", func(t *testing.T) {
-		th.RemovePermissionFromRole(model.PermissionInviteGuest.Id, model.TeamUserRoleId)
+	t.Run("should not be able to add partner user to team when you don't have permissino to", func(t *testing.T) {
+		th.RemovePermissionFromRole(model.PermissionInvitePartner.Id, model.TeamUserRoleId)
 
-		guestUser := th.CreateGuestUser(t)
+		partnerUser := th.CreatePartnerUser(t)
 
-		_, resp, err := th.Client.AddTeamMember(context.Background(), th.BasicTeam.Id, guestUser.Id)
+		_, resp, err := th.Client.AddTeamMember(context.Background(), th.BasicTeam.Id, partnerUser.Id)
 		assert.Error(t, err)
 		assert.Equal(t, http.StatusForbidden, resp.StatusCode)
 	})
@@ -2981,9 +2981,9 @@ func TestAddTeamMembers(t *testing.T) {
 		otherUser.Id,
 	}
 
-	guestUser := th.CreateGuestUser(t)
-	guestList := []string{
-		guestUser.Id,
+	partnerUser := th.CreatePartnerUser(t)
+	partnerList := []string{
+		partnerUser.Id,
 	}
 
 	th.App.UpdateConfig(func(cfg *model.Config) {
@@ -3021,15 +3021,15 @@ func TestAddTeamMembers(t *testing.T) {
 		th.RestoreDefaultRolePermissions(defaultRolePermissions)
 	}()
 
-	// Regular user can add a guest member to a team they belong to.
-	th.AddPermissionToRole(model.PermissionInviteGuest.Id, model.TeamUserRoleId)
-	tm, resp, err = client.AddTeamMembers(context.Background(), team.Id, guestList)
+	// Regular user can add a partner member to a team they belong to.
+	th.AddPermissionToRole(model.PermissionInvitePartner.Id, model.TeamUserRoleId)
+	tm, resp, err = client.AddTeamMembers(context.Background(), team.Id, partnerList)
 	require.NoError(t, err)
 	CheckCreatedStatus(t, resp)
 
 	// Check all the returned data.
 	require.NotNil(t, tm[0], "should have returned team member")
-	require.Equal(t, tm[0].UserId, guestUser.Id, "user ids should have matched")
+	require.Equal(t, tm[0].UserId, partnerUser.Id, "user ids should have matched")
 	require.Equal(t, tm[0].TeamId, team.Id, "team ids should have matched")
 
 	// Check with various invalid requests.
@@ -3095,10 +3095,10 @@ func TestAddTeamMembers(t *testing.T) {
 	_, _, err = client.AddTeamMembers(context.Background(), team.Id, userList)
 	require.NoError(t, err)
 
-	// remove invite guests
-	th.RemovePermissionFromRole(model.PermissionInviteGuest.Id, model.TeamUserRoleId)
-	// Regular user can no longer add a guest member to a team they belong to.
-	_, resp, err = client.AddTeamMembers(context.Background(), team.Id, guestList)
+	// remove invite partners
+	th.RemovePermissionFromRole(model.PermissionInvitePartner.Id, model.TeamUserRoleId)
+	// Regular user can no longer add a partner member to a team they belong to.
+	_, resp, err = client.AddTeamMembers(context.Background(), team.Id, partnerList)
 	require.Error(t, err)
 	CheckForbiddenStatus(t, resp)
 
@@ -3131,17 +3131,17 @@ func TestAddTeamMembers(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestAddTeamMembersGuestPermissions(t *testing.T) {
+func TestAddTeamMembersPartnerPermissions(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
 	defaultRolePermissions := th.SaveDefaultRolePermissions()
@@ -3149,22 +3149,22 @@ func TestAddTeamMembersGuestPermissions(t *testing.T) {
 		th.RestoreDefaultRolePermissions(defaultRolePermissions)
 	}()
 
-	t.Run("should be able to add guest user to team when you have permission to", func(t *testing.T) {
-		th.AddPermissionToRole(model.PermissionInviteGuest.Id, model.TeamUserRoleId)
+	t.Run("should be able to add partner user to team when you have permission to", func(t *testing.T) {
+		th.AddPermissionToRole(model.PermissionInvitePartner.Id, model.TeamUserRoleId)
 
-		guestUser := th.CreateGuestUser(t)
+		partnerUser := th.CreatePartnerUser(t)
 
-		members, _, err := th.Client.AddTeamMembers(context.Background(), th.BasicTeam.Id, []string{guestUser.Id})
+		members, _, err := th.Client.AddTeamMembers(context.Background(), th.BasicTeam.Id, []string{partnerUser.Id})
 		assert.NoError(t, err)
 		assert.Len(t, members, 1)
 	})
 
-	t.Run("should not be able to add guest user to team when you don't have permissino to", func(t *testing.T) {
-		th.RemovePermissionFromRole(model.PermissionInviteGuest.Id, model.TeamUserRoleId)
+	t.Run("should not be able to add partner user to team when you don't have permissino to", func(t *testing.T) {
+		th.RemovePermissionFromRole(model.PermissionInvitePartner.Id, model.TeamUserRoleId)
 
-		guestUser := th.CreateGuestUser(t)
+		partnerUser := th.CreatePartnerUser(t)
 
-		_, resp, err := th.Client.AddTeamMembers(context.Background(), th.BasicTeam.Id, []string{guestUser.Id})
+		_, resp, err := th.Client.AddTeamMembers(context.Background(), th.BasicTeam.Id, []string{partnerUser.Id})
 		assert.Error(t, err)
 		assert.Equal(t, http.StatusForbidden, resp.StatusCode)
 	})
@@ -3409,17 +3409,17 @@ func TestUpdateTeamMemberSchemeRoles(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = enablePartnerAccounts })
 		appErr := th.App.Srv().RemoveLicense()
 		require.Nil(t, appErr)
 	}()
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.Srv().SetLicense(model.NewTestLicense())
 
 	id := model.NewId()
-	guest := &model.User{
+	partner := &model.User{
 		Email:         th.GenerateTestEmail(),
 		Nickname:      "nn_" + id,
 		FirstName:     "f_" + id,
@@ -3427,9 +3427,9 @@ func TestUpdateTeamMemberSchemeRoles(t *testing.T) {
 		Password:      "Pa$$word11",
 		EmailVerified: true,
 	}
-	guest, appError := th.App.CreateGuest(th.Context, guest)
+	partner, appError := th.App.CreatePartner(th.Context, partner)
 	require.Nil(t, appError)
-	_, _, appError = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, guest.Id, "")
+	_, _, appError = th.App.AddUserToTeam(th.Context, th.BasicTeam.Id, partner.Id, "")
 	require.Nil(t, appError)
 
 	SystemAdminClient := th.SystemAdminClient
@@ -3439,57 +3439,57 @@ func TestUpdateTeamMemberSchemeRoles(t *testing.T) {
 	s1 := &model.SchemeRoles{
 		SchemeAdmin: false,
 		SchemeUser:  false,
-		SchemeGuest: false,
+		SchemePartner: false,
 	}
 	_, err := SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, th.BasicUser.Id, s1)
 	require.Error(t, err)
 
 	tm1, _, err := SystemAdminClient.GetTeamMember(context.Background(), th.BasicTeam.Id, th.BasicUser.Id, "")
 	require.NoError(t, err)
-	assert.Equal(t, false, tm1.SchemeGuest)
+	assert.Equal(t, false, tm1.SchemePartner)
 	assert.Equal(t, true, tm1.SchemeUser)
 	assert.Equal(t, false, tm1.SchemeAdmin)
 
 	s2 := &model.SchemeRoles{
 		SchemeAdmin: false,
 		SchemeUser:  true,
-		SchemeGuest: false,
+		SchemePartner: false,
 	}
 	_, err = SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, th.BasicUser.Id, s2)
 	require.NoError(t, err)
 
 	tm2, _, err := SystemAdminClient.GetTeamMember(context.Background(), th.BasicTeam.Id, th.BasicUser.Id, "")
 	require.NoError(t, err)
-	assert.Equal(t, false, tm2.SchemeGuest)
+	assert.Equal(t, false, tm2.SchemePartner)
 	assert.Equal(t, true, tm2.SchemeUser)
 	assert.Equal(t, false, tm2.SchemeAdmin)
 
-	// cannot set Guest to User for single team
-	resp, err := SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, guest.Id, s2)
+	// cannot set Partner to User for single team
+	resp, err := SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, partner.Id, s2)
 	require.Error(t, err)
 	CheckBadRequestStatus(t, resp)
 
 	s3 := &model.SchemeRoles{
 		SchemeAdmin: true,
 		SchemeUser:  true,
-		SchemeGuest: false,
+		SchemePartner: false,
 	}
 	_, err = SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, th.BasicUser.Id, s3)
 	require.NoError(t, err)
 
 	tm3, _, err := SystemAdminClient.GetTeamMember(context.Background(), th.BasicTeam.Id, th.BasicUser.Id, "")
 	require.NoError(t, err)
-	assert.Equal(t, false, tm3.SchemeGuest)
+	assert.Equal(t, false, tm3.SchemePartner)
 	assert.Equal(t, true, tm3.SchemeUser)
 	assert.Equal(t, true, tm3.SchemeAdmin)
 
 	s4 := &model.SchemeRoles{
 		SchemeAdmin: false,
 		SchemeUser:  false,
-		SchemeGuest: true,
+		SchemePartner: true,
 	}
 
-	// cannot set user to guest for a single team
+	// cannot set user to partner for a single team
 	resp, err = SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, th.BasicUser.Id, s4)
 	require.Error(t, err)
 	CheckBadRequestStatus(t, resp)
@@ -3497,7 +3497,7 @@ func TestUpdateTeamMemberSchemeRoles(t *testing.T) {
 	s5 := &model.SchemeRoles{
 		SchemeAdmin: false,
 		SchemeUser:  true,
-		SchemeGuest: true,
+		SchemePartner: true,
 	}
 	resp, err = SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, th.BasicUser.Id, s5)
 	require.Error(t, err)
@@ -3511,8 +3511,8 @@ func TestUpdateTeamMemberSchemeRoles(t *testing.T) {
 	require.Error(t, err)
 	CheckNotFoundStatus(t, resp)
 
-	resp, err = SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, guest.Id, s3)
-	require.Error(t, err) // user is a guest, cannot be set as member or admin
+	resp, err = SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), th.BasicTeam.Id, partner.Id, s3)
+	require.Error(t, err) // user is a partner, cannot be set as member or admin
 	CheckBadRequestStatus(t, resp)
 
 	resp, err = SystemAdminClient.UpdateTeamMemberSchemeRoles(context.Background(), "ASDF", th.BasicUser.Id, s3)
@@ -3956,68 +3956,68 @@ func TestInviteUsersToTeam(t *testing.T) {
 	}, "rate limits")
 }
 
-func TestInviteGuestsToTeam(t *testing.T) {
+func TestInvitePartnersToTeam(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	guest1 := th.GenerateTestEmail()
-	guest2 := th.GenerateTestEmail()
+	partner1 := th.GenerateTestEmail()
+	partner2 := th.GenerateTestEmail()
 
-	emailList := []string{guest1, guest2}
+	emailList := []string{partner1, partner2}
 
 	// Delete all the messages before check the sample email
-	err := mail.DeleteMailBox(guest1)
+	err := mail.DeleteMailBox(partner1)
 	require.NoError(t, err)
-	err = mail.DeleteMailBox(guest2)
+	err = mail.DeleteMailBox(partner2)
 	require.NoError(t, err)
 
 	enableEmailInvitations := *th.App.Config().ServiceSettings.EnableEmailInvitations
 	restrictCreationToDomains := th.App.Config().TeamSettings.RestrictCreationToDomains
-	guestRestrictCreationToDomains := th.App.Config().GuestAccountsSettings.RestrictCreationToDomains
-	enableGuestAccounts := *th.App.Config().GuestAccountsSettings.Enable
+	partnerRestrictCreationToDomains := th.App.Config().PartnerAccountsSettings.RestrictCreationToDomains
+	enablePartnerAccounts := *th.App.Config().PartnerAccountsSettings.Enable
 	defer func() {
 		th.App.UpdateConfig(func(cfg *model.Config) { cfg.ServiceSettings.EnableEmailInvitations = &enableEmailInvitations })
 		th.App.UpdateConfig(func(cfg *model.Config) { cfg.TeamSettings.RestrictCreationToDomains = restrictCreationToDomains })
 		th.App.UpdateConfig(func(cfg *model.Config) {
-			cfg.GuestAccountsSettings.RestrictCreationToDomains = guestRestrictCreationToDomains
+			cfg.PartnerAccountsSettings.RestrictCreationToDomains = partnerRestrictCreationToDomains
 		})
-		th.App.UpdateConfig(func(cfg *model.Config) { cfg.GuestAccountsSettings.Enable = &enableGuestAccounts })
+		th.App.UpdateConfig(func(cfg *model.Config) { cfg.PartnerAccountsSettings.Enable = &enablePartnerAccounts })
 	}()
 
 	th.App.Srv().SetLicense(model.NewTestLicense(""))
 
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = false })
-	_, err = th.SystemAdminClient.InviteGuestsToTeam(context.Background(), th.BasicTeam.Id, emailList, []string{th.BasicChannel.Id}, "test-message")
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = false })
+	_, err = th.SystemAdminClient.InvitePartnersToTeam(context.Background(), th.BasicTeam.Id, emailList, []string{th.BasicChannel.Id}, "test-message")
 	assert.Error(t, err, "Should be disabled")
 
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.ServiceSettings.EnableEmailInvitations = false })
-	_, err = th.SystemAdminClient.InviteGuestsToTeam(context.Background(), th.BasicTeam.Id, emailList, []string{th.BasicChannel.Id}, "test-message")
+	_, err = th.SystemAdminClient.InvitePartnersToTeam(context.Background(), th.BasicTeam.Id, emailList, []string{th.BasicChannel.Id}, "test-message")
 	require.Error(t, err, "Should be disabled")
 
 	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.ServiceSettings.EnableEmailInvitations = true })
 
 	th.App.Srv().SetLicense(nil)
 
-	_, err = th.SystemAdminClient.InviteGuestsToTeam(context.Background(), th.BasicTeam.Id, emailList, []string{th.BasicChannel.Id}, "test-message")
+	_, err = th.SystemAdminClient.InvitePartnersToTeam(context.Background(), th.BasicTeam.Id, emailList, []string{th.BasicChannel.Id}, "test-message")
 	require.Error(t, err, "Should be disabled")
 
 	th.App.Srv().SetLicense(model.NewTestLicense(""))
 	defer th.App.Srv().SetLicense(nil)
 
-	_, err = th.SystemAdminClient.InviteGuestsToTeam(context.Background(), th.BasicTeam.Id, emailList, []string{th.BasicChannel.Id}, "test-message")
+	_, err = th.SystemAdminClient.InvitePartnersToTeam(context.Background(), th.BasicTeam.Id, emailList, []string{th.BasicChannel.Id}, "test-message")
 	require.NoError(t, err)
 
 	t.Run("invalid data in request body", func(t *testing.T) {
-		res, err := th.SystemAdminClient.DoAPIPost(context.Background(), "/teams/"+th.BasicTeam.Id+"/invite-guests/email", "bad data")
+		res, err := th.SystemAdminClient.DoAPIPost(context.Background(), "/teams/"+th.BasicTeam.Id+"/invite-partners/email", "bad data")
 		require.Error(t, err)
-		CheckErrorID(t, err, "api.team.invite_guests_to_channels.invalid_body.app_error")
+		CheckErrorID(t, err, "api.team.invite_partners_to_channels.invalid_body.app_error")
 		require.Equal(t, http.StatusBadRequest, res.StatusCode)
 	})
 
 	nameFormat := *th.App.Config().TeamSettings.TeammateNameDisplay
-	expectedSubject := i18n.T("api.templates.invite_guest_subject",
+	expectedSubject := i18n.T("api.templates.invite_partner_subject",
 		map[string]any{
 			"SenderName":      th.SystemAdminUser.GetDisplayName(nameFormat),
 			"TeamDisplayName": th.BasicTeam.DisplayName,
@@ -4047,102 +4047,102 @@ func TestInviteGuestsToTeam(t *testing.T) {
 
 	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.TeamSettings.RestrictCreationToDomains = "@global.com,@common.com" })
 
-	t.Run("team domain restrictions should not affect inviting guests", func(t *testing.T) {
-		err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{Emails: emailList, Channels: []string{th.BasicChannel.Id}, Message: "test message"}, th.BasicUser.Id)
-		require.Nil(t, err, "guest user invites should not be affected by team restrictions")
+	t.Run("team domain restrictions should not affect inviting partners", func(t *testing.T) {
+		err := th.App.InvitePartnersToChannels(th.Context, th.BasicTeam.Id, &model.PartnersInvite{Emails: emailList, Channels: []string{th.BasicChannel.Id}, Message: "test message"}, th.BasicUser.Id)
+		require.Nil(t, err, "partner user invites should not be affected by team restrictions")
 	})
 
-	t.Run("guest restrictions should affect guest users", func(t *testing.T) {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.RestrictCreationToDomains = "@guest.com" })
+	t.Run("partner restrictions should affect partner users", func(t *testing.T) {
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.RestrictCreationToDomains = "@partner.com" })
 
-		err := th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{Emails: []string{"guest1@invalid.com"}, Channels: []string{th.BasicChannel.Id}, Message: "test message"}, th.BasicUser.Id)
-		require.NotNil(t, err, "guest user invites should be affected by the guest domain restrictions")
+		err := th.App.InvitePartnersToChannels(th.Context, th.BasicTeam.Id, &model.PartnersInvite{Emails: []string{"partner1@invalid.com"}, Channels: []string{th.BasicChannel.Id}, Message: "test message"}, th.BasicUser.Id)
+		require.NotNil(t, err, "partner user invites should be affected by the partner domain restrictions")
 
-		res, err := th.App.InviteGuestsToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.GuestsInvite{Emails: []string{"guest1@invalid.com", "guest1@guest.com"}, Channels: []string{th.BasicChannel.Id}, Message: "test message"}, th.BasicUser.Id)
+		res, err := th.App.InvitePartnersToChannelsGracefully(th.Context, th.BasicTeam.Id, &model.PartnersInvite{Emails: []string{"partner1@invalid.com", "partner1@partner.com"}, Channels: []string{th.BasicChannel.Id}, Message: "test message"}, th.BasicUser.Id)
 		require.Nil(t, err)
 		require.Len(t, res, 2)
 		require.NotNil(t, res[0].Error)
 		require.Nil(t, res[1].Error)
 
-		err = th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, &model.GuestsInvite{Emails: []string{"guest1@guest.com"}, Channels: []string{th.BasicChannel.Id}, Message: "test message"}, th.BasicUser.Id)
-		require.Nil(t, err, "whitelisted guest user email should be allowed by the guest domain restrictions")
+		err = th.App.InvitePartnersToChannels(th.Context, th.BasicTeam.Id, &model.PartnersInvite{Emails: []string{"partner1@partner.com"}, Channels: []string{th.BasicChannel.Id}, Message: "test message"}, th.BasicUser.Id)
+		require.Nil(t, err, "whitelisted partner user email should be allowed by the partner domain restrictions")
 	})
 
-	t.Run("guest restrictions should not affect inviting new team members", func(t *testing.T) {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.RestrictCreationToDomains = "@guest.com" })
+	t.Run("partner restrictions should not affect inviting new team members", func(t *testing.T) {
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.RestrictCreationToDomains = "@partner.com" })
 
 		err := th.App.InviteNewUsersToTeam(th.Context, []string{"user@global.com"}, th.BasicTeam.Id, th.BasicUser.Id)
-		require.Nil(t, err, "non guest user invites should not be affected by the guest domain restrictions")
+		require.Nil(t, err, "non partner user invites should not be affected by the partner domain restrictions")
 	})
 
 	t.Run("rate limit", func(t *testing.T) {
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.RestrictCreationToDomains = "@guest.com" })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.RestrictCreationToDomains = "@partner.com" })
 
 		_, err := th.App.UpdateTeam(th.BasicTeam)
 		require.Nilf(t, err, "%v, Should update the team", err)
 
 		emailList := make([]string, 22)
 		for i := range 22 {
-			emailList[i] = "test-" + strconv.Itoa(i) + "@guest.com"
+			emailList[i] = "test-" + strconv.Itoa(i) + "@partner.com"
 		}
-		invite := &model.GuestsInvite{
+		invite := &model.PartnersInvite{
 			Emails:   emailList,
 			Channels: []string{th.BasicChannel.Id},
 			Message:  "test message",
 		}
-		err = th.App.InviteGuestsToChannels(th.Context, th.BasicTeam.Id, invite, th.BasicUser.Id)
+		err = th.App.InvitePartnersToChannels(th.Context, th.BasicTeam.Id, invite, th.BasicUser.Id)
 		require.NotNil(t, err)
 		assert.Equal(t, "app.email.rate_limit_exceeded.app_error", err.Id)
 		assert.Equal(t, http.StatusRequestEntityTooLarge, err.StatusCode)
 
-		_, appErr := th.App.InviteGuestsToChannelsGracefully(th.Context, th.BasicTeam.Id, invite, th.BasicUser.Id)
+		_, appErr := th.App.InvitePartnersToChannelsGracefully(th.Context, th.BasicTeam.Id, invite, th.BasicUser.Id)
 		require.NotNil(t, appErr)
 		assert.Equal(t, "app.email.rate_limit_exceeded.app_error", err.Id)
 		assert.Equal(t, http.StatusRequestEntityTooLarge, err.StatusCode)
 	})
 }
 
-func TestInviteGuest(t *testing.T) {
+func TestInvitePartner(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
-	guest1 := th.GenerateTestEmail()
-	guest2 := th.GenerateTestEmail()
+	partner1 := th.GenerateTestEmail()
+	partner2 := th.GenerateTestEmail()
 
-	emailList := []string{guest1, guest2}
-	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.Enable = true })
+	emailList := []string{partner1, partner2}
+	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.Enable = true })
 	th.App.UpdateConfig(func(cfg *model.Config) { *cfg.ServiceSettings.EnableEmailInvitations = true })
 
-	t.Run("Guest Account not available in license returns forbidden", func(t *testing.T) {
-		th.App.Srv().SetLicense(model.NewTestLicenseWithFalseDefaults("guest_accounts"))
+	t.Run("Partner Account not available in license returns forbidden", func(t *testing.T) {
+		th.App.Srv().SetLicense(model.NewTestLicenseWithFalseDefaults("partner_accounts"))
 
-		guestsInvite := model.GuestsInvite{
+		partnersInvite := model.PartnersInvite{
 			Emails:   emailList,
 			Channels: []string{th.BasicChannel.Id},
 			Message:  "test message",
 		}
-		buf, err := json.Marshal(guestsInvite)
+		buf, err := json.Marshal(partnersInvite)
 		require.NoError(t, err)
 
-		res, err := th.SystemAdminClient.DoAPIPost(context.Background(), "/teams/"+th.BasicTeam.Id+"/invite-guests/email", string(buf))
+		res, err := th.SystemAdminClient.DoAPIPost(context.Background(), "/teams/"+th.BasicTeam.Id+"/invite-partners/email", string(buf))
 
 		require.Equal(t, http.StatusForbidden, res.StatusCode)
-		require.True(t, strings.Contains(err.Error(), "Guest accounts are disabled"))
+		require.True(t, strings.Contains(err.Error(), "Partner accounts are disabled"))
 		require.Error(t, err)
 	})
 
-	t.Run("Guest Account available in license returns OK", func(t *testing.T) {
-		th.App.Srv().SetLicense(model.NewTestLicense("guest_accounts"))
+	t.Run("Partner Account available in license returns OK", func(t *testing.T) {
+		th.App.Srv().SetLicense(model.NewTestLicense("partner_accounts"))
 
-		guestsInvite := model.GuestsInvite{
+		partnersInvite := model.PartnersInvite{
 			Emails:   emailList,
 			Channels: []string{th.BasicChannel.Id},
 			Message:  "test message",
 		}
-		buf, err := json.Marshal(guestsInvite)
+		buf, err := json.Marshal(partnersInvite)
 		require.NoError(t, err)
 
-		res, err := th.SystemAdminClient.DoAPIPost(context.Background(), "/teams/"+th.BasicTeam.Id+"/invite-guests/email", string(buf))
+		res, err := th.SystemAdminClient.DoAPIPost(context.Background(), "/teams/"+th.BasicTeam.Id+"/invite-partners/email", string(buf))
 
 		require.Equal(t, http.StatusOK, res.StatusCode)
 		require.NoError(t, err)

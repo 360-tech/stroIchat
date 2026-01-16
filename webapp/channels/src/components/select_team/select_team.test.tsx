@@ -92,8 +92,8 @@ describe('components/select_team/SelectTeam', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot, on no joinable team and user is guest', () => {
-        const props = {...baseProps, listableTeams: [], currentUserRoles: '', currentUserIsGuest: true, canManageSystem: false, canCreateTeams: false};
+    test('should match snapshot, on no joinable team and user is partner', () => {
+        const props = {...baseProps, listableTeams: [], currentUserRoles: '', currentUserIsPartner: true, canManageSystem: false, canCreateTeams: false};
         const wrapper = shallow<SelectTeam>(
             <SelectTeam {...props}/>,
         );

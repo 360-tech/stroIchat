@@ -159,10 +159,10 @@ func TestUpdateUserToRestrictedDomain(t *testing.T) {
 	_, err = th.App.UpdateUser(th.Context, user, false)
 	assert.NotNil(t, err)
 
-	t.Run("Restricted Domains must be ignored for guest users", func(t *testing.T) {
-		guest := th.CreateGuest()
+	t.Run("Restricted Domains must be ignored for partner users", func(t *testing.T) {
+		partner := th.CreatePartner()
 		defer func() {
-			appErr := th.App.PermanentDeleteUser(th.Context, guest)
+			appErr := th.App.PermanentDeleteUser(th.Context, partner)
 			require.Nil(t, appErr)
 		}()
 
@@ -170,31 +170,31 @@ func TestUpdateUserToRestrictedDomain(t *testing.T) {
 			*cfg.TeamSettings.RestrictCreationToDomains = "foo.com"
 		})
 
-		guest.Email = "asdf@bar.com"
-		updatedGuest, err := th.App.UpdateUser(th.Context, guest, false)
+		partner.Email = "asdf@bar.com"
+		updatedPartner, err := th.App.UpdateUser(th.Context, partner, false)
 		require.Nil(t, err)
-		require.Equal(t, guest.Email, updatedGuest.Email)
+		require.Equal(t, partner.Email, updatedPartner.Email)
 	})
 
-	t.Run("Guest users should be affected by guest restricted domains", func(t *testing.T) {
-		guest := th.CreateGuest()
+	t.Run("Partner users should be affected by partner restricted domains", func(t *testing.T) {
+		partner := th.CreatePartner()
 		defer func() {
-			appErr := th.App.PermanentDeleteUser(th.Context, guest)
+			appErr := th.App.PermanentDeleteUser(th.Context, partner)
 			require.Nil(t, appErr)
 		}()
 
 		th.App.UpdateConfig(func(cfg *model.Config) {
-			*cfg.GuestAccountsSettings.RestrictCreationToDomains = "foo.com"
+			*cfg.PartnerAccountsSettings.RestrictCreationToDomains = "foo.com"
 		})
 
-		guest.Email = "asdf@bar.com"
-		_, err := th.App.UpdateUser(th.Context, guest, false)
+		partner.Email = "asdf@bar.com"
+		_, err := th.App.UpdateUser(th.Context, partner, false)
 		require.NotNil(t, err)
 
-		guest.Email = "asdf@foo.com"
-		updatedGuest, err := th.App.UpdateUser(th.Context, guest, false)
+		partner.Email = "asdf@foo.com"
+		updatedPartner, err := th.App.UpdateUser(th.Context, partner, false)
 		require.Nil(t, err)
-		require.Equal(t, guest.Email, updatedGuest.Email)
+		require.Equal(t, partner.Email, updatedPartner.Email)
 	})
 }
 
@@ -1108,7 +1108,7 @@ func TestCreateUserWithToken(t *testing.T) {
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
 		newUser, err := th.App.CreateUserWithToken(th.Context, &u, token)
 		require.Nil(t, err, "Should add user to the team. err=%v", err)
-		assert.False(t, newUser.IsGuest())
+		assert.False(t, newUser.IsPartner())
 		require.Equal(t, invitationEmail, newUser.Email, "The user email must be the invitation one")
 
 		_, nErr := th.App.Srv().Store().Token().GetByToken(token.Token)
@@ -1119,55 +1119,55 @@ func TestCreateUserWithToken(t *testing.T) {
 		assert.Len(t, members, 2)
 	})
 
-	t.Run("valid guest request", func(t *testing.T) {
+	t.Run("valid partner request", func(t *testing.T) {
 		invitationEmail := strings.ToLower(model.NewId()) + "other-email@test.com"
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "email": invitationEmail, "channels": th.BasicChannel.Id, "senderId": th.BasicUser.Id}),
 		)
 
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
-		guest := model.User{Email: invitationEmail, Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		newGuest, err := th.App.CreateUserWithToken(th.Context, &guest, token)
+		partner := model.User{Email: invitationEmail, Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
 		require.Nil(t, err, "Should add user to the team. err=%v", err)
 
-		assert.True(t, newGuest.IsGuest())
-		require.Equal(t, invitationEmail, newGuest.Email, "The user email must be the invitation one")
+		assert.True(t, newPartner.IsPartner())
+		require.Equal(t, invitationEmail, newPartner.Email, "The user email must be the invitation one")
 		_, nErr := th.App.Srv().Store().Token().GetByToken(token.Token)
 		require.Error(t, nErr, "The token must be deleted after be used")
 
-		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, newGuest.Id)
+		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, newPartner.Id)
 		require.Nil(t, err)
 		require.Len(t, members, 1)
 		assert.Equal(t, members[0].ChannelId, th.BasicChannel.Id)
 	})
 
-	t.Run("valid guest request with guest_subtype in token", func(t *testing.T) {
+	t.Run("valid partner request with partner_subtype in token", func(t *testing.T) {
 		invitationEmail := strings.ToLower(model.NewId()) + "other-email@test.com"
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{
 				"teamId":       th.BasicTeam.Id,
 				"email":        invitationEmail,
 				"channels":     th.BasicChannel.Id,
 				"senderId":     th.BasicUser.Id,
-				"guest_subtype": model.GuestSubtypeContractor,
+				"partner_subtype": model.PartnerSubtypeContractor,
 			}),
 		)
 
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
-		guest := model.User{Email: invitationEmail, Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		newGuest, err := th.App.CreateUserWithToken(th.Context, &guest, token)
+		partner := model.User{Email: invitationEmail, Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
 		require.Nil(t, err, "Should add user to the team. err=%v", err)
 
-		assert.True(t, newGuest.IsGuest())
-		require.Equal(t, model.GuestSubtypeContractor, newGuest.GetGuestSubtype())
+		assert.True(t, newPartner.IsPartner())
+		require.Equal(t, model.PartnerSubtypeContractor, newPartner.GetPartnerSubtype())
 	})
 
-	t.Run("valid guest request without guest_subtype in token should default to not_specified", func(t *testing.T) {
+	t.Run("valid partner request without partner_subtype in token should default to not_specified", func(t *testing.T) {
 		invitationEmail := strings.ToLower(model.NewId()) + "other-email@test.com"
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{
 				"teamId":   th.BasicTeam.Id,
 				"email":    invitationEmail,
@@ -1177,92 +1177,92 @@ func TestCreateUserWithToken(t *testing.T) {
 		)
 
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
-		guest := model.User{Email: invitationEmail, Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
-		newGuest, err := th.App.CreateUserWithToken(th.Context, &guest, token)
+		partner := model.User{Email: invitationEmail, Nickname: "Darth Vader", Username: "vader" + model.NewId(), Password: "passwd1", AuthService: ""}
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
 		require.Nil(t, err, "Should add user to the team. err=%v", err)
 
-		assert.True(t, newGuest.IsGuest())
-		require.Equal(t, model.GuestSubtypeNotSpecified, newGuest.GetGuestSubtype())
+		assert.True(t, newPartner.IsPartner())
+		require.Equal(t, model.PartnerSubtypeNotSpecified, newPartner.GetPartnerSubtype())
 	})
 
-	t.Run("create guest having email domain restrictions", func(t *testing.T) {
-		enableGuestDomainRestrictions := *th.App.Config().GuestAccountsSettings.RestrictCreationToDomains
+	t.Run("create partner having email domain restrictions", func(t *testing.T) {
+		enablePartnerDomainRestrictions := *th.App.Config().PartnerAccountsSettings.RestrictCreationToDomains
 		defer func() {
 			th.App.UpdateConfig(func(cfg *model.Config) {
-				cfg.GuestAccountsSettings.RestrictCreationToDomains = &enableGuestDomainRestrictions
+				cfg.PartnerAccountsSettings.RestrictCreationToDomains = &enablePartnerDomainRestrictions
 			})
 		}()
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.GuestAccountsSettings.RestrictCreationToDomains = "restricted.com" })
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.RestrictCreationToDomains = "restricted.com" })
 		forbiddenInvitationEmail := strings.ToLower(model.NewId()) + "other-email@test.com"
 		grantedInvitationEmail := strings.ToLower(model.NewId()) + "other-email@restricted.com"
 		forbiddenDomainToken := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "email": forbiddenInvitationEmail, "channels": th.BasicChannel.Id, "senderId": th.BasicUser.Id}),
 		)
 		grantedDomainToken := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "email": grantedInvitationEmail, "channels": th.BasicChannel.Id, "senderId": th.BasicUser.Id}),
 		)
 		require.NoError(t, th.App.Srv().Store().Token().Save(forbiddenDomainToken))
 		require.NoError(t, th.App.Srv().Store().Token().Save(grantedDomainToken))
-		guest := model.User{
+		partner := model.User{
 			Email:       forbiddenInvitationEmail,
 			Nickname:    "Darth Vader",
 			Username:    "vader" + model.NewId(),
 			Password:    "passwd1",
 			AuthService: "",
 		}
-		newGuest, err := th.App.CreateUserWithToken(th.Context, &guest, forbiddenDomainToken)
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, forbiddenDomainToken)
 		require.NotNil(t, err)
-		require.Nil(t, newGuest)
+		require.Nil(t, newPartner)
 		assert.Equal(t, "api.user.create_user.accepted_domain.app_error", err.Id)
 
-		guest.Email = grantedInvitationEmail
-		newGuest, err = th.App.CreateUserWithToken(th.Context, &guest, grantedDomainToken)
+		partner.Email = grantedInvitationEmail
+		newPartner, err = th.App.CreateUserWithToken(th.Context, &partner, grantedDomainToken)
 		require.Nil(t, err)
-		assert.True(t, newGuest.IsGuest())
-		require.Equal(t, grantedInvitationEmail, newGuest.Email)
+		assert.True(t, newPartner.IsPartner())
+		require.Equal(t, grantedInvitationEmail, newPartner.Email)
 		_, nErr := th.App.Srv().Store().Token().GetByToken(grantedDomainToken.Token)
 		require.Error(t, nErr)
 
-		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, newGuest.Id)
+		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, newPartner.Id)
 		require.Nil(t, err)
 		require.Len(t, members, 1)
 		assert.Equal(t, members[0].ChannelId, th.BasicChannel.Id)
 	})
 
-	t.Run("create guest having team and system email domain restrictions", func(t *testing.T) {
+	t.Run("create partner having team and system email domain restrictions", func(t *testing.T) {
 		th.BasicTeam.AllowedDomains = "restricted-team.com"
 		_, err := th.App.UpdateTeam(th.BasicTeam)
 		require.Nil(t, err, "Should update the team")
-		enableGuestDomainRestrictions := *th.App.Config().TeamSettings.RestrictCreationToDomains
+		enablePartnerDomainRestrictions := *th.App.Config().TeamSettings.RestrictCreationToDomains
 		defer func() {
 			th.App.UpdateConfig(func(cfg *model.Config) {
-				cfg.TeamSettings.RestrictCreationToDomains = &enableGuestDomainRestrictions
+				cfg.TeamSettings.RestrictCreationToDomains = &enablePartnerDomainRestrictions
 			})
 		}()
 		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.TeamSettings.RestrictCreationToDomains = "restricted.com" })
 		invitationEmail := strings.ToLower(model.NewId()) + "other-email@test.com"
 		token := model.NewToken(
-			TokenTypeGuestInvitation,
+			TokenTypePartnerInvitation,
 			model.MapToJSON(map[string]string{"teamId": th.BasicTeam.Id, "email": invitationEmail, "channels": th.BasicChannel.Id, "senderId": th.BasicUser.Id}),
 		)
 		require.NoError(t, th.App.Srv().Store().Token().Save(token))
-		guest := model.User{
+		partner := model.User{
 			Email:       invitationEmail,
 			Nickname:    "Darth Vader",
 			Username:    "vader" + model.NewId(),
 			Password:    "passwd1",
 			AuthService: "",
 		}
-		newGuest, err := th.App.CreateUserWithToken(th.Context, &guest, token)
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
 		require.Nil(t, err)
-		assert.True(t, newGuest.IsGuest())
-		assert.Equal(t, invitationEmail, newGuest.Email, "The user email must be the invitation one")
+		assert.True(t, newPartner.IsPartner())
+		assert.Equal(t, invitationEmail, newPartner.Email, "The user email must be the invitation one")
 		_, nErr := th.App.Srv().Store().Token().GetByToken(token.Token)
 		require.Error(t, nErr)
 
-		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, newGuest.Id)
+		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, newPartner.Id)
 		require.Nil(t, err)
 		require.Len(t, members, 1)
 		assert.Equal(t, members[0].ChannelId, th.BasicChannel.Id)
@@ -1744,55 +1744,55 @@ func TestGetViewUsersRestrictions(t *testing.T) {
 	})
 }
 
-func TestCreateGuest(t *testing.T) {
+func TestCreatePartner(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	t.Run("should set default guest_subtype when not specified", func(t *testing.T) {
-		guest := &model.User{
-			Email:    "guest" + model.NewId() + "@test.com",
-			Username: "guest" + model.NewId(),
+	t.Run("should set default partner_subtype when not specified", func(t *testing.T) {
+		partner := &model.User{
+			Email:    "partner" + model.NewId() + "@test.com",
+			Username: "partner" + model.NewId(),
 			Password: "Password1",
 		}
-		newGuest, err := th.App.CreateGuest(th.Context, guest)
+		newPartner, err := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, err)
-		require.Equal(t, model.GuestSubtypeNotSpecified, newGuest.GetGuestSubtype())
+		require.Equal(t, model.PartnerSubtypeNotSpecified, newPartner.GetPartnerSubtype())
 	})
 
-	t.Run("should preserve guest_subtype when already set", func(t *testing.T) {
-		guest := &model.User{
-			Email:    "guest" + model.NewId() + "@test.com",
-			Username: "guest" + model.NewId(),
+	t.Run("should preserve partner_subtype when already set", func(t *testing.T) {
+		partner := &model.User{
+			Email:    "partner" + model.NewId() + "@test.com",
+			Username: "partner" + model.NewId(),
 			Password: "Password1",
-			Props:    model.StringMap{model.UserPropsKeyGuestSubtype: model.GuestSubtypeContractor},
+			Props:    model.StringMap{model.UserPropsKeyPartnerSubtype: model.PartnerSubtypeContractor},
 		}
-		newGuest, err := th.App.CreateGuest(th.Context, guest)
+		newPartner, err := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, err)
-		require.Equal(t, model.GuestSubtypeContractor, newGuest.GetGuestSubtype())
+		require.Equal(t, model.PartnerSubtypeContractor, newPartner.GetPartnerSubtype())
 	})
 
-	t.Run("should set default guest_subtype when Props is nil", func(t *testing.T) {
-		guest := &model.User{
-			Email:    "guest" + model.NewId() + "@test.com",
-			Username: "guest" + model.NewId(),
+	t.Run("should set default partner_subtype when Props is nil", func(t *testing.T) {
+		partner := &model.User{
+			Email:    "partner" + model.NewId() + "@test.com",
+			Username: "partner" + model.NewId(),
 			Password: "Password1",
 			Props:    nil,
 		}
-		newGuest, err := th.App.CreateGuest(th.Context, guest)
+		newPartner, err := th.App.CreatePartner(th.Context, partner)
 		require.Nil(t, err)
-		require.Equal(t, model.GuestSubtypeNotSpecified, newGuest.GetGuestSubtype())
+		require.Equal(t, model.PartnerSubtypeNotSpecified, newPartner.GetPartnerSubtype())
 	})
 }
 
-func TestPromoteGuestToUser(t *testing.T) {
+func TestPromotePartnerToUser(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
 	t.Run("Must fail with regular user", func(t *testing.T) {
 		require.Equal(t, "system_user", th.BasicUser.Roles)
-		err := th.App.PromoteGuestToUser(th.Context, th.BasicUser, th.BasicUser.Id)
+		err := th.App.PromotePartnerToUser(th.Context, th.BasicUser, th.BasicUser.Id)
 		require.Nil(t, err)
 
 		user, err := th.App.GetUser(th.BasicUser.Id)
@@ -1800,129 +1800,129 @@ func TestPromoteGuestToUser(t *testing.T) {
 		assert.Equal(t, "system_user", user.Roles)
 	})
 
-	t.Run("Must work with guest user without teams or channels", func(t *testing.T) {
-		guest := th.CreateGuest()
-		require.Equal(t, "system_guest", guest.Roles)
+	t.Run("Must work with partner user without teams or channels", func(t *testing.T) {
+		partner := th.CreatePartner()
+		require.Equal(t, "system_partner", partner.Roles)
 
-		err := th.App.PromoteGuestToUser(th.Context, guest, th.BasicUser.Id)
+		err := th.App.PromotePartnerToUser(th.Context, partner, th.BasicUser.Id)
 		require.Nil(t, err)
-		guest, err = th.App.GetUser(guest.Id)
+		partner, err = th.App.GetUser(partner.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_user", guest.Roles)
+		assert.Equal(t, "system_user", partner.Roles)
 	})
 
-	t.Run("Must work with guest user with teams but no channels", func(t *testing.T) {
-		guest := th.CreateGuest()
-		require.Equal(t, "system_guest", guest.Roles)
-		th.LinkUserToTeam(guest, th.BasicTeam)
-		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+	t.Run("Must work with partner user with teams but no channels", func(t *testing.T) {
+		partner := th.CreatePartner()
+		require.Equal(t, "system_partner", partner.Roles)
+		th.LinkUserToTeam(partner, th.BasicTeam)
+		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		require.Nil(t, err)
-		require.True(t, teamMember.SchemeGuest)
+		require.True(t, teamMember.SchemePartner)
 		require.False(t, teamMember.SchemeUser)
 
-		err = th.App.PromoteGuestToUser(th.Context, guest, th.BasicUser.Id)
+		err = th.App.PromotePartnerToUser(th.Context, partner, th.BasicUser.Id)
 		require.Nil(t, err)
-		guest, err = th.App.GetUser(guest.Id)
+		partner, err = th.App.GetUser(partner.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_user", guest.Roles)
-		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+		assert.Equal(t, "system_user", partner.Roles)
+		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		assert.Nil(t, err)
-		assert.False(t, teamMember.SchemeGuest)
+		assert.False(t, teamMember.SchemePartner)
 		assert.True(t, teamMember.SchemeUser)
 	})
 
-	t.Run("Must work with guest user with teams and channels", func(t *testing.T) {
-		guest := th.CreateGuest()
-		require.Equal(t, "system_guest", guest.Roles)
-		th.LinkUserToTeam(guest, th.BasicTeam)
-		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+	t.Run("Must work with partner user with teams and channels", func(t *testing.T) {
+		partner := th.CreatePartner()
+		require.Equal(t, "system_partner", partner.Roles)
+		th.LinkUserToTeam(partner, th.BasicTeam)
+		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		require.Nil(t, err)
-		require.True(t, teamMember.SchemeGuest)
+		require.True(t, teamMember.SchemePartner)
 		require.False(t, teamMember.SchemeUser)
 
-		channelMember := th.AddUserToChannel(guest, th.BasicChannel)
-		require.True(t, channelMember.SchemeGuest)
+		channelMember := th.AddUserToChannel(partner, th.BasicChannel)
+		require.True(t, channelMember.SchemePartner)
 		require.False(t, channelMember.SchemeUser)
 
-		err = th.App.PromoteGuestToUser(th.Context, guest, th.BasicUser.Id)
+		err = th.App.PromotePartnerToUser(th.Context, partner, th.BasicUser.Id)
 		require.Nil(t, err)
-		guest, err = th.App.GetUser(guest.Id)
+		partner, err = th.App.GetUser(partner.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_user", guest.Roles)
-		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+		assert.Equal(t, "system_user", partner.Roles)
+		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		assert.Nil(t, err)
-		assert.False(t, teamMember.SchemeGuest)
+		assert.False(t, teamMember.SchemePartner)
 		assert.True(t, teamMember.SchemeUser)
-		_, err = th.App.GetChannelMember(th.Context, th.BasicChannel.Id, guest.Id)
+		_, err = th.App.GetChannelMember(th.Context, th.BasicChannel.Id, partner.Id)
 		assert.Nil(t, err)
-		assert.False(t, teamMember.SchemeGuest)
+		assert.False(t, teamMember.SchemePartner)
 		assert.True(t, teamMember.SchemeUser)
 	})
 
 	t.Run("Must add the default channels", func(t *testing.T) {
-		guest := th.CreateGuest()
-		require.Equal(t, "system_guest", guest.Roles)
-		th.LinkUserToTeam(guest, th.BasicTeam)
-		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+		partner := th.CreatePartner()
+		require.Equal(t, "system_partner", partner.Roles)
+		th.LinkUserToTeam(partner, th.BasicTeam)
+		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		require.Nil(t, err)
-		require.True(t, teamMember.SchemeGuest)
+		require.True(t, teamMember.SchemePartner)
 		require.False(t, teamMember.SchemeUser)
 
-		channelMember := th.AddUserToChannel(guest, th.BasicChannel)
-		require.True(t, channelMember.SchemeGuest)
+		channelMember := th.AddUserToChannel(partner, th.BasicChannel)
+		require.True(t, channelMember.SchemePartner)
 		require.False(t, channelMember.SchemeUser)
 
-		channelMembers, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, guest.Id)
+		channelMembers, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, partner.Id)
 		require.Nil(t, err)
 		require.Len(t, channelMembers, 1)
 
-		err = th.App.PromoteGuestToUser(th.Context, guest, th.BasicUser.Id)
+		err = th.App.PromotePartnerToUser(th.Context, partner, th.BasicUser.Id)
 		require.Nil(t, err)
-		guest, err = th.App.GetUser(guest.Id)
+		partner, err = th.App.GetUser(partner.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_user", guest.Roles)
-		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+		assert.Equal(t, "system_user", partner.Roles)
+		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		assert.Nil(t, err)
-		assert.False(t, teamMember.SchemeGuest)
+		assert.False(t, teamMember.SchemePartner)
 		assert.True(t, teamMember.SchemeUser)
-		_, err = th.App.GetChannelMember(th.Context, th.BasicChannel.Id, guest.Id)
+		_, err = th.App.GetChannelMember(th.Context, th.BasicChannel.Id, partner.Id)
 		assert.Nil(t, err)
-		assert.False(t, teamMember.SchemeGuest)
+		assert.False(t, teamMember.SchemePartner)
 		assert.True(t, teamMember.SchemeUser)
 
-		channelMembers, err = th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, guest.Id)
+		channelMembers, err = th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, partner.Id)
 		require.Nil(t, err)
 		assert.Len(t, channelMembers, 3)
 	})
 
-	t.Run("Must invalidate channel stats cache when promoting a guest", func(t *testing.T) {
-		guest := th.CreateGuest()
-		require.Equal(t, "system_guest", guest.Roles)
-		th.LinkUserToTeam(guest, th.BasicTeam)
-		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, guest.Id)
+	t.Run("Must invalidate channel stats cache when promoting a partner", func(t *testing.T) {
+		partner := th.CreatePartner()
+		require.Equal(t, "system_partner", partner.Roles)
+		th.LinkUserToTeam(partner, th.BasicTeam)
+		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, partner.Id)
 		require.Nil(t, err)
-		require.True(t, teamMember.SchemeGuest)
+		require.True(t, teamMember.SchemePartner)
 		require.False(t, teamMember.SchemeUser)
 
-		guestCount, _ := th.App.GetChannelGuestCount(th.Context, th.BasicChannel.Id)
-		require.Equal(t, int64(0), guestCount)
+		partnerCount, _ := th.App.GetChannelPartnerCount(th.Context, th.BasicChannel.Id)
+		require.Equal(t, int64(0), partnerCount)
 
-		channelMember := th.AddUserToChannel(guest, th.BasicChannel)
-		require.True(t, channelMember.SchemeGuest)
+		channelMember := th.AddUserToChannel(partner, th.BasicChannel)
+		require.True(t, channelMember.SchemePartner)
 		require.False(t, channelMember.SchemeUser)
 
-		guestCount, _ = th.App.GetChannelGuestCount(th.Context, th.BasicChannel.Id)
-		require.Equal(t, int64(1), guestCount)
+		partnerCount, _ = th.App.GetChannelPartnerCount(th.Context, th.BasicChannel.Id)
+		require.Equal(t, int64(1), partnerCount)
 
-		err = th.App.PromoteGuestToUser(th.Context, guest, th.BasicUser.Id)
+		err = th.App.PromotePartnerToUser(th.Context, partner, th.BasicUser.Id)
 		require.Nil(t, err)
 
-		guestCount, _ = th.App.GetChannelGuestCount(th.Context, th.BasicChannel.Id)
-		require.Equal(t, int64(0), guestCount)
+		partnerCount, _ = th.App.GetChannelPartnerCount(th.Context, th.BasicChannel.Id)
+		require.Equal(t, int64(0), partnerCount)
 	})
 }
 
-func TestDemoteUserToGuest(t *testing.T) {
+func TestDemoteUserToPartner(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
@@ -1934,45 +1934,45 @@ func TestDemoteUserToGuest(t *testing.T) {
 		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, user.Id)
 		require.Nil(t, err)
 		require.True(t, teamMember.SchemeUser)
-		require.False(t, teamMember.SchemeGuest)
+		require.False(t, teamMember.SchemePartner)
 
-		guestCount, _ := th.App.GetChannelGuestCount(th.Context, th.BasicChannel.Id)
-		require.Equal(t, int64(0), guestCount)
+		partnerCount, _ := th.App.GetChannelPartnerCount(th.Context, th.BasicChannel.Id)
+		require.Equal(t, int64(0), partnerCount)
 
 		channelMember := th.AddUserToChannel(user, th.BasicChannel)
 		require.True(t, channelMember.SchemeUser)
-		require.False(t, channelMember.SchemeGuest)
+		require.False(t, channelMember.SchemePartner)
 
-		guestCount, _ = th.App.GetChannelGuestCount(th.Context, th.BasicChannel.Id)
-		require.Equal(t, int64(0), guestCount)
+		partnerCount, _ = th.App.GetChannelPartnerCount(th.Context, th.BasicChannel.Id)
+		require.Equal(t, int64(0), partnerCount)
 
-		err = th.App.DemoteUserToGuest(th.Context, user)
+		err = th.App.DemoteUserToPartner(th.Context, user)
 		require.Nil(t, err)
 
-		guestCount, _ = th.App.GetChannelGuestCount(th.Context, th.BasicChannel.Id)
-		require.Equal(t, int64(1), guestCount)
+		partnerCount, _ = th.App.GetChannelPartnerCount(th.Context, th.BasicChannel.Id)
+		require.Equal(t, int64(1), partnerCount)
 	})
 
-	t.Run("Must fail with guest user", func(t *testing.T) {
-		guest := th.CreateGuest()
-		require.Equal(t, "system_guest", guest.Roles)
-		err := th.App.DemoteUserToGuest(th.Context, guest)
+	t.Run("Must fail with partner user", func(t *testing.T) {
+		partner := th.CreatePartner()
+		require.Equal(t, "system_partner", partner.Roles)
+		err := th.App.DemoteUserToPartner(th.Context, partner)
 		require.Nil(t, err)
 
-		user, err := th.App.GetUser(guest.Id)
+		user, err := th.App.GetUser(partner.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_guest", user.Roles)
+		assert.Equal(t, "system_partner", user.Roles)
 	})
 
 	t.Run("Must work with user without teams or channels", func(t *testing.T) {
 		user := th.CreateUser()
 		require.Equal(t, "system_user", user.Roles)
 
-		err := th.App.DemoteUserToGuest(th.Context, user)
+		err := th.App.DemoteUserToPartner(th.Context, user)
 		require.Nil(t, err)
 		user, err = th.App.GetUser(user.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_guest", user.Roles)
+		assert.Equal(t, "system_partner", user.Roles)
 	})
 
 	t.Run("Must work with user with teams but no channels", func(t *testing.T) {
@@ -1982,17 +1982,17 @@ func TestDemoteUserToGuest(t *testing.T) {
 		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, user.Id)
 		require.Nil(t, err)
 		require.True(t, teamMember.SchemeUser)
-		require.False(t, teamMember.SchemeGuest)
+		require.False(t, teamMember.SchemePartner)
 
-		err = th.App.DemoteUserToGuest(th.Context, user)
+		err = th.App.DemoteUserToPartner(th.Context, user)
 		require.Nil(t, err)
 		user, err = th.App.GetUser(user.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_guest", user.Roles)
+		assert.Equal(t, "system_partner", user.Roles)
 		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, user.Id)
 		assert.Nil(t, err)
 		assert.False(t, teamMember.SchemeUser)
-		assert.True(t, teamMember.SchemeGuest)
+		assert.True(t, teamMember.SchemePartner)
 	})
 
 	t.Run("Must work with user with teams and channels", func(t *testing.T) {
@@ -2002,25 +2002,25 @@ func TestDemoteUserToGuest(t *testing.T) {
 		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, user.Id)
 		require.Nil(t, err)
 		require.True(t, teamMember.SchemeUser)
-		require.False(t, teamMember.SchemeGuest)
+		require.False(t, teamMember.SchemePartner)
 
 		channelMember := th.AddUserToChannel(user, th.BasicChannel)
 		require.True(t, channelMember.SchemeUser)
-		require.False(t, channelMember.SchemeGuest)
+		require.False(t, channelMember.SchemePartner)
 
-		err = th.App.DemoteUserToGuest(th.Context, user)
+		err = th.App.DemoteUserToPartner(th.Context, user)
 		require.Nil(t, err)
 		user, err = th.App.GetUser(user.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_guest", user.Roles)
+		assert.Equal(t, "system_partner", user.Roles)
 		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, user.Id)
 		assert.Nil(t, err)
 		assert.False(t, teamMember.SchemeUser)
-		assert.True(t, teamMember.SchemeGuest)
+		assert.True(t, teamMember.SchemePartner)
 		_, err = th.App.GetChannelMember(th.Context, th.BasicChannel.Id, user.Id)
 		assert.Nil(t, err)
 		assert.False(t, teamMember.SchemeUser)
-		assert.True(t, teamMember.SchemeGuest)
+		assert.True(t, teamMember.SchemePartner)
 	})
 
 	t.Run("Must respect the current channels not removing defaults", func(t *testing.T) {
@@ -2030,29 +2030,29 @@ func TestDemoteUserToGuest(t *testing.T) {
 		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, user.Id)
 		require.Nil(t, err)
 		require.True(t, teamMember.SchemeUser)
-		require.False(t, teamMember.SchemeGuest)
+		require.False(t, teamMember.SchemePartner)
 
 		channelMember := th.AddUserToChannel(user, th.BasicChannel)
 		require.True(t, channelMember.SchemeUser)
-		require.False(t, channelMember.SchemeGuest)
+		require.False(t, channelMember.SchemePartner)
 
 		channelMembers, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, user.Id)
 		require.Nil(t, err)
 		require.Len(t, channelMembers, 3)
 
-		err = th.App.DemoteUserToGuest(th.Context, user)
+		err = th.App.DemoteUserToPartner(th.Context, user)
 		require.Nil(t, err)
 		user, err = th.App.GetUser(user.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_guest", user.Roles)
+		assert.Equal(t, "system_partner", user.Roles)
 		teamMember, err = th.App.GetTeamMember(th.Context, th.BasicTeam.Id, user.Id)
 		assert.Nil(t, err)
 		assert.False(t, teamMember.SchemeUser)
-		assert.True(t, teamMember.SchemeGuest)
+		assert.True(t, teamMember.SchemePartner)
 		_, err = th.App.GetChannelMember(th.Context, th.BasicChannel.Id, user.Id)
 		assert.Nil(t, err)
 		assert.False(t, teamMember.SchemeUser)
-		assert.True(t, teamMember.SchemeGuest)
+		assert.True(t, teamMember.SchemePartner)
 
 		channelMembers, err = th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, user.Id)
 		require.Nil(t, err)
@@ -2073,7 +2073,7 @@ func TestDemoteUserToGuest(t *testing.T) {
 		require.Nil(t, err)
 		require.True(t, teamMember.SchemeUser)
 		require.True(t, teamMember.SchemeAdmin)
-		require.False(t, teamMember.SchemeGuest)
+		require.False(t, teamMember.SchemePartner)
 
 		channel := th.CreateChannel(th.Context, team)
 
@@ -2085,48 +2085,48 @@ func TestDemoteUserToGuest(t *testing.T) {
 		assert.Nil(t, err)
 		assert.True(t, channelMember.SchemeUser)
 		assert.True(t, channelMember.SchemeAdmin)
-		assert.False(t, channelMember.SchemeGuest)
+		assert.False(t, channelMember.SchemePartner)
 
-		err = th.App.DemoteUserToGuest(th.Context, user)
+		err = th.App.DemoteUserToPartner(th.Context, user)
 		require.Nil(t, err)
 
 		user, err = th.App.GetUser(user.Id)
 		assert.Nil(t, err)
-		assert.Equal(t, "system_guest", user.Roles)
+		assert.Equal(t, "system_partner", user.Roles)
 
 		teamMember, err = th.App.GetTeamMember(th.Context, team.Id, user.Id)
 		assert.Nil(t, err)
 		assert.False(t, teamMember.SchemeUser)
 		assert.False(t, teamMember.SchemeAdmin)
-		assert.True(t, teamMember.SchemeGuest)
+		assert.True(t, teamMember.SchemePartner)
 
 		channelMember, err = th.App.GetChannelMember(th.Context, channel.Id, user.Id)
 		assert.Nil(t, err)
 		assert.False(t, channelMember.SchemeUser)
 		assert.False(t, channelMember.SchemeAdmin)
-		assert.True(t, channelMember.SchemeGuest)
+		assert.True(t, channelMember.SchemePartner)
 	})
 }
 
-func TestDeactivateGuests(t *testing.T) {
+func TestDeactivatePartners(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
 
-	guest1 := th.CreateGuest()
-	guest2 := th.CreateGuest()
+	partner1 := th.CreatePartner()
+	partner2 := th.CreatePartner()
 	user := th.CreateUser()
 
-	err := th.App.DeactivateGuests(th.Context)
+	err := th.App.DeactivatePartners(th.Context)
 	require.Nil(t, err)
 
-	guest1, err = th.App.GetUser(guest1.Id)
+	partner1, err = th.App.GetUser(partner1.Id)
 	assert.Nil(t, err)
-	assert.NotEqual(t, int64(0), guest1.DeleteAt)
+	assert.NotEqual(t, int64(0), partner1.DeleteAt)
 
-	guest2, err = th.App.GetUser(guest2.Id)
+	partner2, err = th.App.GetUser(partner2.Id)
 	assert.Nil(t, err)
-	assert.NotEqual(t, int64(0), guest2.DeleteAt)
+	assert.NotEqual(t, int64(0), partner2.DeleteAt)
 
 	user, err = th.App.GetUser(user.Id)
 	assert.Nil(t, err)
@@ -2313,10 +2313,10 @@ func TestCreateUserWithInitialPreferences(t *testing.T) {
 		assert.Equal(t, "true", gmASdmNoticeViewedPref.Value)
 	})
 
-	t.Run("successfully create a guest user with initial tutorial and recommended steps preferences", func(t *testing.T) {
+	t.Run("successfully create a partner user with initial tutorial and recommended steps preferences", func(t *testing.T) {
 		th.Server.platform.SetConfigReadOnlyFF(false)
 		defer th.Server.platform.SetConfigReadOnlyFF(true)
-		testUser := th.CreateGuest()
+		testUser := th.CreatePartner()
 		defer func() {
 			appErr := th.App.PermanentDeleteUser(th.Context, testUser)
 			require.Nil(t, appErr)

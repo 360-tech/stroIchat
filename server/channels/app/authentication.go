@@ -345,7 +345,7 @@ func (a *App) MFARequired(rctx request.CTX) *model.AppError {
 		return model.NewAppError("MfaRequired", "api.context.get_user.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
 	}
 
-	if user.IsGuest() && !*a.Config().GuestAccountsSettings.EnforceMultifactorAuthentication {
+	if user.IsPartner() && !*a.Config().PartnerAccountsSettings.EnforceMultifactorAuthentication {
 		return nil
 	}
 	// Only required for email and ldap accounts

@@ -32,7 +32,7 @@ const (
 	SessionTypeUserAccessToken            = "UserAccessToken"
 	SessionTypeCloudKey                   = "CloudKey"
 	SessionTypeRemoteclusterToken         = "RemoteClusterToken"
-	SessionPropIsGuest                    = "is_guest"
+	SessionPropIsPartner                    = "is_partner"
 	SessionActivityTimeout                = 1000 * 60 * 5  // 5 minutes
 	SessionUserAccessTokenExpiryHours     = 100 * 365 * 24 // 100 years
 )
@@ -254,8 +254,8 @@ func (s *Session) IsSSOLogin() bool {
 	return s.IsOAuthUser() || s.IsSaml()
 }
 
-func (s *Session) IsGuest() bool {
-	val, ok := s.Props[SessionPropIsGuest]
+func (s *Session) IsPartner() bool {
+	val, ok := s.Props[SessionPropIsPartner]
 	if !ok {
 		return false
 	}

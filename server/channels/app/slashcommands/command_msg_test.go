@@ -57,25 +57,25 @@ func TestMsgProvider(t *testing.T) {
 	assert.Equal(t, "", resp.Text)
 	assert.Equal(t, "http://test.url/"+team.Name+"/channels/"+channelName, resp.GotoLocation)
 
-	// Check that a guest user cannot message a user who is not in a channel/team with him
-	guest := th.createGuest(t)
+	// Check that a partner user cannot message a user who is not in a channel/team with him
+	partner := th.createPartner(t)
 	user := th.createUser(t)
 
 	th.linkUserToTeam(t, user, team)
-	th.linkUserToTeam(t, guest, th.BasicTeam)
-	th.addUserToChannel(t, guest, th.BasicChannel)
+	th.linkUserToTeam(t, partner, th.BasicTeam)
+	th.addUserToChannel(t, partner, th.BasicChannel)
 
 	resp = cmd.DoCommand(th.App, th.Context, &model.CommandArgs{
 		T:       i18n.IdentityTfunc(),
 		SiteURL: "http://test.url",
 		TeamId:  th.BasicTeam.Id,
-		UserId:  guest.Id,
+		UserId:  partner.Id,
 	}, "@"+user.Username+" hello")
 
 	assert.Equal(t, "api.command_msg.missing.app_error", resp.Text)
 	assert.Equal(t, "", resp.GotoLocation)
 
-	// Check that a guest user can message a user who is in a channel/team with him
+	// Check that a partner user can message a user who is in a channel/team with him
 	th.linkUserToTeam(t, user, th.BasicTeam)
 	th.addUserToChannel(t, user, th.BasicChannel)
 
@@ -83,10 +83,10 @@ func TestMsgProvider(t *testing.T) {
 		T:       i18n.IdentityTfunc(),
 		SiteURL: "http://test.url",
 		TeamId:  th.BasicTeam.Id,
-		UserId:  guest.Id,
+		UserId:  partner.Id,
 	}, "@"+user.Username+" hello")
 
-	channelName = model.GetDMNameFromIds(guest.Id, user.Id)
+	channelName = model.GetDMNameFromIds(partner.Id, user.Id)
 
 	assert.Equal(t, "", resp.Text)
 	assert.Equal(t, "http://test.url/"+th.BasicTeam.Name+"/channels/"+channelName, resp.GotoLocation)

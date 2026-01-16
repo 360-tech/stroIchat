@@ -1344,21 +1344,21 @@
           $ref: "#/components/responses/Forbidden"
         "413":
           $ref: "#/components/responses/TooLarge"
-  "/api/v4/teams/{team_id}/invite-guests/email":
+  "/api/v4/teams/{team_id}/invite-partners/email":
     post:
       tags:
         - teams
-      summary: Invite guests to the team by email
+      summary: Invite partners to the team by email
       description: |
-        Invite guests to existing team channels usign the user's email.
+        Invite partners to existing team channels usign the user's email.
 
         The number of emails that can be sent is rate limited to 20 per hour with a burst of 20 emails. If the rate limit exceeds, the error message contains details on when to retry and when the timer will be reset.
 
         __Minimum server version__: 5.16
 
         ##### Permissions
-        Must have `invite_guest` permission for the team.
-      operationId: InviteGuestsToTeam
+        Must have `invite_partner` permission for the team.
+      operationId: InvitePartnersToTeam
       parameters:
         - name: team_id
           in: path
@@ -1392,7 +1392,7 @@
         required: true
       responses:
         "200":
-          description: Guests invite successful
+          description: Partners invite successful
           content:
             application/json:
               schema:

@@ -171,7 +171,7 @@ const (
 	LdapSettingsDefaultMaximumLoginAttempts      = 10
 
 	SamlSettingsDefaultIdAttribute        = ""
-	SamlSettingsDefaultGuestAttribute     = ""
+	SamlSettingsDefaultPartnerAttribute     = ""
 	SamlSettingsDefaultAdminAttribute     = ""
 	SamlSettingsDefaultFirstNameAttribute = ""
 	SamlSettingsDefaultLastNameAttribute  = ""
@@ -425,7 +425,7 @@ type ServiceSettings struct {
 	EnableInlineLatex                                 *bool `access:"site_posts"`
 	PostPriority                                      *bool `access:"site_posts"`
 	AllowPersistentNotifications                      *bool `access:"site_posts"`
-	AllowPersistentNotificationsForGuests             *bool `access:"site_posts"`
+	AllowPersistentNotificationsForPartners             *bool `access:"site_posts"`
 	PersistentNotificationIntervalMinutes             *int  `access:"site_posts"`
 	PersistentNotificationMaxCount                    *int  `access:"site_posts"`
 	PersistentNotificationMaxRecipients               *int  `access:"site_posts"`
@@ -933,8 +933,8 @@ func (s *ServiceSettings) SetDefaults(isUpdate bool) {
 		s.AllowPersistentNotifications = NewPointer(true)
 	}
 
-	if s.AllowPersistentNotificationsForGuests == nil {
-		s.AllowPersistentNotificationsForGuests = NewPointer(false)
+	if s.AllowPersistentNotificationsForPartners == nil {
+		s.AllowPersistentNotificationsForPartners = NewPointer(false)
 	}
 
 	if s.PersistentNotificationIntervalMinutes == nil {
@@ -2453,7 +2453,7 @@ type LdapSettings struct {
 	// Filtering
 	UserFilter        *string `access:"authentication_ldap"` // telemetry: none
 	GroupFilter       *string `access:"authentication_ldap"`
-	GuestFilter       *string `access:"authentication_ldap"`
+	PartnerFilter       *string `access:"authentication_ldap"`
 	EnableAdminFilter *bool
 	AdminFilter       *string
 
@@ -2545,8 +2545,8 @@ func (s *LdapSettings) SetDefaults() {
 		s.UserFilter = NewPointer("")
 	}
 
-	if s.GuestFilter == nil {
-		s.GuestFilter = NewPointer("")
+	if s.PartnerFilter == nil {
+		s.PartnerFilter = NewPointer("")
 	}
 
 	if s.AdminFilter == nil {
@@ -2777,7 +2777,7 @@ type SamlSettings struct {
 	Enable                        *bool `access:"authentication_saml"`
 	EnableSyncWithLdap            *bool `access:"authentication_saml"`
 	EnableSyncWithLdapIncludeAuth *bool `access:"authentication_saml"`
-	IgnoreGuestsLdapSync          *bool `access:"authentication_saml"`
+	IgnorePartnersLdapSync          *bool `access:"authentication_saml"`
 
 	Verify      *bool `access:"authentication_saml"`
 	Encrypt     *bool `access:"authentication_saml"`
@@ -2801,7 +2801,7 @@ type SamlSettings struct {
 
 	// User Mapping
 	IdAttribute          *string `access:"authentication_saml"`
-	GuestAttribute       *string `access:"authentication_saml"`
+	PartnerAttribute       *string `access:"authentication_saml"`
 	EnableAdminAttribute *bool
 	AdminAttribute       *string
 	FirstNameAttribute   *string `access:"authentication_saml"`
@@ -2832,8 +2832,8 @@ func (s *SamlSettings) SetDefaults() {
 		s.EnableSyncWithLdapIncludeAuth = NewPointer(false)
 	}
 
-	if s.IgnoreGuestsLdapSync == nil {
-		s.IgnoreGuestsLdapSync = NewPointer(false)
+	if s.IgnorePartnersLdapSync == nil {
+		s.IgnorePartnersLdapSync = NewPointer(false)
 	}
 
 	if s.EnableAdminAttribute == nil {
@@ -2912,8 +2912,8 @@ func (s *SamlSettings) SetDefaults() {
 		s.IdAttribute = NewPointer(SamlSettingsDefaultIdAttribute)
 	}
 
-	if s.GuestAttribute == nil {
-		s.GuestAttribute = NewPointer(SamlSettingsDefaultGuestAttribute)
+	if s.PartnerAttribute == nil {
+		s.PartnerAttribute = NewPointer(SamlSettingsDefaultPartnerAttribute)
 	}
 	if s.AdminAttribute == nil {
 		s.AdminAttribute = NewPointer(SamlSettingsDefaultAdminAttribute)
@@ -3646,15 +3646,15 @@ func (s *DisplaySettings) SetDefaults() {
 	}
 }
 
-type GuestAccountsSettings struct {
-	Enable                           *bool   `access:"authentication_guest_access"`
-	HideTags                         *bool   `access:"authentication_guest_access"`
-	AllowEmailAccounts               *bool   `access:"authentication_guest_access"`
-	EnforceMultifactorAuthentication *bool   `access:"authentication_guest_access"`
-	RestrictCreationToDomains        *string `access:"authentication_guest_access"`
+type PartnerAccountsSettings struct {
+	Enable                           *bool   `access:"authentication_partner_access"`
+	HideTags                         *bool   `access:"authentication_partner_access"`
+	AllowEmailAccounts               *bool   `access:"authentication_partner_access"`
+	EnforceMultifactorAuthentication *bool   `access:"authentication_partner_access"`
+	RestrictCreationToDomains        *string `access:"authentication_partner_access"`
 }
 
-func (s *GuestAccountsSettings) SetDefaults() {
+func (s *PartnerAccountsSettings) SetDefaults() {
 	if s.Enable == nil {
 		s.Enable = NewPointer(true)
 	}
@@ -3865,7 +3865,7 @@ type Config struct {
 	JobSettings                 JobSettings
 	PluginSettings              PluginSettings
 	DisplaySettings             DisplaySettings
-	GuestAccountsSettings       GuestAccountsSettings
+	PartnerAccountsSettings       PartnerAccountsSettings
 	ImageProxySettings          ImageProxySettings
 	CloudSettings               CloudSettings  // telemetry: none
 	FeatureFlags                *FeatureFlags  `access:"*_read" json:",omitempty"`
@@ -3981,7 +3981,7 @@ func (o *Config) SetDefaults() {
 	o.JobSettings.SetDefaults()
 	o.MessageExportSettings.SetDefaults()
 	o.DisplaySettings.SetDefaults()
-	o.GuestAccountsSettings.SetDefaults()
+	o.PartnerAccountsSettings.SetDefaults()
 	o.ImageProxySettings.SetDefaults()
 	o.CloudSettings.SetDefaults()
 	if o.FeatureFlags == nil {
@@ -4349,9 +4349,9 @@ func (s *LdapSettings) isValid() *AppError {
 			}
 		}
 
-		if *s.GuestFilter != "" {
-			if _, err := ldap.CompileFilter(*s.GuestFilter); err != nil {
-				return NewAppError("LdapSettings.isValid", "ent.ldap.validate_guest_filter.app_error", nil, "", http.StatusBadRequest).Wrap(err)
+		if *s.PartnerFilter != "" {
+			if _, err := ldap.CompileFilter(*s.PartnerFilter); err != nil {
+				return NewAppError("LdapSettings.isValid", "ent.ldap.validate_partner_filter.app_error", nil, "", http.StatusBadRequest).Wrap(err)
 			}
 		}
 
@@ -4418,12 +4418,12 @@ func (s *SamlSettings) isValid() *AppError {
 			return NewAppError("Config.IsValid", "model.config.is_valid.saml_canonical_algorithm.app_error", nil, "", http.StatusBadRequest)
 		}
 
-		if *s.GuestAttribute != "" {
-			if !(strings.Contains(*s.GuestAttribute, "=")) {
-				return NewAppError("Config.IsValid", "model.config.is_valid.saml_guest_attribute.app_error", nil, "", http.StatusBadRequest)
+		if *s.PartnerAttribute != "" {
+			if !(strings.Contains(*s.PartnerAttribute, "=")) {
+				return NewAppError("Config.IsValid", "model.config.is_valid.saml_partner_attribute.app_error", nil, "", http.StatusBadRequest)
 			}
-			if len(strings.Split(*s.GuestAttribute, "=")) != 2 {
-				return NewAppError("Config.IsValid", "model.config.is_valid.saml_guest_attribute.app_error", nil, "", http.StatusBadRequest)
+			if len(strings.Split(*s.PartnerAttribute, "=")) != 2 {
+				return NewAppError("Config.IsValid", "model.config.is_valid.saml_partner_attribute.app_error", nil, "", http.StatusBadRequest)
 			}
 		}
 

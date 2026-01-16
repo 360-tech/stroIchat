@@ -3,6 +3,6 @@
 
 export default {
     MEMBERS: 'members',
-    GUESTS: 'guests',
+    PARTNERS: 'partners',
     ADMINS: 'admins',
 };

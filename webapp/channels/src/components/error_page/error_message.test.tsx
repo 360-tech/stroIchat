@@ -97,7 +97,7 @@ describe('components/error_page/ErrorMessage', () => {
         const wrapper2 = shallow(
             <ErrorMessage
                 {...props}
-                isGuest={true}
+                isPartner={true}
             />,
         );
 

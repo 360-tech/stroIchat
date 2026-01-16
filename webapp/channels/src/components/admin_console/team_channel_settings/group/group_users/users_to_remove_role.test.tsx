@@ -21,8 +21,8 @@ describe('components/admin_console/team_channel_settings/group/UsersToRemoveRole
         groups,
     };
 
-    const guestUserWithGroups = {
-        ...TestHelper.getUserMock({roles: 'system_guest'}),
+    const partnerUserWithGroups = {
+        ...TestHelper.getUserMock({roles: 'system_partner'}),
         groups,
     };
 
@@ -30,7 +30,7 @@ describe('components/admin_console/team_channel_settings/group/UsersToRemoveRole
     const adminTeamMembership = TestHelper.getTeamMembershipMock({scheme_admin: true});
     const channelMembership = TestHelper.getChannelMembershipMock({scheme_admin: false}, {});
     const adminChannelMembership = TestHelper.getChannelMembershipMock({scheme_admin: true}, {});
-    const guestMembership = TestHelper.getTeamMembershipMock({scheme_admin: false, scheme_user: false});
+    const partnerMembership = TestHelper.getTeamMembershipMock({scheme_admin: false, scheme_user: false});
 
     const scopeTeam: 'team' | 'channel' = 'team';
     const scopeChannel: 'team' | 'channel' = 'channel';
@@ -115,16 +115,16 @@ describe('components/admin_console/team_channel_settings/group/UsersToRemoveRole
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot guest', () => {
+    test('should match snapshot partner', () => {
         const wrapper = mountWithIntl(
             <IntlProvider
                 locale='en'
                 messages={{}}
             >
                 <UsersToRemoveRole
-                    user={guestUserWithGroups}
+                    user={partnerUserWithGroups}
                     scope={scopeTeam}
-                    membership={guestMembership}
+                    membership={partnerMembership}
                 />
             </IntlProvider>,
         ).childAt(0);

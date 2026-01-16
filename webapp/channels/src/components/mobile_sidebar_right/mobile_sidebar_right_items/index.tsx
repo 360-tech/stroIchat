@@ -51,7 +51,7 @@ function mapStateToProps(state: GlobalState) {
         isMentionSearch: rhsState === RHSStates.MENTION,
         teamIsGroupConstrained: Boolean(currentTeam?.group_constrained),
         isLicensedForLDAPGroups: state.entities.general.license.LDAPGroups === 'true',
-        guestAccessEnabled: config.EnableGuestAccounts === 'true',
+        partnerAccessEnabled: config.EnablePartnerAccounts === 'true',
         isStarterFree: false,
         isFreeTrial: false,
     };

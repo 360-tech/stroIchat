@@ -175,7 +175,7 @@ type ChannelModeration struct {
 }
 
 type ChannelModeratedRoles struct {
-	Guests  *ChannelModeratedRole `json:"guests"`
+	Partners  *ChannelModeratedRole `json:"partners"`
 	Members *ChannelModeratedRole `json:"members"`
 }
 
@@ -197,7 +197,7 @@ func (c *ChannelModerationPatch) Auditable() map[string]any {
 }
 
 type ChannelModeratedRolesPatch struct {
-	Guests  *bool `json:"guests"`
+	Partners  *bool `json:"partners"`
 	Members *bool `json:"members"`
 }
 

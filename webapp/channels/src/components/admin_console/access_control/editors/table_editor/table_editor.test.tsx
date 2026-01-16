@@ -59,7 +59,7 @@ describe('parseExpression', () => {
                 {
                     attribute: 'user.attributes.role',
                     operator: '!=',
-                    value: 'guest',
+                    value: 'partner',
                     value_type: 0,
                     attribute_type: 'text',
                 },
@@ -70,7 +70,7 @@ describe('parseExpression', () => {
             {
                 attribute: 'role',
                 operator: 'is not',
-                values: ['guest'],
+                values: ['partner'],
                 attribute_type: 'text',
             },
         ]);

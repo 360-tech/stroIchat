@@ -252,7 +252,7 @@ func (ps *PlatformService) ExtendSessionExpiry(session *model.Session, newExpiry
 	return nil
 }
 
-func (ps *PlatformService) UpdateSessionsIsGuest(rctx request.CTX, user *model.User, isGuest bool) error {
+func (ps *PlatformService) UpdateSessionsIsPartner(rctx request.CTX, user *model.User, isPartner bool) error {
 	sessions, err := ps.GetSessions(rctx, user.Id)
 	if err != nil {
 		return err
@@ -264,10 +264,10 @@ func (ps *PlatformService) UpdateSessionsIsGuest(rctx request.CTX, user *model.U
 	}
 
 	for _, session := range sessions {
-		session.AddProp(model.SessionPropIsGuest, strconv.FormatBool(isGuest))
+		session.AddProp(model.SessionPropIsPartner, strconv.FormatBool(isPartner))
 		err := ps.Store.Session().UpdateProps(session)
 		if err != nil {
-			rctx.Logger().Warn("Unable to update isGuest session", mlog.Err(err))
+			rctx.Logger().Warn("Unable to update isPartner session", mlog.Err(err))
 			continue
 		}
 		if err := ps.AddSessionToCache(session); err != nil {

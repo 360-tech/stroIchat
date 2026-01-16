@@ -47,7 +47,7 @@ describe('Invite Members', () => {
             });
         });
 
-        // By default, member don't have "InviteGuest" permission
+        // By default, member don't have "InvitePartner" permission
         // should go directly to "InviteMembers" modal
         it('Invite members to Team as Member - invitation sent', () => {
             inviteUserToTeamAsMember(testUser, testTeam, userToBeInvited);
@@ -59,7 +59,7 @@ describe('Invite Members', () => {
             verifyInviteMembersModal(testTeam);
         });
 
-        // By default, sysadmin can Invite Guests, should go to "InvitePeople" modal
+        // By default, sysadmin can Invite Partners, should go to "InvitePeople" modal
         it('Invite members to Team as SysAdmin - invitation sent', () => {
             inviteUserToTeamAsSysadmin(testTeam, userToBeInvited);
 
@@ -83,7 +83,7 @@ describe('Invite Members', () => {
             });
         });
 
-        // By default, member don't have "InviteGuest" permission
+        // By default, member don't have "InvitePartner" permission
         // should go directly to "InviteMembers" modal
         it('Invite members to Team as Member - invitation not sent', () => {
             inviteUserToTeamAsMember(testUser, testTeam, userToBeInvited);
@@ -95,7 +95,7 @@ describe('Invite Members', () => {
             verifyInviteMembersModal(testTeam);
         });
 
-        // By default, sysadmin can Invite Guests, should go to "InvitePeople" modal
+        // By default, sysadmin can Invite Partners, should go to "InvitePeople" modal
         it('Invite members to Team as SysAdmin - invitation not sent', () => {
             inviteUserToTeamAsSysadmin(testTeam, userToBeInvited);
 

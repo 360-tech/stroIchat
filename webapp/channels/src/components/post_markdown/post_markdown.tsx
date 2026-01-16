@@ -78,7 +78,7 @@ export default class PostMarkdown extends React.PureComponent<Props> {
             const renderedSystemMessage = this.props.channel ? renderSystemMessage(this.props.post,
                 this.props.currentTeam?.name ?? '',
                 this.props.channel,
-                this.props.hideGuestTags,
+                this.props.hidePartnerTags,
                 this.props.isUserCanManageMembers,
                 this.props.isMilitaryTime,
                 this.props.timezone) : null;

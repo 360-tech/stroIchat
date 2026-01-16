@@ -50,15 +50,15 @@ export default class TeamRow extends React.PureComponent<Props> {
         );
     };
     private renderTeamRole = (team: TeamWithMembership) => {
-        if (team.scheme_guest) {
+        if (team.scheme_partner) {
             return (
                 <FormattedMessage
-                    id={'admin.systemUserDetail.teamList.teamRole.guest'}
-                    defaultMessage={'Guest'}
+                    id={'admin.systemUserDetail.teamList.teamRole.partner'}
+                    defaultMessage={'Partner'}
                 />
             );
         }
-        if (team.scheme_admin && !team.scheme_guest) {
+        if (team.scheme_admin && !team.scheme_partner) {
             return (
                 <FormattedMessage
                     id={'admin.systemUserDetail.teamList.teamRole.admin'}
@@ -66,7 +66,7 @@ export default class TeamRow extends React.PureComponent<Props> {
                 />
             );
         }
-        if (team.scheme_user && !team.scheme_guest && !team.scheme_admin) {
+        if (team.scheme_user && !team.scheme_partner && !team.scheme_admin) {
             return (
                 <FormattedMessage
                     id={'admin.systemUserDetail.teamList.teamRole.member'}

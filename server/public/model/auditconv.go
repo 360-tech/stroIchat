@@ -318,7 +318,7 @@ func (b auditBot) IsNil() bool {
 
 type auditChannelModerationPatch struct {
 	Name        string
-	RoleGuests  bool
+	RolePartners  bool
 	RoleMembers bool
 }
 
@@ -329,8 +329,8 @@ func newAuditChannelModerationPatch(p *ChannelModerationPatch) auditChannelModer
 		if p.Name != nil {
 			patch.Name = *p.Name
 		}
-		if p.Roles.Guests != nil {
-			patch.RoleGuests = *p.Roles.Guests
+		if p.Roles.Partners != nil {
+			patch.RolePartners = *p.Roles.Partners
 		}
 		if p.Roles.Members != nil {
 			patch.RoleMembers = *p.Roles.Members
@@ -341,7 +341,7 @@ func newAuditChannelModerationPatch(p *ChannelModerationPatch) auditChannelModer
 
 func (p auditChannelModerationPatch) MarshalJSONObject(enc *gojay.Encoder) {
 	enc.StringKey("name", p.Name)
-	enc.BoolKey("role_guests", p.RoleGuests)
+	enc.BoolKey("role_partners", p.RolePartners)
 	enc.BoolKey("role_members", p.RoleMembers)
 }
 
@@ -605,7 +605,7 @@ func (s auditScheme) IsNil() bool {
 type auditSchemeRoles struct {
 	SchemeAdmin bool
 	SchemeUser  bool
-	SchemeGuest bool
+	SchemePartner bool
 }
 
 // newAuditSchemeRoles creates a simplified representation of SchemeRoles for output to audit log.
@@ -614,7 +614,7 @@ func newAuditSchemeRoles(s *SchemeRoles) auditSchemeRoles {
 	if s != nil {
 		roles.SchemeAdmin = s.SchemeAdmin
 		roles.SchemeUser = s.SchemeUser
-		roles.SchemeGuest = s.SchemeGuest
+		roles.SchemePartner = s.SchemePartner
 	}
 	return roles
 }
@@ -622,7 +622,7 @@ func newAuditSchemeRoles(s *SchemeRoles) auditSchemeRoles {
 func (s auditSchemeRoles) MarshalJSONObject(enc *gojay.Encoder) {
 	enc.BoolKey("admin", s.SchemeAdmin)
 	enc.BoolKey("user", s.SchemeUser)
-	enc.BoolKey("guest", s.SchemeGuest)
+	enc.BoolKey("partner", s.SchemePartner)
 }
 
 func (s auditSchemeRoles) IsNil() bool {

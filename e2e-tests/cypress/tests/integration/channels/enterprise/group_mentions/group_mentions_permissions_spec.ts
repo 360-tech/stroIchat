@@ -32,9 +32,9 @@ describe('Group Mentions', () => {
         // * Check if server has license for LDAP Groups
         cy.apiRequireLicenseForFeature('LDAPGroups');
 
-        // # Enable GuestAccountSettings
+        // # Enable PartnerAccountSettings
         cy.apiUpdateConfig({
-            GuestAccountsSettings: {
+            PartnerAccountsSettings: {
                 Enable: true,
             },
         });
@@ -262,18 +262,18 @@ describe('Group Mentions', () => {
         });
     });
 
-    it('MM-T2452 - Group Mentions when user is a Guest User', () => {
+    it('MM-T2452 - Group Mentions when user is a Partner User', () => {
         const groupName = `board_test_case_${Date.now()}`;
 
         // # Login as sysadmin and enable group mention with the group name
         cy.apiAdminLogin();
         enableGroupMention(groupName, groupID, boardUser.email);
 
-        // # Verify that group mentions for all users & guests are disabled
+        // # Verify that group mentions for all users & partners are disabled
         cy.visit('/admin_console/user_management/permissions/system_scheme');
         cy.get('.admin-console__header', {timeout: TIMEOUTS.ONE_MIN}).should('be.visible').and('have.text', 'System Scheme');
         cy.findByTestId('all_users-posts-use_group_mentions-checkbox').should('not.have.class', 'checked');
-        cy.findByTestId('guests-guest_use_group_mentions-checkbox').should('not.have.class', 'checked');
+        cy.findByTestId('partners-partner_use_group_mentions-checkbox').should('not.have.class', 'checked');
 
         // # Create a new channel as a sysadmin
         cy.apiCreateChannel(testTeam.id, 'group-mention', 'Group Mentions').then(({channel}) => {
@@ -283,10 +283,10 @@ describe('Group Mentions', () => {
                     cy.apiAddUserToChannel(channel.id, user.id);
                 });
 
-                // # Demote the user as a guest user
-                cy.apiDemoteUserToGuest(user.id);
+                // # Demote the user as a partner user
+                cy.apiDemoteUserToPartner(user.id);
 
-                // # Login as a guest user
+                // # Login as a partner user
                 cy.apiLogin(user);
 
                 // # Visit the channel
@@ -312,14 +312,14 @@ describe('Group Mentions', () => {
                     cy.get(`#postMessageText_${postId}`).find('.group-mention-link').should('not.exist');
                 });
 
-                // # Login as sysadmin and enable group mentions permission for guests
+                // # Login as sysadmin and enable group mentions permission for partners
                 cy.apiAdminLogin();
                 cy.visit('/admin_console/user_management/permissions/system_scheme');
                 cy.get('.admin-console__header', {timeout: TIMEOUTS.ONE_MIN}).should('be.visible').and('have.text', 'System Scheme');
-                enablePermission('guests-guest_use_group_mentions-checkbox');
+                enablePermission('partners-partner_use_group_mentions-checkbox');
                 cy.uiSaveConfig();
 
-                // # Login as guest user again and visit the channel
+                // # Login as partner user again and visit the channel
                 cy.apiLogin(user);
                 cy.visit(`/${testTeam.name}/channels/${channel.name}`);
 

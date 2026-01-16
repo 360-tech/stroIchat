@@ -150,7 +150,7 @@ type DirectChannelMemberImportData struct {
 	NotifyProps        *UserChannelNotifyPropsImportData `json:"notify_props,omitempty"`
 	SchemeUser         *bool                             `json:"scheme_user,omitempty"`
 	SchemeAdmin        *bool                             `json:"scheme_admin,omitempty"`
-	SchemeGuest        *bool                             `json:"scheme_guest,omitempty"`
+	SchemePartner        *bool                             `json:"scheme_partner,omitempty"`
 	MentionCount       *int64                            `json:"mention_count,omitempty"`
 	MentionCountRoot   *int64                            `json:"mention_count_root,omitempty"`
 	UrgentMentionCount *int64                            `json:"urgend_mention_count,omitempty"`
@@ -252,8 +252,8 @@ type SchemeImportData struct {
 	DefaultTeamUserRole     *RoleImportData `json:"default_team_user_role"`
 	DefaultChannelAdminRole *RoleImportData `json:"default_channel_admin_role"`
 	DefaultChannelUserRole  *RoleImportData `json:"default_channel_user_role"`
-	DefaultTeamGuestRole    *RoleImportData `json:"default_team_guest_role"`
-	DefaultChannelGuestRole *RoleImportData `json:"default_channel_guest_role"`
+	DefaultTeamPartnerRole    *RoleImportData `json:"default_team_partner_role"`
+	DefaultChannelPartnerRole *RoleImportData `json:"default_channel_partner_role"`
 }
 
 type RoleImportData struct {

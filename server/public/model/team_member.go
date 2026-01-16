@@ -22,7 +22,7 @@ type TeamMember struct {
 	UserId        string `json:"user_id"`
 	Roles         string `json:"roles"`
 	DeleteAt      int64  `json:"delete_at"`
-	SchemeGuest   bool   `json:"scheme_guest"`
+	SchemePartner   bool   `json:"scheme_partner"`
 	SchemeUser    bool   `json:"scheme_user"`
 	SchemeAdmin   bool   `json:"scheme_admin"`
 	ExplicitRoles string `json:"explicit_roles"`
@@ -35,7 +35,7 @@ func (o *TeamMember) Auditable() map[string]any {
 		"user_id":        o.UserId,
 		"roles":          o.Roles,
 		"delete_at":      o.DeleteAt,
-		"scheme_guest":   o.SchemeGuest,
+		"scheme_partner":   o.SchemePartner,
 		"scheme_user":    o.SchemeUser,
 		"scheme_admin":   o.SchemeAdmin,
 		"explicit_roles": o.ExplicitRoles,

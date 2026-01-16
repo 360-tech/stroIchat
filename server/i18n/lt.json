@@ -232,7 +232,7 @@
     "translation": "Botų kūrimas buvo išjungtas."
   },
   {
-    "id": "api.channel.add_guest.added",
+    "id": "api.channel.add_partner.added",
     "translation": "%v pridėta prie kanalo kaip svečias pagal %v."
   },
   {
@@ -312,7 +312,7 @@
     "translation": "{{.ConvertedByUsername}} sukūrė šį kanalą iš grupės žinutės su {{.GMMembers}}."
   },
   {
-    "id": "api.channel.guest_join_channel.post_and_forget",
+    "id": "api.channel.partner_join_channel.post_and_forget",
     "translation": "%v prisijungė prie kanalo kaip svečias."
   },
   {
@@ -468,11 +468,11 @@
     "translation": "Jums neleidžiama atnaujinti tiesioginių ar grupinių pranešimų vardo, rodomo vardo ir tikslo."
   },
   {
-    "id": "api.channel.update_channel_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
     "translation": "Negalimas kanalo nario atnaujinimas: negalite pridėti arba pašalinti svečio vaidmens rankiniu būdu."
   },
   {
-    "id": "api.channel.update_channel_member_roles.guest_and_user.app_error",
+    "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
     "translation": "Netinkamas kanalo nario atnaujinimas: naudotojas turi būti svečias arba naudotojas, bet ne abu."
   },
   {
@@ -492,7 +492,7 @@
     "translation": "Nepavyksta nustatyti schemos kanalui, nes pateikta schema nėra kanalo schema."
   },
   {
-    "id": "api.channel.update_team_member_roles.changing_guest_role.app_error",
+    "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
     "translation": "Negalimas komandos nario atnaujinimas: negalite pridėti arba pašalinti svečio vaidmens rankiniu būdu."
   },
   {
@@ -780,7 +780,7 @@
     "translation": "Nepavyko atnaujinti kanalo žymos."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Nepavyko atnaujinti kanalo žymos."
   },
   {
@@ -804,11 +804,11 @@
     "translation": "Nepavyko ištrinti kanalo žymos."
   },
   {
-    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.create_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Nepavyko sukurti kanalo žymos."
   },
   {
-    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.delete_channel_bookmark.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Nepavyko ištrinti kanalo žymos."
   },
   {
@@ -816,7 +816,7 @@
     "translation": "Nepavyko sukurti kanalo žymos."
   },
   {
-    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_guests.forbidden.app_error",
+    "id": "api.channel.bookmark.update_channel_bookmark_sort_order.direct_or_group_channels_by_partners.forbidden.app_error",
     "translation": "Nepavyko atnaujinti kanalo žymos rūšiavimo sekos."
   },
   {

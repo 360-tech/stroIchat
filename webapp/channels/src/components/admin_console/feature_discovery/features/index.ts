@@ -3,7 +3,7 @@
 
 import AnnouncementBannerFeatureDiscovery from './announcement_banner';
 import GitLabFeatureDiscovery from './gitlab';
-import GuestAccessFeatureDiscovery from './guest_access';
+import PartnerAccessFeatureDiscovery from './partner_access';
 import LDAPFeatureDiscovery from './ldap';
 import OpenIDFeatureDiscovery from './openid';
 import OpenIDCustomFeatureDiscovery from './openid_custom';
@@ -17,6 +17,6 @@ export {
     OpenIDCustomFeatureDiscovery,
     GitLabFeatureDiscovery,
     AnnouncementBannerFeatureDiscovery,
-    GuestAccessFeatureDiscovery,
+    PartnerAccessFeatureDiscovery,
     SystemRolesFeatureDiscovery,
 };
