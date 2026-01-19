@@ -289,3 +289,5 @@ channels/db/migrations/postgres/000147_create_partner_data.down.sql
 channels/db/migrations/postgres/000147_create_partner_data.up.sql
 channels/db/migrations/postgres/000148_add_partner_subtype.down.sql
 channels/db/migrations/postgres/000148_add_partner_subtype.up.sql
+channels/db/migrations/postgres/000149_add_schemepartner_columns.down.sql
+channels/db/migrations/postgres/000149_add_schemepartner_columns.up.sql
