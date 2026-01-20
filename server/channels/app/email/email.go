@@ -11,7 +11,9 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 
@@ -78,7 +80,10 @@ func (es *Service) SendEmailChangeVerifyEmail(newUserEmail, locale, siteURL, tok
 	data.Props["QuestionTitle"] = T("api.templates.questions_footer.title")
 	data.Props["EmailInfo1"] = T("api.templates.email_us_anytime_at")
 	data.Props["SupportEmail"] = "feedback@mattermost.com"
-	data.Props["FooterV2"] = T("api.templates.email_footer_v2")
+
+	currentTime := time.Now()
+	currentYear := strconv.Itoa(currentTime.Year())
+	data.Props["FooterV2"] = "© " + currentYear + " " + *es.config().TeamSettings.SiteName
 
 	body, err := es.templatesContainer.RenderToString("email_change_verify_body", data)
 	if err != nil {
@@ -204,16 +209,9 @@ func (es *Service) SendWelcomeEmail(userID string, email string, verified bool, 
 	data.Props["ServerURL"] = T("api.templates.welcome_body.serverURL", map[string]any{"ServerURL": serverURL})
 	data.Props["SubTitle2"] = T("api.templates.welcome_body.subTitle2")
 	data.Props["Button"] = T("api.templates.welcome_body.button")
-	data.Props["Info"] = T("api.templates.welcome_body.info")
+	data.Props["Info"] = T("api.templates.welcome_body.info") + " " + *es.config().TeamSettings.SiteName + "."
 	data.Props["Info1"] = T("api.templates.welcome_body.info1")
 	data.Props["SiteURL"] = siteURL
-
-	if *es.config().NativeAppSettings.AppDownloadLink != "" {
-		data.Props["AppDownloadTitle"] = T("api.templates.welcome_body.app_download_title")
-		data.Props["AppDownloadInfo"] = T("api.templates.welcome_body.app_download_info")
-		data.Props["AppDownloadButton"] = T("api.templates.welcome_body.app_download_button")
-		data.Props["AppDownloadLink"] = *es.config().NativeAppSettings.AppDownloadLink
-	}
 
 	if !verified && *es.config().EmailSettings.RequireEmailVerification {
 		token, err := es.CreateVerifyEmailToken(userID, email)
@@ -761,11 +759,9 @@ func (es *Service) NewEmailTemplateData(locale string) templates.Data {
 	} else {
 		localT = i18n.T
 	}
-	organization := ""
 
-	if *es.config().EmailSettings.FeedbackOrganization != "" {
-		organization = localT("api.templates.email_organization") + *es.config().EmailSettings.FeedbackOrganization
-	}
+	currentTime := time.Now()
+	currentYear := strconv.Itoa(currentTime.Year())
 
 	return templates.Data{
 		Props: map[string]any{
@@ -775,8 +771,7 @@ func (es *Service) NewEmailTemplateData(locale string) templates.Data {
 				map[string]any{"SiteName": es.config().TeamSettings.SiteName}),
 			"SupportEmail": *es.config().SupportSettings.SupportEmail,
 			"Footer":       localT("api.templates.email_footer"),
-			"FooterV2":     localT("api.templates.email_footer_v2"),
-			"Organization": organization,
+			"FooterV2":     "© " + currentYear + " " + *es.config().TeamSettings.SiteName,
 		},
 		HTML: map[string]template.HTML{},
 	}

@@ -1796,10 +1796,6 @@
     "translation": "Команда {{.SiteName}}"
   },
   {
-    "id": "api.templates.email_organization",
-    "translation": "Прислал "
-  },
-  {
     "id": "api.templates.email_warning",
     "translation": "Если вы не вносили эти изменения, обратитесь к системному администратору."
   },
@@ -1929,7 +1925,7 @@
   },
   {
     "id": "api.templates.welcome_body.info",
-    "translation": "Этот email-адрес был использован для создания учётной записи Mattermost."
+    "translation": "Этот email-адрес был использован для создания учётной записи"
   },
   {
     "id": "api.templates.welcome_body.title",
@@ -7216,14 +7212,6 @@
     "translation": "Если это были не вы, вы можете смело игнорировать это сообщение."
   },
   {
-    "id": "api.templates.welcome_body.app_download_title",
-    "translation": "Скачать настольные и мобильные приложения"
-  },
-  {
-    "id": "api.templates.welcome_body.app_download_button",
-    "translation": "Скачать"
-  },
-  {
     "id": "api.templates.verify_body.subTitle2",
     "translation": "Щёлкните ниже, чтобы подтвердить ваш email-адрес."
   },
@@ -7274,10 +7262,6 @@
   {
     "id": "api.templates.email_us_anytime_at",
     "translation": "Напишите нам в любое время на email "
-  },
-  {
-    "id": "api.templates.email_footer_v2",
-    "translation": "© 2026 Стройчат"
   },
   {
     "id": "api.templates.cloud_welcome_email.title",
