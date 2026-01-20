@@ -77,9 +77,9 @@ func (es *Service) SendEmailChangeVerifyEmail(newUserEmail, locale, siteURL, tok
 		map[string]any{"TeamDisplayName": es.config().TeamSettings.SiteName})
 	data.Props["VerifyUrl"] = link
 	data.Props["VerifyButton"] = T("api.templates.email_change_verify_body.button")
-	data.Props["QuestionTitle"] = T("api.templates.questions_footer.title")
-	data.Props["EmailInfo1"] = T("api.templates.email_us_anytime_at")
-	data.Props["SupportEmail"] = "feedback@mattermost.com"
+	// data.Props["QuestionTitle"] = T("api.templates.questions_footer.title")
+	// data.Props["EmailInfo1"] = T("api.templates.email_us_anytime_at")
+	// data.Props["SupportEmail"] = "feedback@mattermost.com"
 
 	currentTime := time.Now()
 	currentYear := strconv.Itoa(currentTime.Year())
@@ -239,45 +239,6 @@ func (es *Service) SendWelcomeEmail(userID string, email string, verified bool, 
 
 // SendCloudWelcomeEmail sends the cloud version of the welcome email
 func (es *Service) SendCloudWelcomeEmail(userEmail, locale, teamInviteID, workSpaceName, dns, siteURL string) error {
-	T := i18n.GetUserTranslations(locale)
-	subject := T("api.templates.cloud_welcome_email.subject")
-
-	data := es.NewEmailTemplateData(locale)
-	data.Props["Title"] = T("api.templates.cloud_welcome_email.title")
-	data.Props["SubTitle"] = T("api.templates.cloud_welcome_email.subtitle")
-	data.Props["SubTitleInfo"] = T("api.templates.cloud_welcome_email.subtitle_info")
-	data.Props["Info"] = T("api.templates.cloud_welcome_email.info")
-	data.Props["Info2"] = T("api.templates.cloud_welcome_email.info2")
-	data.Props["WorkSpacePath"] = siteURL
-	data.Props["DNS"] = dns
-	data.Props["InviteInfo"] = T("api.templates.cloud_welcome_email.invite_info")
-	data.Props["InviteSubInfo"] = T("api.templates.cloud_welcome_email.invite_sub_info", map[string]any{"WorkSpace": workSpaceName})
-	data.Props["InviteSubInfoLink"] = fmt.Sprintf("%s/signup_user_complete/?id=%s", siteURL, teamInviteID)
-	data.Props["AddAppsInfo"] = T("api.templates.cloud_welcome_email.add_apps_info")
-	data.Props["AddAppsSubInfo"] = T("api.templates.cloud_welcome_email.add_apps_sub_info")
-	data.Props["AppMarketPlace"] = T("api.templates.cloud_welcome_email.app_market_place")
-	data.Props["AppMarketPlaceLink"] = "https://integrations.mattermost.com/"
-	data.Props["DownloadMMInfo"] = T("api.templates.cloud_welcome_email.download_mm_info")
-	data.Props["SignInSubInfo"] = T("api.templates.cloud_welcome_email.signin_sub_info")
-	data.Props["MMApps"] = T("api.templates.cloud_welcome_email.mm_apps")
-	data.Props["SignInSubInfo2"] = T("api.templates.cloud_welcome_email.signin_sub_info2")
-	if es.config().NativeAppSettings.AppDownloadLink != nil && *es.config().NativeAppSettings.AppDownloadLink != "" {
-		data.Props["DownloadMMAppsLink"] = es.config().NativeAppSettings.AppDownloadLink
-	} else {
-		data.Props["DownloadMMAppsLink"] = "https://mattermost.com/pl/download-apps"
-	}
-	data.Props["Button"] = T("api.templates.cloud_welcome_email.button")
-	data.Props["GettingStartedQuestions"] = T("api.templates.cloud_welcome_email.start_questions")
-
-	body, err := es.templatesContainer.RenderToString("cloud_welcome_email", data)
-	if err != nil {
-		return err
-	}
-
-	if err := es.sendEmailWithCustomReplyTo(userEmail, subject, body, *es.config().SupportSettings.SupportEmail, "CloudWelcomeEmail"); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -816,20 +777,11 @@ func (es *Service) sendMail(to, subject, htmlBody, category string) error {
 	return es.sendMailWithCC(to, subject, htmlBody, "", category)
 }
 
-func (es *Service) sendEmailWithCustomReplyTo(to, subject, htmlBody, replyToAddress, category string) error {
-	license := es.license()
-	mailConfig := es.mailServiceConfig(replyToAddress)
-
-	category = getSendGridCategory(category, license.IsCloud())
-
-	return mail.SendMailUsingConfig(to, subject, htmlBody, mailConfig, license != nil && *license.Features.Compliance, "", "", "", "", category)
-}
-
 func (es *Service) sendMailWithCC(to, subject, htmlBody, ccMail, category string) error {
 	license := es.license()
 	mailConfig := es.mailServiceConfig("")
 
-	category = getSendGridCategory(category, license.IsCloud())
+	category = getSendGridCategory(category, false)
 
 	return mail.SendMailUsingConfig(to, subject, htmlBody, mailConfig, license != nil && *license.Features.Compliance, "", "", "", ccMail, category)
 }
@@ -838,7 +790,7 @@ func (es *Service) SendMailWithEmbeddedFilesAndCustomReplyTo(to, subject, htmlBo
 	license := es.license()
 	mailConfig := es.mailServiceConfig(replyToAddress)
 
-	category = getSendGridCategory(category, license.IsCloud())
+	category = getSendGridCategory(category, false)
 
 	return mail.SendMailWithEmbeddedFilesUsingConfig(to, subject, htmlBody, embeddedFiles, mailConfig, license != nil && *license.Features.Compliance, "", "", "", "", category)
 }
@@ -921,7 +873,6 @@ func (es *Service) SendLicenseUpForRenewalEmail(email, name, locale, siteURL, ct
 	data.Props["Button"] = ctaText
 	data.Props["ButtonURL"] = ctaLink
 	data.Props["QuestionTitle"] = T("api.templates.questions_footer.title")
-	data.Props["SupportEmail"] = "feedback@mattermost.com"
 	data.Props["QuestionInfo"] = T("api.templates.questions_footer.info")
 
 	body, err := es.templatesContainer.RenderToString("license_up_for_renewal", data)
@@ -939,25 +890,6 @@ func (es *Service) SendLicenseUpForRenewalEmail(email, name, locale, siteURL, ct
 // SendRemoveExpiredLicenseEmail formats an email and uses the email service to send the email to user with link pointing to CWS
 // to renew the user license
 func (es *Service) SendRemoveExpiredLicenseEmail(ctaText, ctaLink, email, locale, siteURL string) error {
-	T := i18n.GetUserTranslations(locale)
-	subject := T("api.templates.remove_expired_license.subject",
-		map[string]any{"SiteName": es.config().TeamSettings.SiteName})
-
-	data := es.NewEmailTemplateData(locale)
-	data.Props["SiteURL"] = siteURL
-	data.Props["Title"] = T("api.templates.remove_expired_license.body.title")
-	data.Props["Link"] = ctaLink
-	data.Props["LinkButton"] = ctaText
-
-	body, err := es.templatesContainer.RenderToString("remove_expired_license", data)
-	if err != nil {
-		return err
-	}
-
-	if err := es.sendMail(email, subject, body, "RemoveExpiredLicense"); err != nil {
-		return err
-	}
-
 	return nil
 }
 

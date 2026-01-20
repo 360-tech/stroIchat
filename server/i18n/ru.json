@@ -85,7 +85,7 @@
   },
   {
     "id": "api.admin.test_email.body",
-    "translation": "Кажется, ваша электронная почта Mattermost установлена верно!"
+    "translation": "Кажется, ваша электронная почта Стройчат установлена верно!"
   },
   {
     "id": "api.admin.test_email.missing_server",
@@ -97,7 +97,7 @@
   },
   {
     "id": "api.admin.test_email.subject",
-    "translation": "Mattermost - Тестирование настроек электронной почты"
+    "translation": "Стройчат - Тестирование настроек электронной почты"
   },
   {
     "id": "api.admin.test_s3.missing_s3_bucket",
@@ -341,7 +341,7 @@
   },
   {
     "id": "api.command.invite_people.desc",
-    "translation": "Отправить письмо с приглашением в вашу команду Mattermost"
+    "translation": "Отправить письмо с приглашением в вашу команду Стройчат"
   },
   {
     "id": "api.command.invite_people.email_invitations_off",
@@ -617,7 +617,7 @@
   },
   {
     "id": "api.command_help.desc",
-    "translation": "Показать справку Mattermost"
+    "translation": "Показать справку Стройчат"
   },
   {
     "id": "api.command_help.name",
@@ -725,7 +725,7 @@
   },
   {
     "id": "api.command_logout.desc",
-    "translation": "Выход из Mattermost"
+    "translation": "Выход из Стройчат"
   },
   {
     "id": "api.command_logout.name",
@@ -1513,7 +1513,7 @@
   },
   {
     "id": "api.slackimport.slack_add_channels.merge",
-    "translation": "Slack канал {{.DisplayName}} уже существует в виде канала Mattermost. Произведено слияние.\r\n"
+    "translation": "Slack канал {{.DisplayName}} уже существует в виде канала Стройчат. Произведено слияние.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.created",
@@ -1525,11 +1525,11 @@
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing",
-    "translation": "Slack пользователь слился с существующим пользователем Mattermost с соответствующим адресом электронной почты {{.Email}} и именем пользователя {{.Username}}.\r\n"
+    "translation": "Slack пользователь слился с существующим пользователем Стройчат с соответствующим адресом электронной почты {{.Email}} и именем пользователя {{.Username}}.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.merge_existing_failed",
-    "translation": "Пользователь Slack объединен с существующим пользователем Mattermost по совпадению email {{.Email}} и имени пользователя {{.Username}}, но было невозможно добавить пользователя в его команду.\r\n"
+    "translation": "Пользователь Slack объединен с существующим пользователем Стройчат по совпадению email {{.Email}} и имени пользователя {{.Username}}, но было невозможно добавить пользователя в его команду.\r\n"
   },
   {
     "id": "api.slackimport.slack_add_users.missing_email_address",
@@ -1541,7 +1541,7 @@
   },
   {
     "id": "api.slackimport.slack_import.log",
-    "translation": "Лог импорта Mattermost Slack\r\n"
+    "translation": "Лог импорта Стройчат Slack\r\n"
   },
   {
     "id": "api.slackimport.slack_import.note1",
@@ -1845,7 +1845,7 @@
   },
   {
     "id": "api.templates.post_body.button",
-    "translation": "Ответить в Mattermost"
+    "translation": "Ответить в Стройчат"
   },
   {
     "id": "api.templates.reset_body.button",
@@ -1905,7 +1905,7 @@
   },
   {
     "id": "api.templates.verify_body.info",
-    "translation": "Этот адрес электронной почты был использован для создания учётной записи Mattermost."
+    "translation": "Этот адрес электронной почты был использован для создания учётной записи Стройчат."
   },
   {
     "id": "api.templates.verify_body.title",
@@ -3069,7 +3069,7 @@
   },
   {
     "id": "ent.elasticsearch.test_config.license.error",
-    "translation": "Ваша лицензия Mattermost не поддерживает индексированный поиск."
+    "translation": "Ваша лицензия Стройчат не поддерживает индексированный поиск."
   },
   {
     "id": "ent.elasticsearch.test_config.reenter_password",
@@ -3113,7 +3113,7 @@
   },
   {
     "id": "ent.ldap.do_login.user_filtered.app_error",
-    "translation": "Ваша учетная запись AD/LDAP не имеет разрешения на использование этого сервера Mattermost. Пожалуйста, обратитесь к системному администратору, чтобы проверить фильтр пользователей AD/LDAP."
+    "translation": "Ваша учетная запись AD/LDAP не имеет разрешения на использование этого сервера Стройчат. Пожалуйста, обратитесь к системному администратору, чтобы проверить фильтр пользователей AD/LDAP."
   },
   {
     "id": "ent.ldap.do_login.user_not_registered.app_error",
@@ -3133,7 +3133,7 @@
   },
   {
     "id": "ent.ldap.syncronize.search_failure.app_error",
-    "translation": "Не удалось найти пользователей в AD/LDAP. Проверьте, может ли сервер Mattermost подключиться к вашему серверу AD/LDAP, и попробуйте снова."
+    "translation": "Не удалось найти пользователей в AD/LDAP. Проверьте, может ли сервер Стройчат подключиться к вашему серверу AD/LDAP, и попробуйте снова."
   },
   {
     "id": "ent.ldap.validate_filter.app_error",
@@ -3177,7 +3177,7 @@
   },
   {
     "id": "ent.migration.migratetosaml.username_already_used_by_other_user",
-    "translation": "Имя пользователя уже используется другим пользователем Mattermost."
+    "translation": "Имя пользователя уже используется другим пользователем Стройчат."
   },
   {
     "id": "ent.saml.attribute.app_error",
@@ -3261,7 +3261,7 @@
   },
   {
     "id": "mattermost.bulletin.subject",
-    "translation": "Бюллетень безопасности Mattermost"
+    "translation": "Бюллетень безопасности Стройчат"
   },
   {
     "id": "mfa.activate.bad_token.app_error",
@@ -4401,7 +4401,7 @@
   },
   {
     "id": "oauth.gitlab.tos.error",
-    "translation": "Условия предоставления услуг GitLab обновлены. Пожалуйста, зайдите на {{.URL}}, чтобы принять их, а затем попробуйте снова войти в Mattermost."
+    "translation": "Условия предоставления услуг GitLab обновлены. Пожалуйста, зайдите на {{.URL}}, чтобы принять их, а затем попробуйте снова войти в Стройчат."
   },
   {
     "id": "plugin.api.update_user_status.bad_status",
@@ -4549,7 +4549,7 @@
   },
   {
     "id": "api.bot.teams_channels.add_message_mobile",
-    "translation": "Пожалуйста, добавьте меня в команды и каналы, c которыми мне нужно взаимодействовать. Это можно сделать в браузере или в приложении Mattermost для ПК."
+    "translation": "Пожалуйста, добавьте меня в команды и каналы, c которыми мне нужно взаимодействовать. Это можно сделать в браузере или в приложении Стройчат для ПК."
   },
   {
     "id": "api.channel.get_channel_moderations.license.error",
@@ -4609,7 +4609,7 @@
   },
   {
     "id": "api.channel.add_partner.added",
-    "translation": "%v добавлен(а) в канал как гость пользователем %v."
+    "translation": "%v добавлен(а) в канал как партнер пользователем %v."
   },
   {
     "id": "api.channel.add_members.error",
@@ -4625,7 +4625,7 @@
   },
   {
     "id": "api.channel.partner_join_channel.post_and_forget",
-    "translation": "%v присоединился к каналу как гость."
+    "translation": "%v присоединился к каналу как партнер."
   },
   {
     "id": "api.channel.remove_members.denied",
@@ -4829,7 +4829,7 @@
   },
   {
     "id": "ent.ldap.validate_partner_filter.app_error",
-    "translation": "Неверный фильтр гостя AD/LDAP."
+    "translation": "Неверный фильтр партнера AD/LDAP."
   },
   {
     "id": "interactive_message.decode_trigger_id.base64_decode_failed_signature",
@@ -4841,7 +4841,7 @@
   },
   {
     "id": "model.config.is_valid.saml_partner_attribute.app_error",
-    "translation": "Неверный атрибут гостя. Должен быть в форме 'поле=значение'."
+    "translation": "Неверный атрибут партнера. Должен быть в форме 'поле=значение'."
   },
   {
     "id": "model.config.is_valid.saml_signature_algorithm.app_error",
@@ -4885,7 +4885,7 @@
   },
   {
     "id": "api.channel.update_channel_member_roles.changing_partner_role.app_error",
-    "translation": "Недопустимое обновление участника канала: вы не можете добавлять или удалять гостевую роль вручную."
+    "translation": "Недопустимое обновление участника канала: вы не можете добавлять или удалять партнерскую роль вручную."
   },
   {
     "id": "api.channel.update_channel_privacy.default_channel_error",
@@ -4956,10 +4956,6 @@
     "translation": "Эта команда управляется группами.  Этот пользователь не является частью группы, которая синхронизируется с этой командой."
   },
   {
-    "id": "api.team.demote_user_to_partner.license.error",
-    "translation": "Ваша лицензия не поддерживает гостевые учётные записи"
-  },
-  {
     "id": "api.team.remove_member.group_constrained.app_error",
     "translation": "Невозможно удалить пользователя из управляемой группами команды."
   },
@@ -4969,23 +4965,11 @@
   },
   {
     "id": "api.team.update_team_member_roles.partner_and_user.app_error",
-    "translation": "Недопустимое обновление участника команды: пользователь должен быть гостем или пользователем, но не обоими."
-  },
-  {
-    "id": "api.templates.remove_expired_license.body.title",
-    "translation": "Срок действия корпоративной лицензии истёк, и некоторые функции могут быть отключены. Пожалуйста, обновите лицензию."
-  },
-  {
-    "id": "api.user.create_user.partner_accounts.disabled.app_error",
-    "translation": "Гостевые учётные записи отключены."
-  },
-  {
-    "id": "api.user.create_user.partner_accounts.license.app_error",
-    "translation": "Ваша лицензия не поддерживает гостевые учётные записи."
+    "translation": "Недопустимое обновление участника команды: пользователь должен быть партнером или пользователем, но не обоими."
   },
   {
     "id": "api.user.demote_user_to_partner.already_partner.app_error",
-    "translation": "Невозможно преобразовать пользователя в гостя, поскольку он уже является гостем."
+    "translation": "Невозможно преобразовать пользователя в партнера, поскольку он уже является партнером."
   },
   {
     "id": "api.user.login.invalid_credentials_email_username",
@@ -4997,11 +4981,7 @@
   },
   {
     "id": "api.user.promote_partner_to_user.no_partner.app_error",
-    "translation": "Невозможно преобразовать гостя в обычного пользователя, потому что он не гость."
-  },
-  {
-    "id": "api.user.update_active.cannot_enable_partner_when_partner_feature_is_disabled.app_error",
-    "translation": "Вы не можете активировать гостевую учетную запись, потому что функция гостевого доступа не включена."
+    "translation": "Невозможно преобразовать партнера в обычного пользователя, потому что он не партнер."
   },
   {
     "id": "api.user.update_user.accepted_domain.app_error",
@@ -5009,7 +4989,7 @@
   },
   {
     "id": "api.user.update_user.accepted_partner_domain.app_error",
-    "translation": "Указанный вами адрес электронной почты не принадлежит признанному домену для гостевых учетных записей. Пожалуйста, свяжитесь с вашим администратором или зарегистрируйтесь с другим адресом электронной почты."
+    "translation": "Указанный вами адрес электронной почты не принадлежит признанному домену для партнерских учетных записей. Пожалуйста, свяжитесь с вашим администратором или зарегистрируйтесь с другим адресом электронной почты."
   },
   {
     "id": "api.websocket_handler.server_busy.app_error",
@@ -5253,15 +5233,15 @@
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support_version",
-    "translation": "Эта версия вашего браузера больше не поддерживается Mattermost"
+    "translation": "Эта версия вашего браузера больше не поддерживается Стройчат"
   },
   {
     "id": "api.channel.update_channel_member_roles.partner_and_user.app_error",
-    "translation": "Недопустимое обновление участника канала: пользователь должен быть гостем или пользователем, но не обоими."
+    "translation": "Недопустимое обновление участника канала: пользователь должен быть партнером или пользователем, но не обоими."
   },
   {
     "id": "api.channel.update_team_member_roles.changing_partner_role.app_error",
-    "translation": "Недопустимое обновление участника команды: вы не можете добавлять или удалять гостевую роль вручную."
+    "translation": "Недопустимое обновление участника команды: вы не можете добавлять или удалять партнерскую роль вручную."
   },
   {
     "id": "api.command_invite.user_not_in_team.app_error",
@@ -5329,11 +5309,7 @@
   },
   {
     "id": "api.team.add_user_to_team_from_invite.partner.app_error",
-    "translation": "Гостям ограничена возможность присоединяться к команде через ссылку-приглашение. Запросите гостевое приглашение по электронной почте для присоединения к команде."
-  },
-  {
-    "id": "api.team.demote_user_to_partner.disabled.error",
-    "translation": "Гостевые учётные записи отключены."
+    "translation": "Партнерам ограничена возможность присоединяться к команде через ссылку-приглашение. Запросите партнерское приглашение по электронной почте для присоединения к команде."
   },
   {
     "id": "api.team.get_all_teams.insufficient_permissions",
@@ -5349,7 +5325,7 @@
   },
   {
     "id": "api.team.invite_partners.invalid_partner_subtype.app_error",
-    "translation": "Указан недопустимый подтип гостя."
+    "translation": "Указан недопустимый подтип партнера."
   },
   {
     "id": "api.team.search_teams.pagination_not_implemented.public_team_search",
@@ -5357,23 +5333,11 @@
   },
   {
     "id": "api.templates.invite_partner_subject",
-    "translation": "[{{ .SiteName }}] {{ .SenderName }} пригласил вас в команду {{ .TeamDisplayName }} в качестве гостя"
-  },
-  {
-    "id": "api.templates.remove_expired_license.subject",
-    "translation": "Корпоративная лицензия Mattermost была отключена."
+    "translation": "[{{ .SiteName }}] {{ .SenderName }} пригласил вас в команду {{ .TeamDisplayName }} в качестве партнера"
   },
   {
     "id": "api.user.create_user.invalid_invitation_type.app_error",
     "translation": "Невозможно создать пользователя, недействительное приглашение."
-  },
-  {
-    "id": "api.user.login.partner_accounts.disabled.error",
-    "translation": "Гостевые учётные записи отключены"
-  },
-  {
-    "id": "api.user.login.partner_accounts.license.error",
-    "translation": "Ваша лицензия не поддерживает гостевые учётные записи"
   },
   {
     "id": "api.user.login.invalid_credentials_email",
@@ -5497,7 +5461,7 @@
   },
   {
     "id": "web.error.unsupported_browser.download_app_or_upgrade_browser",
-    "translation": "Загрузите приложение Mattermost или используйте поддерживаемый браузер для лучшей работы."
+    "translation": "Загрузите приложение Стройчат или используйте поддерживаемый браузер для лучшей работы."
   },
   {
     "id": "web.error.unsupported_browser.download_the_app",
@@ -5537,7 +5501,7 @@
   },
   {
     "id": "web.error.unsupported_browser.no_longer_support",
-    "translation": "Этот браузер больше не поддерживается Mattermost"
+    "translation": "Этот браузер больше не поддерживается Стройчат"
   },
   {
     "id": "web.error.unsupported_browser.open_system_browser.edge",
@@ -5629,7 +5593,7 @@
   },
   {
     "id": "api.license.request-trial.bad-request.terms-not-accepted",
-    "translation": "Вы должны принять Соглашение об оценке программного обеспечения Mattermost и Политику конфиденциальности, чтобы запросить лицензию."
+    "translation": "Вы должны принять Соглашение об оценке программного обеспечения Стройчат и Политику конфиденциальности, чтобы запросить лицензию."
   },
   {
     "id": "app.recover.save.app_error",
@@ -6181,43 +6145,43 @@
   },
   {
     "id": "api.upgrade_to_enterprise_status.signature.app_error",
-    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Не удалось проверить цифровую подпись загруженного двоичного файла."
+    "translation": "Стройчат не удалось обновить до Корпоративной редакции. Не удалось проверить цифровую подпись загруженного двоичного файла."
   },
   {
     "id": "api.upgrade_to_enterprise_status.app_error",
-    "translation": "Mattermost не удалось обновить до Корпоративной редакции."
+    "translation": "Стройчат не удалось обновить до Корпоративной редакции."
   },
   {
     "id": "api.upgrade_to_enterprise.system_not_supported.app_error",
-    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Эта функция будет работать только в системах Linux с архитектурой x86-64."
+    "translation": "Стройчат не удалось обновить до Корпоративной редакции. Эта функция будет работать только в системах Linux с архитектурой x86-64."
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user.app_error",
-    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Системный пользователь Mattermost {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Mattermost:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Mattermost. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\n```"
+    "translation": "Стройчат не удалось обновить до Корпоративной редакции. Системный пользователь Стройчат {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Стройчат:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Стройчат. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-user-and-permission.app_error",
-    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Системный пользователь Mattermost {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Mattermost:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\nchmod +w \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Mattermost. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\nchmod -w \"{{.Path}}\"\n```"
+    "translation": "Стройчат не удалось обновить до Корпоративной редакции. Системный пользователь Стройчат {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Стройчат:\n\n```\nchown {{.MattermostUsername}} \"{{.Path}}\"\nchmod +w \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Стройчат. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchown {{.FileUsername}} \"{{.Path}}\"\nchmod -w \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.invalid-permission.app_error",
-    "translation": "Mattermost не удалось обновить до Корпоративной редакции. Системный пользователь Mattermost {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Mattermost:\n\n```\nchmod +w \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Mattermost. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchmod -w \"{{.Path}}\"\n```"
+    "translation": "Стройчат не удалось обновить до Корпоративной редакции. Системный пользователь Стройчат {{.MattermostUsername}} не имеет прав на запись в необходимый двоичный файл. Системный администратор может обновить права доступа к файлам, выполнив следующую команду на сервере, где установлен Стройчат:\n\n```\nchmod +w \"{{.Path}}\"\n```\n\nПосле изменения прав доступа к файлу попробуйте снова обновить Стройчат. После обновления и перезапуска не забудьте восстановить исходные разрешения для двоичного файла:\n\n```\nchmod -w \"{{.Path}}\"\n```"
   },
   {
     "id": "api.upgrade_to_enterprise.generic_error.app_error",
-    "translation": "Mattermost не удалось обновить до Корпоративной редакции."
+    "translation": "Стройчат не удалось обновить до Корпоративной редакции."
   },
   {
     "id": "api.upgrade_to_enterprise.app_error",
-    "translation": "Обновление до Mattermost Корпоративная редакция уже выполняется."
+    "translation": "Обновление до Стройчат Корпоративная редакция уже выполняется."
   },
   {
     "id": "api.upgrade_to_enterprise.already-enterprise.app_error",
-    "translation": "Вы не можете выполнить обновление, потому что вы уже используете Mattermost Корпоративная редакция."
+    "translation": "Вы не можете выполнить обновление, потому что вы уже используете Стройчат Корпоративная редакция."
   },
   {
     "id": "api.upgrade_to_enterprise.already-done.app_error",
-    "translation": "Вы уже перешли на Mattermost Корпоративная редакция. Пожалуйста, перезапустите сервер, чтобы завершить обновление."
+    "translation": "Вы уже перешли на Стройчат Корпоративная редакция. Пожалуйста, перезапустите сервер, чтобы завершить обновление."
   },
   {
     "id": "app.job.update.app_error",
@@ -6953,7 +6917,7 @@
   },
   {
     "id": "app.user.update_active_for_multiple_users.updating.app_error",
-    "translation": "Не удалось деактивировать гостей."
+    "translation": "Не удалось деактивировать партнеров."
   },
   {
     "id": "app.user.update.finding.app_error",
@@ -7245,11 +7209,11 @@
   },
   {
     "id": "api.templates.invite_body_partner.subTitle",
-    "translation": "Вы были приглашены в качестве гостя в команду"
+    "translation": "Вы были приглашены в качестве партнера в команду"
   },
   {
     "id": "api.templates.invite_body_footer.title",
-    "translation": "Что такое Mattermost?"
+    "translation": "Что такое Стройчат?"
   },
   {
     "id": "api.templates.invite_body_footer.learn_more",
@@ -7262,74 +7226,6 @@
   {
     "id": "api.templates.email_us_anytime_at",
     "translation": "Напишите нам в любое время на email "
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.title",
-    "translation": "Ваше рабочее пространство готово к работе!"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.subtitle_info",
-    "translation": "Выполните следующие шаги, чтобы построить свои команды и получить максимальную отдачу от своего рабочего пространства."
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.subtitle",
-    "translation": "Настройте ваше рабочее пространство"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.subject",
-    "translation": "Поздравляем!"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.start_questions",
-    "translation": "У вас есть вопросы о том, как начать? Напишите нам по адресу"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.signin_sub_info2",
-    "translation": "для более удобной работы на Windows, Linux Mac, iOS и Android."
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.signin_sub_info",
-    "translation": "Войдите в свое рабочее пространство на нашем"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.mm_apps",
-    "translation": "мобильные и настольные приложения"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.invite_sub_info",
-    "translation": "Поделитесь этой ссылкой, чтобы пригласить новых участников присоединиться в {{.WorkSpace}}:"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.invite_info",
-    "translation": "Пригласить в рабочее пространство"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.info2",
-    "translation": "Обязательно сохраните ссылку или добавьте её в закладки для использования в будущем."
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.info",
-    "translation": "Спасибо за создание "
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.download_mm_info",
-    "translation": "Скачать Mattermost App"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.button",
-    "translation": "Открыть Mattermost"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.app_market_place",
-    "translation": "магазине приложений."
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.add_apps_sub_info",
-    "translation": "Оптимизируйте свою работу с такими инструментами, как Github, Jira and Zoom. Просмотрите все интеграции, которые есть у нас в нашем"
-  },
-  {
-    "id": "api.templates.cloud_welcome_email.add_apps_info",
-    "translation": "Добавить приложения в ваше рабочее пространство"
   },
   {
     "id": "api.team.invite_partners_to_channels.invalid_body.app_error",
@@ -7453,7 +7349,7 @@
   },
   {
     "id": "api.command_share.desc",
-    "translation": "Разделяет текущий канал с удалённым экземпляром Mattermost."
+    "translation": "Разделяет текущий канал с удалённым экземпляром Стройчат."
   },
   {
     "id": "api.command_share.could_not_uninvite.error",
@@ -7601,7 +7497,7 @@
   },
   {
     "id": "api.command_remote.desc",
-    "translation": "Создайте безопасные соединения для связи между экземплярами Mattermost."
+    "translation": "Создайте безопасные соединения для связи между экземплярами Стройчат."
   },
   {
     "id": "api.command_remote.decode_invitation.error",
@@ -7625,7 +7521,7 @@
   },
   {
     "id": "api.command_remote.accept.help",
-    "translation": "Принять приглашение от внешнего кластера Mattermost"
+    "translation": "Принять приглашение от внешнего кластера Стройчат"
   },
   {
     "id": "api.command_share.share_read_only.hint",
@@ -7717,7 +7613,7 @@
   },
   {
     "id": "api.command_share.uninvite_remote_id.help",
-    "translation": "Идентификатор безопасного подключения к неприглашенному гостю."
+    "translation": "Идентификатор безопасного подключения к неприглашенному партнеру."
   },
   {
     "id": "api.command_share.uninvite_remote.help",
@@ -7893,7 +7789,7 @@
   },
   {
     "id": "api.email_batching.send_batched_email_notification.button",
-    "translation": "Открыть Mattermost"
+    "translation": "Открыть Стройчат"
   },
   {
     "id": "api.custom_status.set_custom_statuses.update.app_error",
@@ -7913,7 +7809,7 @@
   },
   {
     "id": "api.license.request-trial.can-start-trial.not-allowed",
-    "translation": "Не удалось применить новую пробную лицензию. Вы уже применяли пробную лицензию к этому экземпляру Mattermost. Если вы хотите продлить пробный период, пожалуйста, [свяжитесь с нашим отделом продаж] (https://mattermost.com/contact-us/)."
+    "translation": "Не удалось применить новую пробную лицензию. Вы уже применяли пробную лицензию к этому экземпляру Стройчат. Если вы хотите продлить пробный период, пожалуйста, [свяжитесь с нашим отделом продаж] (https://mattermost.com/contact-us/)."
   },
   {
     "id": "api.license.request-trial.can-start-trial.error",
@@ -7961,7 +7857,7 @@
   },
   {
     "id": "app.notification.footer.infoLogin",
-    "translation": "Войти в Mattermost"
+    "translation": "Войти в Стройчат"
   },
   {
     "id": "app.notification.footer.info",
@@ -8041,11 +7937,11 @@
   },
   {
     "id": "api.templates.license_up_for_renewal_title",
-    "translation": "Ваша подписка Mattermost подлежит продлению"
+    "translation": "Ваша подписка Стройчат подлежит продлению"
   },
   {
     "id": "api.templates.license_up_for_renewal_subtitle",
-    "translation": "{{.UserName}}, срок действия Вашей подписки истекает через {{.Days}} дней. Мы надеемся, что Вам нравится гибкое и безопасное командное сотрудничество, которое обеспечивает Mattermost. Продлите подписку в ближайшее время, чтобы Ваша команда могла продолжать пользоваться этими преимуществами."
+    "translation": "{{.UserName}}, срок действия Вашей подписки истекает через {{.Days}} дней. Мы надеемся, что Вам нравится гибкое и безопасное командное сотрудничество, которое обеспечивает Стройчат. Продлите подписку в ближайшее время, чтобы Ваша команда могла продолжать пользоваться этими преимуществами."
   },
   {
     "id": "api.templates.license_up_for_renewal_subject",
@@ -8272,14 +8168,6 @@
     "translation": "В настройки электронной почты есть не заданные значения."
   },
   {
-    "id": "api.team.invite_partners_to_channels.license.error",
-    "translation": "Ваша лицензия не поддерживает гостевые учётные записи"
-  },
-  {
-    "id": "api.team.invite_partners_to_channels.disabled.error",
-    "translation": "Гостевые учётные записи отключены"
-  },
-  {
     "id": "api.file.cloud_upload.app_error",
     "translation": "Загрузка через mmctl в экземпляр Cloud не поддерживается. Пожалуйста, ознакомьтесь с документацией здесь: https://docs.mattermost.com/manage/cloud-data-export.html."
   },
@@ -8301,7 +8189,7 @@
   },
   {
     "id": "api.command_help.success",
-    "translation": "Mattermost - это платформа с открытым исходным кодом для безопасного общения, сотрудничества и организации работы между командами с использованием различных инструментов.\nMattermost состоит из двух ключевых инструментов:\n\n**Channels** - Каналы - оставайтесь всегда на связи со своей командой посредством 1:1 и групповых чатов.\n**[Playbooks](/playbooks)** - Сценарии - создавайте и настраивайте повторяющиеся процессы для достижения конкретных и предсказуемых результатов.\n\n[Посмотреть документацию и руководства]({{.HelpLink}})"
+    "translation": "Стройчат - это платформа с открытым исходным кодом для безопасного общения, сотрудничества и организации работы между командами с использованием различных инструментов.\nMattermost состоит из двух ключевых инструментов:\n\n**Channels** - Каналы - оставайтесь всегда на связи со своей командой посредством 1:1 и групповых чатов.\n**[Playbooks](/playbooks)** - Сценарии - создавайте и настраивайте повторяющиеся процессы для достижения конкретных и предсказуемых результатов.\n\n[Посмотреть документацию и руководства]({{.HelpLink}})"
   },
   {
     "id": "api.cloud.teams_limit_reached.restore",
@@ -8573,7 +8461,7 @@
   },
   {
     "id": "api.server.cws.needs_enterprise_edition",
-    "translation": "Услуга доступна только в редакции Mattermost Enterprise"
+    "translation": "Услуга доступна только в редакции Стройчат Enterprise"
   },
   {
     "id": "api.system.logs.invalidFilter",
@@ -9149,7 +9037,7 @@
   },
   {
     "id": "api.team.update_team_member_roles.partner.app_error",
-    "translation": "Неверное обновление участника команды: Гость не может стать участником команды или администратором команды, пожалуйста, сначала повысьте статус пользователя."
+    "translation": "Неверное обновление участника команды: Партнер не может стать участником команды или администратором команды, пожалуйста, сначала повысьте статус пользователя."
   },
   {
     "id": "app.report.date_range.last_30_days",
@@ -9333,11 +9221,11 @@
   },
   {
     "id": "api.team.update_team_member_roles.user_and_partner.app_error",
-    "translation": "Неверное обновление участника команды: гость не может быть установлен для команды, Системный администратор должен повышать или понижать пользователей до/из гостей."
+    "translation": "Неверное обновление участника команды: партнер не может быть установлен для команды, Системный администратор должен повышать или понижать пользователей до/из партнеров."
   },
   {
     "id": "api.server.cws.disabled",
-    "translation": "Взаимодействие с клиентским порталом Mattermost было отключено системным администратором."
+    "translation": "Взаимодействие с клиентским порталом Стройчат было отключено системным администратором."
   },
   {
     "id": "model.user.is_valid.invalidProperty.app_error",
@@ -9485,11 +9373,11 @@
   },
   {
     "id": "api.channel.update_channel_member_roles.partner.app_error",
-    "translation": "Неверное обновление участника канала: Гость не может стать участником команды или администратором команды, пожалуйста, сначала повысьте его до пользователя."
+    "translation": "Неверное обновление участника канала: Партнер не может стать участником команды или администратором команды, пожалуйста, сначала повысьте его до пользователя."
   },
   {
     "id": "api.channel.update_channel_member_roles.user_and_partner.app_error",
-    "translation": "Неверное обновление участника канала: Гость не может быть установлен для одиночного канала, Системный администратор должен повышать или понижать пользователей до/из гостей."
+    "translation": "Неверное обновление участника канала: Партнер не может быть установлен для одиночного канала, Системный администратор должен повышать или понижать пользователей до/из партнеров."
   },
   {
     "id": "app.import.import_line.null_role.error",
@@ -9573,7 +9461,7 @@
   },
   {
     "id": "api.config.update.elasticsearch.autocomplete_cannot_be_enabled_error",
-    "translation": "Автозаполнение каналов не может быть включено, так как схема индекса каналов устарела. Рекомендуется перегенерировать индекс каналов. Более подробную информацию можно найти в журнале изменений Mattermost"
+    "translation": "Автозаполнение каналов не может быть включено, так как схема индекса каналов устарела. Рекомендуется перегенерировать индекс каналов. Более подробную информацию можно найти в журнале изменений Стройчат"
   },
   {
     "id": "app.import.attachment.file_stat.error",
@@ -9897,7 +9785,7 @@
   },
   {
     "id": "app.import.validate_user_import_data.partner_roles_conflict.error",
-    "translation": "Роли пользователей не соответствуют статусу гостя."
+    "translation": "Роли пользователей не соответствуют статусу партнера."
   },
   {
     "id": "app.role.delete.app_error",
