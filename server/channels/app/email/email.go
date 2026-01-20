@@ -421,19 +421,17 @@ func (es *Service) SendInviteEmails(
 
 	for _, invite := range invites {
 		if invite != "" {
+			siteName := es.config().TeamSettings.SiteName
 			subject := i18n.T("api.templates.invite_subject",
 				map[string]any{"SenderName": senderName,
 					"TeamDisplayName": team.DisplayName,
-					"SiteName":        es.config().TeamSettings.SiteName})
+					"SiteName":        siteName})
 
 			data := es.NewEmailTemplateData("")
 			data.Props["SiteURL"] = siteURL
-			data.Props["SubTitle"] = i18n.T("api.templates.invite_body.subTitle")
+			data.Props["SubTitle"] = i18n.T("api.templates.invite_body.subTitle") + *siteName;
 			data.Props["Button"] = i18n.T("api.templates.invite_body.button")
 			data.Props["SenderName"] = senderName
-			data.Props["InviteFooterTitle"] = i18n.T("api.templates.invite_body_footer.title")
-			data.Props["InviteFooterInfo"] = i18n.T("api.templates.invite_body_footer.info")
-			data.Props["InviteFooterLearnMore"] = i18n.T("api.templates.invite_body_footer.learn_more")
 
 			token := model.NewToken(
 				TokenTypeTeamInvitation,
@@ -535,7 +533,6 @@ func (es *Service) SendPartnerInviteEmails(
 			}
 			data.Props["Message"] = message
 			data.Props["InviteFooterTitle"] = i18n.T("api.templates.invite_body_footer.title")
-			data.Props["InviteFooterInfo"] = i18n.T("api.templates.invite_body_footer.info")
 			data.Props["InviteFooterLearnMore"] = i18n.T("api.templates.invite_body_footer.learn_more")
 
 			channelIDs := []string{}
@@ -681,7 +678,6 @@ func (es *Service) SendInviteEmailsToTeamAndChannels(
 		data.Props["Button"] = i18n.T("api.templates.invite_body.button")
 		data.Props["SenderName"] = senderName
 		data.Props["InviteFooterTitle"] = i18n.T("api.templates.invite_body_footer.title")
-		data.Props["InviteFooterInfo"] = i18n.T("api.templates.invite_body_footer.info")
 		data.Props["InviteFooterLearnMore"] = i18n.T("api.templates.invite_body_footer.learn_more")
 
 		if message != "" {

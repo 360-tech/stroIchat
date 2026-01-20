@@ -7268,12 +7268,8 @@
     "translation": "Узнать больше"
   },
   {
-    "id": "api.templates.invite_body_footer.info",
-    "translation": "Mattermost - это гибкая платформа обмена сообщениями с открытым исходным кодом, обеспечивающая безопасную совместную работу в команде."
-  },
-  {
     "id": "api.templates.invite_body.subTitle",
-    "translation": "Начните работу с вашей командой на Mattermost"
+    "translation": "Начните работу с вашей командой в"
   },
   {
     "id": "api.templates.email_us_anytime_at",
@@ -7281,7 +7277,7 @@
   },
   {
     "id": "api.templates.email_footer_v2",
-    "translation": "© 2022 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301"
+    "translation": "© 2026 Стройчат"
   },
   {
     "id": "api.templates.cloud_welcome_email.title",

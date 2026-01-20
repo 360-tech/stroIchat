@@ -3620,7 +3620,7 @@
   },
   {
     "id": "api.templates.email_footer_v2",
-    "translation": "© 2022 Mattermost, Inc. 530 Lytton Avenue, Second floor, Palo Alto, CA, 94301"
+    "translation": "© 2026 Stroichat"
   },
   {
     "id": "api.templates.email_info1",
@@ -3652,7 +3652,7 @@
   },
   {
     "id": "api.templates.invite_body.subTitle",
-    "translation": "Start collaborating with your team on Mattermost"
+    "translation": "Start collaborating with your team on"
   },
   {
     "id": "api.templates.invite_body.title",
@@ -3661,10 +3661,6 @@
   {
     "id": "api.templates.invite_body.title.reminder",
     "translation": "Reminder"
-  },
-  {
-    "id": "api.templates.invite_body_footer.info",
-    "translation": "Mattermost is a flexible, open source messaging platform that enables secure team collaboration."
   },
   {
     "id": "api.templates.invite_body_footer.learn_more",
