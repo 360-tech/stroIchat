@@ -489,9 +489,6 @@
                                         {{end}}
                                         {{if .ChannelName}}
                                         <div class="channelBg" style="background: rgba(63, 67, 80, 0.08); border-radius: 4px; display: flex; padding-left: 4px;">
-                                          {{if .ShowChannelIcon}}
-                                          <div class="channelLogo" style="width: 10px; height: 10px; padding: 5px 4px 5px 6px; float: left;"><img src="{{$.Props.SiteURL}}/static/images/channel_icon.png" width="10px" height="10px"></div>
-                                          {{end}}
                                           <div class="channelName" style="font-family: Open Sans, sans-serif; font-weight: 600; font-size: 10px; line-height: 16px; letter-spacing: 0.01em; text-transform: uppercase; color: rgba(63, 67, 80, 0.64); padding: 2px 6px 2px 0px;">
                                             {{if .OtherChannelMembersCount}}
                                             <span class="gmChannelCount" style="background-color: rgba(63, 67, 80, 0.2); padding: 0 5px; border-radius: 2px; margin-right: 2px;">{{.OtherChannelMembersCount}}</span>
@@ -545,37 +542,6 @@
               </div>{{end}}
               {{else}}
                 <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:552px;" width="552" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-                <div style="margin:0px auto;max-width:552px;">
-                  <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
-                    <tbody>
-                      <tr>
-                        <td style="direction:ltr;font-size:0px;padding:0px 0px 40px 0px;text-align:center;">
-                          <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:552px;" ><![endif]-->
-                          <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
-                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
-                              <tbody>
-                                <tr>
-                                  <td align="center" style="font-size:0px;padding:0px;word-break:break-word;">
-                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
-                                      <tbody>
-                                        <tr>
-                                          <td style="width:246px;">
-                                            <img alt height="auto" src="{{.Props.SiteURL}}/static/images/invite_illustration.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="246">
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <!--[if mso | IE]></td></tr></table><![endif]-->
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
                 <!--[if mso | IE]></td></tr></table></td></tr><![endif]-->
                 {{end}}
                 <!--[if mso | IE]><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:552px;" width="552" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
