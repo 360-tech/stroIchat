@@ -3977,7 +3977,6 @@
   "group_member_list.searchError": "获取结果时出了问题。清除搜索词并重试。",
   "group_member_list.sendMessageButton": "发送消息给 {user}",
   "group_member_list.sendMessageTooltip": "发送消息",
-  "inProduct_notices.adminOnlyMessage": "仅管理员可见",
   "incoming_webhooks.header": "传入 Webhook",
   "input.clear": "清除",
   "installed_command.header": "斜杠命令",

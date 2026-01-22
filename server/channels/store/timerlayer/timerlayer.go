@@ -48,7 +48,6 @@ type TimerLayer struct {
 	PostPersistentNotificationStore store.PostPersistentNotificationStore
 	PostPriorityStore               store.PostPriorityStore
 	PreferenceStore                 store.PreferenceStore
-	ProductNoticesStore             store.ProductNoticesStore
 	PropertyFieldStore              store.PropertyFieldStore
 	PropertyGroupStore              store.PropertyGroupStore
 	PropertyValueStore              store.PropertyValueStore
@@ -187,10 +186,6 @@ func (s *TimerLayer) PostPriority() store.PostPriorityStore {
 
 func (s *TimerLayer) Preference() store.PreferenceStore {
 	return s.PreferenceStore
-}
-
-func (s *TimerLayer) ProductNotices() store.ProductNoticesStore {
-	return s.ProductNoticesStore
 }
 
 func (s *TimerLayer) PropertyField() store.PropertyFieldStore {
@@ -423,11 +418,6 @@ type TimerLayerPostPriorityStore struct {
 
 type TimerLayerPreferenceStore struct {
 	store.PreferenceStore
-	Root *TimerLayer
-}
-
-type TimerLayerProductNoticesStore struct {
-	store.ProductNoticesStore
 	Root *TimerLayer
 }
 
@@ -7438,69 +7428,6 @@ func (s *TimerLayerPreferenceStore) Save(preferences model.Preferences) error {
 	return err
 }
 
-func (s *TimerLayerProductNoticesStore) Clear(notices []string) error {
-	start := time.Now()
-
-	err := s.ProductNoticesStore.Clear(notices)
-
-	elapsed := float64(time.Since(start)) / float64(time.Second)
-	if s.Root.Metrics != nil {
-		success := "false"
-		if err == nil {
-			success = "true"
-		}
-		s.Root.Metrics.ObserveStoreMethodDuration("ProductNoticesStore.Clear", success, elapsed)
-	}
-	return err
-}
-
-func (s *TimerLayerProductNoticesStore) ClearOldNotices(currentNotices model.ProductNotices) error {
-	start := time.Now()
-
-	err := s.ProductNoticesStore.ClearOldNotices(currentNotices)
-
-	elapsed := float64(time.Since(start)) / float64(time.Second)
-	if s.Root.Metrics != nil {
-		success := "false"
-		if err == nil {
-			success = "true"
-		}
-		s.Root.Metrics.ObserveStoreMethodDuration("ProductNoticesStore.ClearOldNotices", success, elapsed)
-	}
-	return err
-}
-
-func (s *TimerLayerProductNoticesStore) GetViews(userID string) ([]model.ProductNoticeViewState, error) {
-	start := time.Now()
-
-	result, err := s.ProductNoticesStore.GetViews(userID)
-
-	elapsed := float64(time.Since(start)) / float64(time.Second)
-	if s.Root.Metrics != nil {
-		success := "false"
-		if err == nil {
-			success = "true"
-		}
-		s.Root.Metrics.ObserveStoreMethodDuration("ProductNoticesStore.GetViews", success, elapsed)
-	}
-	return result, err
-}
-
-func (s *TimerLayerProductNoticesStore) View(userID string, notices []string) error {
-	start := time.Now()
-
-	err := s.ProductNoticesStore.View(userID, notices)
-
-	elapsed := float64(time.Since(start)) / float64(time.Second)
-	if s.Root.Metrics != nil {
-		success := "false"
-		if err == nil {
-			success = "true"
-		}
-		s.Root.Metrics.ObserveStoreMethodDuration("ProductNoticesStore.View", success, elapsed)
-	}
-	return err
-}
 
 func (s *TimerLayerPropertyFieldStore) CountForGroup(groupID string, includeDeleted bool) (int64, error) {
 	start := time.Now()
@@ -13484,7 +13411,6 @@ func New(childStore store.Store, metrics einterfaces.MetricsInterface) *TimerLay
 	newStore.PostPersistentNotificationStore = &TimerLayerPostPersistentNotificationStore{PostPersistentNotificationStore: childStore.PostPersistentNotification(), Root: &newStore}
 	newStore.PostPriorityStore = &TimerLayerPostPriorityStore{PostPriorityStore: childStore.PostPriority(), Root: &newStore}
 	newStore.PreferenceStore = &TimerLayerPreferenceStore{PreferenceStore: childStore.Preference(), Root: &newStore}
-	newStore.ProductNoticesStore = &TimerLayerProductNoticesStore{ProductNoticesStore: childStore.ProductNotices(), Root: &newStore}
 	newStore.PropertyFieldStore = &TimerLayerPropertyFieldStore{PropertyFieldStore: childStore.PropertyField(), Root: &newStore}
 	newStore.PropertyGroupStore = &TimerLayerPropertyGroupStore{PropertyGroupStore: childStore.PropertyGroup(), Root: &newStore}
 	newStore.PropertyValueStore = &TimerLayerPropertyValueStore{PropertyValueStore: childStore.PropertyValue(), Root: &newStore}

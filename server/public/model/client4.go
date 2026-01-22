@@ -6694,34 +6694,6 @@ func (c *Client4) CheckIntegrity(ctx context.Context) ([]IntegrityCheckResult, *
 	return DecodeJSONFromResponse[[]IntegrityCheckResult](r)
 }
 
-func (c *Client4) GetNotices(ctx context.Context, lastViewed int64, teamId string, client NoticeClientType, clientVersion, locale, etag string) (NoticeMessages, *Response, error) {
-	values := url.Values{}
-	values.Set("lastViewed", strconv.FormatInt(lastViewed, 10))
-	values.Set("client", string(client))
-	values.Set("clientVersion", clientVersion)
-	values.Set("locale", locale)
-	url := "/system/notices/" + teamId + "?" + values.Encode()
-	r, err := c.DoAPIGet(ctx, url, etag)
-	if err != nil {
-		return nil, BuildResponse(r), err
-	}
-	defer closeBody(r)
-	notices, err := UnmarshalProductNoticeMessages(r.Body)
-	if err != nil {
-		return nil, BuildResponse(r), err
-	}
-	return notices, BuildResponse(r), nil
-}
-
-func (c *Client4) MarkNoticesViewed(ctx context.Context, ids []string) (*Response, error) {
-	r, err := c.DoAPIPutJSON(ctx, "/system/notices/view", ids)
-	if err != nil {
-		return BuildResponse(r), err
-	}
-	defer closeBody(r)
-	return BuildResponse(r), nil
-}
-
 func (c *Client4) CompleteOnboarding(ctx context.Context, request *CompleteOnboardingRequest) (*Response, error) {
 	r, err := c.DoAPIPostJSON(ctx, c.systemRoute()+"/onboarding/complete", request)
 	if err != nil {

@@ -23,7 +23,6 @@ jest.mock('components/sidebar', () => () => <div/>);
 jest.mock('components/channel_layout/center_channel', () => () => <div/>);
 jest.mock('components/loading_screen', () => () => <div/>);
 jest.mock('components/unreads_status_handler', () => () => <div/>);
-jest.mock('components/product_notices_modal', () => () => <div/>);
 jest.mock('plugins/pluggable', () => () => <div/>);
 
 jest.mock('actions/status_actions', () => ({

@@ -49,7 +49,6 @@ type RetryLayer struct {
 	PostPersistentNotificationStore store.PostPersistentNotificationStore
 	PostPriorityStore               store.PostPriorityStore
 	PreferenceStore                 store.PreferenceStore
-	ProductNoticesStore             store.ProductNoticesStore
 	PropertyFieldStore              store.PropertyFieldStore
 	PropertyGroupStore              store.PropertyGroupStore
 	PropertyValueStore              store.PropertyValueStore
@@ -188,10 +187,6 @@ func (s *RetryLayer) PostPriority() store.PostPriorityStore {
 
 func (s *RetryLayer) Preference() store.PreferenceStore {
 	return s.PreferenceStore
-}
-
-func (s *RetryLayer) ProductNotices() store.ProductNoticesStore {
-	return s.ProductNoticesStore
 }
 
 func (s *RetryLayer) PropertyField() store.PropertyFieldStore {
@@ -424,11 +419,6 @@ type RetryLayerPostPriorityStore struct {
 
 type RetryLayerPreferenceStore struct {
 	store.PreferenceStore
-	Root *RetryLayer
-}
-
-type RetryLayerProductNoticesStore struct {
-	store.ProductNoticesStore
 	Root *RetryLayer
 }
 
@@ -9355,89 +9345,6 @@ func (s *RetryLayerPreferenceStore) Save(preferences model.Preferences) error {
 
 }
 
-func (s *RetryLayerProductNoticesStore) Clear(notices []string) error {
-
-	tries := 0
-	for {
-		err := s.ProductNoticesStore.Clear(notices)
-		if err == nil {
-			return nil
-		}
-		if !isRepeatableError(err) {
-			return err
-		}
-		tries++
-		if tries >= 3 {
-			err = errors.Wrap(err, "giving up after 3 consecutive repeatable transaction failures")
-			return err
-		}
-		timepkg.Sleep(100 * timepkg.Millisecond)
-	}
-
-}
-
-func (s *RetryLayerProductNoticesStore) ClearOldNotices(currentNotices model.ProductNotices) error {
-
-	tries := 0
-	for {
-		err := s.ProductNoticesStore.ClearOldNotices(currentNotices)
-		if err == nil {
-			return nil
-		}
-		if !isRepeatableError(err) {
-			return err
-		}
-		tries++
-		if tries >= 3 {
-			err = errors.Wrap(err, "giving up after 3 consecutive repeatable transaction failures")
-			return err
-		}
-		timepkg.Sleep(100 * timepkg.Millisecond)
-	}
-
-}
-
-func (s *RetryLayerProductNoticesStore) GetViews(userID string) ([]model.ProductNoticeViewState, error) {
-
-	tries := 0
-	for {
-		result, err := s.ProductNoticesStore.GetViews(userID)
-		if err == nil {
-			return result, nil
-		}
-		if !isRepeatableError(err) {
-			return result, err
-		}
-		tries++
-		if tries >= 3 {
-			err = errors.Wrap(err, "giving up after 3 consecutive repeatable transaction failures")
-			return result, err
-		}
-		timepkg.Sleep(100 * timepkg.Millisecond)
-	}
-
-}
-
-func (s *RetryLayerProductNoticesStore) View(userID string, notices []string) error {
-
-	tries := 0
-	for {
-		err := s.ProductNoticesStore.View(userID, notices)
-		if err == nil {
-			return nil
-		}
-		if !isRepeatableError(err) {
-			return err
-		}
-		tries++
-		if tries >= 3 {
-			err = errors.Wrap(err, "giving up after 3 consecutive repeatable transaction failures")
-			return err
-		}
-		timepkg.Sleep(100 * timepkg.Millisecond)
-	}
-
-}
 
 func (s *RetryLayerPropertyFieldStore) CountForGroup(groupID string, includeDeleted bool) (int64, error) {
 
@@ -17084,7 +16991,6 @@ func New(childStore store.Store) *RetryLayer {
 	newStore.PostPersistentNotificationStore = &RetryLayerPostPersistentNotificationStore{PostPersistentNotificationStore: childStore.PostPersistentNotification(), Root: &newStore}
 	newStore.PostPriorityStore = &RetryLayerPostPriorityStore{PostPriorityStore: childStore.PostPriority(), Root: &newStore}
 	newStore.PreferenceStore = &RetryLayerPreferenceStore{PreferenceStore: childStore.Preference(), Root: &newStore}
-	newStore.ProductNoticesStore = &RetryLayerProductNoticesStore{ProductNoticesStore: childStore.ProductNotices(), Root: &newStore}
 	newStore.PropertyFieldStore = &RetryLayerPropertyFieldStore{PropertyFieldStore: childStore.PropertyField(), Root: &newStore}
 	newStore.PropertyGroupStore = &RetryLayerPropertyGroupStore{PropertyGroupStore: childStore.PropertyGroup(), Root: &newStore}
 	newStore.PropertyValueStore = &RetryLayerPropertyValueStore{PropertyValueStore: childStore.PropertyValue(), Root: &newStore}

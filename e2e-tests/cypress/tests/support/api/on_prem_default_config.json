@@ -297,10 +297,7 @@
         "BannerTextColor": "#333333",
         "AllowBannerDismissal": true,
         "AdminNoticesEnabled": false,
-        "UserNoticesEnabled": false,
-        "NoticesURL": "https://notices.mattermost.com/",
-        "NoticesFetchFrequency": 3600,
-        "NoticesSkipCache": false
+        "UserNoticesEnabled": false
     },
     "ThemeSettings": {
         "EnableThemeSelection": true,

@@ -151,7 +151,6 @@ func (a *App) SessionHasPermissionToCreateJob(session model.Session, job *model.
 	case
 		model.JobTypeMigrations,
 		model.JobTypePlugins,
-		model.JobTypeProductNotices,
 		model.JobTypeExpiryNotify,
 		model.JobTypeActiveUsers,
 		model.JobTypeImportProcess,
@@ -202,7 +201,6 @@ func (a *App) SessionHasPermissionToManageJob(session model.Session, job *model.
 	case
 		model.JobTypeMigrations,
 		model.JobTypePlugins,
-		model.JobTypeProductNotices,
 		model.JobTypeExpiryNotify,
 		model.JobTypeActiveUsers,
 		model.JobTypeImportProcess,
@@ -238,7 +236,6 @@ func (a *App) SessionHasPermissionToReadJob(session model.Session, jobType strin
 	case
 		model.JobTypeMigrations,
 		model.JobTypePlugins,
-		model.JobTypeProductNotices,
 		model.JobTypeExpiryNotify,
 		model.JobTypeActiveUsers,
 		model.JobTypeImportProcess,

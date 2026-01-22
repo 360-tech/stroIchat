@@ -649,9 +649,6 @@ export type AnnouncementSettings = {
     AllowBannerDismissal: boolean;
     AdminNoticesEnabled: boolean;
     UserNoticesEnabled: boolean;
-    NoticesURL: string;
-    NoticesFetchFrequency: number;
-    NoticesSkipCache: boolean;
 };
 
 export type ThemeSettings = {

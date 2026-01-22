@@ -59,7 +59,6 @@ import (
 	"github.com/mattermost/mattermost/server/v8/channels/jobs/notify_admin"
 	"github.com/mattermost/mattermost/server/v8/channels/jobs/plugins"
 	"github.com/mattermost/mattermost/server/v8/channels/jobs/post_persistent_notifications"
-	"github.com/mattermost/mattermost/server/v8/channels/jobs/product_notices"
 	"github.com/mattermost/mattermost/server/v8/channels/jobs/refresh_materialized_views"
 	"github.com/mattermost/mattermost/server/v8/channels/jobs/resend_invitation_email"
 	"github.com/mattermost/mattermost/server/v8/channels/jobs/s3_path_migration"
@@ -416,16 +415,6 @@ func NewServer(options ...Option) (*Server, error) {
 		s.platform.RemoveUnlicensedLogTargets(newLicense)
 		s.platform.EnableLoggingMetrics()
 	})
-
-	// if enabled - perform initial product notices fetch
-	if *s.platform.Config().AnnouncementSettings.AdminNoticesEnabled || *s.platform.Config().AnnouncementSettings.UserNoticesEnabled {
-		s.platform.Go(func() {
-			appInstance := New(ServerConnector(s.Channels()))
-			if err := appInstance.UpdateProductNotices(); err != nil {
-				mlog.Warn("Failed to perform initial product notices fetch", mlog.Err(err))
-			}
-		})
-	}
 
 	if s.skipPostInit {
 		return s, nil
@@ -1454,12 +1443,6 @@ func (s *Server) initJobs() {
 		model.JobTypeExpiryNotify,
 		expirynotify.MakeWorker(s.Jobs, New(ServerConnector(s.Channels())).NotifySessionsExpired),
 		expirynotify.MakeScheduler(s.Jobs),
-	)
-
-	s.Jobs.RegisterJobType(
-		model.JobTypeProductNotices,
-		product_notices.MakeWorker(s.Jobs, New(ServerConnector(s.Channels()))),
-		product_notices.MakeScheduler(s.Jobs),
 	)
 
 	s.Jobs.RegisterJobType(

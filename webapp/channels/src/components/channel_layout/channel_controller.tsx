@@ -23,7 +23,6 @@ import Pluggable from 'plugins/pluggable';
 import {Constants} from 'utils/constants';
 import {isInternetExplorer, isEdge} from 'utils/user_agent';
 
-const ProductNoticesModal = makeAsyncComponent('ProductNoticesModal', lazy(() => import('components/product_notices_modal')));
 const ResetStatusModal = makeAsyncComponent('ResetStatusModal', lazy(() => import('components/reset_status_modal')));
 const MobileSidebarRight = makeAsyncComponent('MobileSidebarRight', lazy(() => import('components/mobile_sidebar_right')));
 
@@ -81,7 +80,6 @@ export default function ChannelController(props: Props) {
                 data-testid='channel_view'
             >
                 <UnreadsStatusHandler/>
-                <ProductNoticesModal/>
                 <div className={classNames('container-fluid channel-view-inner')}>
                     {props.shouldRenderCenterChannel ? <CenterChannel/> : <LoadingScreen centered={true}/>}
                     <Pluggable pluggableName='Root'/>

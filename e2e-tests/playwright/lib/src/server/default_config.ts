@@ -401,9 +401,6 @@ const defaultServerConfig: AdminConfig = {
         AllowBannerDismissal: true,
         AdminNoticesEnabled: true,
         UserNoticesEnabled: true,
-        NoticesURL: 'https://notices.mattermost.com/',
-        NoticesFetchFrequency: 3600,
-        NoticesSkipCache: false,
     },
     ThemeSettings: {
         EnableThemeSelection: true,

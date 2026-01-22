@@ -93,7 +93,6 @@ type SqlStoreStores struct {
 	role                       store.RoleStore
 	scheme                     store.SchemeStore
 	TermsOfService             store.TermsOfServiceStore
-	productNotices             store.ProductNoticesStore
 	group                      store.GroupStore
 	UserTermsOfService         store.UserTermsOfServiceStore
 	linkMetadata               store.LinkMetadataStore
@@ -248,7 +247,6 @@ func New(settings model.SqlSettings, logger mlog.LoggerIFace, metrics einterface
 	store.stores.role = newSqlRoleStore(store)
 	store.stores.scheme = newSqlSchemeStore(store)
 	store.stores.group = newSqlGroupStore(store)
-	store.stores.productNotices = newSqlProductNoticesStore(store)
 	store.stores.draft = newSqlDraftStore(store, metrics)
 	store.stores.notifyAdmin = newSqlNotifyAdminStore(store)
 	store.stores.postPriority = newSqlPostPriorityStore(store)
@@ -812,10 +810,6 @@ func (ss *SqlStore) Role() store.RoleStore {
 
 func (ss *SqlStore) TermsOfService() store.TermsOfServiceStore {
 	return ss.stores.TermsOfService
-}
-
-func (ss *SqlStore) ProductNotices() store.ProductNoticesStore {
-	return ss.stores.productNotices
 }
 
 func (ss *SqlStore) UserTermsOfService() store.UserTermsOfServiceStore {

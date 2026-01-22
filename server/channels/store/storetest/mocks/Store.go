@@ -868,26 +868,6 @@ func (_m *Store) Preference() store.PreferenceStore {
 	return r0
 }
 
-// ProductNotices provides a mock function with no fields
-func (_m *Store) ProductNotices() store.ProductNoticesStore {
-	ret := _m.Called()
-
-	if len(ret) == 0 {
-		panic("no return value specified for ProductNotices")
-	}
-
-	var r0 store.ProductNoticesStore
-	if rf, ok := ret.Get(0).(func() store.ProductNoticesStore); ok {
-		r0 = rf()
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(store.ProductNoticesStore)
-		}
-	}
-
-	return r0
-}
-
 // PropertyField provides a mock function with no fields
 func (_m *Store) PropertyField() store.PropertyFieldStore {
 	ret := _m.Called()

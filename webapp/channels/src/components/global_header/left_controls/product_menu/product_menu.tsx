@@ -140,7 +140,7 @@ const ProductMenu = (): JSX.Element => {
                     <ProductMenuItem
                         destination={'/'}
                         icon={'product-channels'}
-                        text={'Channels'}
+                        text={formatMessage({id: 'navbar_dropdown.channels'})}
                         active={isChannels(currentProductID)}
                         onClick={handleClick}
                     />

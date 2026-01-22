@@ -201,8 +201,6 @@ const (
 
 	AnnouncementSettingsDefaultBannerColor                  = "#f2a93b"
 	AnnouncementSettingsDefaultBannerTextColor              = "#333333"
-	AnnouncementSettingsDefaultNoticesJsonURL               = "https://notices.mattermost.com/"
-	AnnouncementSettingsDefaultNoticesFetchFrequencySeconds = 3600
 
 	TeamSettingsDefaultTeamText = "default"
 
@@ -2240,9 +2238,6 @@ type AnnouncementSettings struct {
 	AllowBannerDismissal  *bool   `access:"site_announcement_banner"`
 	AdminNoticesEnabled   *bool   `access:"site_notices"`
 	UserNoticesEnabled    *bool   `access:"site_notices"`
-	NoticesURL            *string `access:"site_notices,write_restrictable"` // telemetry: none
-	NoticesFetchFrequency *int    `access:"site_notices,write_restrictable"` // telemetry: none
-	NoticesSkipCache      *bool   `access:"site_notices,write_restrictable"` // telemetry: none
 }
 
 func (s *AnnouncementSettings) SetDefaults() {
@@ -2272,15 +2267,6 @@ func (s *AnnouncementSettings) SetDefaults() {
 
 	if s.UserNoticesEnabled == nil {
 		s.UserNoticesEnabled = NewPointer(true)
-	}
-	if s.NoticesURL == nil {
-		s.NoticesURL = NewPointer(AnnouncementSettingsDefaultNoticesJsonURL)
-	}
-	if s.NoticesSkipCache == nil {
-		s.NoticesSkipCache = NewPointer(false)
-	}
-	if s.NoticesFetchFrequency == nil {
-		s.NoticesFetchFrequency = NewPointer(AnnouncementSettingsDefaultNoticesFetchFrequencySeconds)
 	}
 }
 

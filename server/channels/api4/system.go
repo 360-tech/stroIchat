@@ -70,8 +70,6 @@ func (api *API) InitSystem() {
 	api.BaseRoutes.APIRoot.Handle("/upgrade_to_enterprise/status", api.APISessionRequired(upgradeToEnterpriseStatus)).Methods(http.MethodGet)
 	api.BaseRoutes.APIRoot.Handle("/upgrade_to_enterprise/allowed", api.APISessionRequired(isAllowedToUpgradeToEnterprise)).Methods(http.MethodGet)
 	api.BaseRoutes.APIRoot.Handle("/restart", api.APISessionRequired(restart)).Methods(http.MethodPost)
-	api.BaseRoutes.System.Handle("/notices/{team_id:[A-Za-z0-9]+}", api.APISessionRequired(getProductNotices)).Methods(http.MethodGet)
-	api.BaseRoutes.System.Handle("/notices/view", api.APISessionRequired(updateViewedProductNotices)).Methods(http.MethodPut)
 	api.BaseRoutes.System.Handle("/support_packet", api.APISessionRequired(generateSupportPacket)).Methods(http.MethodGet)
 	api.BaseRoutes.System.Handle("/onboarding/complete", api.APISessionRequired(getOnboarding)).Methods(http.MethodGet)
 	api.BaseRoutes.System.Handle("/onboarding/complete", api.APISessionRequired(completeOnboarding)).Methods(http.MethodPost)
@@ -949,49 +947,6 @@ func restart(c *Context, w http.ResponseWriter, r *http.Request) {
 			c.Logger.Error("Error while restarting server", mlog.Err(err))
 		}
 	}()
-}
-
-func getProductNotices(c *Context, w http.ResponseWriter, r *http.Request) {
-	c.RequireTeamId()
-	if c.Err != nil {
-		return
-	}
-
-	client, parseError := model.NoticeClientTypeFromString(r.URL.Query().Get("client"))
-	if parseError != nil {
-		c.SetInvalidParamWithErr("client", parseError)
-		return
-	}
-	clientVersion := r.URL.Query().Get("clientVersion")
-	locale := r.URL.Query().Get("locale")
-
-	notices, appErr := c.App.GetProductNotices(c.AppContext, c.AppContext.Session().UserId, c.Params.TeamId, client, clientVersion, locale)
-	if appErr != nil {
-		c.Err = appErr
-		return
-	}
-	result, _ := notices.Marshal()
-	_, _ = w.Write(result)
-}
-
-func updateViewedProductNotices(c *Context, w http.ResponseWriter, r *http.Request) {
-	auditRec := c.MakeAuditRecord(model.AuditEventUpdateViewedProductNotices, model.AuditStatusFail)
-	defer c.LogAuditRec(auditRec)
-	c.LogAudit("attempt")
-
-	ids, err := model.SortedArrayFromJSON(r.Body)
-	if err != nil {
-		c.Err = model.NewAppError("updateViewedProductNotices", model.PayloadParseError, nil, "", http.StatusBadRequest).Wrap(err)
-		return
-	}
-	appErr := c.App.UpdateViewedProductNotices(c.AppContext.Session().UserId, ids)
-	if appErr != nil {
-		c.Err = appErr
-		return
-	}
-
-	auditRec.Success()
-	ReturnStatusOK(w)
 }
 
 func getOnboarding(c *Context, w http.ResponseWriter, r *http.Request) {

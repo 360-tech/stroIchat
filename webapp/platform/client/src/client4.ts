@@ -111,7 +111,6 @@ import type {
 } from '@mattermost/types/plugins';
 import type {Post, PostList, PostSearchResults, PostsUsageResponse, TeamsUsageResponse, PaginatedPostList, FilesUsageResponse, PostAcknowledgement, PostAnalytics, PostInfo} from '@mattermost/types/posts';
 import type {PreferenceType} from '@mattermost/types/preferences';
-import type {ProductNotices} from '@mattermost/types/product_notices';
 import type {
     NameMappedPropertyFields,
     UserPropertyField,
@@ -485,10 +484,6 @@ export default class Client4 {
 
     getGroupRoute(groupID: string) {
         return `${this.getGroupsRoute()}/${groupID}`;
-    }
-
-    getNoticesRoute() {
-        return `${this.getBaseRoute()}/system/notices`;
     }
 
     getCloudRoute() {
@@ -4187,21 +4182,6 @@ export default class Client4 {
         return this.doFetch<StatusOK>(
             `${this.getBaseRoute()}/saml/certificate/idp`,
             request,
-        );
-    };
-
-    getInProductNotices = (teamId: string, client: string, clientVersion: string) => {
-        return this.doFetch<ProductNotices>(
-            `${this.getNoticesRoute()}/${teamId}?client=${client}&clientVersion=${clientVersion}`,
-            {method: 'get'},
-        );
-    };
-
-    updateNoticesAsViewed = (noticeIds: string[]) => {
-        // Only one notice is marked as viewed at a time so using 0 index
-        return this.doFetch<StatusOK>(
-            `${this.getNoticesRoute()}/view`,
-            {method: 'put', body: JSON.stringify(noticeIds)},
         );
     };
 

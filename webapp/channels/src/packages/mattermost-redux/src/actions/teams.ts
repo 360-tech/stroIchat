@@ -722,23 +722,3 @@ export function membersMinusGroupMembers(teamID: string, groupIDs: string[], pag
         ],
     });
 }
-
-export function getInProductNotices(teamId: string, client: string, clientVersion: string) {
-    return bindClientFunc({
-        clientFunc: Client4.getInProductNotices,
-        params: [
-            teamId,
-            client,
-            clientVersion,
-        ],
-    });
-}
-
-export function updateNoticesAsViewed(noticeIds: string[]) {
-    return bindClientFunc({
-        clientFunc: Client4.updateNoticesAsViewed,
-        params: [
-            noticeIds,
-        ],
-    });
-}

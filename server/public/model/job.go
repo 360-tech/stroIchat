@@ -19,7 +19,6 @@ const (
 	JobTypeMigrations                    = "migrations"
 	JobTypePlugins                       = "plugins"
 	JobTypeExpiryNotify                  = "expiry_notify"
-	JobTypeProductNotices                = "product_notices"
 	JobTypeActiveUsers                   = "active_users"
 	JobTypeImportProcess                 = "import_process"
 	JobTypeImportDelete                  = "import_delete"
@@ -63,7 +62,6 @@ var AllJobTypes = [...]string{
 	JobTypeMigrations,
 	JobTypePlugins,
 	JobTypeExpiryNotify,
-	JobTypeProductNotices,
 	JobTypeActiveUsers,
 	JobTypeImportProcess,
 	JobTypeImportDelete,
