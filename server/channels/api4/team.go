@@ -69,6 +69,7 @@ func (api *API) InitTeam() {
 	api.BaseRoutes.Team.Handle("/import", api.APISessionRequired(importTeam)).Methods(http.MethodPost)
 	api.BaseRoutes.Team.Handle("/invite/email", api.APISessionRequired(inviteUsersToTeam)).Methods(http.MethodPost)
 	api.BaseRoutes.Team.Handle("/invite-partners/email", api.APISessionRequired(invitePartnersToChannels)).Methods(http.MethodPost)
+	api.BaseRoutes.Team.Handle("/invite-partners/link", api.APISessionRequired(generatePartnerInviteLink)).Methods(http.MethodPost)
 	api.BaseRoutes.Teams.Handle("/invites/email", api.APISessionRequired(invalidateAllEmailInvites)).Methods(http.MethodDelete)
 	api.BaseRoutes.Teams.Handle("/invite/{invite_id:[A-Za-z0-9]+}", api.APIHandler(getInviteInfo)).Methods(http.MethodGet)
 
@@ -1644,6 +1645,70 @@ func invitePartnersToChannels(c *Context, w http.ResponseWriter, r *http.Request
 		ReturnStatusOK(w)
 	}
 	auditRec.Success()
+}
+
+func generatePartnerInviteLink(c *Context, w http.ResponseWriter, r *http.Request) {
+	c.RequireTeamId()
+	if c.Err != nil {
+		return
+	}
+
+	auditRec := c.MakeAuditRecord(model.AuditEventInvitePartnersToChannels, model.AuditStatusFail)
+	defer c.LogAuditRec(auditRec)
+	model.AddEventParameterToAuditRec(auditRec, "team_id", c.Params.TeamId)
+
+	if !c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), c.Params.TeamId, model.PermissionInvitePartner) {
+		c.SetPermissionError(model.PermissionInvitePartner)
+		return
+	}
+
+	var requestBody struct {
+		Channels      []string `json:"channels"`
+		PartnerSubtype string  `json:"partner_subtype"`
+		Message       string   `json:"message"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&requestBody); err != nil {
+		c.Err = model.NewAppError("Api4.generatePartnerInviteLink", "api.team.generate_partner_invite_link.invalid_body.app_error", nil, "", http.StatusBadRequest).Wrap(err)
+		return
+	}
+
+	if len(requestBody.Channels) == 0 {
+		c.SetInvalidParam("channels")
+		return
+	}
+
+	// Check if the user sending the invitation has access to the channels
+	requestBody.Channels = c.App.ValidateUserPermissionsOnChannels(c.AppContext, c.AppContext.Session().UserId, requestBody.Channels)
+
+	if len(requestBody.Channels) == 0 {
+		c.SetInvalidParam("channels")
+		return
+	}
+
+	partnerSubtype := requestBody.PartnerSubtype
+	if partnerSubtype == "" {
+		partnerSubtype = model.PartnerSubtypeNotSpecified
+	}
+
+	auditRec.AddMeta("channel_count", len(requestBody.Channels))
+	auditRec.AddMeta("channels", requestBody.Channels)
+	auditRec.AddMeta("partner_subtype", partnerSubtype)
+
+	inviteURL, appErr := c.App.GeneratePartnerInviteLink(c.AppContext, c.Params.TeamId, requestBody.Channels, c.AppContext.Session().UserId, partnerSubtype, r)
+	if appErr != nil {
+		c.Err = appErr
+		return
+	}
+
+	response := map[string]string{
+		"invite_url": inviteURL,
+	}
+
+	auditRec.Success()
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		c.Logger.Warn("Error while writing response", mlog.Err(err))
+	}
 }
 
 func getInviteInfo(c *Context, w http.ResponseWriter, r *http.Request) {

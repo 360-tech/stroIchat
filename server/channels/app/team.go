@@ -1687,6 +1687,112 @@ func (a *App) InvitePartnersToChannels(rctx request.CTX, teamID string, partners
 	return nil
 }
 
+// DeletePartnerInviteLinkTokens deletes all existing partner invite link tokens for a team
+// (tokens with empty email used for invite links)
+func (a *App) DeletePartnerInviteLinkTokens(rctx request.CTX, teamId string) *model.AppError {
+	tokens, err := a.Srv().Store().Token().GetAllTokensByType(TokenTypePartnerInvitation)
+	if err != nil {
+		return model.NewAppError("DeletePartnerInviteLinkTokens", "app.token.get_all_tokens_by_type.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+	}
+
+	for _, token := range tokens {
+		tokenData := model.MapFromJSON(strings.NewReader(token.Extra))
+		tokenTeamId := tokenData["teamId"]
+		tokenEmail := tokenData["email"]
+
+		// Delete tokens for this team with empty email (invite links)
+		if tokenTeamId == teamId && tokenEmail == "" {
+			if err := a.Srv().Store().Token().Delete(token.Token); err != nil {
+				rctx.Logger().Warn("Failed to delete partner invite link token", mlog.String("token", token.Token), mlog.Err(err))
+			}
+		}
+	}
+
+	return nil
+}
+
+// GeneratePartnerInviteLink generates a partner invite link token and returns the invite URL
+func (a *App) GeneratePartnerInviteLink(rctx request.CTX, teamId string, channelIds []string, senderId string, partnerSubtype string, r *http.Request) (string, *model.AppError) {
+	// Validate team
+	team, err := a.GetTeam(teamId)
+	if err != nil {
+		return "", err
+	}
+
+	// Validate channels and check permissions
+	if len(channelIds) == 0 {
+		return "", model.NewAppError("GeneratePartnerInviteLink", "api.team.invite_partners.channels_required.app_error", nil, "", http.StatusBadRequest)
+	}
+
+	// Note: Permission check is done at API level, not here
+
+	// Validate and filter channels
+	channelIds = a.ValidateUserPermissionsOnChannels(rctx, senderId, channelIds)
+	if len(channelIds) == 0 {
+		return "", model.NewAppError("GeneratePartnerInviteLink", "api.team.invite_partners.no_valid_channels.app_error", nil, "", http.StatusBadRequest)
+	}
+
+	channels, nErr := a.Srv().Store().Channel().GetChannelsByIds(channelIds, false)
+	if nErr != nil {
+		return "", model.NewAppError("GeneratePartnerInviteLink", "app.channel.get_channels_by_ids.app_error", nil, "", http.StatusInternalServerError).Wrap(nErr)
+	}
+
+	// Check for policy enforced channels
+	for _, channel := range channels {
+		if channel.PolicyEnforced {
+			return "", model.NewAppError("GeneratePartnerInviteLink", "api.team.invite_partners.policy_enforced_channel.app_error", nil, "", http.StatusBadRequest)
+		}
+	}
+
+	// Set default subtype if not specified
+	if partnerSubtype == "" {
+		partnerSubtype = model.PartnerSubtypeNotSpecified
+	}
+
+	// Delete old partner invite link tokens for this team
+	if appErr := a.DeletePartnerInviteLinkTokens(rctx, teamId); appErr != nil {
+		rctx.Logger().Warn("Failed to delete old partner invite link tokens", mlog.Err(appErr))
+		// Continue anyway, as this is not critical
+	}
+
+	// Create token with empty email for invite link
+	token := model.NewToken(
+		TokenTypePartnerInvitation,
+		model.MapToJSON(map[string]string{
+			"teamId":         team.Id,
+			"channels":       strings.Join(channelIds, " "),
+			"email":          "", // Empty email for invite links
+			"partner":        "true",
+			"senderId":       senderId,
+			"partner_subtype": partnerSubtype,
+		}),
+	)
+
+	// Save token
+	if err := a.Srv().Store().Token().Save(token); err != nil {
+		return "", model.NewAppError("GeneratePartnerInviteLink", "app.token.save.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+	}
+
+	// Create token data for URL
+	tokenProps := make(map[string]string)
+	tokenProps["display_name"] = team.DisplayName
+	tokenProps["name"] = team.Name
+	tokenData := model.MapToJSON(tokenProps)
+
+	// Generate invite URL
+	siteURL := a.GetSiteURL()
+	if strings.TrimSpace(siteURL) == "" && r != nil {
+		// Fallback to request URL if SiteURL is not configured
+		siteURL = GetProtocol(r) + "://" + r.Host
+	}
+	if siteURL == "" {
+		return "", model.NewAppError("GeneratePartnerInviteLink", "api.team.generate_partner_invite_link.site_url_not_configured.app_error", nil, "", http.StatusInternalServerError)
+	}
+	inviteURL := fmt.Sprintf("%s/signup_user_complete/?d=%s&t=%s", siteURL, url.QueryEscape(tokenData), url.QueryEscape(token.Token))
+
+	return inviteURL, nil
+}
+
 func (a *App) FindTeamByName(name string) bool {
 	if _, err := a.Srv().Store().Team().GetByName(name); err != nil {
 		return false

@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import classNames from 'classnames';
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage, defineMessages, useIntl} from 'react-intl';
 
@@ -10,20 +10,21 @@ import type {Channel} from '@mattermost/types/channels';
 import type {Team} from '@mattermost/types/teams';
 import type {UserProfile} from '@mattermost/types/users';
 
+import type {ActionResult} from 'mattermost-redux/types/actions';
 import deepFreeze from 'mattermost-redux/utils/deep_freeze';
 
 import useCopyText from 'components/common/hooks/useCopyText';
+import ConfirmModal from 'components/confirm_modal';
 import UsersEmailsInput from 'components/widgets/inputs/users_emails_input';
 
-import {Constants} from 'utils/constants';
+import {Constants, PartnerSubtype} from 'utils/constants';
 import {getSiteURL} from 'utils/url';
 
 import AddToChannels, {defaultCustomMessage, defaultInviteChannels} from './add_to_channels';
 import type {CustomMessageProps, InviteChannels} from './add_to_channels';
 import InviteAs, {InviteType} from './invite_as';
-import PartnerSubtypeSelector from './partner_subtype_selector';
 import OverageUsersBannerNotice from './overage_users_banner_notice';
-import {PartnerSubtype} from 'utils/constants';
+import PartnerSubtypeSelector from './partner_subtype_selector';
 
 import './invite_view.scss';
 
@@ -72,6 +73,7 @@ export type Props = InviteState & {
     channelToInvite?: Channel;
     onPaste?: (e: ClipboardEvent) => void;
     setPartnerSubtype: (subtype: string) => void;
+    generatePartnerInviteLink?: (teamId: string, channels: string[], partnerSubtype: string) => Promise<ActionResult<{invite_url: string}>>;
 }
 
 export default function InviteView(props: Props) {
@@ -82,18 +84,105 @@ export default function InviteView(props: Props) {
     }, [props.currentTeam.id, props.currentTeam.invite_id, props.regenerateTeamInviteId]);
 
     const {formatMessage} = useIntl();
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [partnerInviteUrl, setPartnerInviteUrl] = useState<string | null>(null);
+    const [isGeneratingLink, setIsGeneratingLink] = useState(false);
+    const [partnerLinkCopied, setPartnerLinkCopied] = useState(false);
 
     const inviteURL = useMemo(() => {
-        return `${getSiteURL()}/signup_user_complete/?id=${props.currentTeam.invite_id}`;
-    }, [props.currentTeam.invite_id]);
+        if (props.inviteType === InviteType.MEMBER) {
+            return `${getSiteURL()}/signup_user_complete/?id=${props.currentTeam.invite_id}`;
+        }
+        return partnerInviteUrl || '';
+    }, [props.currentTeam.invite_id, props.inviteType, partnerInviteUrl]);
 
     const copyText = useCopyText({
         text: inviteURL,
     });
 
+    const handleCopyLinkClick = () => {
+        if (props.inviteType === InviteType.PARTNER) {
+            // Always show confirm modal for partners
+            setShowConfirmModal(true);
+        } else {
+            // For members, copy immediately
+            copyText.onClick();
+        }
+    };
+
+    const handleConfirmCopy = async () => {
+        setShowConfirmModal(false);
+        if (!props.generatePartnerInviteLink) {
+            return;
+        }
+
+        setIsGeneratingLink(true);
+        setPartnerLinkCopied(false);
+        try {
+            const result = await props.generatePartnerInviteLink(
+                props.currentTeam.id,
+                props.inviteChannels.channels.map((c) => c.id),
+                props.partnerSubtype,
+            );
+
+            if (result.data?.invite_url) {
+                setPartnerInviteUrl(result.data.invite_url);
+
+                // Copy to clipboard directly
+                try {
+                    await navigator.clipboard.writeText(result.data.invite_url);
+                    setPartnerLinkCopied(true);
+
+                    // Reset copied state after timeout
+                    setTimeout(() => {
+                        setPartnerLinkCopied(false);
+                    }, 4000);
+                } catch (err) {
+                    // Fallback for older browsers
+                    const textField = document.createElement('textarea');
+                    textField.innerText = result.data.invite_url;
+                    textField.style.position = 'fixed';
+                    textField.style.opacity = '0';
+                    document.body.appendChild(textField);
+                    textField.select();
+                    try {
+                        const success = document.execCommand('copy');
+                        if (success) {
+                            setPartnerLinkCopied(true);
+                            setTimeout(() => {
+                                setPartnerLinkCopied(false);
+                            }, 4000);
+                        }
+                    } catch (fallbackErr) {
+                        // Copy failed
+                    }
+                    textField.remove();
+                }
+            } else if (result.error) {
+                // Handle error - could show a toast or error message
+                // Error is logged by the action handler
+            }
+        } catch (error) {
+            // Error is logged by the action handler
+        } finally {
+            setIsGeneratingLink(false);
+        }
+    };
+
+    const handleCancelCopy = () => {
+        setShowConfirmModal(false);
+    };
+
+    const canShowPartnerCopyButton = props.inviteType === InviteType.PARTNER &&
+        props.inviteChannels.channels.length > 0 &&
+        props.usersEmails.length > 0;
+
+    const isCopyButtonDisabled = (props.inviteType === InviteType.PARTNER && !canShowPartnerCopyButton) || isGeneratingLink;
+
     const copyButton = (
         <button
-            onClick={copyText.onClick}
+            onClick={handleCopyLinkClick}
+            disabled={isCopyButtonDisabled}
             data-testid='InviteView__copyInviteLink'
             aria-label={
                 formatMessage({
@@ -104,7 +193,7 @@ export default function InviteView(props: Props) {
             className='btn btn-secondary'
             aria-live='polite'
         >
-            {!copyText.copiedRecently && (
+            {!copyText.copiedRecently && !partnerLinkCopied && !isGeneratingLink && (
                 <>
                     <i className='icon icon-link-variant'/>
                     <FormattedMessage
@@ -113,7 +202,16 @@ export default function InviteView(props: Props) {
                     />
                 </>
             )}
-            {copyText.copiedRecently && (
+            {isGeneratingLink && (
+                <>
+                    <i className='icon icon-spin icon-refresh'/>
+                    <FormattedMessage
+                        id='invite_modal.generating_link'
+                        defaultMessage='Generating link...'
+                    />
+                </>
+            )}
+            {(copyText.copiedRecently || partnerLinkCopied) && !isGeneratingLink && (
                 <>
                     <i className='icon icon-check'/>
                     <FormattedMessage
@@ -264,7 +362,7 @@ export default function InviteView(props: Props) {
                 <OverageUsersBannerNotice/>
             </Modal.Body>
             <Modal.Footer className={classNames('InviteView__footer', props.footerClass, {'InviteView__footer-partner': props.inviteType === InviteType.PARTNER})}>
-                {props.inviteType === InviteType.MEMBER && copyButton}
+                {(props.inviteType === InviteType.MEMBER || canShowPartnerCopyButton) && copyButton}
                 <button
                     disabled={!isInviteValid}
                     onClick={props.invite}
@@ -277,6 +375,29 @@ export default function InviteView(props: Props) {
                     />
                 </button>
             </Modal.Footer>
+            <ConfirmModal
+                show={showConfirmModal}
+                title={
+                    <FormattedMessage
+                        id='invite_modal.partner_link_confirm.title'
+                        defaultMessage='Generate invite link'
+                    />
+                }
+                message={
+                    <FormattedMessage
+                        id='invite_modal.partner_link_confirm.message'
+                        defaultMessage='When generating a new invite link, the old link will become invalid. Continue?'
+                    />
+                }
+                confirmButtonText={
+                    <FormattedMessage
+                        id='invite_modal.partner_link_confirm.copy'
+                        defaultMessage='Copy link'
+                    />
+                }
+                onConfirm={handleConfirmCopy}
+                onCancel={handleCancelCopy}
+            />
         </>
     );
 }

@@ -1,25 +1,25 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {ServerError} from '@mattermost/types/errors';
-import type {Team, TeamMemberWithError} from '@mattermost/types/teams';
-import type {UserProfile} from '@mattermost/types/users';
+import type { ServerError } from '@mattermost/types/errors';
+import type { Team, TeamMemberWithError } from '@mattermost/types/teams';
+import type { UserProfile } from '@mattermost/types/users';
 
-import {TeamTypes} from 'mattermost-redux/action_types';
-import {getChannelStats} from 'mattermost-redux/actions/channels';
-import {logError} from 'mattermost-redux/actions/errors';
-import {savePreferences} from 'mattermost-redux/actions/preferences';
+import { TeamTypes } from 'mattermost-redux/action_types';
+import { getChannelStats } from 'mattermost-redux/actions/channels';
+import { logError } from 'mattermost-redux/actions/errors';
+import { savePreferences } from 'mattermost-redux/actions/preferences';
 import * as TeamActions from 'mattermost-redux/actions/teams';
-import {selectTeam} from 'mattermost-redux/actions/teams';
-import {getUser} from 'mattermost-redux/actions/users';
-import {Client4} from 'mattermost-redux/client';
-import {getCurrentChannelId} from 'mattermost-redux/selectors/entities/channels';
-import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
+import { selectTeam } from 'mattermost-redux/actions/teams';
+import { getUser } from 'mattermost-redux/actions/users';
+import { Client4 } from 'mattermost-redux/client';
+import { getCurrentChannelId } from 'mattermost-redux/selectors/entities/channels';
+import { getCurrentUserId } from 'mattermost-redux/selectors/entities/users';
 
-import {getHistory} from 'utils/browser_history';
-import {Preferences} from 'utils/constants';
+import { getHistory } from 'utils/browser_history';
+import { Preferences } from 'utils/constants';
 
-import type {ActionFuncAsync, ThunkActionFunc} from 'types/store';
+import type { ActionFuncAsync, ThunkActionFunc } from 'types/store';
 
 export function removeUserFromTeamAndGetStats(teamId: Team['id'], userId: UserProfile['id']): ActionFuncAsync {
     return async (dispatch, getState) => {
@@ -33,9 +33,9 @@ export function removeUserFromTeamAndGetStats(teamId: Team['id'], userId: UserPr
 
 export function addUserToTeamFromInvite(token: string, inviteId: string): ActionFuncAsync<Team> {
     return async (dispatch) => {
-        const {data: member, error} = await dispatch(TeamActions.addUserToTeamFromInvite(token, inviteId));
+        const { data: member, error } = await dispatch(TeamActions.addUserToTeamFromInvite(token, inviteId));
         if (member) {
-            const {data} = await dispatch(TeamActions.getTeam(member.team_id));
+            const { data } = await dispatch(TeamActions.getTeam(member.team_id));
 
             dispatch({
                 type: TeamTypes.RECEIVED_MY_TEAM_MEMBER,
@@ -47,17 +47,17 @@ export function addUserToTeamFromInvite(token: string, inviteId: string): Action
                 },
             });
 
-            return {data};
+            return { data };
         }
-        return {error};
+        return { error };
     };
 }
 
 export function addUserToTeam(teamId: Team['id'], userId: UserProfile['id']): ActionFuncAsync<Team> {
     return async (dispatch) => {
-        const {data: member, error} = await dispatch(TeamActions.addUserToTeam(teamId, userId));
+        const { data: member, error } = await dispatch(TeamActions.addUserToTeam(teamId, userId));
         if (member) {
-            const {data} = await dispatch(TeamActions.getTeam(member.team_id));
+            const { data } = await dispatch(TeamActions.getTeam(member.team_id));
 
             dispatch({
                 type: TeamTypes.RECEIVED_MY_TEAM_MEMBER,
@@ -69,23 +69,29 @@ export function addUserToTeam(teamId: Team['id'], userId: UserProfile['id']): Ac
                 },
             });
 
-            return {data};
+            return { data };
         }
-        return {error};
+        return { error };
     };
 }
 
 export function addUsersToTeam(teamId: Team['id'], userIds: Array<UserProfile['id']>): ActionFuncAsync<TeamMemberWithError[]> {
     return async (dispatch, getState) => {
-        const {data, error} = await dispatch(TeamActions.addUsersToTeamGracefully(teamId, userIds));
+        const { data, error } = await dispatch(TeamActions.addUsersToTeamGracefully(teamId, userIds));
 
         if (error) {
-            return {error};
+            return { error };
         }
 
         dispatch(getChannelStats(getCurrentChannelId(getState())));
 
-        return {data};
+        return { data };
+    };
+}
+
+export function generatePartnerInviteLink(teamId: string, channels: string[], partnerSubtype: string, message?: string): ActionFuncAsync<{ invite_url: string }> {
+    return async (dispatch) => {
+        return dispatch(TeamActions.generatePartnerInviteLink(teamId, channels, partnerSubtype, message));
     };
 }
 
@@ -127,9 +133,9 @@ export function getGroupMessageMembersCommonTeams(channelId: string): ActionFunc
             teams = response.data;
         } catch (error) {
             dispatch(logError(error as ServerError));
-            return {error: error as ServerError};
+            return { error: error as ServerError };
         }
 
-        return {data: teams};
+        return { data: teams };
     };
 }

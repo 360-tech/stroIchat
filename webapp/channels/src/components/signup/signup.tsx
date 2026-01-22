@@ -656,27 +656,30 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                 <p className='signup-body-card-agreement'>
                                     <FormattedMessage
                                         id='signup.agreement'
-                                        defaultMessage='By proceeding to create your account and use {siteName}, you agree to our <termsOfUseLink>Terms of Use</termsOfUseLink> and <privacyPolicyLink>Privacy Policy</privacyPolicyLink>.  If you do not agree, you cannot use {siteName}.'
+
+                                        // Later add terms and policy links
+                                        // defaultMessage='By proceeding to create your account and use {siteName}, you agree to our <termsOfUseLink>Terms of Use</termsOfUseLink> and <privacyPolicyLink>Privacy Policy</privacyPolicyLink>.  If you do not agree, you cannot use {siteName}.'
+                                        defaultMessage='By proceeding to create your account and use {siteName}, you agree to our Terms of Use and Privacy Policy. If you do not agree, you cannot use {siteName}.'
                                         values={{
                                             siteName: SiteName,
-                                            termsOfUseLink: (chunks) => null,
-                                            // (
-                                            //     <ExternalLink
-                                            //         href={TermsOfServiceLink as string}
-                                            //         location='signup-terms-of-use'
-                                            //     >
-                                            //         {chunks}
-                                            //     </ExternalLink>
-                                            // ),
-                                            privacyPolicyLink: (chunks) => null,
-                                            // (
-                                            //     <ExternalLink
-                                            //         href={PrivacyPolicyLink as string}
-                                            //         location='signup-privacy-policy'
-                                            //     >
-                                            //         {chunks}
-                                            //     </ExternalLink>
-                                            // ),
+                                            // termsOfUseLink: (chunks) => null,
+                                            // // (
+                                            // //     <ExternalLink
+                                            // //         href={TermsOfServiceLink as string}
+                                            // //         location='signup-terms-of-use'
+                                            // //     >
+                                            // //         {chunks}
+                                            // //     </ExternalLink>
+                                            // // ),
+                                            // privacyPolicyLink: (chunks) => null,
+                                            // // (
+                                            // //     <ExternalLink
+                                            // //         href={PrivacyPolicyLink as string}
+                                            // //         location='signup-privacy-policy'
+                                            // //     >
+                                            // //         {chunks}
+                                            // //     </ExternalLink>
+                                            // // ),
                                         }}
                                     />
                                 </p>

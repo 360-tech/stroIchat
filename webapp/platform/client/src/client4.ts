@@ -1525,6 +1525,13 @@ export default class Client4 {
         );
     };
 
+    generatePartnerInviteLink = (teamId: string, channels: string[], partnerSubtype: string, message?: string) => {
+        return this.doFetch<{invite_url: string}>(
+            `${this.getTeamRoute(teamId)}/invite-partners/link`,
+            {method: 'post', body: JSON.stringify({channels, partner_subtype: partnerSubtype, message: message || ''})},
+        );
+    };
+
     getTeamIconUrl = (teamId: string, lastTeamIconUpdate: number) => {
         const params: any = {};
         if (lastTeamIconUpdate) {

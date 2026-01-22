@@ -86,12 +86,25 @@ func (a *App) CreateUserWithToken(rctx request.CTX, user *model.User, token *mod
 	}
 
 	emailFromToken := tokenData["email"]
-	if emailFromToken != user.Email {
-		return nil, model.NewAppError("CreateUserWithToken", "api.user.create_user.bad_token_email_data.app_error", nil, "", http.StatusBadRequest)
+	
+	// For partner invite links (token without email), email comes from the form
+	if emailFromToken == "" {
+		if token.Type != TokenTypePartnerInvitation {
+			return nil, model.NewAppError("CreateUserWithToken", "api.user.create_user.bad_token_email_data.app_error", nil, "", http.StatusBadRequest)
+		}
+		// Validate email domain for partners
+		if !users.CheckEmailDomain(user.Email, *a.Config().PartnerAccountsSettings.RestrictCreationToDomains) {
+			return nil, model.NewAppError("CreateUserWithToken", "api.team.invite_members.invalid_email.app_error", map[string]any{"Addresses": user.Email}, "", http.StatusBadRequest)
+		}
+		user.EmailVerified = false
+	} else {
+		// For tokens with email, validate it matches
+		if emailFromToken != user.Email {
+			return nil, model.NewAppError("CreateUserWithToken", "api.user.create_user.bad_token_email_data.app_error", nil, "", http.StatusBadRequest)
+		}
+		user.Email = tokenData["email"]
+		user.EmailVerified = true
 	}
-
-	user.Email = tokenData["email"]
-	user.EmailVerified = true
 
 	// Extract partner subtype from token if present
 	if token.Type == TokenTypePartnerInvitation {

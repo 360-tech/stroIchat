@@ -24,6 +24,7 @@ import {
     sendPartnersInvites,
     sendMembersInvitesToChannels,
 } from 'actions/invite_actions';
+import {generatePartnerInviteLink} from 'actions/team_actions';
 
 import {makeAsyncComponent} from 'components/async_load';
 
@@ -98,6 +99,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
             regenerateTeamInviteId,
             searchProfiles,
             searchChannels,
+            generatePartnerInviteLink,
         }, dispatch),
     };
 }

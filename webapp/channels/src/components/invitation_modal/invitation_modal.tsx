@@ -67,6 +67,11 @@ export type Props = {
             emails: string[],
             message: string,
         ) => Promise<ActionResult<InviteResults>>;
+        generatePartnerInviteLink: (
+            teamId: string,
+            channels: string[],
+            partnerSubtype: string,
+        ) => Promise<ActionResult<{invite_url: string}>>;
     };
     currentTeam?: Team;
     currentChannel?: Channel;
@@ -429,6 +434,7 @@ export default class InvitationModal extends React.PureComponent<Props, State> {
                 onClose={this.handleHide}
                 channelToInvite={this.props.channelToInvite}
                 setPartnerSubtype={this.setPartnerSubtype}
+                generatePartnerInviteLink={this.props.actions.generatePartnerInviteLink}
                 {...this.state.invite}
             />
         );

@@ -1267,6 +1267,213 @@ func TestCreateUserWithToken(t *testing.T) {
 		require.Len(t, members, 1)
 		assert.Equal(t, members[0].ChannelId, th.BasicChannel.Id)
 	})
+
+	t.Run("valid partner invite link request (token without email)", func(t *testing.T) {
+		invitationEmail := strings.ToLower(model.NewId()) + "invite-link@test.com"
+		token := model.NewToken(
+			TokenTypePartnerInvitation,
+			model.MapToJSON(map[string]string{
+				"teamId":         th.BasicTeam.Id,
+				"email":          "", // Empty email for invite links
+				"channels":       th.BasicChannel.Id,
+				"senderId":       th.BasicUser.Id,
+				"partner":        "true",
+				"partner_subtype": model.PartnerSubtypeContractor,
+			}),
+		)
+
+		require.NoError(t, th.App.Srv().Store().Token().Save(token))
+		partner := model.User{
+			Email:       invitationEmail,
+			Nickname:    "Invite Link Partner",
+			Username:    "invitelink" + model.NewId(),
+			Password:    "passwd1",
+			AuthService: "",
+		}
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
+		require.Nil(t, err, "Should create partner from invite link. err=%v", err)
+
+		assert.True(t, newPartner.IsPartner())
+		require.Equal(t, invitationEmail, newPartner.Email, "The user email must be from the form")
+		require.Equal(t, model.PartnerSubtypeContractor, newPartner.GetPartnerSubtype())
+		assert.False(t, newPartner.EmailVerified, "Email should not be verified for invite links")
+
+		// Token should be deleted after use
+		_, nErr := th.App.Srv().Store().Token().GetByToken(token.Token)
+		require.Error(t, nErr, "The token must be deleted after be used")
+
+		// Partner should be added to team
+		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, newPartner.Id)
+		require.Nil(t, err)
+		require.NotNil(t, teamMember)
+
+		// Partner should be added to specified channel
+		members, err := th.App.GetChannelMembersForUser(th.Context, th.BasicTeam.Id, newPartner.Id)
+		require.Nil(t, err)
+		require.Len(t, members, 1)
+		assert.Equal(t, members[0].ChannelId, th.BasicChannel.Id)
+	})
+
+	t.Run("valid partner invite link request without partner_subtype should default", func(t *testing.T) {
+		invitationEmail := strings.ToLower(model.NewId()) + "invite-link2@test.com"
+		token := model.NewToken(
+			TokenTypePartnerInvitation,
+			model.MapToJSON(map[string]string{
+				"teamId":   th.BasicTeam.Id,
+				"email":    "", // Empty email for invite links
+				"channels": th.BasicChannel.Id,
+				"senderId": th.BasicUser.Id,
+				"partner":  "true",
+			}),
+		)
+
+		require.NoError(t, th.App.Srv().Store().Token().Save(token))
+		partner := model.User{
+			Email:       invitationEmail,
+			Nickname:    "Invite Link Partner 2",
+			Username:    "invitelink2" + model.NewId(),
+			Password:    "passwd1",
+			AuthService: "",
+		}
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
+		require.Nil(t, err, "Should create partner from invite link. err=%v", err)
+
+		assert.True(t, newPartner.IsPartner())
+		require.Equal(t, model.PartnerSubtypeNotSpecified, newPartner.GetPartnerSubtype())
+	})
+
+	t.Run("partner invite link with email domain restrictions - valid domain", func(t *testing.T) {
+		enablePartnerDomainRestrictions := *th.App.Config().PartnerAccountsSettings.RestrictCreationToDomains
+		defer func() {
+			th.App.UpdateConfig(func(cfg *model.Config) {
+				cfg.PartnerAccountsSettings.RestrictCreationToDomains = &enablePartnerDomainRestrictions
+			})
+		}()
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.RestrictCreationToDomains = "restricted.com" })
+
+		invitationEmail := strings.ToLower(model.NewId()) + "other-email@restricted.com"
+		token := model.NewToken(
+			TokenTypePartnerInvitation,
+			model.MapToJSON(map[string]string{
+				"teamId":   th.BasicTeam.Id,
+				"email":    "", // Empty email for invite links
+				"channels": th.BasicChannel.Id,
+				"senderId": th.BasicUser.Id,
+				"partner":  "true",
+			}),
+		)
+
+		require.NoError(t, th.App.Srv().Store().Token().Save(token))
+		partner := model.User{
+			Email:       invitationEmail,
+			Nickname:    "Restricted Domain Partner",
+			Username:    "restricted" + model.NewId(),
+			Password:    "passwd1",
+			AuthService: "",
+		}
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
+		require.Nil(t, err, "Should create partner with valid domain")
+		assert.True(t, newPartner.IsPartner())
+		require.Equal(t, invitationEmail, newPartner.Email)
+	})
+
+	t.Run("partner invite link with email domain restrictions - invalid domain", func(t *testing.T) {
+		enablePartnerDomainRestrictions := *th.App.Config().PartnerAccountsSettings.RestrictCreationToDomains
+		defer func() {
+			th.App.UpdateConfig(func(cfg *model.Config) {
+				cfg.PartnerAccountsSettings.RestrictCreationToDomains = &enablePartnerDomainRestrictions
+			})
+		}()
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.PartnerAccountsSettings.RestrictCreationToDomains = "restricted.com" })
+
+		invitationEmail := strings.ToLower(model.NewId()) + "other-email@forbidden.com"
+		token := model.NewToken(
+			TokenTypePartnerInvitation,
+			model.MapToJSON(map[string]string{
+				"teamId":   th.BasicTeam.Id,
+				"email":    "", // Empty email for invite links
+				"channels": th.BasicChannel.Id,
+				"senderId": th.BasicUser.Id,
+				"partner":  "true",
+			}),
+		)
+
+		require.NoError(t, th.App.Srv().Store().Token().Save(token))
+		partner := model.User{
+			Email:       invitationEmail,
+			Nickname:    "Forbidden Domain Partner",
+			Username:    "forbidden" + model.NewId(),
+			Password:    "passwd1",
+			AuthService: "",
+		}
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
+		require.NotNil(t, err, "Should fail with invalid domain")
+		require.Nil(t, newPartner)
+		assert.Equal(t, "api.team.invite_members.invalid_email.app_error", err.Id)
+	})
+
+	t.Run("team invitation token with empty email should fail", func(t *testing.T) {
+		invitationEmail := strings.ToLower(model.NewId()) + "other-email@test.com"
+		token := model.NewToken(
+			TokenTypeTeamInvitation,
+			model.MapToJSON(map[string]string{
+				"teamId": th.BasicTeam.Id,
+				"email":  "", // Empty email - should fail for team invitations
+			}),
+		)
+
+		require.NoError(t, th.App.Srv().Store().Token().Save(token))
+		user := model.User{
+			Email:       invitationEmail,
+			Nickname:    "Regular User",
+			Username:    "regular" + model.NewId(),
+			Password:    "passwd1",
+			AuthService: "",
+		}
+		newUser, err := th.App.CreateUserWithToken(th.Context, &user, token)
+		require.NotNil(t, err, "Should fail for team invitation token with empty email")
+		require.Nil(t, newUser)
+		assert.Equal(t, "api.user.create_user.bad_token_email_data.app_error", err.Id)
+	})
+
+	t.Run("partner invite link - partner added to team and channels", func(t *testing.T) {
+		invitationEmail := strings.ToLower(model.NewId()) + "team-check@test.com"
+		token := model.NewToken(
+			TokenTypePartnerInvitation,
+			model.MapToJSON(map[string]string{
+				"teamId":   th.BasicTeam.Id,
+				"email":    "", // Empty email for invite links
+				"channels": th.BasicChannel.Id,
+				"senderId": th.BasicUser.Id,
+				"partner":  "true",
+			}),
+		)
+
+		require.NoError(t, th.App.Srv().Store().Token().Save(token))
+		partner := model.User{
+			Email:       invitationEmail,
+			Nickname:    "Team Check Partner",
+			Username:    "teamcheck" + model.NewId(),
+			Password:    "passwd1",
+			AuthService: "",
+		}
+		newPartner, err := th.App.CreateUserWithToken(th.Context, &partner, token)
+		require.Nil(t, err, "Should create partner from invite link")
+
+		// Verify partner is in team
+		teamMember, err := th.App.GetTeamMember(th.Context, th.BasicTeam.Id, newPartner.Id)
+		require.Nil(t, err)
+		require.NotNil(t, teamMember)
+		assert.Equal(t, newPartner.Id, teamMember.UserId)
+		assert.Equal(t, th.BasicTeam.Id, teamMember.TeamId)
+
+		// Verify partner is in channel
+		channelMember, err := th.App.GetChannelMember(th.Context, th.BasicChannel.Id, newPartner.Id)
+		require.Nil(t, err)
+		require.NotNil(t, channelMember)
+		assert.Equal(t, newPartner.Id, channelMember.UserId)
+		assert.Equal(t, th.BasicChannel.Id, channelMember.ChannelId)
+	})
 }
 
 func TestPermanentDeleteUser(t *testing.T) {
