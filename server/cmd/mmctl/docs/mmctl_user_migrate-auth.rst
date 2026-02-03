@@ -14,7 +14,7 @@ Migrates accounts from one authentication provider to either LDAP or SAML. For e
 Arguments:
   from_auth:
     The authentication service to migrate users accounts from.
-    Supported options: email, gitlab, google, ldap, office365, saml.
+    Supported options: email, google, ldap, office365, saml.
 
   to_auth:
     The authentication service to migrate users to.

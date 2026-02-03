@@ -316,27 +316,6 @@ func TestDiffSanitized(t *testing.T) {
 			"",
 		},
 		{
-			"sensitive GitLabSettings.Secret",
-			func() *model.Config {
-				cfg := defaultConfigGen()
-				cfg.GitLabSettings.Secret = model.NewPointer("base")
-				return cfg
-			}(),
-			func() *model.Config {
-				cfg := defaultConfigGen()
-				cfg.GitLabSettings.Secret = model.NewPointer("actual")
-				return cfg
-			}(),
-			ConfigDiffs{
-				{
-					Path:      "GitLabSettings.Secret",
-					BaseVal:   model.FakeSetting,
-					ActualVal: model.FakeSetting,
-				},
-			},
-			"",
-		},
-		{
 			"sensitive GoogleSettings.Secret",
 			func() *model.Config {
 				cfg := defaultConfigGen()

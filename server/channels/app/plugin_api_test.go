@@ -1572,10 +1572,6 @@ func TestPluginAPIGetConfig(t *testing.T) {
 		assert.Equal(t, *config.EmailSettings.SMTPPassword, model.FakeSetting)
 	}
 
-	if *config.GitLabSettings.Secret != "" {
-		assert.Equal(t, *config.GitLabSettings.Secret, model.FakeSetting)
-	}
-
 	assert.Equal(t, *config.SqlSettings.DataSource, model.FakeSetting)
 	assert.Equal(t, *config.SqlSettings.AtRestEncryptKey, model.FakeSetting)
 	assert.Equal(t, *config.ElasticsearchSettings.Password, model.FakeSetting)
@@ -1608,10 +1604,6 @@ func TestPluginAPIGetUnsanitizedConfig(t *testing.T) {
 
 	if config.EmailSettings.SMTPPassword != nil && *config.EmailSettings.SMTPPassword != "" {
 		assert.NotEqual(t, *config.EmailSettings.SMTPPassword, model.FakeSetting)
-	}
-
-	if *config.GitLabSettings.Secret != "" {
-		assert.NotEqual(t, *config.GitLabSettings.Secret, model.FakeSetting)
 	}
 
 	assert.NotEqual(t, *config.SqlSettings.DataSource, model.FakeSetting)

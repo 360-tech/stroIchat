@@ -3011,7 +3011,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'EmailSettings.EnableSignUpWithEmail',
                             label: defineMessage({id: 'admin.email.allowSignupTitle', defaultMessage: 'Enable account creation with email:'}),
-                            help_text: defineMessage({id: 'admin.email.allowSignupDescription', defaultMessage: 'When true, Strocihat allows account creation using email and password. This value should be false only when you want to limit sign up to a single sign-on service like AD/LDAP, SAML or GitLab.'}),
+                            help_text: defineMessage({id: 'admin.email.allowSignupDescription', defaultMessage: 'When true, Strocihat allows account creation using email and password.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.EMAIL)),
                         },
                         {
@@ -3559,10 +3559,7 @@ const AdminDefinition: AdminDefinitionType = {
                     id: 'OAuthSettings',
                     name: defineMessage({id: 'admin.authentication.oauth', defaultMessage: 'OAuth 2.0'}),
                     onConfigLoad: (config) => {
-                        const newState: { oauthType?: string; 'GitLabSettings.Url'?: string } = {};
-                        if (config.GitLabSettings?.Enable) {
-                            newState.oauthType = Constants.GITLAB_SERVICE;
-                        }
+                        const newState: { oauthType?: string; } = {};
                         if (config.Office365Settings?.Enable) {
                             newState.oauthType = Constants.OFFICE365_SERVICE;
                         }
@@ -3570,26 +3567,18 @@ const AdminDefinition: AdminDefinitionType = {
                             newState.oauthType = Constants.GOOGLE_SERVICE;
                         }
 
-                        newState['GitLabSettings.Url'] = config.GitLabSettings?.UserAPIEndpoint?.replace('/api/v4/user', '');
-
                         return newState;
                     },
                     onConfigSave: (config) => {
                         const newConfig = {...config};
-                        newConfig.GitLabSettings = config.GitLabSettings || {};
                         newConfig.Office365Settings = config.Office365Settings || {};
                         newConfig.GoogleSettings = config.GoogleSettings || {};
                         newConfig.OpenIdSettings = config.OpenIdSettings || {};
 
-                        newConfig.GitLabSettings.Enable = false;
                         newConfig.Office365Settings.Enable = false;
                         newConfig.GoogleSettings.Enable = false;
                         newConfig.OpenIdSettings.Enable = false;
-                        newConfig.GitLabSettings.UserAPIEndpoint = config.GitLabSettings.Url.replace(/\/$/, '') + '/api/v4/user';
 
-                        if (config.oauthType === Constants.GITLAB_SERVICE) {
-                            newConfig.GitLabSettings.Enable = true;
-                        }
                         if (config.oauthType === Constants.OFFICE365_SERVICE) {
                             newConfig.Office365Settings.Enable = true;
                         }
@@ -3618,16 +3607,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: 'off',
                                     display_name: defineMessage({id: 'admin.oauth.off', defaultMessage: 'Do not allow sign-in via an OAuth 2.0 provider.'}),
-                                },
-                                {
-                                    value: Constants.GITLAB_SERVICE,
-                                    display_name: defineMessage({id: 'admin.oauth.gitlab', defaultMessage: 'GitLab'}),
-                                    help_text: defineMessage({id: 'admin.gitlab.EnableMarkdownDesc', defaultMessage: '1. Log in to your GitLab account and go to Profile Settings -> Applications.\n2. Enter Redirect URIs "<loginUrlChunk>your-stroichat-url</loginUrlChunk>" (example: http://localhost:8065/login/gitlab/complete) and "<signupUrlChunk>your-stroichat-url</signupUrlChunk>".\n3. Then use "Application Secret Key" and "Application ID" fields from GitLab to complete the options below.\n4. Complete the Endpoint URLs below.'}),
-                                    help_text_values: {
-                                        loginUrlChunk: (chunk: string) => `<${chunk}>/login/gitlab/complete`,
-                                        signupUrlChunk: (chunk: string) => `<${chunk}>/signup/gitlab/complete`,
-                                    },
-                                    help_text_markdown: true,
                                 },
                                 {
                                     value: Constants.GOOGLE_SERVICE,
@@ -3699,72 +3678,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 },
                             ],
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Id',
-                            label: defineMessage({id: 'admin.gitlab.clientIdTitle', defaultMessage: 'Application ID:'}),
-                            help_text: defineMessage({id: 'admin.gitlab.clientIdDescription', defaultMessage: 'Obtain this value via the instructions above for logging into GitLab.'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.clientIdExample', defaultMessage: 'E.g.: "jcuS8PuvcpGhpgHhlcpT1Mx42pnqMxQY"'}),
-                            isHidden: it.not(it.stateEquals('oauthType', 'gitlab')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Secret',
-                            label: defineMessage({id: 'admin.gitlab.clientSecretTitle', defaultMessage: 'Application Secret Key:'}),
-                            help_text: defineMessage({id: 'admin.gitlab.clientSecretDescription', defaultMessage: 'Obtain this value via the instructions above for logging into GitLab.'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.clientSecretExample', defaultMessage: 'E.g.: "jcuS8PuvcpGhpgHhlcpT1Mx42pnqMxQY"'}),
-                            isHidden: it.not(it.stateEquals('oauthType', 'gitlab')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Url',
-                            label: defineMessage({id: 'admin.gitlab.siteUrl', defaultMessage: 'GitLab Site URL:'}),
-                            help_text: defineMessage({id: 'admin.gitlab.siteUrlDescription', defaultMessage: 'Enter the URL of your GitLab instance, e.g. https://example.com:3000. If your GitLab instance is not set up with SSL, start the URL with http:// instead of https://.'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.siteUrlExample', defaultMessage: 'E.g.: https://'}),
-                            isHidden: it.not(it.stateEquals('oauthType', 'gitlab')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.UserAPIEndpoint',
-                            label: defineMessage({id: 'admin.gitlab.userTitle', defaultMessage: 'User API Endpoint:'}),
-                            dynamic_value: (value, config, state) => {
-                                if (state['GitLabSettings.Url']) {
-                                    return state['GitLabSettings.Url'].replace(/\/$/, '') + '/api/v4/user';
-                                }
-                                return '';
-                            },
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'gitlab')),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.AuthEndpoint',
-                            label: defineMessage({id: 'admin.gitlab.authTitle', defaultMessage: 'Auth Endpoint:'}),
-                            dynamic_value: (value, config, state) => {
-                                if (state['GitLabSettings.Url']) {
-                                    return state['GitLabSettings.Url'].replace(/\/$/, '') + '/oauth/authorize';
-                                }
-                                return '';
-                            },
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'gitlab')),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.TokenEndpoint',
-                            label: defineMessage({id: 'admin.gitlab.tokenTitle', defaultMessage: 'Token Endpoint:'}),
-                            dynamic_value: (value, config, state) => {
-                                if (state['GitLabSettings.Url']) {
-                                    return state['GitLabSettings.Url'].replace(/\/$/, '') + '/oauth/token';
-                                }
-                                return '';
-                            },
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'gitlab')),
                         },
                         {
                             type: 'text',
@@ -3883,23 +3796,15 @@ const AdminDefinition: AdminDefinitionType = {
                     id: 'OpenIdSettings',
                     name: defineMessage({id: 'admin.authentication.openid', defaultMessage: 'OpenID Connect'}),
                     onConfigLoad: (config) => {
-                        const newState: { openidType?: string; 'GitLabSettings.Url'?: string } = {};
+                        const newState: { openidType?: string; } = {};
                         if (config.Office365Settings?.Enable) {
                             newState.openidType = Constants.OFFICE365_SERVICE;
                         }
                         if (config.GoogleSettings?.Enable) {
                             newState.openidType = Constants.GOOGLE_SERVICE;
                         }
-                        if (config.GitLabSettings?.Enable) {
-                            newState.openidType = Constants.GITLAB_SERVICE;
-                        }
                         if (config.OpenIdSettings?.Enable) {
                             newState.openidType = Constants.OPENID_SERVICE;
-                        }
-                        if (config.GitLabSettings?.UserAPIEndpoint) {
-                            newState['GitLabSettings.Url'] = config.GitLabSettings.UserAPIEndpoint.replace('/api/v4/user', '');
-                        } else if (config.GitLabSettings?.DiscoveryEndpoint) {
-                            newState['GitLabSettings.Url'] = config.GitLabSettings.DiscoveryEndpoint.replace('/.well-known/openid-configuration', '');
                         }
 
                         return newState;
@@ -3908,12 +3813,10 @@ const AdminDefinition: AdminDefinitionType = {
                         const newConfig = {...config};
                         newConfig.Office365Settings = config.Office365Settings || {};
                         newConfig.GoogleSettings = config.GoogleSettings || {};
-                        newConfig.GitLabSettings = config.GitLabSettings || {};
                         newConfig.OpenIdSettings = config.OpenIdSettings || {};
 
                         newConfig.Office365Settings.Enable = false;
                         newConfig.GoogleSettings.Enable = false;
-                        newConfig.GitLabSettings.Enable = false;
                         newConfig.OpenIdSettings.Enable = false;
 
                         let configSetting = '';
@@ -3921,8 +3824,6 @@ const AdminDefinition: AdminDefinitionType = {
                             configSetting = 'Office365Settings';
                         } else if (config.openidType === Constants.GOOGLE_SERVICE) {
                             configSetting = 'GoogleSettings';
-                        } else if (config.openidType === Constants.GITLAB_SERVICE) {
-                            configSetting = 'GitLabSettings';
                         } else if (config.openidType === Constants.OPENID_SERVICE) {
                             configSetting = 'OpenIdSettings';
                         }
@@ -3957,16 +3858,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: 'off',
                                     display_name: defineMessage({id: 'admin.openid.off', defaultMessage: 'Do not allow sign-in via an OpenID provider.'}),
-                                },
-                                {
-                                    value: Constants.GITLAB_SERVICE,
-                                    display_name: defineMessage({id: 'admin.openid.gitlab', defaultMessage: 'GitLab'}),
-                                    help_text: defineMessage({id: 'admin.gitlab.EnableMarkdownDesc', defaultMessage: '1. Log in to your GitLab account and go to Profile Settings -> Applications.\n2. Enter Redirect URIs "<loginUrlChunk>your-stroichat-url</loginUrlChunk>" (example: http://localhost:8065/login/gitlab/complete) and "<signupUrlChunk>your-stroichat-url</signupUrlChunk>".\n3. Then use "Application Secret Key" and "Application ID" fields from GitLab to complete the options below.\n4. Complete the Endpoint URLs below.'}),
-                                    help_text_values: {
-                                        loginUrlChunk: (chunk: string) => `<${chunk}>/login/gitlab/complete`,
-                                        signupUrlChunk: (chunk: string) => `<${chunk}>/signup/gitlab/complete`,
-                                    },
-                                    help_text_markdown: false,
                                 },
                                 {
                                     value: Constants.GOOGLE_SERVICE,
@@ -4041,48 +3932,6 @@ const AdminDefinition: AdminDefinitionType = {
                                     help_text_markdown: false,
                                 },
                             ],
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Url',
-                            label: defineMessage({id: 'admin.gitlab.siteUrl', defaultMessage: 'GitLab Site URL:'}),
-                            help_text: defineMessage({id: 'admin.gitlab.siteUrlDescription', defaultMessage: 'Enter the URL of your GitLab instance, e.g. https://example.com:3000. If your GitLab instance is not set up with SSL, start the URL with http:// instead of https://.'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.siteUrlExample', defaultMessage: 'E.g.: https://'}),
-                            isHidden: it.not(it.stateEquals('openidType', Constants.GITLAB_SERVICE)),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.DiscoveryEndpoint',
-                            label: defineMessage({id: 'admin.openid.discoveryEndpointTitle', defaultMessage: 'Discovery Endpoint:'}),
-                            help_text: defineMessage({id: 'admin.gitlab.discoveryEndpointDesc', defaultMessage: 'The URL of the discovery document for OpenID Connect with GitLab.'}),
-                            help_text_markdown: false,
-                            dynamic_value: (value, config, state) => {
-                                if (state['GitLabSettings.Url']) {
-                                    return state['GitLabSettings.Url'].replace(/\/$/, '') + '/.well-known/openid-configuration';
-                                }
-                                return '';
-                            },
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('openidType', Constants.GITLAB_SERVICE)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Id',
-                            label: defineMessage({id: 'admin.openid.clientIdTitle', defaultMessage: 'Client ID:'}),
-                            help_text: defineMessage({id: 'admin.openid.clientIdDescription', defaultMessage: 'Obtaining the Client ID differs across providers. Please check you provider\'s documentation'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.clientIdExample', defaultMessage: 'E.g.: "jcuS8PuvcpGhpgHhlcpT1Mx42pnqMxQY"'}),
-                            isHidden: it.not(it.stateEquals('openidType', Constants.GITLAB_SERVICE)),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GitLabSettings.Secret',
-                            label: defineMessage({id: 'admin.openid.clientSecretTitle', defaultMessage: 'Client Secret:'}),
-                            help_text: defineMessage({id: 'admin.openid.clientSecretDescription', defaultMessage: 'Obtaining the Client Secret differs across providers. Please check you provider\'s documentation'}),
-                            placeholder: defineMessage({id: 'admin.gitlab.clientSecretExample', defaultMessage: 'E.g.: "jcuS8PuvcpGhpgHhlcpT1Mx442pnqMxQY"'}),
-                            isHidden: it.not(it.stateEquals('openidType', Constants.GITLAB_SERVICE)),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
                         },
                         {

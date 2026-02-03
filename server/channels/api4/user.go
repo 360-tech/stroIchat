@@ -1959,12 +1959,11 @@ func login(c *Context, w http.ResponseWriter, r *http.Request) {
 		enableUsername := *config.EmailSettings.EnableSignInWithUsername
 		enableEmail := *config.EmailSettings.EnableSignInWithEmail
 		samlEnabled := *config.SamlSettings.Enable
-		gitlabEnabled := *config.GitLabSettings.Enable
 		openidEnabled := *config.OpenIdSettings.Enable
 		googleEnabled := *config.GoogleSettings.Enable
 		office365Enabled := *config.Office365Settings.Enable
 
-		if samlEnabled || gitlabEnabled || googleEnabled || office365Enabled || openidEnabled {
+		if samlEnabled || googleEnabled || office365Enabled || openidEnabled {
 			c.Err = model.NewAppError("login", "api.user.login.invalid_credentials_sso", nil, "", http.StatusUnauthorized)
 			return
 		}
@@ -3217,7 +3216,7 @@ func migrateAuthToLDAP(c *Context, w http.ResponseWriter, r *http.Request) {
 		c.SetInvalidParam("from")
 		return
 	}
-	if from == "" || (from != "email" && from != "gitlab" && from != "saml" && from != "google" && from != "office365") {
+	if from == "" || (from != "email" && from != "saml" && from != "google" && from != "office365") {
 		c.SetInvalidParam("from")
 		return
 	}
@@ -3276,7 +3275,7 @@ func migrateAuthToSaml(c *Context, w http.ResponseWriter, r *http.Request) {
 		c.SetInvalidParam("from")
 		return
 	}
-	if from == "" || (from != "email" && from != "gitlab" && from != "ldap" && from != "google" && from != "office365") {
+	if from == "" || (from != "email" && from != "ldap" && from != "google" && from != "office365") {
 		c.SetInvalidParam("from")
 		return
 	}

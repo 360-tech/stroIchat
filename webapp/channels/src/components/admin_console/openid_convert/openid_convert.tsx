@@ -43,12 +43,8 @@ const OpenIdConvert = ({
         }
         newConfig.GoogleSettings.DiscoveryEndpoint = 'https://accounts.google.com/.well-known/openid-configuration';
 
-        if (newConfig.GitLabSettings.UserAPIEndpoint) {
-            const url = newConfig.GitLabSettings.UserAPIEndpoint.replace('/api/v4/user', '');
-            newConfig.GitLabSettings.DiscoveryEndpoint = url + '/.well-known/openid-configuration';
-        }
 
-        ['Office365Settings', 'GoogleSettings', 'GitLabSettings'].forEach((setting) => {
+        ['Office365Settings', 'GoogleSettings'].forEach((setting) => {
             newConfig[setting].Scope = Constants.OPENID_SCOPES;
             newConfig[setting].UserAPIEndpoint = '';
             newConfig[setting].AuthEndpoint = '';

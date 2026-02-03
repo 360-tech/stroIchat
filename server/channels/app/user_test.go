@@ -20,8 +20,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/mattermost/mattermost/server/public/model"
-	"github.com/mattermost/mattermost/server/public/shared/request"
-	oauthgitlab "github.com/mattermost/mattermost/server/v8/channels/app/oauthproviders/gitlab"
 	"github.com/mattermost/mattermost/server/v8/channels/store"
 	storemocks "github.com/mattermost/mattermost/server/v8/channels/store/storetest/mocks"
 	"github.com/mattermost/mattermost/server/v8/channels/utils/testutils"
@@ -34,24 +32,6 @@ func TestCreateOAuthUser(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
-
-	th.App.UpdateConfig(func(cfg *model.Config) {
-		*cfg.GitLabSettings.Enable = true
-	})
-
-	t.Run("create user successfully", func(t *testing.T) {
-		glUser := oauthgitlab.GitLabUser{Id: 42, Username: "o" + model.NewId(), Email: model.NewId() + "@simulator.amazonses.com", Name: "Joram Wilander"}
-		js, jsonErr := json.Marshal(glUser)
-		require.NoError(t, jsonErr)
-
-		user, err := th.App.CreateOAuthUser(th.Context, model.UserAuthServiceGitlab, bytes.NewReader(js), "", "", nil)
-		require.Nil(t, err)
-
-		require.Equal(t, glUser.Username, user.Username, "usernames didn't match")
-
-		appErr := th.App.PermanentDeleteUser(th.Context, user)
-		require.Nil(t, appErr)
-	})
 
 	t.Run("user exists, update authdata successfully", func(t *testing.T) {
 		th.App.UpdateConfig(func(cfg *model.Config) {
@@ -79,12 +59,6 @@ func TestCreateOAuthUser(t *testing.T) {
 		assert.NoError(t, er)
 		// make sure authdata is updated
 		assert.Equal(t, "e7110007-64be-43d8-9840-4a7e9c26b710", *u.AuthData)
-	})
-
-	t.Run("user creation disabled", func(t *testing.T) {
-		*th.App.Config().TeamSettings.EnableUserCreation = false
-		_, err := th.App.CreateOAuthUser(th.Context, model.UserAuthServiceGitlab, strings.NewReader("{}"), "", "", nil)
-		require.NotNil(t, err, "should have failed - user creation disabled")
 	})
 }
 
@@ -419,116 +393,6 @@ func TestUpdateActiveBotsSideEffect(t *testing.T) {
 	require.Nil(t, appErr)
 }
 
-func TestUpdateOAuthUserAttrs(t *testing.T) {
-	mainHelper.Parallel(t)
-	th := Setup(t)
-	defer th.TearDown()
-
-	id := model.NewId()
-	id2 := model.NewId()
-	th.App.UpdateConfig(func(cfg *model.Config) {
-		*cfg.GitLabSettings.Enable = true
-	})
-	gitlabProvider := einterfaces.GetOAuthProvider("gitlab")
-
-	username := "user" + id
-	username2 := "user" + id2
-
-	email := "user" + id + "@nowhere.com"
-	email2 := "user" + id2 + "@nowhere.com"
-
-	var user, user2 *model.User
-	var gitlabUserObj oauthgitlab.GitLabUser
-	user, gitlabUserObj = createGitlabUser(t, th.App, th.Context, 1, username, email)
-	user2, _ = createGitlabUser(t, th.App, th.Context, 2, username2, email2)
-
-	t.Run("UpdateUsername", func(t *testing.T) {
-		t.Run("NoExistingUserWithSameUsername", func(t *testing.T) {
-			gitlabUserObj.Username = "updateduser" + model.NewId()
-			gitlabUser := getGitlabUserPayload(gitlabUserObj, t)
-			data := bytes.NewReader(gitlabUser)
-
-			user = getUserFromDB(th.App, user.Id, t)
-			appErr := th.App.UpdateOAuthUserAttrs(th.Context, data, user, gitlabProvider, "gitlab", nil)
-			require.Nil(t, appErr)
-			user = getUserFromDB(th.App, user.Id, t)
-
-			require.Equal(t, gitlabUserObj.Username, user.Username, "user's username is not updated")
-		})
-
-		t.Run("ExistinguserWithSameUsername", func(t *testing.T) {
-			gitlabUserObj.Username = user2.Username
-
-			gitlabUser := getGitlabUserPayload(gitlabUserObj, t)
-			data := bytes.NewReader(gitlabUser)
-
-			user = getUserFromDB(th.App, user.Id, t)
-			appErr := th.App.UpdateOAuthUserAttrs(th.Context, data, user, gitlabProvider, "gitlab", nil)
-			require.Nil(t, appErr)
-			user = getUserFromDB(th.App, user.Id, t)
-
-			require.NotEqual(t, gitlabUserObj.Username, user.Username, "user's username is updated though there already exists another user with the same username")
-		})
-	})
-
-	t.Run("UpdateEmail", func(t *testing.T) {
-		t.Run("NoExistingUserWithSameEmail", func(t *testing.T) {
-			gitlabUserObj.Email = "newuser" + model.NewId() + "@nowhere.com"
-			gitlabUser := getGitlabUserPayload(gitlabUserObj, t)
-			data := bytes.NewReader(gitlabUser)
-
-			user = getUserFromDB(th.App, user.Id, t)
-			appErr := th.App.UpdateOAuthUserAttrs(th.Context, data, user, gitlabProvider, "gitlab", nil)
-			require.Nil(t, appErr)
-			user = getUserFromDB(th.App, user.Id, t)
-
-			require.Equal(t, gitlabUserObj.Email, user.Email, "user's email is not updated")
-
-			require.True(t, user.EmailVerified, "user's email should have been verified")
-		})
-
-		t.Run("ExistingUserWithSameEmail", func(t *testing.T) {
-			gitlabUserObj.Email = user2.Email
-
-			gitlabUser := getGitlabUserPayload(gitlabUserObj, t)
-			data := bytes.NewReader(gitlabUser)
-
-			user = getUserFromDB(th.App, user.Id, t)
-			appErr := th.App.UpdateOAuthUserAttrs(th.Context, data, user, gitlabProvider, "gitlab", nil)
-			require.Nil(t, appErr)
-			user = getUserFromDB(th.App, user.Id, t)
-
-			require.NotEqual(t, gitlabUserObj.Email, user.Email, "user's email is updated though there already exists another user with the same email")
-		})
-	})
-
-	t.Run("UpdateFirstName", func(t *testing.T) {
-		gitlabUserObj.Name = "Updated User"
-		gitlabUser := getGitlabUserPayload(gitlabUserObj, t)
-		data := bytes.NewReader(gitlabUser)
-
-		user = getUserFromDB(th.App, user.Id, t)
-		appErr := th.App.UpdateOAuthUserAttrs(th.Context, data, user, gitlabProvider, "gitlab", nil)
-		require.Nil(t, appErr)
-		user = getUserFromDB(th.App, user.Id, t)
-
-		require.Equal(t, "Updated", user.FirstName, "user's first name is not updated")
-	})
-
-	t.Run("UpdateLastName", func(t *testing.T) {
-		gitlabUserObj.Name = "Updated Lastname"
-		gitlabUser := getGitlabUserPayload(gitlabUserObj, t)
-		data := bytes.NewReader(gitlabUser)
-
-		user = getUserFromDB(th.App, user.Id, t)
-		appErr := th.App.UpdateOAuthUserAttrs(th.Context, data, user, gitlabProvider, "gitlab", nil)
-		require.Nil(t, appErr)
-		user = getUserFromDB(th.App, user.Id, t)
-
-		require.Equal(t, "Lastname", user.LastName, "user's last name is not updated")
-	})
-}
-
 func TestCreateUserConflict(t *testing.T) {
 	mainHelper.Parallel(t)
 	th := Setup(t)
@@ -727,28 +591,6 @@ func getUserFromDB(a *App, id string, t *testing.T) *model.User {
 	user, err := a.GetUser(id)
 	require.Nil(t, err, "user is not found", err)
 	return user
-}
-
-func getGitlabUserPayload(gitlabUser oauthgitlab.GitLabUser, t *testing.T) []byte {
-	var payload []byte
-	var err error
-	payload, err = json.Marshal(gitlabUser)
-	require.NoError(t, err, "Serialization of gitlab user to json failed", err)
-
-	return payload
-}
-
-func createGitlabUser(t *testing.T, a *App, rctx request.CTX, id int64, username string, email string) (*model.User, oauthgitlab.GitLabUser) {
-	gitlabUserObj := oauthgitlab.GitLabUser{Id: id, Username: username, Login: "user1", Email: email, Name: "Test User"}
-	gitlabUser := getGitlabUserPayload(gitlabUserObj, t)
-
-	var user *model.User
-	var err *model.AppError
-
-	user, err = a.CreateOAuthUser(rctx, "gitlab", bytes.NewReader(gitlabUser), "", "", nil)
-	require.Nil(t, err, "unable to create the user", err)
-
-	return user, gitlabUserObj
 }
 
 func TestGetUsersByStatus(t *testing.T) {

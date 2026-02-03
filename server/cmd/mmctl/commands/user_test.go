@@ -3023,28 +3023,6 @@ func (s *MmctlUnitTestSuite) TestUserEditAuthdataCmd() {
 		s.Require().Len(printer.GetErrorLines(), 0)
 	})
 
-	s.Run("Clear authdata returns error", func() {
-		printer.Clean()
-
-		command := cobra.Command{}
-		userArg := "testUser"
-		newAuthdata := ""
-		authData := "existingauth"
-		mockUser := model.User{Id: "userId", Username: "testUser", Email: "test@example.com", AuthData: &authData, AuthService: model.UserAuthServiceGitlab}
-
-		s.client.
-			EXPECT().
-			GetUserByUsername(context.TODO(), userArg, "").
-			Return(&mockUser, &model.Response{}, nil).
-			Times(1)
-
-		err := userEditAuthdataCmdF(s.client, &command, []string{userArg, newAuthdata})
-
-		s.Require().EqualError(err, "cannot clear authdata as the user is using gitlab to log in")
-		s.Require().Len(printer.GetLines(), 0)
-		s.Require().Len(printer.GetErrorLines(), 0)
-	})
-
 	s.Run("Authdata too long", func() {
 		printer.Clean()
 

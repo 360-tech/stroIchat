@@ -10637,10 +10637,6 @@
     "translation": "Unable to connect to the WebSocket server."
   },
   {
-    "id": "oauth.gitlab.tos.error",
-    "translation": "GitLab's Terms of Service have updated. Please go to {{.URL}} to accept them and then try logging into Stroichat again."
-  },
-  {
     "id": "plugin.api.get_users_in_channel",
     "translation": "Unable to get the users, invalid sorting criteria."
   },

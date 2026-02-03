@@ -47,8 +47,6 @@ const (
 	PasswordMaximumLength = 72
 	PasswordMinimumLength = 5
 
-	ServiceGitlab = "gitlab"
-
 	ServiceGoogle    = "google"
 	ServiceOffice365 = "office365"
 	ServiceOpenid    = "openid"
@@ -3826,7 +3824,6 @@ type Config struct {
 	SupportSettings             SupportSettings
 	AnnouncementSettings        AnnouncementSettings
 	ThemeSettings               ThemeSettings
-	GitLabSettings              SSOSettings
 	GoogleSettings              SSOSettings
 	Office365Settings           Office365Settings
 	OpenIdSettings              SSOSettings
@@ -3891,8 +3888,6 @@ func (o *Config) ToJSONFiltered(tagType, tagValue string) ([]byte, error) {
 
 func (o *Config) GetSSOService(service string) *SSOSettings {
 	switch service {
-	case ServiceGitlab:
-		return &o.GitLabSettings
 	case ServiceGoogle:
 		return &o.GoogleSettings
 	case ServiceOffice365:
@@ -3935,7 +3930,6 @@ func (o *Config) SetDefaults() {
 	o.PrivacySettings.setDefaults()
 	o.Office365Settings.setDefaults()
 	o.Office365Settings.setDefaults()
-	o.GitLabSettings.setDefaults("", "", "", "", "")
 	o.GoogleSettings.setDefaults(GoogleSettingsDefaultScope, GoogleSettingsDefaultAuthEndpoint, GoogleSettingsDefaultTokenEndpoint, GoogleSettingsDefaultUserAPIEndpoint, "")
 	o.OpenIdSettings.setDefaults(OpenidSettingsDefaultScope, "", "", "", "#145DBF")
 	o.ServiceSettings.SetDefaults(isUpdate)
@@ -4836,10 +4830,6 @@ func (o *Config) Sanitize(pluginManifests []*Manifest, opts *SanitizeOptions) {
 
 	if o.EmailSettings.SMTPPassword != nil && *o.EmailSettings.SMTPPassword != "" {
 		*o.EmailSettings.SMTPPassword = FakeSetting
-	}
-
-	if o.GitLabSettings.Secret != nil && *o.GitLabSettings.Secret != "" {
-		*o.GitLabSettings.Secret = FakeSetting
 	}
 
 	if o.GoogleSettings.Secret != nil && *o.GoogleSettings.Secret != "" {

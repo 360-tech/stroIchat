@@ -242,7 +242,7 @@ const migrateAuthCmdDoc = `Migrates accounts from one authentication provider to
 Arguments:
   from_auth:
     The authentication service to migrate users accounts from.
-    Supported options: email, gitlab, google, ldap, office365, saml.
+    Supported options: email, google, ldap, office365, saml.
 
   to_auth:
     The authentication service to migrate users to.
@@ -1007,7 +1007,7 @@ func migrateAuthToSamlCmdF(c client.Client, cmd *cobra.Command, userArgs []strin
 		}
 	}
 
-	if fromAuth == "" || (fromAuth != "email" && fromAuth != "gitlab" && fromAuth != "ldap" && fromAuth != "google" && fromAuth != "office365") {
+	if fromAuth == "" || (fromAuth != "email" && fromAuth != "ldap" && fromAuth != "google" && fromAuth != "office365") {
 		return errors.New("invalid from_auth argument")
 	}
 
@@ -1023,7 +1023,7 @@ func migrateAuthToSamlCmdF(c client.Client, cmd *cobra.Command, userArgs []strin
 
 func migrateAuthToLdapCmdF(c client.Client, cmd *cobra.Command, userArgs []string) error {
 	fromAuth := userArgs[0]
-	if fromAuth == "" || (fromAuth != "email" && fromAuth != "gitlab" && fromAuth != "saml" && fromAuth != "google" && fromAuth != "office365") { // nolint:goconst
+	if fromAuth == "" || (fromAuth != "email" && fromAuth != "saml" && fromAuth != "google" && fromAuth != "office365") { // nolint:goconst
 		return errors.New("invalid from_auth argument")
 	}
 

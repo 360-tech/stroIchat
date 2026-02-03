@@ -204,15 +204,6 @@
         "AllowCustomThemes": true,
         "AllowedThemes": []
     },
-    "GitLabSettings": {
-        "Enable": false,
-        "Secret": "",
-        "Id": "",
-        "Scope": "",
-        "AuthEndpoint": "",
-        "TokenEndpoint": "",
-        "UserApiEndpoint": ""
-    },
     "GoogleSettings": {
         "Enable": false,
         "Secret": "",

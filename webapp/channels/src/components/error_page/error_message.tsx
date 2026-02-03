@@ -145,23 +145,6 @@ const ErrorMessage: React.FC<Props> = ({type, message, service, isPartner}: Prop
                     </p>
                     <p>
                         <FormattedMessage
-                            id='error.oauth_missing_code.gitlab'
-                            defaultMessage='For {link} please make sure you followed the setup instructions.'
-                            values={{
-                                link: (
-                                    <ErrorLink
-                                        url={'https://docs.mattermost.com/deployment/sso-gitlab.html'}
-                                        message={defineMessage({
-                                            id: 'error.oauth_missing_code.gitlab.link',
-                                            defaultMessage: 'GitLab',
-                                        })}
-                                    />
-                                ),
-                            }}
-                        />
-                    </p>
-                    <p>
-                        <FormattedMessage
                             id='error.oauth_missing_code.forum'
                             defaultMessage="If you reviewed the above and are still having trouble with configuration, you may post in our {link} where we'll be happy to help with issues during setup."
                             values={{

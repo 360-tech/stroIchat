@@ -360,7 +360,6 @@ func ValidateBotImportData(data *BotImportData) *model.AppError {
 var validAuthServices = []string{
 	"",
 	model.UserAuthServiceEmail,
-	model.UserAuthServiceGitlab,
 	model.UserAuthServiceSaml,
 	model.UserAuthServiceLdap,
 	model.ServiceGoogle,

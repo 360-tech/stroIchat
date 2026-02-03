@@ -71,7 +71,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         EnableUserCreation,
         NoAccounts,
         EnableSignUpWithEmail,
-        EnableSignUpWithGitLab,
         EnableSignUpWithGoogle,
         EnableSignUpWithOffice365,
         EnableSignUpWithOpenId,
@@ -94,7 +93,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const enableUserCreation = EnableUserCreation === 'true';
     const noAccounts = NoAccounts === 'true';
     const enableSignUpWithEmail = enableUserCreation && EnableSignUpWithEmail === 'true';
-    const enableSignUpWithGitLab = enableUserCreation && EnableSignUpWithGitLab === 'true';
     const enableSignUpWithGoogle = enableUserCreation && EnableSignUpWithGoogle === 'true';
     const enableSignUpWithOffice365 = enableUserCreation && EnableSignUpWithOffice365 === 'true';
     const enableSignUpWithOpenId = enableUserCreation && EnableSignUpWithOpenId === 'true';
@@ -119,7 +117,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const [isMobileView, setIsMobileView] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
-    const enableExternalSignup = enableSignUpWithGitLab || enableSignUpWithOffice365 || enableSignUpWithGoogle || enableSignUpWithOpenId || enableLDAP || enableSAML;
+    const enableExternalSignup = enableSignUpWithOffice365 || enableSignUpWithGoogle || enableSignUpWithOpenId || enableLDAP || enableSAML;
     const hasError = Boolean(emailError || nameError || passwordError || serverError || alertBanner);
     const canSubmit = Boolean(email && name && password) && !hasError && !loading;
     const passwordConfig = useSelector(getPasswordConfig);

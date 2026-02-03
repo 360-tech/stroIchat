@@ -7,7 +7,6 @@ import {CSSTransition} from 'react-transition-group';
 
 import MultiSelectCards from 'components/common/multi_select_cards';
 import GithubSVG from 'components/common/svg_images_components/github_svg';
-import GitlabSVG from 'components/common/svg_images_components/gitlab_svg';
 import JiraSVG from 'components/common/svg_images_components/jira_svg';
 import ServiceNowSVG from 'components/common/svg_images_components/servicenow_svg';
 import ZoomSVG from 'components/common/svg_images_components/zoom_svg';
@@ -92,20 +91,6 @@ const Plugins = (props: Props) => {
                                     tooltip: formatMessage({
                                         id: 'onboarding_wizard.plugins.github.tooltip',
                                         defaultMessage: 'Subscribe to repositories, stay up to date with reviews, assignments',
-                                    }),
-                                },
-                                {
-                                    onClick: () => props.setOption('gitlab'),
-                                    icon: <GitlabSVG/>,
-                                    id: 'onboarding_wizard.plugins.gitlab',
-                                    buttonText: formatMessage({
-                                        id: 'onboarding_wizard.plugins.gitlab',
-                                        defaultMessage: 'GitLab',
-                                    }),
-                                    checked: props.options.gitlab,
-                                    tooltip: formatMessage({
-                                        id: 'onboarding_wizard.plugins.gitlab.tooltip',
-                                        defaultMessage: 'GitLab tooltip',
                                     }),
                                 },
                                 {

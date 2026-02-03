@@ -45,7 +45,6 @@ var configSensitivePaths = map[string]bool{
 	"SqlSettings.DataSourceReplicas":                         true,
 	"SqlSettings.DataSourceSearchReplicas":                   true,
 	"EmailSettings.SMTPPassword":                             true,
-	"GitLabSettings.Secret":                                  true,
 	"GoogleSettings.Secret":                                  true,
 	"Office365Settings.Secret":                               true,
 	"OpenIdSettings.Secret":                                  true,

@@ -26,16 +26,16 @@ export type WizardStep = typeof WizardSteps[keyof typeof WizardSteps];
 
 export function mapAnimationReasonToClass(classPrefix: string, animationReason: AnimationReason): string {
     switch (animationReason) {
-    case Animations.Reasons.ExitToBefore:
-        return `${classPrefix}--exit-to-before`;
-    case Animations.Reasons.ExitToAfter:
-        return `${classPrefix}--exit-to-after`;
-    case Animations.Reasons.EnterFromAfter:
-        return `${classPrefix}--enter-from-after`;
-    case Animations.Reasons.EnterFromBefore:
-        return `${classPrefix}--enter-from-before`;
-    default:
-        return `${classPrefix}--enter-from-before`;
+        case Animations.Reasons.ExitToBefore:
+            return `${classPrefix}--exit-to-before`;
+        case Animations.Reasons.ExitToAfter:
+            return `${classPrefix}--exit-to-after`;
+        case Animations.Reasons.EnterFromAfter:
+            return `${classPrefix}--enter-from-after`;
+        case Animations.Reasons.EnterFromBefore:
+            return `${classPrefix}--enter-from-before`;
+        default:
+            return `${classPrefix}--enter-from-before`;
     }
 }
 
@@ -44,7 +44,6 @@ type PluginNameMap = {
 };
 export const PLUGIN_NAME_TO_ID_MAP: PluginNameMap = {
     github: 'github',
-    gitlab: 'com.github.manland.mattermost-plugin-gitlab',
     jira: 'jira',
     zoom: 'zoom',
     servicenow: 'mattermost-plugin-servicenow',
@@ -62,7 +61,6 @@ export type Form = {
     };
     plugins: {
         github: boolean;
-        gitlab: boolean;
         jira: boolean;
         zoom: boolean;
         servicenow: boolean;
@@ -92,7 +90,6 @@ export const emptyForm = deepFreeze({
     },
     plugins: {
         github: false,
-        gitlab: false,
         jira: false,
         zoom: false,
         servicenow: false,

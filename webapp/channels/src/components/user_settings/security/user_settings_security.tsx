@@ -59,7 +59,6 @@ type Props = {
     canUseAccessTokens: boolean;
     enableOAuthServiceProvider: boolean;
     allowedToSwitchToEmail: boolean;
-    enableSignUpWithGitLab: boolean;
     enableSignUpWithGoogle: boolean;
     enableSignUpWithOpenId: boolean;
     enableLdap: boolean;
@@ -371,22 +370,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                     </div>,
                 );
             } else if (
-                this.props.user.auth_service === Constants.GITLAB_SERVICE
-            ) {
-                inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
-                        <div className='pb-3'>
-                            <FormattedMessage
-                                id='user.settings.security.passwordGitlabCantUpdate'
-                                defaultMessage='Login occurs through GitLab. Password cannot be updated.'
-                            />
-                        </div>
-                    </div>,
-                );
-            } else if (
                 this.props.user.auth_service === Constants.LDAP_SERVICE
             ) {
                 inputs.push(
@@ -499,13 +482,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                     }}
                 />
             );
-        } else if (this.props.user.auth_service === Constants.GITLAB_SERVICE) {
-            describe = (
-                <FormattedMessage
-                    id='user.settings.security.loginGitlab'
-                    defaultMessage='Login done through GitLab'
-                />
-            );
         } else if (this.props.user.auth_service === Constants.LDAP_SERVICE) {
             describe = (
                 <FormattedMessage
@@ -563,7 +539,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
         let max = null;
         if (active) {
             let emailOption;
-            let gitlabOption;
             let googleOption;
             let office365Option;
             let openidOption;
@@ -571,30 +546,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
             let samlOption;
 
             if (user.auth_service === '') {
-                if (this.props.enableSignUpWithGitLab) {
-                    gitlabOption = (
-                        <div className='pb-3'>
-                            <Link
-                                className='btn btn-primary'
-                                to={
-                                    '/claim/email_to_oauth?email=' +
-                                    encodeURIComponent(user.email) +
-                                    '&old_type=' +
-                                    user.auth_service +
-                                    '&new_type=' +
-                                    Constants.GITLAB_SERVICE
-                                }
-                            >
-                                <FormattedMessage
-                                    id='user.settings.security.switchGitlab'
-                                    defaultMessage='Switch to Using GitLab SSO'
-                                />
-                            </Link>
-                            <br/>
-                        </div>
-                    );
-                }
-
                 if (this.props.enableSignUpWithGoogle) {
                     googleOption = (
                         <div className='pb-3'>
@@ -744,7 +695,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
             inputs.push(
                 <div key='userSignInOption'>
                     {emailOption}
-                    {gitlabOption}
                     {googleOption}
                     {office365Option}
                     {openidOption}
@@ -782,14 +732,7 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                 defaultMessage='Email and Password'
             />
         );
-        if (this.props.user.auth_service === Constants.GITLAB_SERVICE) {
-            describe = (
-                <FormattedMessage
-                    id='user.settings.security.gitlab'
-                    defaultMessage='GitLab'
-                />
-            );
-        } else if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
+        if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
             describe = (
                 <FormattedMessage
                     id='user.settings.security.google'
@@ -995,7 +938,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
         const passwordSection = this.createPasswordSection();
 
         let numMethods = 0;
-        numMethods = this.props.enableSignUpWithGitLab ? numMethods + 1 : numMethods;
         numMethods = this.props.enableSignUpWithGoogle ? numMethods + 1 : numMethods;
         numMethods = this.props.enableSignUpWithOffice365 ? numMethods + 1 : numMethods;
         numMethods = this.props.enableSignUpWithOpenId ? numMethods + 1 : numMethods;

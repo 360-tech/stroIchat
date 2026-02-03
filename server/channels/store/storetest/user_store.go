@@ -281,34 +281,6 @@ func testUserStoreUpdate(t *testing.T, rctx request.CTX, ss store.Store) {
 		assert.True(t, userUpdate.New.EmailVerified)
 	})
 
-	t.Run("gitlab user", func(t *testing.T) {
-		u3 := &model.User{
-			AuthService:   model.UserAuthServiceGitlab,
-			Email:         MakeEmail(),
-			EmailVerified: true,
-		}
-		_, err := ss.User().Save(rctx, u3)
-		require.NoError(t, err)
-		defer func() { require.NoError(t, ss.User().PermanentDelete(rctx, u3.Id)) }()
-		_, err = ss.Team().SaveMember(rctx, &model.TeamMember{TeamId: model.NewId(), UserId: u3.Id}, -1)
-		require.NoError(t, err)
-
-		oldEmail := u3.Email
-		newEmail := MakeEmail()
-		u3.Email = newEmail
-		userUpdate, err := ss.User().Update(rctx, u3, false)
-		require.NoError(t, err, "Update should not have failed")
-		require.NotNil(t, userUpdate)
-		assert.Equal(t, oldEmail, userUpdate.New.Email, "Email should not have been updated as the update is not trusted")
-		assert.True(t, userUpdate.New.EmailVerified)
-
-		u3.Email = newEmail
-		userUpdate, err = ss.User().Update(rctx, u3, true)
-		require.NoError(t, err, "Update should not have failed")
-		require.NotNil(t, userUpdate)
-		assert.Equal(t, newEmail, userUpdate.New.Email, "Email should have been updated as the update is trusted")
-		assert.True(t, userUpdate.New.EmailVerified)
-	})
 }
 
 func testUserStoreUpdateUpdateAt(t *testing.T, rctx request.CTX, ss store.Store) {
@@ -2263,7 +2235,7 @@ func testUserStoreGetForLogin(t *testing.T, rctx request.CTX, ss store.Store) {
 	u1, err := ss.User().Save(rctx, &model.User{
 		Email:       MakeEmail(),
 		Username:    "u1" + model.NewId(),
-		AuthService: model.UserAuthServiceGitlab,
+		AuthService: "",
 		AuthData:    &auth,
 	})
 
