@@ -363,6 +363,7 @@ export const ldapWizardAdminDefinition: LDAPAdminDefinitionConfigSchemaSettings 
             },
         ],
     },
+
     // {
     //     key: 'admin.authentication.ldap.account_synchronization',
     //     title: 'Synchronise user account properties',

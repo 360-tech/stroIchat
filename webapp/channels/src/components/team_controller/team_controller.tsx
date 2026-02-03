@@ -24,7 +24,6 @@ import useTelemetryIdentitySync from 'components/common/hooks/useTelemetryIdenti
 import InitialLoadingScreen from 'components/initial_loading_screen';
 
 import Constants from 'utils/constants';
-import DesktopApp from 'utils/desktop_api';
 import {cmdOrCtrlPressed, isKeyPressed} from 'utils/keyboard';
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 import {isIosSafari} from 'utils/user_agent';
@@ -64,7 +63,6 @@ function TeamController(props: Props) {
 
     useEffect(() => {
         InitialLoadingScreen.stop('team_controller');
-        DesktopApp.reactAppInitialized();
         async function fetchAllChannels() {
             await props.fetchAllMyTeamsChannels();
             setInitialChannelsLoaded(true);

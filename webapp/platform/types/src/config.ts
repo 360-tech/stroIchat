@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {ContentFlaggingEvent, NotificationTarget} from './content_flagging';
+import type { ContentFlaggingEvent, NotificationTarget } from './content_flagging';
 
 export type ClientConfig = {
     AboutLink: string;
@@ -68,7 +68,6 @@ export type ClientConfig = {
     EnableCustomTermsOfService: string;
     EnableDeveloper: string;
     EnableDiagnostics: string;
-    EnableDesktopLandingPage: 'true' | 'false';
     EnableEmailBatching: string;
     EnableEmailInvitations: string;
     EnableEmojiPicker: string;
@@ -414,7 +413,6 @@ export type ServiceSettings = {
     RefreshPostStatsRunTime: string;
     MaximumPayloadSizeBytes: number;
     EnableAPIPostDeletion: boolean;
-    EnableDesktopLandingPage: boolean;
     MaximumURLLength: number;
     ScheduledPosts: boolean;
     EnableWebHubChannelIteration: boolean;

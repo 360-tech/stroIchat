@@ -136,7 +136,7 @@ export default class PermissionsTree extends React.PureComponent<Props, State> {
                     Permissions.PLAYBOOK_PRIVATE_MANAGE_MEMBERS,
                     Permissions.PLAYBOOK_PRIVATE_MAKE_PUBLIC,
                 ],
-                isVisible: () =>false,
+                isVisible: () => false,
             },
             {
                 id: 'runs',

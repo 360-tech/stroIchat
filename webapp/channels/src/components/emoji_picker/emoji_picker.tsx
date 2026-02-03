@@ -13,6 +13,7 @@ import {getEmojiName} from 'mattermost-redux/utils/emoji_utils';
 
 import EmojiPickerCategories from 'components/emoji_picker/components/emoji_picker_categories';
 import EmojiPickerCurrentResults from 'components/emoji_picker/components/emoji_picker_current_results';
+
 // import EmojiPickerCustomEmojiButton from 'components/emoji_picker/components/emoji_picker_custom_emoji_button';
 import EmojiPickerPreview from 'components/emoji_picker/components/emoji_picker_preview';
 import EmojiPickerSearch from 'components/emoji_picker/components/emoji_picker_search';

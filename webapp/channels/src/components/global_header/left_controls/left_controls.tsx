@@ -4,9 +4,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {isDesktopApp} from 'utils/user_agent';
-
-import HistoryButtons from './history_buttons';
 import ProductMenu from './product_menu';
 
 const LeftControlsContainer = styled.div`
@@ -24,7 +21,6 @@ const LeftControlsContainer = styled.div`
 const LeftControls = (): JSX.Element => (
     <LeftControlsContainer>
         <ProductMenu/>
-        {isDesktopApp() && <HistoryButtons/>}
     </LeftControlsContainer>
 );
 

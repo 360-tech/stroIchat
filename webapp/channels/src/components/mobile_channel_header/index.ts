@@ -12,6 +12,7 @@ import {
     getCurrentChannel,
     getMyCurrentChannelMembership,
 } from 'mattermost-redux/selectors/entities/channels';
+import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {isChannelMuted} from 'mattermost-redux/utils/channel_utils';
 
@@ -21,7 +22,6 @@ import {
     closeMenu as closeRhsMenu,
 } from 'actions/views/rhs';
 import {getIsMobileView} from 'selectors/views/browser';
-import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
 
 import type {GlobalState} from 'types/store';
 

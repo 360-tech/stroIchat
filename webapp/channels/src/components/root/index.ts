@@ -2,23 +2,23 @@
 // See LICENSE.txt for license information.
 
 import isEmpty from 'lodash/isEmpty';
-import type {ConnectedProps} from 'react-redux';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
-import {bindActionCreators} from 'redux';
-import type {Dispatch} from 'redux';
+import type { ConnectedProps } from 'react-redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import type { Dispatch } from 'redux';
 
-import {getFirstAdminSetupComplete} from 'mattermost-redux/actions/general';
-import {getProfiles} from 'mattermost-redux/actions/users';
-import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
-import {getTeam} from 'mattermost-redux/selectors/entities/teams';
-import {shouldShowTermsOfService, getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
+import { getFirstAdminSetupComplete } from 'mattermost-redux/actions/general';
+import { getProfiles } from 'mattermost-redux/actions/users';
+import { getConfig } from 'mattermost-redux/selectors/entities/general';
+import { getTheme } from 'mattermost-redux/selectors/entities/preferences';
+import { getTeam } from 'mattermost-redux/selectors/entities/teams';
+import { shouldShowTermsOfService, getCurrentUserId } from 'mattermost-redux/selectors/entities/users';
 
-import {loadRecentlyUsedCustomEmojis, migrateRecentEmojis} from 'actions/emoji_actions';
-import {isDevModeEnabled} from 'selectors/general';
-import {getShowLaunchingWorkspace} from 'selectors/onboarding';
-import {shouldShowAppBar} from 'selectors/plugins';
+import { loadRecentlyUsedCustomEmojis, migrateRecentEmojis } from 'actions/emoji_actions';
+import { isDevModeEnabled } from 'selectors/general';
+import { getShowLaunchingWorkspace } from 'selectors/onboarding';
+import { shouldShowAppBar } from 'selectors/plugins';
 import {
     getIsRhsExpanded,
     getIsRhsOpen,
@@ -26,9 +26,9 @@ import {
 } from 'selectors/rhs';
 import LocalStorageStore from 'stores/local_storage_store';
 
-import {initializeProducts} from 'plugins/products';
+import { initializeProducts } from 'plugins/products';
 
-import type {GlobalState} from 'types/store/index';
+import type { GlobalState } from 'types/store/index';
 
 import {
     loadConfigAndMe,
@@ -61,7 +61,6 @@ function mapStateToProps(state: GlobalState) {
         iosDownloadLink: config.IosAppDownloadLink,
         androidDownloadLink: config.AndroidAppDownloadLink,
         appDownloadLink: config.AppDownloadLink,
-        enableDesktopLandingPage: config.EnableDesktopLandingPage === 'true',
         permalinkRedirectTeamName: permalinkRedirectTeam ? permalinkRedirectTeam.name : '',
         showTermsOfService,
         plugins,

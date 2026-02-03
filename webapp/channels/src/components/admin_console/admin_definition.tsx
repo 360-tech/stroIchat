@@ -473,6 +473,7 @@ const AdminDefinition: AdminDefinitionType = {
             },
         },
     },
+
     // system_attributes: {
     //     icon: (
     //         <TableLargeIcon
@@ -4374,6 +4375,7 @@ const AdminDefinition: AdminDefinitionType = {
 
         },
     },
+
     // plugins: {
     //     icon: (
     //         <PowerPlugOutlineIcon

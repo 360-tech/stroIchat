@@ -21,8 +21,6 @@ import Popover from 'components/widgets/popover';
 
 import Constants, {searchHintOptions, RHSStates, searchFilesHintOptions} from 'utils/constants';
 import * as Keyboard from 'utils/keyboard';
-import {isServerVersionGreaterThanOrEqualTo} from 'utils/server_version';
-import {isDesktopApp, getDesktopVersion, isMacApp} from 'utils/user_agent';
 
 import type {SearchType} from 'types/store/rhs';
 
@@ -137,7 +135,6 @@ const Search = ({
         new SearchUserProvider(autocompleteUsersInTeam),
     ]);
 
-    const isDesktop = isDesktopApp() && isServerVersionGreaterThanOrEqualTo(getDesktopVersion(), '4.7.0');
     useEffect(() => {
         if (!enableFindShortcut) {
             return undefined;
@@ -145,12 +142,7 @@ const Search = ({
 
         const handleKeyDown = (e: KeyboardEvent) => {
             if (Keyboard.cmdOrCtrlPressed(e) && Keyboard.isKeyPressed(e, Constants.KeyCodes.F)) {
-                if (!isDesktop && !e.shiftKey) {
-                    return;
-                }
-
-                // Special case for Mac Desktop xApp where Ctrl+Cmd+F triggers full screen view
-                if (isMacApp() && e.ctrlKey) {
+                if (!e.shiftKey) {
                     return;
                 }
 

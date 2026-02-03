@@ -6,7 +6,7 @@ import React from 'react';
 
 import {ShortcutKey, ShortcutKeyVariant} from 'components/shortcut_key';
 
-import {isDesktopApp, isMac} from 'utils/user_agent';
+import {isMac} from 'utils/user_agent';
 
 import './search_shortcut.scss';
 
@@ -22,7 +22,7 @@ export const SearchShortcut = ({className, variant}: SearchShortcutProps) => {
     return (
         <span className={classNames('search-shortcut', className)}>
             <ShortcutKey variant={shortcutKeyVariant}>{controlKey}</ShortcutKey>
-            {!isDesktopApp() && <ShortcutKey variant={shortcutKeyVariant}>{'Shift'}</ShortcutKey>}
+            {<ShortcutKey variant={shortcutKeyVariant}>{'Shift'}</ShortcutKey>}
             <ShortcutKey variant={shortcutKeyVariant}>{'F'}</ShortcutKey>
         </span>
     );

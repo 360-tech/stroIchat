@@ -25,6 +25,7 @@ import {removeDraft, updateDraft} from 'actions/views/drafts';
 import {openModal} from 'actions/views/modals';
 import {makeGetDraft} from 'selectors/drafts';
 import {getSelectedPostFocussedAt} from 'selectors/rhs';
+import {getIsMobileView} from 'selectors/views/browser';
 import {connectionErrorCount} from 'selectors/views/system';
 import LocalStorageStore from 'stores/local_storage_store';
 
@@ -44,7 +45,7 @@ import type {TextboxElement} from 'components/textbox';
 import type TextboxClass from 'components/textbox/textbox';
 import {OnboardingTourSteps, OnboardingTourStepsForPartnerUsers, TutorialTourName} from 'components/tours/constant';
 import {SendMessageTour} from 'components/tours/onboarding_tour';
-import {getIsMobileView} from 'selectors/views/browser';
+
 import Constants, {
     Locations,
     StoragePrefixes,
@@ -744,7 +745,7 @@ const AdvancedTextEditor = ({
                     'AdvancedTextEditor__attachment-disabled': !canUploadFiles,
                     scroll: renderScrollbar,
                     'formatting-bar': showFormattingBar,
-                    'AdvancedTextEditor__mb': isMobileView && (location === Locations.CENTER || location === Locations.RHS_COMMENT),
+                    AdvancedTextEditor__mb: isMobileView && (location === Locations.CENTER || location === Locations.RHS_COMMENT),
                 })}
             >
                 {!wasNotifiedOfLogIn && (

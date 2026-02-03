@@ -59,6 +59,7 @@ export function getSiteURLFromWindowObject(obj: WindowObject): string {
     }
 
     return siteURL;
+
     // return 'http://localhost:8010/proxy';
 }
 

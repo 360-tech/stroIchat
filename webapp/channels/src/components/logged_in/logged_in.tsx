@@ -14,7 +14,6 @@ import LoadingScreen from 'components/loading_screen';
 
 import WebSocketClient from 'client/web_websocket_client';
 import Constants from 'utils/constants';
-import DesktopApp from 'utils/desktop_api';
 import {isKeyPressed} from 'utils/keyboard';
 import {getBrowserTimezone} from 'utils/timezone';
 import {isAndroid, isIos} from 'utils/user_agent';
@@ -85,14 +84,6 @@ export default class LoggedIn extends React.PureComponent<Props> {
             GlobalActions.emitBrowserFocus(false);
         }
 
-        // Listen for user activity and notifications from the Desktop App (if applicable)
-        const offUserActivity = DesktopApp.onUserActivityUpdate(this.updateActiveStatus);
-        const offNotificationClicked = DesktopApp.onNotificationClicked(this.clickNotification);
-        this.cleanupDesktopListeners = () => {
-            offUserActivity();
-            offNotificationClicked();
-        };
-
         // Device tracking setup
         if (isIos()) {
             document.body.classList.add('ios');
@@ -113,7 +104,6 @@ export default class LoggedIn extends React.PureComponent<Props> {
 
         if (this.isValidState() && !this.props.mfaRequired) {
             BrowserStore.signalLogin();
-            DesktopApp.signalLogin();
         }
     }
 

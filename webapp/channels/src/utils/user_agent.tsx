@@ -114,10 +114,6 @@ export function isFirefox(): boolean {
     return userAgent().indexOf('Firefox') !== -1;
 }
 
-export function isChromebook(): boolean {
-    return userAgent().indexOf('CrOS') !== -1;
-}
-
 export function isInternetExplorer(): boolean {
     return userAgent().indexOf('Trident') !== -1;
 }
@@ -136,10 +132,6 @@ export function isDesktopApp(): boolean {
 
 export function isWindowsApp(): boolean {
     return isDesktopApp() && isWindows();
-}
-
-export function isMacApp(): boolean {
-    return isDesktopApp() && isMac();
 }
 
 export function isWindows(): boolean {

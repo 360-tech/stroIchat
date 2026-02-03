@@ -82,7 +82,7 @@ const OverageUsersBanner = () => {
             type={isBetween5PercerntAnd10PercentPurchasedSeats ? AnnouncementBarTypes.ADVISOR : AnnouncementBarTypes.CRITICAL}
             showCloseButton={true}
             onButtonClick={() => console.log('AnnouncementBar handleClick, not sales link')}
-            modalButtonText={"Contact Sales"}
+            modalButtonText={'Contact Sales'}
             message={message}
             showLinkAsButton={true}
             isTallBanner={true}

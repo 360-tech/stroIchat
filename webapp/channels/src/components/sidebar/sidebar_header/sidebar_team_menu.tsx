@@ -345,7 +345,7 @@ function JoinAnotherTeamMenuItem() {
                     aria-hidden='true'
                 />
             )}
-            onClick={() =>  history.push('/select_team')}
+            onClick={() => history.push('/select_team')}
             labels={(
                 <FormattedMessage
                     id='sidebarLeft.teamMenu.joinAnotherTeamMenuItem.primaryLabel'

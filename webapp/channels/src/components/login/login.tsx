@@ -7,7 +7,7 @@ import React, {useState, useEffect, useRef, useCallback} from 'react';
 import type {FormEvent} from 'react';
 import {useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
-import {Link, useLocation, useHistory, Route} from 'react-router-dom';
+import {Link, useLocation, useHistory} from 'react-router-dom';
 
 import type {Team} from '@mattermost/types/teams';
 
@@ -36,20 +36,15 @@ import type {CustomizeHeaderType} from 'components/header_footer_route/header_fo
 import LoadingScreen from 'components/loading_screen';
 import Markdown from 'components/markdown';
 import SaveButton from 'components/save_button';
-import EntraIdIcon from 'components/widgets/icons/entra_id_icon';
 import LockIcon from 'components/widgets/icons/lock_icon';
-import LoginGitlabIcon from 'components/widgets/icons/login_gitlab_icon';
-import LoginGoogleIcon from 'components/widgets/icons/login_google_icon';
 import LoginOpenIDIcon from 'components/widgets/icons/login_openid_icon';
 import Input, {SIZE} from 'components/widgets/inputs/input/input';
 import PasswordInput from 'components/widgets/inputs/password_input/password_input';
 
 import Constants from 'utils/constants';
-import DesktopApp from 'utils/desktop_api';
 import {isEmbedded} from 'utils/embed';
 import {t} from 'utils/i18n';
 import {showNotification} from 'utils/notifications';
-import {isDesktopApp} from 'utils/user_agent';
 import {setCSRFFromCookie} from 'utils/utils';
 
 import type {GlobalState} from 'types/store';
@@ -144,47 +139,11 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
     const query = new URLSearchParams(search);
     const redirectTo = query.get('redirect_to');
 
-    const [desktopLoginLink, setDesktopLoginLink] = useState('');
-
     const getExternalLoginOptions = () => {
         const externalLoginOptions: ExternalLoginButtonType[] = [];
 
         if (!enableExternalSignup) {
             return externalLoginOptions;
-        }
-
-        if (enableSignUpWithGitLab) {
-            const url = `${Client4.getOAuthRoute()}/gitlab/login${search}`;
-            externalLoginOptions.push({
-                id: 'gitlab',
-                url,
-                icon: <LoginGitlabIcon/>,
-                label: GitLabButtonText || formatMessage({id: 'login.gitlab', defaultMessage: 'GitLab'}),
-                style: {color: GitLabButtonColor, borderColor: GitLabButtonColor},
-                onClick: handleExternalAuth(url, 'gitlab'),
-            });
-        }
-
-        if (enableSignUpWithGoogle) {
-            const url = `${Client4.getOAuthRoute()}/google/login${search}`;
-            externalLoginOptions.push({
-                id: 'google',
-                url,
-                icon: <LoginGoogleIcon/>,
-                label: formatMessage({id: 'login.google', defaultMessage: 'Google'}),
-                onClick: handleExternalAuth(url, 'google'),
-            });
-        }
-
-        if (enableSignUpWithOffice365) {
-            const url = `${Client4.getOAuthRoute()}/office365/login${search}`;
-            externalLoginOptions.push({
-                id: 'office365',
-                url,
-                icon: <EntraIdIcon/>,
-                label: formatMessage({id: 'login.office365', defaultMessage: 'Entra ID'}),
-                onClick: handleExternalAuth(url, 'office365'),
-            });
         }
 
         if (enableSignUpWithOpenId) {
@@ -215,14 +174,6 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
 
     const handleExternalAuth = (href: string, provider: string) => {
         return (event: React.MouseEvent) => {
-            // If the user is running the desktop app, we need to redirect them to the desktop login page
-            if (isDesktopApp()) {
-                event.preventDefault();
-
-                setDesktopLoginLink(href);
-                history.push(`/login/desktop${search}`);
-            }
-
             // If the user is running the app in an embedded view, we need send the parent window a message
             // to continue the login process if the parent frame answers a message to confirm that is going to
             // take care for the authentication process.
@@ -279,7 +230,6 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
     const onDismissSessionExpired = useCallback(() => {
         LocalStorageStore.setWasLoggedIn(false);
         setSessionExpired(false);
-        DesktopApp.setSessionExpired(false);
         dismissAlert();
     }, []);
 
@@ -438,11 +388,11 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
     useEffect(() => {
         if (onCustomizeHeader) {
             onCustomizeHeader({
-                onBackButtonClick: (showMfa || desktopLoginLink) ? handleHeaderBackButtonOnClick : undefined,
+                onBackButtonClick: (showMfa) ? handleHeaderBackButtonOnClick : undefined,
                 alternateLink: isMobileView ? getAlternateLink() : undefined,
             });
         }
-    }, [onCustomizeHeader, search, showMfa, desktopLoginLink, isMobileView, getAlternateLink]);
+    }, [onCustomizeHeader, search, showMfa, isMobileView, getAlternateLink]);
 
     useEffect(() => {
         // We don't want to redirect outside of this route if we're doing Desktop App auth
@@ -474,7 +424,6 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
                 LocalStorageStore.setWasLoggedIn(false);
             } else {
                 setSessionExpired(true);
-                DesktopApp.setSessionExpired(true);
 
                 // Although the authority remains the local sessionExpired bit on the state, set this
                 // extra field in the querystring to signal the desktop app.
@@ -501,8 +450,6 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
 
             window.removeEventListener('resize', onWindowResize);
             window.removeEventListener('focus', onWindowFocus);
-
-            DesktopApp.setSessionExpired(false);
         };
     }, []);
 
@@ -591,6 +538,7 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
             if (enableSignInWithUsername) {
                 msgId += 'Username';
             }
+
             // if (ldapEnabled) {
             //     msgId += 'LdapUsername';
             // }

@@ -16,10 +16,12 @@ import faviconDefault16x16 from 'images/favicon/favicon-default-16x16.png';
 import faviconDefault32x32 from 'images/favicon/favicon-default-32x32.png';
 import faviconDefault64x64 from 'images/favicon/favicon-default-64x64.png';
 import faviconDefault96x96 from 'images/favicon/favicon-default-96x96.png';
+
 // import faviconMention16x16 from 'images/favicon/favicon-mentions-16x16.png';
 // import faviconMention32x32 from 'images/favicon/favicon-mentions-32x32.png';
 // import faviconMention64x64 from 'images/favicon/favicon-mentions-64x64.png';
 import faviconMention96x96 from 'images/favicon/favicon-mentions-96x96.svg';
+
 // import faviconUnread16x16 from 'images/favicon/favicon-unread-16x16.png';
 // import faviconUnread32x32 from 'images/favicon/favicon-unread-32x32.png';
 // import faviconUnread64x64 from 'images/favicon/favicon-unread-64x64.png';

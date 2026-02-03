@@ -29,11 +29,10 @@ import webSocketClient from 'client/web_websocket_client';
 import {initializePlugins} from 'plugins';
 import 'utils/a11y_controller_instance';
 import {PageLoadContext, SCHEDULED_POST_URL_SUFFIX} from 'utils/constants';
-import DesktopApp from 'utils/desktop_api';
 import {EmojiIndicesByAlias} from 'utils/emoji';
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 import {getSiteURL} from 'utils/url';
-import {isAndroidWeb, isChromebook, isDesktopApp, isIosWeb} from 'utils/user_agent';
+import {isAndroidWeb, isIosWeb} from 'utils/user_agent';
 import {applyTheme, isTextDroppableEvent} from 'utils/utils';
 
 import LuxonController from './luxon_controller';
@@ -117,16 +116,6 @@ export default class Root extends React.PureComponent<Props, State> {
 
     private showLandingPageIfNecessary = () => {
         return;
-        // Only show Landing Page if enabled
-        if (!this.props.enableDesktopLandingPage) {
-            return;
-        }
-
-        // We have nothing to redirect to if we're already on Desktop App
-        // Chromebook has no Desktop App to switch to
-        if (isDesktopApp() || isChromebook()) {
-            return;
-        }
 
         // Nothing to link to if we've removed the Android App download link
         if (isAndroidWeb() && !this.props.androidDownloadLink) {
@@ -205,7 +194,6 @@ export default class Root extends React.PureComponent<Props, State> {
 
         if (prevState.shouldMountAppRoutes === false && this.state.shouldMountAppRoutes === true) {
             if (!doesRouteBelongToTeamControllerRoutes(this.props.location.pathname)) {
-                DesktopApp.reactAppInitialized();
                 InitialLoadingScreen.stop('root');
             }
         }

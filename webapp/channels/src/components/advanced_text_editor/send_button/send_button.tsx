@@ -14,6 +14,7 @@ import {isScheduledPostsEnabled} from 'mattermost-redux/selectors/entities/sched
 import {isSendOnCtrlEnter} from 'selectors/preferences';
 
 import {SendPostOptions} from 'components/advanced_text_editor/send_button/send_post_options';
+
 // import WithTooltip from 'components/with_tooltip';
 import type {ShortcutDefinition} from 'components/with_tooltip/tooltip_shortcut';
 import {ShortcutKeys} from 'components/with_tooltip/tooltip_shortcut';

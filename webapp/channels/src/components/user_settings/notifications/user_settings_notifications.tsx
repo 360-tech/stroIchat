@@ -803,6 +803,7 @@ class NotificationsTab extends React.PureComponent<Props, State> {
                 updateSection={this.handleUpdateSection}
                 max={expandedSection}
                 isDisabled={this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady}
+
                 // collapsedEditButtonWhenDisabled={collapsedEditButtonWhenDisabled}
             />);
     };

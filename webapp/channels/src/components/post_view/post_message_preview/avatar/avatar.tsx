@@ -8,12 +8,12 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import {ensureString} from 'mattermost-redux/utils/post_utils';
 
+import {Logo} from 'components/widgets/icons/logo';
 import Avatar from 'components/widgets/users/avatar';
 
 import {Constants} from 'utils/constants';
 import * as PostUtils from 'utils/post_utils';
 import {imageURLForUser} from 'utils/utils';
-import { Logo } from 'components/widgets/icons/logo';
 
 type Props = {
     post?: Post;

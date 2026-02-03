@@ -1,25 +1,23 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {Store} from 'redux';
-import {onCLS, onFCP, onINP, onLCP} from 'web-vitals/attribution';
-import type {INPMetricWithAttribution, LCPMetricWithAttribution, Metric} from 'web-vitals/attribution';
+import type { Store } from 'redux';
+import { onCLS, onFCP, onINP, onLCP } from 'web-vitals/attribution';
+import type { INPMetricWithAttribution, LCPMetricWithAttribution, Metric } from 'web-vitals/attribution';
 
-import type {Client4} from '@mattermost/client';
+import type { Client4 } from '@mattermost/client';
 
-import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
+import { getConfig } from 'mattermost-redux/selectors/entities/general';
+import { getCurrentUserId } from 'mattermost-redux/selectors/entities/users';
 
-import type {DesktopAppAPI} from 'utils/desktop_api';
+import type { GlobalState } from 'types/store';
 
-import type {GlobalState} from 'types/store';
+import { identifyElementRegion } from './element_identification';
+import type { PerformanceLongTaskTiming } from './long_task';
+import type { PlatformLabel, UserAgentLabel } from './platform_detection';
+import { getPlatformLabel, getUserAgentLabel } from './platform_detection';
 
-import {identifyElementRegion} from './element_identification';
-import type {PerformanceLongTaskTiming} from './long_task';
-import type {PlatformLabel, UserAgentLabel} from './platform_detection';
-import {getDesktopAppVersionLabel, getPlatformLabel, getUserAgentLabel} from './platform_detection';
-
-import {Measure} from '.';
+import { Measure } from '.';
 
 type PerformanceReportMeasure = {
 
@@ -68,12 +66,8 @@ export default class PerformanceReporter {
     private client: Client4;
     private store: Store<GlobalState>;
 
-    private desktopAPI: DesktopAppAPI;
-    private desktopOffListener?: () => void;
-
     private platformLabel: PlatformLabel;
     private userAgentLabel: UserAgentLabel;
-    private desktopAppVersion?: string;
 
     private counters: Map<string, number>;
     private histogramMeasures: PerformanceReportMeasure[];
@@ -85,16 +79,12 @@ export default class PerformanceReporter {
     protected reportPeriodBase = 60 * 1000;
     protected reportPeriodJitter = 15 * 1000;
 
-    constructor(client: Client4, store: Store<GlobalState>, desktopAPI: DesktopAppAPI) {
+    constructor(client: Client4, store: Store<GlobalState>) {
         this.client = client;
         this.store = store;
-        this.desktopAPI = desktopAPI;
 
         this.platformLabel = getPlatformLabel();
         this.userAgentLabel = getUserAgentLabel();
-
-        // We want to submit by prerelease version if it exists, so we don't muddy up the metrics for the release builds
-        this.desktopAppVersion = getDesktopAppVersionLabel(desktopAPI.getAppVersion(), desktopAPI.getPrereleaseVersion());
 
         this.counters = new Map();
         this.histogramMeasures = [];
@@ -131,10 +121,6 @@ export default class PerformanceReporter {
         // Send any remaining metrics when the page becomes hidden rather than when it's unloaded because that's
         // what's recommended by various sites due to unload handlers being unreliable, particularly on mobile.
         addEventListener('visibilitychange', this.handleVisibilityChange);
-
-        if (!this.desktopAPI.isDev()) {
-            this.desktopOffListener = this.desktopAPI.onReceiveMetrics((metrics) => this.collectDesktopAppMetrics(metrics));
-        }
     }
 
     private measurePageNavigation() {
@@ -179,8 +165,6 @@ export default class PerformanceReporter {
         this.reportTimeout = undefined;
 
         this.observer.disconnect();
-
-        this.desktopOffListener?.();
     }
 
     protected handleObservations(list: PerformanceObserverEntryList) {
@@ -331,7 +315,6 @@ export default class PerformanceReporter {
             labels: {
                 platform: this.platformLabel,
                 agent: this.userAgentLabel,
-                desktop_app_version: this.desktopAppVersion,
             },
 
             ...this.getReportStartEnd(now, histogramMeasures, counterMeasures),
@@ -341,7 +324,7 @@ export default class PerformanceReporter {
         };
     }
 
-    private getReportStartEnd(now: number, histogramMeasures: PerformanceReportMeasure[], counterMeasures: PerformanceReportMeasure[]): {start: number; end: number} {
+    private getReportStartEnd(now: number, histogramMeasures: PerformanceReportMeasure[], counterMeasures: PerformanceReportMeasure[]): { start: number; end: number } {
         let start = now;
         let end = 0;
 
@@ -382,7 +365,7 @@ export default class PerformanceReporter {
 
         if (!beaconSent) {
             // The data couldn't be queued as a beacon for some reason, so fall back to sending an immediate fetch
-            fetch(url, {method: 'POST', body: data});
+            fetch(url, { method: 'POST', body: data });
         }
     }
 
@@ -395,7 +378,7 @@ export default class PerformanceReporter {
         return navigator.sendBeacon(url, data);
     }
 
-    protected collectDesktopAppMetrics(metricsMap: Map<string, {cpu?: number; memory?: number}>) {
+    protected collectDesktopAppMetrics(metricsMap: Map<string, { cpu?: number; memory?: number }>) {
         const now = Date.now();
 
         for (const [processName, metrics] of metricsMap.entries()) {
@@ -408,7 +391,7 @@ export default class PerformanceReporter {
                 this.histogramMeasures.push({
                     metric: 'desktop_cpu',
                     timestamp: now,
-                    labels: {process},
+                    labels: { process },
                     value: metrics.cpu,
                 });
             }
@@ -417,7 +400,7 @@ export default class PerformanceReporter {
                 this.histogramMeasures.push({
                     metric: 'desktop_memory',
                     timestamp: now,
-                    labels: {process},
+                    labels: { process },
                     value: metrics.memory,
                 });
             }

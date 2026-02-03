@@ -2,12 +2,14 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
+
 // import {useIntl} from 'react-intl';
 // import {useSelector} from 'react-redux';
 
 // import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
 import './footer.scss';
+
 // import ExternalLink from 'components/external_link';
 
 const Footer = () => {

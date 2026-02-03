@@ -1,6 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {fabClasses} from '@mui/material';
 import React from 'react';
 import {defineMessage, type MessageDescriptor} from 'react-intl';
 
@@ -13,7 +14,6 @@ import {LicenseSkus} from 'utils/constants';
 
 import type {Check, ConsoleAccess} from './types';
 import ValidationResult from './validation';
-import { fabClasses } from '@mui/material';
 
 export const it = {
     not: (func: Check) => (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean, consoleAccess?: ConsoleAccess, cloud?: CloudState, isSystemAdmin?: boolean) => {

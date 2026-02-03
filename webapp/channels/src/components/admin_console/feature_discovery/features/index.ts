@@ -3,10 +3,10 @@
 
 import AnnouncementBannerFeatureDiscovery from './announcement_banner';
 import GitLabFeatureDiscovery from './gitlab';
-import PartnerAccessFeatureDiscovery from './partner_access';
 import LDAPFeatureDiscovery from './ldap';
 import OpenIDFeatureDiscovery from './openid';
 import OpenIDCustomFeatureDiscovery from './openid_custom';
+import PartnerAccessFeatureDiscovery from './partner_access';
 import SAMLFeatureDiscovery from './saml';
 import SystemRolesFeatureDiscovery from './system_roles';
 

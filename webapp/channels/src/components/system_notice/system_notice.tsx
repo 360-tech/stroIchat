@@ -10,7 +10,7 @@ import type {ClientConfig, ClientLicense} from '@mattermost/types/config';
 import type {PreferenceType} from '@mattermost/types/preferences';
 
 import type {Notice} from 'components/system_notice/types';
-import { Logo } from 'components/widgets/icons/logo';
+import {Logo} from 'components/widgets/icons/logo';
 
 import {Preferences} from 'utils/constants';
 

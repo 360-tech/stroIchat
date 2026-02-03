@@ -7,6 +7,7 @@ import {useIntl} from 'react-intl';
 import {
     ApplicationCogIcon,
     InformationOutlineIcon,
+
     // ViewGridPlusOutlineIcon,
     WebhookIncomingIcon,
 } from '@mattermost/compass-icons/components';
@@ -17,6 +18,7 @@ import {Permissions} from 'mattermost-redux/constants';
 import AboutBuildModal from 'components/about_build_modal';
 import {VisitSystemConsoleTour} from 'components/onboarding_tasks';
 import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
+
 // import TeamPermissionGate from 'components/permissions_gates/team_permission_gate';
 // import MarketplaceModal from 'components/plugin_marketplace/marketplace_modal';
 import Menu from 'components/widgets/menu/menu';
@@ -51,6 +53,7 @@ export type Props = {
 
 const ProductMenuList = (props: Props): JSX.Element | null => {
     const {
+
         // teamId,
         teamName,
         siteName,
@@ -62,6 +65,7 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
         enableOutgoingWebhooks,
         canManageSystemBots,
         canManageIntegrations,
+
         // enablePluginMarketplace,
         showVisitSystemConsoleTour,
         onClick,

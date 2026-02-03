@@ -21,7 +21,6 @@ import Menu from 'components/widgets/menu/menu';
 import MenuWrapper from 'components/widgets/menu/menu_wrapper';
 
 import {useReadout} from 'hooks/useReadout';
-import DesktopApp from 'utils/desktop_api';
 import {popoutThread} from 'utils/popouts/popout_windows';
 import {getSiteURL} from 'utils/url';
 import {copyToClipboard} from 'utils/utils';
@@ -105,17 +104,6 @@ function ThreadMenu({
                 })}
                 openLeft={true}
             >
-                {DesktopApp.canPopout() && (
-                    <Menu.ItemAction
-                        buttonClass='PopoutMenuItem'
-                        text={formatMessage({
-                            id: 'threading.threadMenu.openInNewWindow',
-                            defaultMessage: 'Open in new window',
-                        })}
-                        onClick={popout}
-                        icon={<i className='icon icon-dock-window'/>}
-                    />
-                )}
                 <Menu.ItemAction
                     {...isFollowing ? {
                         text: formatMessage({

@@ -24,7 +24,6 @@ import {
     shouldIgnorePost,
 } from 'mattermost-redux/utils/post_utils';
 
-import {sendDesktopNotification} from 'actions/notification_actions';
 import {updateThreadLastOpened} from 'actions/views/threads';
 import {isThreadOpen, makeGetThreadLastViewedAt} from 'selectors/views/threads';
 
@@ -92,13 +91,6 @@ export function completePostReceive(post: Post, websocketMessageProps: NewPostMe
 
         if (isCRTReply) {
             dispatch(setThreadRead(post));
-        }
-
-        const {status, reason, data} = (await dispatch(sendDesktopNotification(post, websocketMessageProps))).data!;
-
-        // Only ACK for posts that require it
-        if (websocketMessageProps.should_ack) {
-            WebSocketClient.acknowledgePostedNotification(post.id, status, reason, data);
         }
 
         return {data: true};

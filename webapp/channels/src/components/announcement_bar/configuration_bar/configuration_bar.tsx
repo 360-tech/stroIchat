@@ -60,10 +60,9 @@ const ConfigurationAnnouncementBar = (props: Props) => {
         };
 
         const siteURLMessage = formatMessage({
-                id: 'announcement_bar.error.site_url.full',
-                defaultMessage: 'Please configure your <linkSite>site URL</linkSite> on the <linkConsole>System Console</linkConsole>.',
-            }, values);
-        
+            id: 'announcement_bar.error.site_url.full',
+            defaultMessage: 'Please configure your <linkSite>site URL</linkSite> on the <linkConsole>System Console</linkConsole>.',
+        }, values);
 
         return (
             <TextDismissableBar

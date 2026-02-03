@@ -197,17 +197,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         setIsMobileView(window.innerWidth < MOBILE_SCREEN_WIDTH);
     }, 100);
 
-    // const desktopExternalAuth = (href: string) => {
-    //     return (event: React.MouseEvent) => {
-    //         if (isDesktopApp()) {
-    //             event.preventDefault();
-
-    //             setDesktopLoginLink(href);
-    //             history.push(`/signup_user_complete/desktop${search}`);
-    //         }
-    //     };
-    // };
-
     useEffect(() => {
         dispatch(removeGlobalItem('team'));
 
@@ -662,6 +651,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                         defaultMessage='By proceeding to create your account and use {siteName}, you agree to our Terms of Use and Privacy Policy. If you do not agree, you cannot use {siteName}.'
                                         values={{
                                             siteName: SiteName,
+
                                             // termsOfUseLink: (chunks) => null,
                                             // // (
                                             // //     <ExternalLink

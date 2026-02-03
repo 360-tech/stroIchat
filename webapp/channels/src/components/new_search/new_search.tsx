@@ -29,8 +29,6 @@ import a11yController from 'utils/a11y_controller_instance';
 import {focusElement} from 'utils/a11y_utils';
 import {RootHtmlPortalId, Constants} from 'utils/constants';
 import * as Keyboard from 'utils/keyboard';
-import {isServerVersionGreaterThanOrEqualTo} from 'utils/server_version';
-import {isDesktopApp, getDesktopVersion, isMacApp} from 'utils/user_agent';
 
 import SearchBox from './search_box';
 
@@ -146,8 +144,6 @@ const NewSearch = (): JSX.Element => {
     ]);
 
     useEffect(() => {
-        const isDesktop = isDesktopApp() && isServerVersionGreaterThanOrEqualTo(getDesktopVersion(), '4.7.0');
-
         const handleKeyDown = (e: KeyboardEvent) => {
             if (Keyboard.isKeyPressed(e, Constants.KeyCodes.ESCAPE)) {
                 e.preventDefault();
@@ -162,12 +158,7 @@ const NewSearch = (): JSX.Element => {
             }
 
             if (Keyboard.cmdOrCtrlPressed(e) && Keyboard.isKeyPressed(e, Constants.KeyCodes.F)) {
-                if (!isDesktop && !e.shiftKey) {
-                    return;
-                }
-
-                // Special case for Mac Desktop xApp where Ctrl+Cmd+F triggers full screen view
-                if (isMacApp() && e.ctrlKey) {
+                if (!e.shiftKey) {
                     return;
                 }
 

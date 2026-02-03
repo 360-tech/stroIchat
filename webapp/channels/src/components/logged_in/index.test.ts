@@ -1,12 +1,13 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
+import {isEnterpriseLicense} from 'utils/license_utils';
+
 import type {ClientLicense} from '@mattermost/types/config';
 
 import mergeObjects from 'packages/mattermost-redux/test/merge_objects';
 import TestHelper from 'packages/mattermost-redux/test/test_helper';
 import {LicenseSkus} from 'utils/constants';
-import {isEnterpriseLicense} from 'utils/license_utils';
 
 import type {GlobalState} from 'types/store';
 

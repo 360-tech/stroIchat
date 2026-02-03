@@ -9,7 +9,7 @@ import type {UserProfile} from '@mattermost/types/users';
 import {ensureString} from 'mattermost-redux/utils/post_utils';
 
 import ProfilePicture from 'components/profile_picture';
-import { Logo } from 'components/widgets/icons/logo';
+import {Logo} from 'components/widgets/icons/logo';
 
 import Constants, {UserStatuses} from 'utils/constants';
 import * as PostUtils from 'utils/post_utils';
