@@ -50,17 +50,6 @@ import ClusterSettings, {searchableStrings as clusterSearchableStrings} from './
 import CustomURLSchemesSetting from './custom_url_schemes_setting';
 import DatabaseSettings, {searchableStrings as databaseSearchableStrings} from './database_settings';
 import ElasticSearchSettings, {searchableStrings as elasticSearchSearchableStrings} from './elasticsearch_settings';
-import {
-    AnnouncementBannerFeatureDiscovery,
-    GitLabFeatureDiscovery,
-    PartnerAccessFeatureDiscovery,
-    LDAPFeatureDiscovery,
-    OpenIDCustomFeatureDiscovery,
-    OpenIDFeatureDiscovery,
-    SAMLFeatureDiscovery,
-    SystemRolesFeatureDiscovery,
-} from './feature_discovery/features';
-import UserAttributesFeatureDiscovery from './feature_discovery/features/user_attributes';
 import FeatureFlags, {messages as featureFlagsMessages} from './feature_flags';
 import GroupDetails from './group_settings/group_details';
 import GroupSettings from './group_settings/group_settings';
@@ -450,27 +439,6 @@ const AdminDefinition: AdminDefinitionType = {
                 },
                 restrictedIndicator: getRestrictedIndicator(),
             },
-            system_roles_feature_discovery: {
-                url: 'user_management/system_roles',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.systemRoles', defaultMessage: 'Delegated Granular Administration'}),
-                isHidden: it.any(
-                    it.licensedForFeature('LDAPGroups'),
-                ),
-                schema: {
-                    id: 'SystemRoles',
-                    name: defineMessage({id: 'admin.permissions.systemRoles', defaultMessage: 'Delegated Granular Administration'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: SystemRolesFeatureDiscovery,
-                            key: 'SystemRolesFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.Enterprise),
-            },
         },
     },
 
@@ -496,28 +464,6 @@ const AdminDefinition: AdminDefinitionType = {
     //                 id: 'SystemProperties',
     //                 component: SystemProperties,
     //             },
-    //         },
-    //         user_attributes_feature_discovery: {
-    //             url: 'system_attributes/user_attributes',
-    //             isDiscovery: true,
-    //             title: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
-    //             isHidden: it.any(
-    //                 it.minLicenseTier(LicenseSkus.Enterprise),
-    //                 it.configIsFalse('FeatureFlags', 'CustomProfileAttributes'),
-    //             ),
-    //             schema: {
-    //                 id: 'SystemProperties',
-    //                 name: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
-    //                 settings: [
-    //                     {
-    //                         type: 'custom',
-    //                         component: UserAttributesFeatureDiscovery,
-    //                         key: 'UserAttributesFeatureDiscovery',
-    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-    //                     },
-    //                 ],
-    //             },
-    //             restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.EnterpriseAdvanced),
     //         },
     //         access_control_policy_details_edit: {
     //             url: `system_attributes/attribute_based_access_control/edit_policy/:policy_id(${ID_PATH_PATTERN})`,
@@ -2491,27 +2437,6 @@ const AdminDefinition: AdminDefinitionType = {
                 },
                 restrictedIndicator: getRestrictedIndicator(),
             },
-            announcement_banner_feature_discovery: {
-                url: 'site_config/announcement_banner',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.announcement', defaultMessage: 'System-wide Notifications'}),
-                isHidden: it.any(
-                    it.licensedForFeature('Announcement'),
-                ),
-                schema: {
-                    id: 'AnnouncementSettings',
-                    name: defineMessage({id: 'admin.site.announcementBanner', defaultMessage: 'System-wide Notifications'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: AnnouncementBannerFeatureDiscovery,
-                            key: 'AnnouncementBannerFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true),
-            },
             emoji: {
                 url: 'site_config/emoji',
                 title: defineMessage({id: 'admin.sidebar.emoji', defaultMessage: 'Emoji'}),
@@ -3192,27 +3117,6 @@ const AdminDefinition: AdminDefinitionType = {
                     component: LDAPWizard,
                 },
             },
-            ldap_feature_discovery: {
-                url: 'authentication/ldap',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.ldap', defaultMessage: 'AD/LDAP'}),
-                isHidden: it.any(
-                    it.licensedForFeature('LDAP'),
-                ),
-                schema: {
-                    id: 'LdapSettings',
-                    name: defineMessage({id: 'admin.authentication.ldap', defaultMessage: 'AD/LDAP'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: LDAPFeatureDiscovery,
-                            key: 'LDAPFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true),
-            },
             saml: {
                 url: 'authentication/saml',
                 title: defineMessage({id: 'admin.sidebar.saml', defaultMessage: 'SAML 2.0'}),
@@ -3636,27 +3540,6 @@ const AdminDefinition: AdminDefinitionType = {
                     ],
                 },
                 restrictedIndicator: getRestrictedIndicator(),
-            },
-            saml_feature_discovery: {
-                url: 'authentication/saml',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.saml', defaultMessage: 'SAML 2.0'}),
-                isHidden: it.any(
-                    it.licensedForFeature('SAML'),
-                ),
-                schema: {
-                    id: 'SamlSettings',
-                    name: defineMessage({id: 'admin.authentication.saml', defaultMessage: 'SAML 2.0'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: SAMLFeatureDiscovery,
-                            key: 'SAMLFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true),
             },
             oauth: {
                 url: 'authentication/oauth',
@@ -4319,58 +4202,9 @@ const AdminDefinition: AdminDefinitionType = {
                             isHidden: it.any(it.not(it.stateEquals('openidType', Constants.OPENID_SERVICE)), it.licensedForCloudStarter),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
                         },
-                        {
-                            type: 'custom',
-                            key: 'OpenIDCustomFeatureDiscovery',
-                            component: OpenIDCustomFeatureDiscovery,
-                            isHidden: it.not(it.all(it.stateEquals('openidType', Constants.OPENID_SERVICE), it.licensedForCloudStarter)),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
                     ],
                 },
                 restrictedIndicator: getRestrictedIndicator(),
-            },
-            openid_feature_discovery: {
-                url: 'authentication/openid',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.openid', defaultMessage: 'OpenID Connect'}),
-                isHidden: it.any(
-                    it.any(it.licensedForFeature('OpenId'), it.cloudLicensed),
-                ),
-                schema: {
-                    id: 'OpenIdSettings',
-                    name: defineMessage({id: 'admin.authentication.openid', defaultMessage: 'OpenID Connect'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: OpenIDFeatureDiscovery,
-                            key: 'OpenIDFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true),
-            },
-            gitlab_feature_discovery: {
-                url: 'authentication/gitlab',
-                isDiscovery: true,
-                title: defineMessage({id: 'admin.sidebar.gitlab', defaultMessage: 'GitLab'}),
-                isHidden: it.any(
-                    it.licensedForFeature('OpenId'),
-                ),
-                schema: {
-                    id: 'GitLabSettings',
-                    name: defineMessage({id: 'admin.authentication.gitlab', defaultMessage: 'GitLab'}),
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: GitLabFeatureDiscovery,
-                            key: 'GitLabFeatureDiscovery',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-                        },
-                    ],
-                },
-                restrictedIndicator: getRestrictedIndicator(true),
             },
 
         },
