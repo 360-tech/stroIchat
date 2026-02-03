@@ -6,7 +6,6 @@ import exif2css from 'exif2css';
 import type {ClientConfig} from '@mattermost/types/config';
 
 import Constants from 'utils/constants';
-import * as UserAgent from 'utils/user_agent';
 
 export const FileSizes = {
     Bit: 1,
@@ -18,14 +17,9 @@ export const FileSizes = {
 
 export function canUploadFiles(config: Partial<ClientConfig>): boolean {
     const enableFileAttachments = isFileAttachmentsEnabled(config);
-    const enableMobileFileUpload = isMobileFileUploadsEnabled(config);
 
     if (!enableFileAttachments) {
         return false;
-    }
-
-    if (UserAgent.isMobileApp()) {
-        return enableMobileFileUpload;
     }
 
     return true;
@@ -43,11 +37,7 @@ export function isPublicLinksEnabled(config: Partial<ClientConfig>): boolean {
     return config.EnablePublicLink === 'true';
 }
 
-export function canDownloadFiles(config: Partial<ClientConfig>): boolean {
-    if (UserAgent.isMobileApp()) {
-        return config.EnableMobileFileDownload === 'true';
-    }
-
+export function canDownloadFiles(): boolean {
     return true;
 }
 

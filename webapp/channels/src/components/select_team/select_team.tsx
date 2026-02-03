@@ -305,24 +305,21 @@ export default class SelectTeam extends React.PureComponent<Props, State> {
             </SystemPermissionGate>
         );
 
-        let adminConsoleLink;
-        if (!UserAgent.isMobileApp()) {
-            adminConsoleLink = (
-                <SystemPermissionGate permissions={[Permissions.MANAGE_SYSTEM]}>
-                    <div className='mt-8 hidden-xs'>
-                        <Link
-                            to='/admin_console'
-                            className='signup-team-login'
-                        >
-                            <FormattedMessage
-                                id='signup_team_system_console'
-                                defaultMessage='Go to System Console'
-                            />
-                        </Link>
-                    </div>
-                </SystemPermissionGate>
-            );
-        }
+        const adminConsoleLink = (
+            <SystemPermissionGate permissions={[Permissions.MANAGE_SYSTEM]}>
+                <div className='mt-8 hidden-xs'>
+                    <Link
+                        to='/admin_console'
+                        className='signup-team-login'
+                    >
+                        <FormattedMessage
+                            id='signup_team_system_console'
+                            defaultMessage='Go to System Console'
+                        />
+                    </Link>
+                </div>
+            </SystemPermissionGate>
+        );
 
         let headerButton;
         if (this.state.error) {

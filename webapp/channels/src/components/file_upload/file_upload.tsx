@@ -31,7 +31,6 @@ import {cmdOrCtrlPressed, isKeyPressed} from 'utils/keyboard';
 import {hasPlainText, createFileFromClipboardDataItem} from 'utils/paste';
 import {
     isIosChrome,
-    isMobileApp,
 } from 'utils/user_agent';
 import {
     clearFileInput,
@@ -605,11 +604,7 @@ export class FileUpload extends PureComponent<Props, State> {
 
     render() {
         const {formatMessage} = this.props.intl;
-        let multiple = true;
-        if (isMobileApp()) {
-            // iOS WebViews don't upload videos properly in multiple mode
-            multiple = false;
-        }
+        const multiple = true;
 
         let accept = '';
         if (isIosChrome()) {

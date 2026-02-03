@@ -21,7 +21,6 @@ import UnreadsStatusHandler from 'components/unreads_status_handler';
 
 import Pluggable from 'plugins/pluggable';
 import {Constants} from 'utils/constants';
-import {isInternetExplorer, isEdge} from 'utils/user_agent';
 
 const ResetStatusModal = makeAsyncComponent('ResetStatusModal', lazy(() => import('components/reset_status_modal')));
 const MobileSidebarRight = makeAsyncComponent('MobileSidebarRight', lazy(() => import('components/mobile_sidebar_right')));
@@ -38,12 +37,11 @@ export default function ChannelController(props: Props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const isMsBrowser = isInternetExplorer() || isEdge();
         const {navigator} = window;
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const platform = navigator?.userAgentData?.platform || navigator?.platform || 'unknown';
-        document.body.classList.add(...getClassnamesForBody(platform, isMsBrowser));
+        document.body.classList.add(...getClassnamesForBody(platform));
 
         return () => {
             document.body.classList.remove(...BODY_CLASS_FOR_CHANNEL);
