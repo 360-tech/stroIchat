@@ -41,10 +41,9 @@ const OpenIdConvert = ({
         if (newConfig.Office365Settings.DirectoryId) {
             newConfig.Office365Settings.DiscoveryEndpoint = 'https://login.microsoftonline.com/' + newConfig.Office365Settings.DirectoryId + '/v2.0/.well-known/openid-configuration';
         }
-        newConfig.GoogleSettings.DiscoveryEndpoint = 'https://accounts.google.com/.well-known/openid-configuration';
 
 
-        ['Office365Settings', 'GoogleSettings'].forEach((setting) => {
+        ['Office365Settings'].forEach((setting) => {
             newConfig[setting].Scope = Constants.OPENID_SCOPES;
             newConfig[setting].UserAPIEndpoint = '';
             newConfig[setting].AuthEndpoint = '';

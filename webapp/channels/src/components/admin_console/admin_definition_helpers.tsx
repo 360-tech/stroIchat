@@ -65,18 +65,11 @@ export const validators = {
 };
 
 export const usesLegacyOauth = (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean, consoleAccess?: ConsoleAccess, cloud?: CloudState) => {
-    if (!config.GoogleSettings || !config.Office365Settings) {
+    if (!config.Office365Settings) {
         return false;
     }
 
     return it.any(
-        it.all(
-            it.not(it.configContains('GoogleSettings', 'Scope', 'openid')),
-            it.any(
-                it.configIsTrue('GoogleSettings', 'Id'),
-                it.configIsTrue('GoogleSettings', 'Secret'),
-            ),
-        ),
         it.all(
             it.not(it.configContains('Office365Settings', 'Scope', 'openid')),
             it.any(

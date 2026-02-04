@@ -47,7 +47,6 @@ const (
 	PasswordMaximumLength = 72
 	PasswordMinimumLength = 5
 
-	ServiceGoogle    = "google"
 	ServiceOffice365 = "office365"
 	ServiceOpenid    = "openid"
 
@@ -254,11 +253,6 @@ const (
 
 	ImageProxyTypeLocal     = "local"
 	ImageProxyTypeAtmosCamo = "atmos/camo"
-
-	GoogleSettingsDefaultScope           = "profile email"
-	GoogleSettingsDefaultAuthEndpoint    = "https://accounts.google.com/o/oauth2/v2/auth"
-	GoogleSettingsDefaultTokenEndpoint   = "https://www.googleapis.com/oauth2/v4/token"
-	GoogleSettingsDefaultUserAPIEndpoint = "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,nicknames,metadata"
 
 	Office365SettingsDefaultScope           = "User.Read"
 	Office365SettingsDefaultAuthEndpoint    = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
@@ -3824,7 +3818,6 @@ type Config struct {
 	SupportSettings             SupportSettings
 	AnnouncementSettings        AnnouncementSettings
 	ThemeSettings               ThemeSettings
-	GoogleSettings              SSOSettings
 	Office365Settings           Office365Settings
 	OpenIdSettings              SSOSettings
 	LdapSettings                LdapSettings
@@ -3888,8 +3881,6 @@ func (o *Config) ToJSONFiltered(tagType, tagValue string) ([]byte, error) {
 
 func (o *Config) GetSSOService(service string) *SSOSettings {
 	switch service {
-	case ServiceGoogle:
-		return &o.GoogleSettings
 	case ServiceOffice365:
 		return o.Office365Settings.SSOSettings()
 	case ServiceOpenid:
@@ -3930,7 +3921,6 @@ func (o *Config) SetDefaults() {
 	o.PrivacySettings.setDefaults()
 	o.Office365Settings.setDefaults()
 	o.Office365Settings.setDefaults()
-	o.GoogleSettings.setDefaults(GoogleSettingsDefaultScope, GoogleSettingsDefaultAuthEndpoint, GoogleSettingsDefaultTokenEndpoint, GoogleSettingsDefaultUserAPIEndpoint, "")
 	o.OpenIdSettings.setDefaults(OpenidSettingsDefaultScope, "", "", "", "#145DBF")
 	o.ServiceSettings.SetDefaults(isUpdate)
 	o.PasswordSettings.SetDefaults()
@@ -4830,10 +4820,6 @@ func (o *Config) Sanitize(pluginManifests []*Manifest, opts *SanitizeOptions) {
 
 	if o.EmailSettings.SMTPPassword != nil && *o.EmailSettings.SMTPPassword != "" {
 		*o.EmailSettings.SMTPPassword = FakeSetting
-	}
-
-	if o.GoogleSettings.Secret != nil && *o.GoogleSettings.Secret != "" {
-		*o.GoogleSettings.Secret = FakeSetting
 	}
 
 	if o.Office365Settings.Secret != nil && *o.Office365Settings.Secret != "" {

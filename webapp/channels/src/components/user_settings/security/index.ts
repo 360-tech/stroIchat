@@ -35,7 +35,6 @@ function mapStateToProps(state: GlobalState, ownProps: Props) {
 
     const enableOAuthServiceProvider = config.EnableOAuthServiceProvider === 'true';
     const allowedToSwitchToEmail = config.EnableSignUpWithEmail === 'true' && (config.EnableSignInWithEmail === 'true' || config.EnableSignInWithUsername === 'true');
-    const enableSignUpWithGoogle = config.EnableSignUpWithGoogle === 'true';
     const enableSignUpWithOpenId = config.EnableSignUpWithOpenId === 'true';
     const enableLdap = config.EnableLdap === 'true';
     const enableSaml = config.EnableSaml === 'true';
@@ -46,7 +45,6 @@ function mapStateToProps(state: GlobalState, ownProps: Props) {
         canUseAccessTokens: tokensEnabled && userHasTokenRole,
         enableOAuthServiceProvider,
         allowedToSwitchToEmail,
-        enableSignUpWithGoogle,
         enableSignUpWithOpenId,
         enableLdap,
         enableSaml,

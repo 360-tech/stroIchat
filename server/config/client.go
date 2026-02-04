@@ -343,7 +343,6 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 	props["SamlLoginButtonColor"] = ""
 	props["SamlLoginButtonBorderColor"] = ""
 	props["SamlLoginButtonTextColor"] = ""
-	props["EnableSignUpWithGoogle"] = "false"
 	props["EnableSignUpWithOffice365"] = "false"
 	props["EnableSignUpWithOpenId"] = "false"
 	props["OpenIdButtonText"] = ""
@@ -382,16 +381,6 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 
 		if *license.Features.MFA {
 			props["EnforceMultifactorAuthentication"] = strconv.FormatBool(*c.ServiceSettings.EnforceMultifactorAuthentication)
-		}
-
-		if license.IsCloud() {
-			// MM-48727: enable SSO options for free cloud - not in self hosted
-			*license.Features.GoogleOAuth = true
-			*license.Features.Office365OAuth = true
-		}
-
-		if *license.Features.GoogleOAuth {
-			props["EnableSignUpWithGoogle"] = strconv.FormatBool(*c.GoogleSettings.Enable)
 		}
 
 		if *license.Features.Office365OAuth {

@@ -59,7 +59,6 @@ type Props = {
     canUseAccessTokens: boolean;
     enableOAuthServiceProvider: boolean;
     allowedToSwitchToEmail: boolean;
-    enableSignUpWithGoogle: boolean;
     enableSignUpWithOpenId: boolean;
     enableLdap: boolean;
     enableSaml: boolean;
@@ -402,22 +401,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                     </div>,
                 );
             } else if (
-                this.props.user.auth_service === Constants.GOOGLE_SERVICE
-            ) {
-                inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
-                        <div className='pb-3'>
-                            <FormattedMessage
-                                id='user.settings.security.passwordGoogleCantUpdate'
-                                defaultMessage='Login occurs through Google Apps. Password cannot be updated.'
-                            />
-                        </div>
-                    </div>,
-                );
-            } else if (
                 this.props.user.auth_service === Constants.OFFICE365_SERVICE
             ) {
                 inputs.push(
@@ -496,13 +479,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                     defaultMessage='Login done through SAML'
                 />
             );
-        } else if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
-            describe = (
-                <FormattedMessage
-                    id='user.settings.security.loginGoogle'
-                    defaultMessage='Login done through Google Apps'
-                />
-            );
         } else if (
             this.props.user.auth_service === Constants.OFFICE365_SERVICE
         ) {
@@ -539,37 +515,12 @@ export class SecurityTab extends React.PureComponent<Props, State> {
         let max = null;
         if (active) {
             let emailOption;
-            let googleOption;
             let office365Option;
             let openidOption;
             let ldapOption;
             let samlOption;
 
             if (user.auth_service === '') {
-                if (this.props.enableSignUpWithGoogle) {
-                    googleOption = (
-                        <div className='pb-3'>
-                            <Link
-                                className='btn btn-primary'
-                                to={
-                                    '/claim/email_to_oauth?email=' +
-                                    encodeURIComponent(user.email) +
-                                    '&old_type=' +
-                                    user.auth_service +
-                                    '&new_type=' +
-                                    Constants.GOOGLE_SERVICE
-                                }
-                            >
-                                <FormattedMessage
-                                    id='user.settings.security.switchGoogle'
-                                    defaultMessage='Switch to Using Google SSO'
-                                />
-                            </Link>
-                            <br/>
-                        </div>
-                    );
-                }
-
                 if (this.props.enableSignUpWithOffice365) {
                     office365Option = (
                         <div className='pb-3'>
@@ -695,7 +646,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
             inputs.push(
                 <div key='userSignInOption'>
                     {emailOption}
-                    {googleOption}
                     {office365Option}
                     {openidOption}
                     {ldapOption}
@@ -732,14 +682,7 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                 defaultMessage='Email and Password'
             />
         );
-        if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
-            describe = (
-                <FormattedMessage
-                    id='user.settings.security.google'
-                    defaultMessage='Google'
-                />
-            );
-        } else if (
+        if (
             this.props.user.auth_service === Constants.OFFICE365_SERVICE
         ) {
             describe = (
@@ -938,7 +881,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
         const passwordSection = this.createPasswordSection();
 
         let numMethods = 0;
-        numMethods = this.props.enableSignUpWithGoogle ? numMethods + 1 : numMethods;
         numMethods = this.props.enableSignUpWithOffice365 ? numMethods + 1 : numMethods;
         numMethods = this.props.enableSignUpWithOpenId ? numMethods + 1 : numMethods;
         numMethods = this.props.enableLdap ? numMethods + 1 : numMethods;

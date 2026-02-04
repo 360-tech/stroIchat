@@ -3563,27 +3563,19 @@ const AdminDefinition: AdminDefinitionType = {
                         if (config.Office365Settings?.Enable) {
                             newState.oauthType = Constants.OFFICE365_SERVICE;
                         }
-                        if (config.GoogleSettings?.Enable) {
-                            newState.oauthType = Constants.GOOGLE_SERVICE;
-                        }
 
                         return newState;
                     },
                     onConfigSave: (config) => {
                         const newConfig = {...config};
                         newConfig.Office365Settings = config.Office365Settings || {};
-                        newConfig.GoogleSettings = config.GoogleSettings || {};
                         newConfig.OpenIdSettings = config.OpenIdSettings || {};
 
                         newConfig.Office365Settings.Enable = false;
-                        newConfig.GoogleSettings.Enable = false;
                         newConfig.OpenIdSettings.Enable = false;
 
                         if (config.oauthType === Constants.OFFICE365_SERVICE) {
                             newConfig.Office365Settings.Enable = true;
-                        }
-                        if (config.oauthType === Constants.GOOGLE_SERVICE) {
-                            newConfig.GoogleSettings.Enable = true;
                         }
                         delete newConfig.oauthType;
                         return newConfig;
@@ -3607,40 +3599,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: 'off',
                                     display_name: defineMessage({id: 'admin.oauth.off', defaultMessage: 'Do not allow sign-in via an OAuth 2.0 provider.'}),
-                                },
-                                {
-                                    value: Constants.GOOGLE_SERVICE,
-                                    display_name: defineMessage({id: 'admin.oauth.google', defaultMessage: 'Google Apps'}),
-                                    isHidden: it.all(it.not(it.licensedForFeature('GoogleOAuth')), it.not(it.cloudLicensed)),
-                                    help_text: defineMessage({id: 'admin.google.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Google account.\n2. Go to <linkConsole>https://console.developers.google.com</linkConsole>, click <strong>Credentials</strong> in the left hand sidebar and enter "Stroichat - your-company-name" as the <strong>Project Name</strong>, then click <strong>Create</strong>.\n3. Click the <strong>OAuth consent screen</strong> header and enter "Stroichat" as the <strong>Product name shown to users</strong>, then click <strong>Save</strong>.\n4. Under the <strong>Credentials</strong> header, click <strong>Create credentials</strong>, choose <strong>OAuth client ID</strong> and select <strong>Web Application</strong>.\n5. Under <strong>Restrictions</strong> and <strong>Authorized redirect URIs</strong> enter <strong>"your-stroichat-url/signup/google/complete"</strong> (example: http://localhost:8065/signup/google/complete). Click <strong>Create</strong>.\n6. Paste the <strong>Client ID</strong> and <strong>Client Secret</strong> to the fields below, then click <strong>Save</strong>.\n7. Go to the <linkAPI>Google People API</linkAPI> and click <strong>Enable</strong>.'}),
-                                    help_text_markdown: false,
-                                    help_text_values: {
-                                        linkLogin: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://accounts.google.com/login'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        linkConsole: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://console.developers.google.com'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        linkAPI: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://console.developers.google.com/apis/library/people.googleapis.com'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        strong: (msg: string) => <strong>{msg}</strong>,
-                                    },
                                 },
                                 {
                                     value: Constants.OFFICE365_SERVICE,
@@ -3678,48 +3636,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 },
                             ],
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GoogleSettings.Id',
-                            label: defineMessage({id: 'admin.google.clientIdTitle', defaultMessage: 'Client ID:'}),
-                            help_text: defineMessage({id: 'admin.google.clientIdDescription', defaultMessage: 'The Client ID you received when registering your application with Google.'}),
-                            placeholder: defineMessage({id: 'admin.google.clientIdExample', defaultMessage: 'E.g.: "7602141235235-url0fhs1mayfasbmop5qlfns8dh4.apps.googleusercontent.com"'}),
-                            isHidden: it.not(it.stateEquals('oauthType', 'google')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GoogleSettings.Secret',
-                            label: defineMessage({id: 'admin.google.clientSecretTitle', defaultMessage: 'Client Secret:'}),
-                            help_text: defineMessage({id: 'admin.google.clientSecretDescription', defaultMessage: 'The Client Secret you received when registering your application with Google.'}),
-                            placeholder: defineMessage({id: 'admin.google.clientSecretExample', defaultMessage: 'E.g.: "H8sz0Az-dDs2p15-7QzD231"'}),
-                            isHidden: it.not(it.stateEquals('oauthType', 'google')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GoogleSettings.UserAPIEndpoint',
-                            label: defineMessage({id: 'admin.google.userTitle', defaultMessage: 'User API Endpoint:'}),
-                            dynamic_value: () => 'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,nicknames,metadata',
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'google')),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GoogleSettings.AuthEndpoint',
-                            label: defineMessage({id: 'admin.google.authTitle', defaultMessage: 'Auth Endpoint:'}),
-                            dynamic_value: () => 'https://accounts.google.com/o/oauth2/v2/auth',
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'google')),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GoogleSettings.TokenEndpoint',
-                            label: defineMessage({id: 'admin.google.tokenTitle', defaultMessage: 'Token Endpoint:'}),
-                            dynamic_value: () => 'https://www.googleapis.com/oauth2/v4/token',
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'google')),
                         },
                         {
                             type: 'text',
@@ -3800,9 +3716,6 @@ const AdminDefinition: AdminDefinitionType = {
                         if (config.Office365Settings?.Enable) {
                             newState.openidType = Constants.OFFICE365_SERVICE;
                         }
-                        if (config.GoogleSettings?.Enable) {
-                            newState.openidType = Constants.GOOGLE_SERVICE;
-                        }
                         if (config.OpenIdSettings?.Enable) {
                             newState.openidType = Constants.OPENID_SERVICE;
                         }
@@ -3812,18 +3725,14 @@ const AdminDefinition: AdminDefinitionType = {
                     onConfigSave: (config) => {
                         const newConfig = {...config};
                         newConfig.Office365Settings = config.Office365Settings || {};
-                        newConfig.GoogleSettings = config.GoogleSettings || {};
                         newConfig.OpenIdSettings = config.OpenIdSettings || {};
 
                         newConfig.Office365Settings.Enable = false;
-                        newConfig.GoogleSettings.Enable = false;
                         newConfig.OpenIdSettings.Enable = false;
 
                         let configSetting = '';
                         if (config.openidType === Constants.OFFICE365_SERVICE) {
                             configSetting = 'Office365Settings';
-                        } else if (config.openidType === Constants.GOOGLE_SERVICE) {
-                            configSetting = 'GoogleSettings';
                         } else if (config.openidType === Constants.OPENID_SERVICE) {
                             configSetting = 'OpenIdSettings';
                         }
@@ -3858,39 +3767,6 @@ const AdminDefinition: AdminDefinitionType = {
                                 {
                                     value: 'off',
                                     display_name: defineMessage({id: 'admin.openid.off', defaultMessage: 'Do not allow sign-in via an OpenID provider.'}),
-                                },
-                                {
-                                    value: Constants.GOOGLE_SERVICE,
-                                    display_name: defineMessage({id: 'admin.openid.google', defaultMessage: 'Google Apps'}),
-                                    help_text: defineMessage({id: 'admin.google.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Google account.\n2. Go to <linkConsole>https://console.developers.google.com]</linkConsole>, click <strong>Credentials</strong> in the left hand side.\n 3. Under the <strong>Credentials</strong> header, click <strong>Create credentials</strong>, choose <strong>OAuth client ID</strong> and select <strong>Web Application</strong>.\n 4. Enter "Stroichat - your-company-name" as the <strong>Name</strong>.\n 5. Under <strong>Authorized redirect URIs</strong> enter <strong>"your-stroichat-url/signup/google/complete"</strong> (example: http://localhost:8065/signup/google/complete). Click <strong>Create</strong>.\n 6. Paste the <strong>Client ID</strong> and <strong>Client Secret</strong> to the fields below, then click <strong>Save</strong>.\n 7. Go to the <linkAPI>Google People API</linkAPI> and click <strong>Enable</strong>.'}),
-                                    help_text_markdown: false,
-                                    help_text_values: {
-                                        linkLogin: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://accounts.google.com/login'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        linkConsole: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://console.developers.google.com'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        linkAPI: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://console.developers.google.com/apis/library/people.googleapis.com'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        strong: (msg: string) => <strong>{msg}</strong>,
-                                    },
                                 },
                                 {
                                     value: Constants.OFFICE365_SERVICE,
@@ -3932,34 +3808,6 @@ const AdminDefinition: AdminDefinitionType = {
                                     help_text_markdown: false,
                                 },
                             ],
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GoogleSettings.DiscoveryEndpoint',
-                            label: defineMessage({id: 'admin.openid.discoveryEndpointTitle', defaultMessage: 'Discovery Endpoint:'}),
-                            help_text: defineMessage({id: 'admin.google.discoveryEndpointDesc', defaultMessage: 'The URL of the discovery document for OpenID Connect with Google.'}),
-                            help_text_markdown: false,
-                            dynamic_value: () => 'https://accounts.google.com/.well-known/openid-configuration',
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('openidType', Constants.GOOGLE_SERVICE)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GoogleSettings.Id',
-                            label: defineMessage({id: 'admin.openid.clientIdTitle', defaultMessage: 'Client ID:'}),
-                            help_text: defineMessage({id: 'admin.openid.clientIdDescription', defaultMessage: 'Obtaining the Client ID differs across providers. Please check you provider\'s documentation'}),
-                            placeholder: defineMessage({id: 'admin.google.clientIdExample', defaultMessage: 'E.g.: "7602141235235-url0fhs1mayfasbmop5qlfns8dh4.apps.googleusercontent.com"'}),
-                            isHidden: it.not(it.stateEquals('openidType', Constants.GOOGLE_SERVICE)),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'GoogleSettings.Secret',
-                            label: defineMessage({id: 'admin.openid.clientSecretTitle', defaultMessage: 'Client Secret:'}),
-                            help_text: defineMessage({id: 'admin.openid.clientSecretDescription', defaultMessage: 'Obtaining the Client Secret differs across providers. Please check you provider\'s documentation'}),
-                            placeholder: defineMessage({id: 'admin.google.clientSecretExample', defaultMessage: 'E.g.: "H8sz0Az-dDs2p15-7QzD231"'}),
-                            isHidden: it.not(it.stateEquals('openidType', Constants.GOOGLE_SERVICE)),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
                         },
                         {

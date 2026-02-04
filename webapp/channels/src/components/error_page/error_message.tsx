@@ -111,23 +111,6 @@ const ErrorMessage: React.FC<Props> = ({type, message, service, isPartner}: Prop
                     </p>
                     <p>
                         <FormattedMessage
-                            id='error.oauth_missing_code.google'
-                            defaultMessage='For {link} make sure your administrator enabled the Google+ API.'
-                            values={{
-                                link: (
-                                    <ErrorLink
-                                        url={'https://docs.mattermost.com/deployment/sso-google.html'}
-                                        message={defineMessage({
-                                            id: 'error.oauth_missing_code.google.link',
-                                            defaultMessage: 'Google Apps',
-                                        })}
-                                    />
-                                ),
-                            }}
-                        />
-                    </p>
-                    <p>
-                        <FormattedMessage
                             id='error.oauth_missing_code.office365'
                             defaultMessage='For {link} make sure the administrator of your Microsoft organization has enabled the Mattermost app.'
                             values={{

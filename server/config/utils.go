@@ -38,10 +38,6 @@ func desanitize(actual, target *model.Config) {
 		target.EmailSettings.SMTPPassword = actual.EmailSettings.SMTPPassword
 	}
 
-	if target.GoogleSettings.Secret != nil && *target.GoogleSettings.Secret == model.FakeSetting {
-		target.GoogleSettings.Secret = actual.GoogleSettings.Secret
-	}
-
 	if target.Office365Settings.Secret != nil && *target.Office365Settings.Secret == model.FakeSetting {
 		target.Office365Settings.Secret = actual.Office365Settings.Secret
 	}

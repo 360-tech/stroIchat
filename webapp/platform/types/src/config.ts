@@ -99,7 +99,6 @@ export type ClientConfig = {
     EnableSignInWithEmail: string;
     EnableSignInWithUsername: string;
     EnableSignUpWithEmail: string;
-    EnableSignUpWithGoogle: string;
     EnableSignUpWithOffice365: string;
     EnableSignUpWithOpenId: string;
     EnableSVGs: string;
@@ -252,7 +251,6 @@ export type LicenseFeatures = {
     ldap?: boolean;
     ldap_groups?: boolean;
     mfa?: boolean;
-    google_oauth?: boolean;
     office365_oauth?: boolean;
     compliance?: boolean;
     cluster?: boolean;
@@ -1014,7 +1012,6 @@ export type AdminConfig = {
     SupportSettings: SupportSettings;
     AnnouncementSettings: AnnouncementSettings;
     ThemeSettings: ThemeSettings;
-    GoogleSettings: SSOSettings;
     Office365Settings: Office365Settings;
     OpenIdSettings: SSOSettings;
     LdapSettings: LdapSettings;

@@ -123,11 +123,9 @@ func TestMergeConfigs(t *testing.T) {
 		base.SetDefaults()
 		patch := &model.Config{}
 		patch.ServiceSettings.SiteURL = model.NewPointer("http://newhost.ca")
-		patch.GoogleSettings.Enable = model.NewPointer(true)
 
 		expected := base.Clone()
 		expected.ServiceSettings.SiteURL = model.NewPointer("http://newhost.ca")
-		expected.GoogleSettings.Enable = model.NewPointer(true)
 
 		merged, err := Merge(base, patch, nil)
 		require.NoError(t, err)

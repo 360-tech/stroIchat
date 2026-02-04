@@ -71,7 +71,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         EnableUserCreation,
         NoAccounts,
         EnableSignUpWithEmail,
-        EnableSignUpWithGoogle,
         EnableSignUpWithOffice365,
         EnableSignUpWithOpenId,
         EnableLdap,
@@ -93,7 +92,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const enableUserCreation = EnableUserCreation === 'true';
     const noAccounts = NoAccounts === 'true';
     const enableSignUpWithEmail = enableUserCreation && EnableSignUpWithEmail === 'true';
-    const enableSignUpWithGoogle = enableUserCreation && EnableSignUpWithGoogle === 'true';
     const enableSignUpWithOffice365 = enableUserCreation && EnableSignUpWithOffice365 === 'true';
     const enableSignUpWithOpenId = enableUserCreation && EnableSignUpWithOpenId === 'true';
     const enableLDAP = EnableLdap === 'true';
@@ -117,7 +115,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const [isMobileView, setIsMobileView] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
-    const enableExternalSignup = enableSignUpWithOffice365 || enableSignUpWithGoogle || enableSignUpWithOpenId || enableLDAP || enableSAML;
+    const enableExternalSignup = enableSignUpWithOffice365 || enableSignUpWithOpenId || enableLDAP || enableSAML;
     const hasError = Boolean(emailError || nameError || passwordError || serverError || alertBanner);
     const canSubmit = Boolean(email && name && password) && !hasError && !loading;
     const passwordConfig = useSelector(getPasswordConfig);

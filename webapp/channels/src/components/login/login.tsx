@@ -76,7 +76,6 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
         EnableSignInWithUsername,
         EnableSignUpWithEmail,
         EnableSignUpWithOffice365,
-        EnableSignUpWithGoogle,
         EnableSignUpWithOpenId,
         EnableOpenServer,
         EnableUserCreation,
@@ -120,7 +119,6 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
     const enableSignInWithEmail = EnableSignInWithEmail === 'true';
     const enableSignInWithUsername = EnableSignInWithUsername === 'true';
     const enableSignUpWithEmail = enableUserCreation && EnableSignUpWithEmail === 'true';
-    const enableSignUpWithGoogle = EnableSignUpWithGoogle === 'true';
     const enableSignUpWithOffice365 = EnableSignUpWithOffice365 === 'true';
     const enableSignUpWithOpenId = EnableSignUpWithOpenId === 'true';
     const ldapEnabled = false;
@@ -128,9 +126,9 @@ const Login = ({onCustomizeHeader}: LoginProps) => {
     const siteName = SiteName ?? '';
 
     const enableBaseLogin = enableSignInWithEmail || enableSignInWithUsername || ldapEnabled;
-    const enableExternalSignup = enableSignUpWithOffice365 || enableSignUpWithGoogle || enableSignUpWithOpenId || enableSignUpWithSaml;
+    const enableExternalSignup = enableSignUpWithOffice365 || enableSignUpWithOpenId || enableSignUpWithSaml;
     const showSignup = enableOpenServer && (enableExternalSignup || enableSignUpWithEmail || enableLdap);
-    const onlyLdapEnabled = enableLdap && !(enableSaml || enableSignInWithEmail || enableSignInWithUsername || enableSignUpWithEmail || enableSignUpWithGoogle || enableSignUpWithOffice365 || enableSignUpWithOpenId);
+    const onlyLdapEnabled = enableLdap && !(enableSaml || enableSignInWithEmail || enableSignInWithUsername || enableSignUpWithEmail || enableSignUpWithOffice365 || enableSignUpWithOpenId);
 
     const query = new URLSearchParams(search);
     const redirectTo = query.get('redirect_to');

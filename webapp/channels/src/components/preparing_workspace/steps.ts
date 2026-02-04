@@ -43,7 +43,6 @@ type PluginNameMap = {
     [Key in keyof Omit<Form['plugins'], 'skipped'>]: string
 };
 export const PLUGIN_NAME_TO_ID_MAP: PluginNameMap = {
-    github: 'github',
     jira: 'jira',
     zoom: 'zoom',
     servicenow: 'mattermost-plugin-servicenow',
@@ -60,7 +59,6 @@ export type Form = {
         channels: boolean;
     };
     plugins: {
-        github: boolean;
         jira: boolean;
         zoom: boolean;
         servicenow: boolean;
@@ -89,7 +87,6 @@ export const emptyForm = deepFreeze({
         channels: false,
     },
     plugins: {
-        github: false,
         jira: false,
         zoom: false,
         servicenow: false,

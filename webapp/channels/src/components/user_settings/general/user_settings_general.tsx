@@ -719,24 +719,6 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
                 );
 
                 submit = this.submitEmail;
-            } else if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
-                inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
-                        <div className='setting-list__hint pb-3'>
-                            <FormattedMessage
-                                id='user.settings.general.emailGoogleCantUpdate'
-                                defaultMessage='Login occurs through Google Apps. Email cannot be updated. Email address used for notifications is {email}.'
-                                values={{
-                                    email: this.state.originalEmail,
-                                }}
-                            />
-                        </div>
-                        {helpText}
-                    </div>,
-                );
             } else if (this.props.user.auth_service === Constants.OFFICE365_SERVICE) {
                 inputs.push(
                     <div
@@ -831,16 +813,6 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
         let describe: JSX.Element|string = '';
         if (this.props.user.auth_service === '') {
             describe = this.props.user.email;
-        } else if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
-            describe = (
-                <FormattedMessage
-                    id='user.settings.general.loginGoogle'
-                    defaultMessage='Login done through Google Apps ({email})'
-                    values={{
-                        email: this.state.originalEmail,
-                    }}
-                />
-            );
         } else if (this.props.user.auth_service === Constants.OFFICE365_SERVICE) {
             describe = (
                 <FormattedMessage
