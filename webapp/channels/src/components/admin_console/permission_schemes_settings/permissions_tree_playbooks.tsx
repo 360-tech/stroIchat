@@ -4,7 +4,6 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import type {ClientLicense} from '@mattermost/types/config';
 import type {Role} from '@mattermost/types/roles';
 
 import Permissions from 'mattermost-redux/constants/permissions';
@@ -18,7 +17,6 @@ interface Props {
     selectRow: any;
     readOnly: boolean;
     onToggle: (a: string, b: string[]) => void;
-    license: ClientLicense;
 }
 
 const groups = [
@@ -66,7 +64,7 @@ const PermissionsTreePlaybooks = (props: Props) => {
 
     const filteredGroups = groups.filter((group) => {
         if (group.isVisible) {
-            return group.isVisible(props.license);
+            return group.isVisible;
         }
 
         return true;

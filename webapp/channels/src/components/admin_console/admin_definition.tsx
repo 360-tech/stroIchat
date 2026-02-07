@@ -2046,7 +2046,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'language',
                             key: 'LocalizationSettings.AvailableLocales',
                             label: defineMessage({id: 'admin.general.localization.availableLocalesTitle', defaultMessage: 'Available Languages:'}),
-                            help_text: defineMessage({id: 'admin.general.localization.availableLocalesDescription', defaultMessage: 'Set which languages are available for users in <strong>Settings > Display > Language</strong> (leave this field blank to have all supported languages available). If you\'re manually adding new languages, the <strong>Default Client Language</strong> must be added before saving this setting.'}),
+                            help_text: defineMessage({id: 'admin.general.localization.availableLocalesDescription', defaultMessage: 'Set which languages are available for users in <strong>Settings > Display > Language</strong> (leave this field blank to have all supported languages available).'}),
                             help_text_markdown: false,
                             multiple: true,
                             no_result: defineMessage({id: 'admin.general.localization.availableLocalesNoResults', defaultMessage: 'No results found'}),

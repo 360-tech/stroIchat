@@ -24,7 +24,7 @@ import (
 // This should only be a concern in parallel tests.
 var mut sync.Mutex
 
-const defaultLocale = "en"
+const defaultLocale = "ru"
 
 // TranslateFunc is the type of the translate functions
 type TranslateFunc func(translationID string, args ...any) string
@@ -66,28 +66,9 @@ var locales = make(map[string]string)
 // supportedLocales is a hard-coded list of locales considered ready for production use. It must
 // be kept in sync with ../../../../webapp/channels/src/i18n/i18n.jsx.
 var supportedLocales = []string{
-	"de",
 	"en",
-	"en-AU",
-	"es",
-	"fr",
-	"it",
-	"hu",
-	"nl",
-	"pl",
-	"pt-BR",
-	"ro",
-	"sv",
-	"vi",
-	"tr",
-	"bg",
 	"ru",
-	"uk",
-	"fa",
-	"ko",
 	"zh-CN",
-	"zh-TW",
-	"ja",
 }
 
 var (
