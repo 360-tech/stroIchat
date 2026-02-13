@@ -27,6 +27,7 @@ import faviconMention96x96 from 'images/favicon/favicon-mentions-96x96.svg';
 // import faviconUnread64x64 from 'images/favicon/favicon-unread-64x64.png';
 import faviconUnread96x96 from 'images/favicon/favicon-unread-96x96.svg';
 import {Constants} from 'utils/constants';
+import {updateAppBadge} from 'utils/pwa';
 import * as UserAgent from 'utils/user_agent';
 
 enum BadgeStatus {
@@ -50,6 +51,12 @@ type Props = {
 const getFavicon = (url: string): string => ensureString(url);
 
 export class UnreadsStatusHandlerClass extends React.PureComponent<Props> {
+    componentDidMount() {
+        this.updateTitle();
+        const {unreadMentionCount} = basicUnreadMeta(this.props.unreadStatus);
+        updateAppBadge(unreadMentionCount);
+    }
+
     componentDidUpdate(prevProps: Props) {
         this.updateTitle();
         const oldBadgeStatus = this.getBadgeStatus(prevProps.unreadStatus);
@@ -58,6 +65,16 @@ export class UnreadsStatusHandlerClass extends React.PureComponent<Props> {
         if (oldBadgeStatus !== newBadgeStatus) {
             this.updateFavicon(newBadgeStatus);
         }
+
+        const {unreadMentionCount} = basicUnreadMeta(this.props.unreadStatus);
+        const prevUnreadMentionCount = basicUnreadMeta(prevProps.unreadStatus).unreadMentionCount;
+        if (unreadMentionCount !== prevUnreadMentionCount) {
+            updateAppBadge(unreadMentionCount);
+        }
+    }
+
+    componentWillUnmount() {
+        updateAppBadge(0);
     }
 
     get isDynamicFaviconSupported() {
