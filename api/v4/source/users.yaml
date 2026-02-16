@@ -203,8 +203,8 @@
                   description: Service-specific authentication data, such as email address.
                   type: string
                 auth_service:
-                  description: The authentication service, one of "email", "gitlab",
-                    "ldap", "saml", "office365", "google", and "".
+                  description: The authentication service, one of "email",
+                    "ldap", "saml", and "".
                   type: string
                 password:
                   description: The password used for email authentication.

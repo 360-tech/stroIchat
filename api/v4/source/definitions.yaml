@@ -1702,42 +1702,6 @@ components:
               type: boolean
             SupportEmail:
               type: string
-        GitLabSettings:
-          type: object
-          properties:
-            Enable:
-              type: boolean
-            Secret:
-              type: string
-            Id:
-              type: string
-            Scope:
-              type: string
-            AuthEndpoint:
-              type: string
-            TokenEndpoint:
-              type: string
-            UserApiEndpoint:
-              type: string
-        GoogleSettings:
-          type: object
-          properties:
-            Enable:
-              type: boolean
-            Secret:
-              type: string
-            Id:
-              type: string
-            Scope:
-              type: string
-            AuthEndpoint:
-              type: string
-            TokenEndpoint:
-              type: string
-            UserApiEndpoint:
-              type: string
-        Office365Settings:
-          type: object
           properties:
             Enable:
               type: boolean
@@ -2182,41 +2146,6 @@ components:
               type: boolean
             SupportEmail:
               type: boolean
-        GitLabSettings:
-          type: object
-          properties:
-            Enable:
-              type: boolean
-            Secret:
-              type: boolean
-            Id:
-              type: boolean
-            Scope:
-              type: boolean
-            AuthEndpoint:
-              type: boolean
-            TokenEndpoint:
-              type: boolean
-            UserApiEndpoint:
-              type: boolean
-        GoogleSettings:
-          type: object
-          properties:
-            Enable:
-              type: boolean
-            Secret:
-              type: boolean
-            Id:
-              type: boolean
-            Scope:
-              type: boolean
-            AuthEndpoint:
-              type: boolean
-            TokenEndpoint:
-              type: boolean
-            UserApiEndpoint:
-              type: boolean
-        Office365Settings:
           type: object
           properties:
             Enable:
