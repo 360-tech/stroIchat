@@ -43,7 +43,7 @@ const SearchInputContainer = styled.div`
         border-bottom: var(--border-default);
         font-size: 20px;
         line-height: 28px;
-        font-family: Metropolis, sans-serif;
+        font-family: Unbounded, sans-serif;
         :focus {
             border: none;
             border-bottom: var(--border-default);

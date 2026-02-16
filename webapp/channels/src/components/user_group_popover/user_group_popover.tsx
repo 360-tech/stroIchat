@@ -247,7 +247,7 @@ const Heading = styled.div`
     font-size: 16px;
     display: flex;
     align-items: center;
-    font-family: 'Metropolis', sans-serif;
+    font-family: 'Unbounded', sans-serif;
 `;
 
 const Subtitle = styled.div`

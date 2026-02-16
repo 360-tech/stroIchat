@@ -68,7 +68,7 @@ const WebMarketplaceBannerRoot = styled.section`
 `;
 
 const Title = styled.div`
-    font-family: Metropolis;
+    font-family: Unbounded;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;

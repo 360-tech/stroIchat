@@ -14,7 +14,7 @@ const ProductBrandingContainer = styled.span`
 `;
 
 const ProductBrandingHeading = styled.span`
-    font-family: 'Metropolis';
+    font-family: 'Unbounded';
     font-size: 16px;
     line-height: 24px;
     font-weight: bold;
