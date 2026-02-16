@@ -1,7 +1,9 @@
 .splitSendButton {
+    --send-button-width: 48px;
+    --send-button-height: 32px;
     display: flex;
-    width: 48px;
-    height: 32px;
+    width: var(--send-button-width);
+    height: var(--send-button-height);
     flex-direction: row;
     justify-content: center;
     border-radius: 4px;
@@ -10,6 +12,15 @@
 
     &.scheduledPost {
         width: 56px;
+    }
+    
+    &.rounded {
+        border-radius: 50%;
+    }
+
+    @media screen and (max-width: 768px) {
+        --send-button-width: 32px;
+        --send-button-height: 32px;
     }
 
     &.disabled {

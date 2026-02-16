@@ -610,6 +610,7 @@ const AdvancedTextEditor = ({
             disabled={disableSendButton}
             handleSubmit={handleSubmitPostAndScheduledMessage}
             channelId={channelId}
+            rounded={isMobileView && (location === Locations.CENTER || location === Locations.RHS_COMMENT)}
         />
     );
 
@@ -745,7 +746,7 @@ const AdvancedTextEditor = ({
                     'AdvancedTextEditor__attachment-disabled': !canUploadFiles,
                     scroll: renderScrollbar,
                     'formatting-bar': showFormattingBar,
-                    AdvancedTextEditor__mb: isMobileView && (location === Locations.CENTER || location === Locations.RHS_COMMENT),
+                    AdvancedTextEditor__mobileContainerInsideChannel: isMobileView && (location === Locations.CENTER || location === Locations.RHS_COMMENT),
                 })}
             >
                 {!wasNotifiedOfLogIn && (

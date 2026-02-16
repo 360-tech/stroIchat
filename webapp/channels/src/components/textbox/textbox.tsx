@@ -303,7 +303,7 @@ export default class Textbox extends React.PureComponent<Props> {
                     ref={this.message}
                     id={this.props.id}
                     className={textboxClassName}
-                    spellCheck={false}
+                    spellCheck={'false'}
                     autoCorrect='off'
                     autoCapitalize='none'
                     autoComplete='off'

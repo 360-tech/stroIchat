@@ -89,8 +89,13 @@
         --right-padding-for-preview-button: 32px;
     }
 
-    &__mb {
-        margin-bottom: 1rem;
+    // только при создании поста в канале на мобильном устройстве
+    &__mobileContainerInsideChannel {
+        --mobile-container-margin: 2rem;
+        margin-bottom: var(--mobile-container-margin);
+        margin-left: var(--mobile-container-margin);
+        margin-right: var(--mobile-container-margin);
+        max-width: calc(100% - 2 * var(--mobile-container-margin));
     }
 
     &__body {
@@ -213,9 +218,10 @@
             padding: 0;
 
             &__body {
-                border-radius: 0;
-                border-right: none;
-                border-left: none;
+                border-radius: 20px;
+                // border-radius: 0;
+                // border-right: none;
+                // border-left: none;
 
                 &:focus-visible,
                 &:focus-within,
