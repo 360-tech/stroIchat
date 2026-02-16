@@ -17,6 +17,8 @@ $highlight-color: #fcea8d;
 
 // Typography
 $font-weight--semibold: 600;
+// Base font size for mobile (override for Bootstrap @font-size-base below 768px)
+$font-size-base: 16px;
 
 // Page Variables
 $border-gray: 1px solid rgba(var(--center-channel-color-rgb), 0.12);

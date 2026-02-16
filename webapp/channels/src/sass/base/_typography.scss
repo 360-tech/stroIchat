@@ -34,6 +34,14 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+// Override Bootstrap scaffolding.less body { font-size: @font-size-base } (14px)
+// to ensure 16px base text on mobile
+@media screen and (max-width: 768px) {
+    body {
+        font-size: variables.$font-size-base;
+    }
+}
+
 h1,
 h2,
 h3 {
