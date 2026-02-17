@@ -3552,7 +3552,7 @@ const AdminDefinition: AdminDefinitionType = {
                     id: 'OpenIdSettings',
                     name: defineMessage({id: 'admin.authentication.openid', defaultMessage: 'OpenID Connect'}),
                     onConfigLoad: (config) => {
-                        const newState: { openidType?: string; } = {};
+                        const newState: { openidType?: string } = {};
                         if (config.OpenIdSettings?.Enable) {
                             newState.openidType = Constants.OPENID_SERVICE;
                         }

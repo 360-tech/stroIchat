@@ -1,10 +1,10 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type { CommandArgs } from '@mattermost/types/integrations';
-import type { Post } from '@mattermost/types/posts';
+import type {CommandArgs} from '@mattermost/types/integrations';
+import type {Post} from '@mattermost/types/posts';
 
-import type { ActionFuncAsync } from 'types/store';
+import type {ActionFuncAsync} from 'types/store';
 
 /**
  * @param {Post} originalPost
@@ -14,7 +14,7 @@ export function runMessageWillBePostedHooks(originalPost: Post): ActionFuncAsync
     return async (dispatch, getState) => {
         const hooks = getState().plugins.components.MessageWillBePosted;
         if (!hooks || hooks.length === 0) {
-            return { data: originalPost };
+            return {data: originalPost};
         }
 
         let post = originalPost;
@@ -33,7 +33,7 @@ export function runMessageWillBePostedHooks(originalPost: Post): ActionFuncAsync
             }
         }
 
-        return { data: post };
+        return {data: post};
     };
 }
 
@@ -41,7 +41,7 @@ export function runSlashCommandWillBePostedHooks(originalMessage: string, origin
     return async (dispatch, getState) => {
         const hooks = getState().plugins.components.SlashCommandWillBePosted;
         if (!hooks || hooks.length === 0) {
-            return { data: { message: originalMessage, args: originalArgs } };
+            return {data: {message: originalMessage, args: originalArgs}};
         }
 
         let message = originalMessage;
@@ -68,7 +68,7 @@ export function runSlashCommandWillBePostedHooks(originalMessage: string, origin
             }
         }
 
-        return { data: { message, args } };
+        return {data: {message, args}};
     };
 }
 
@@ -76,7 +76,7 @@ export function runMessageWillBeUpdatedHooks(newPost: Partial<Post>, oldPost: Po
     return async (dispatch, getState) => {
         const hooks = getState().plugins.components.MessageWillBeUpdated;
         if (!hooks || hooks.length === 0) {
-            return { data: newPost };
+            return {data: newPost};
         }
 
         let post = newPost;
@@ -95,6 +95,6 @@ export function runMessageWillBeUpdatedHooks(newPost: Partial<Post>, oldPost: Po
             }
         }
 
-        return { data: post };
+        return {data: post};
     };
 }

@@ -2,12 +2,14 @@
 // See LICENSE.txt for license information.
 
 import React, {useMemo} from 'react';
+
 // import {FormattedMessage} from 'react-intl';
 import {useSelector} from 'react-redux';
 
 import {makeGetCustomStatus, showPostHeaderUpdateStatusButton, isCustomStatusEnabled} from 'selectors/views/custom_status';
 
 import CustomStatusEmoji from 'components/custom_status/custom_status_emoji';
+
 // import {openMenu} from 'components/menu';
 // import {ELEMENT_ID_FOR_USER_ACCOUNT_MENU_BUTTON} from 'components/user_account_menu/user_account_menu';
 // import EmojiIcon from 'components/widgets/icons/emoji_icon';
@@ -24,6 +26,7 @@ const PostHeaderCustomStatus = (props: ComponentProps) => {
     const getCustomStatus = useMemo(makeGetCustomStatus, []);
     const {userId, isSystemMessage, isBot} = props;
     const userCustomStatus = useSelector((state: GlobalState) => getCustomStatus(state, userId));
+
     // const showUpdateStatusButton = useSelector(showPostHeaderUpdateStatusButton);
     const customStatusEnabled = useSelector(isCustomStatusEnabled);
 

@@ -1,9 +1,9 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import Constants, { EventTypes, A11yClassNames, A11yAttributeNames, A11yCustomEventTypes, isA11yFocusEventDetail } from 'utils/constants';
-import { isKeyPressed, cmdOrCtrlPressed } from 'utils/keyboard';
-import { isMac } from 'utils/user_agent';
+import Constants, {EventTypes, A11yClassNames, A11yAttributeNames, A11yCustomEventTypes, isA11yFocusEventDetail} from 'utils/constants';
+import {isKeyPressed, cmdOrCtrlPressed} from 'utils/keyboard';
+import {isMac} from 'utils/user_agent';
 
 const listenerOptions = {
     capture: true,
@@ -774,93 +774,93 @@ export default class A11yController {
             shiftIsPressed: event.shiftKey,
         };
         switch (true) {
-            case isKeyPressed(event, Constants.KeyCodes.TAB):
-                this.lastInputEventIsKeyDown = true;
-                if ((!isMac() && modifierKeys.altIsPressed) || cmdOrCtrlPressed(event)) {
-                    return;
-                }
-                this.tabKeyIsPressed = true;
-                break;
-            case isKeyPressed(event, Constants.KeyCodes.TILDE):
-                this.lastInputEventIsKeyDown = true;
-                if (!this.regions || !this.regions.length) {
-                    return;
-                }
+        case isKeyPressed(event, Constants.KeyCodes.TAB):
+            this.lastInputEventIsKeyDown = true;
+            if ((!isMac() && modifierKeys.altIsPressed) || cmdOrCtrlPressed(event)) {
+                return;
+            }
+            this.tabKeyIsPressed = true;
+            break;
+        case isKeyPressed(event, Constants.KeyCodes.TILDE):
+            this.lastInputEventIsKeyDown = true;
+            if (!this.regions || !this.regions.length) {
+                return;
+            }
 
-                // Check to make sure both aren't pressed because some older webkit browsers set CTRL and ALT when AltGr is pressed
-                if (modifierKeys.ctrlIsPressed && !modifierKeys.altIsPressed) {
-                    this.tildeKeyIsPressed = true;
-                    event.preventDefault();
-                    if (modifierKeys.shiftIsPressed) {
-                        this.previousRegion();
-                    } else {
-                        this.nextRegion();
-                    }
-                }
-                break;
-            case isKeyPressed(event, Constants.KeyCodes.F6):
-                this.lastInputEventIsKeyDown = true;
-                if (!cmdOrCtrlPressed(event)) {
-                    return;
-                }
-                this.f6KeyIsPressed = true;
+            // Check to make sure both aren't pressed because some older webkit browsers set CTRL and ALT when AltGr is pressed
+            if (modifierKeys.ctrlIsPressed && !modifierKeys.altIsPressed) {
+                this.tildeKeyIsPressed = true;
                 event.preventDefault();
                 if (modifierKeys.shiftIsPressed) {
                     this.previousRegion();
                 } else {
                     this.nextRegion();
                 }
-                break;
-            case isKeyPressed(event, Constants.KeyCodes.UP):
-                this.lastInputEventIsKeyDown = true;
-                if (!this.navigationInProgress || !this.sections || !this.sections.length) {
-                    return;
-                }
-                this.upArrowKeyIsPressed = true;
+            }
+            break;
+        case isKeyPressed(event, Constants.KeyCodes.F6):
+            this.lastInputEventIsKeyDown = true;
+            if (!cmdOrCtrlPressed(event)) {
+                return;
+            }
+            this.f6KeyIsPressed = true;
+            event.preventDefault();
+            if (modifierKeys.shiftIsPressed) {
+                this.previousRegion();
+            } else {
+                this.nextRegion();
+            }
+            break;
+        case isKeyPressed(event, Constants.KeyCodes.UP):
+            this.lastInputEventIsKeyDown = true;
+            if (!this.navigationInProgress || !this.sections || !this.sections.length) {
+                return;
+            }
+            this.upArrowKeyIsPressed = true;
+            event.preventDefault();
+            if (this.shouldReverseSections) {
+                this.nextSection();
+            } else {
+                this.previousSection();
+            }
+            break;
+        case isKeyPressed(event, Constants.KeyCodes.DOWN):
+            this.lastInputEventIsKeyDown = true;
+            if (!this.navigationInProgress || !this.sections || !this.sections.length) {
+                return;
+            }
+            this.downArrowKeyIsPressed = true;
+            event.preventDefault();
+            if (this.shouldReverseSections) {
+                this.previousSection();
+            } else {
+                this.nextSection();
+            }
+            break;
+        case isKeyPressed(event, Constants.KeyCodes.ESCAPE):
+            this.escKeyIsPressed = true;
+            this.lastInputEventIsKeyDown = true;
+            if (!this.navigationInProgress) {
+                return;
+            }
+            event.preventDefault();
+            this.cancelNavigation();
+            break;
+        case isKeyPressed(event, Constants.KeyCodes.ENTER):
+            this.enterKeyIsPressed = true;
+            break;
+        case isKeyPressed(event, Constants.KeyCodes.SPACE):
+            if (event.target.nodeName === 'BUTTON') {
                 event.preventDefault();
-                if (this.shouldReverseSections) {
-                    this.nextSection();
-                } else {
-                    this.previousSection();
-                }
-                break;
-            case isKeyPressed(event, Constants.KeyCodes.DOWN):
-                this.lastInputEventIsKeyDown = true;
-                if (!this.navigationInProgress || !this.sections || !this.sections.length) {
-                    return;
-                }
-                this.downArrowKeyIsPressed = true;
-                event.preventDefault();
-                if (this.shouldReverseSections) {
-                    this.previousSection();
-                } else {
-                    this.nextSection();
-                }
-                break;
-            case isKeyPressed(event, Constants.KeyCodes.ESCAPE):
-                this.escKeyIsPressed = true;
-                this.lastInputEventIsKeyDown = true;
-                if (!this.navigationInProgress) {
-                    return;
-                }
-                event.preventDefault();
-                this.cancelNavigation();
-                break;
-            case isKeyPressed(event, Constants.KeyCodes.ENTER):
-                this.enterKeyIsPressed = true;
-                break;
-            case isKeyPressed(event, Constants.KeyCodes.SPACE):
-                if (event.target.nodeName === 'BUTTON') {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    event.target.click();
-                }
-                break;
-            case isKeyPressed(event, Constants.KeyCodes.L):
-                // For the Ctrl+Shift+L keyboard shortcut
-                this.lastInputEventIsKeyDown = true;
-                this.lKeyIsPressed = true;
-                break;
+                event.stopPropagation();
+                event.target.click();
+            }
+            break;
+        case isKeyPressed(event, Constants.KeyCodes.L):
+            // For the Ctrl+Shift+L keyboard shortcut
+            this.lastInputEventIsKeyDown = true;
+            this.lKeyIsPressed = true;
+            break;
         }
     };
 
