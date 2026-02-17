@@ -324,8 +324,8 @@ const AdvancedTextEditor = ({
     );
 
     const {
-        emojiPicker,
-        enableEmojiPicker,
+        // emojiPicker,
+        // enableEmojiPicker,
         toggleEmojiPicker,
     } = useEditorEmojiPicker(
         textboxId,
@@ -789,7 +789,7 @@ const AdvancedTextEditor = ({
                             value={messageValue}
                             onBlur={handleBlur}
                             onFocus={handleFocus}
-                            emojiEnabled={enableEmojiPicker}
+                            emojiEnabled={false}
                             createMessage={createMessage}
                             channelId={channelId}
                             id={textboxId}
@@ -831,7 +831,7 @@ const AdvancedTextEditor = ({
                                 )}
                                 <Separator/>
                                 {fileUploadJSX}
-                                {emojiPicker}
+                                {/* {emojiPicker} */}
                                 {sendButton}
                             </TexteditorActions>
                         )}
