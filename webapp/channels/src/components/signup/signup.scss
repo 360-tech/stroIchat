@@ -36,6 +36,7 @@
             justify-content: center;
 
             .signup-body-no-login-title {
+                --title-color-indigo-500: var(--center-channel-color);
                 color: var(--title-color-indigo-500);
                 font-family: Unbounded;
                 font-size: 40px;
