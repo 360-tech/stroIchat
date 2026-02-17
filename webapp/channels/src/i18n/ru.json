@@ -4112,7 +4112,7 @@
   "invite_modal.example_channel": "например, {channel_name}",
   "invite_modal.partners": "партнеры",
   "invite_modal.invite": "Пригласить",
-  "invite_modal.invited": "{inviteType} приглашен в {team_name}",
+  "invite_modal.invited": "{inviteType} приглашены в {team_name}",
   "invite_modal.invited_partners": "Партнеры",
   "invite_modal.invited_members": "Участники",
   "invite_modal.no_permissions.description": "У вас нет прав на добавление пользователей или партнеров. Если это похоже на ошибку, обратитесь к системному администратору.",
