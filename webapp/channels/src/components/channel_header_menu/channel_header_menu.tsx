@@ -127,7 +127,7 @@ export default function ChannelHeaderMenu({dmUser, gmMembers, isMobile, archived
                             {channelTitle as string}
                         </strong>
                         {sharedIcon}
-                        <ChevronDownIcon size={16}/>
+                        <ChevronDownIcon size={16} className="mt-1"/>
                     </>
                 ),
                 'aria-label': ariaLabel.toLowerCase(),
