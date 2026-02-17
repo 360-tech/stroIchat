@@ -305,41 +305,6 @@
         "AllowCustomThemes": true,
         "AllowedThemes": []
     },
-    "GitLabSettings": {
-        "Enable": false,
-        "Secret": "",
-        "Id": "",
-        "Scope": "",
-        "AuthEndpoint": "",
-        "TokenEndpoint": "",
-        "UserAPIEndpoint": "",
-        "DiscoveryEndpoint": "",
-        "ButtonText": "",
-        "ButtonColor": ""
-    },
-    "GoogleSettings": {
-        "Enable": false,
-        "Secret": "",
-        "Id": "",
-        "Scope": "profile email",
-        "AuthEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
-        "TokenEndpoint": "https://www.googleapis.com/oauth2/v4/token",
-        "UserAPIEndpoint": "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,nicknames,metadata",
-        "DiscoveryEndpoint": "",
-        "ButtonText": "",
-        "ButtonColor": ""
-    },
-    "Office365Settings": {
-        "Enable": false,
-        "Secret": "",
-        "Id": "",
-        "Scope": "User.Read",
-        "AuthEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
-        "TokenEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-        "UserAPIEndpoint": "https://graph.microsoft.com/v1.0/me",
-        "DiscoveryEndpoint": "",
-        "DirectoryId": ""
-    },
     "OpenIdSettings": {
         "Enable": false,
         "Secret": "",

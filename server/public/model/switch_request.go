@@ -25,13 +25,11 @@ func (o *SwitchRequest) Auditable() map[string]any {
 func (o *SwitchRequest) EmailToOAuth() bool {
 	return o.CurrentService == UserAuthServiceEmail &&
 		(o.NewService == UserAuthServiceSaml ||
-			o.NewService == ServiceOffice365 ||
 			o.NewService == ServiceOpenid)
 }
 
 func (o *SwitchRequest) OAuthToEmail() bool {
 	return (o.CurrentService == UserAuthServiceSaml ||
-		o.CurrentService == ServiceOffice365 ||
 		o.CurrentService == ServiceOpenid) && o.NewService == UserAuthServiceEmail
 }
 

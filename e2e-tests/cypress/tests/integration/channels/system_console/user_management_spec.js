@@ -171,38 +171,6 @@ describe('User Management', () => {
         resetUserEmail(newEmailAddr, testUser.email, '');
     });
 
-    it('MM-T931 Users - Can\'t update a user\'s email address if user has other signin method', () => {
-        // # Update config.
-        cy.apiUpdateConfig({
-            GitLabSettings: {
-                Enable: true,
-            },
-        });
-        cy.visit('/admin_console/user_management/users');
-
-        cy.apiCreateUser().then(({user: gitlabUser}) => {
-            cy.apiUpdateUserAuth(gitlabUser.id, gitlabUser.email, '', 'gitlab');
-
-            // # Search for the user.
-            cy.get('#input_searchTerm').clear().type(gitlabUser.email).wait(TIMEOUTS.HALF_SEC);
-            cy.get('#systemUsersTable-cell-0_emailColumn').should('contain', gitlabUser.email);
-
-            // # Open actions menu.
-            cy.get('#systemUsersTable-cell-0_actionsColumn').click().wait(TIMEOUTS.HALF_SEC);
-
-            // * Verify Switch to Email/Password is visible.
-            cy.findByText('Switch to Email/Password').should('be.visible').click().wait(TIMEOUTS.HALF_SEC);
-
-            // # Set new password.
-            cy.get('input[type=password]').type('new' + testUser.password);
-            cy.get('button[type=submit]').should('contain', 'Reset').click().wait(TIMEOUTS.HALF_SEC);
-
-            // * Verify Update email option is visible.
-            cy.get('#systemUsersTable-cell-0_actionsColumn').click().wait(TIMEOUTS.HALF_SEC);
-            cy.findByText('Update email').should('be.visible');
-        });
-    });
-
     it('MM-T941 Users - Revoke all sessions for unreachable users', () => {
         // # Login as a system user - User
         cy.apiLogin(testUser);

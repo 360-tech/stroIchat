@@ -35,35 +35,3 @@ function signupWithEmail(name, pw) {
     cy.findByText('Create Account').click();
 }
 
-describe('Cloud Onboarding', () => {
-    before(() => {
-        // # Disable other auth options
-        const newSettings = {
-            Office365Settings: {Enable: false},
-            LdapSettings: {Enable: false},
-        };
-        cy.apiUpdateConfig(newSettings);
-        cy.apiLogout();
-    });
-
-    it('MM-T403 Email address already exists', () => {
-        // # Signup a new user with an email address and user generated in signupWithEmail
-        signupWithEmail('unique.' + uniqueUserId, 'unique1pw');
-
-        // * Verify there is Logout Button
-        cy.contains('Logout').should('be.visible');
-
-        // * Verify 'Teams you can join' is visible
-        cy.get('#teamsYouCanJoinContent').should('be.visible');
-
-        // * Verify the link to create a new team is available
-        cy.get('#createNewTeamLink').should('have.attr', 'href', '/create_team').and('be.visible', 'contain', 'Create a team');
-
-        // # Logout and signup another user with the same email but different username and password
-        cy.apiLogout();
-        signupWithEmail('unique-2', 'unique2pw');
-
-        // * Error message displays below the Create Account button that says "An account with that email already exists"
-        cy.findByText('An account with that email already exists.').should('be.visible');
-    });
-});

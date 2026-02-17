@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import type {ExperimentalSettings, PluginSettings, SSOSettings, Office365Settings} from '@mattermost/types/config';
+import type {ExperimentalSettings, PluginSettings} from '@mattermost/types/config';
 
 import {RESOURCE_KEYS} from 'mattermost-redux/constants/permissions_sysconsole';
 
@@ -305,21 +305,6 @@ describe('components/AdminSidebar', () => {
                     Enable: true,
                     EnableUploads: true,
                 } as PluginSettings,
-                GoogleSettings: {
-                    Id: 'googleID',
-                    Secret: 'googleSecret',
-                    Scope: 'scope',
-                } as SSOSettings,
-                GitLabSettings: {
-                    Id: 'gitlabID',
-                    Secret: 'gitlabSecret',
-                    Scope: 'scope',
-                } as SSOSettings,
-                Office365Settings: {
-                    Id: 'office365ID',
-                    Secret: 'office365Secret',
-                    Scope: 'scope',
-                } as Office365Settings,
             },
             adminDefinition: AdminDefinition,
             buildEnterpriseReady: true,
@@ -370,21 +355,6 @@ describe('components/AdminSidebar', () => {
                     Enable: true,
                     EnableUploads: true,
                 } as PluginSettings,
-                GoogleSettings: {
-                    Id: 'googleID',
-                    Secret: 'googleSecret',
-                    Scope: 'scope',
-                } as SSOSettings,
-                GitLabSettings: {
-                    Id: 'gitlabID',
-                    Secret: 'gitlabSecret',
-                    Scope: 'scope',
-                } as SSOSettings,
-                Office365Settings: {
-                    Id: 'office365ID',
-                    Secret: 'office365Secret',
-                    Scope: 'scope',
-                } as Office365Settings,
                 FeatureFlags: {
                     AttributeBasedAccessControl: true,
                     CustomProfileAttributes: true,
@@ -441,21 +411,6 @@ describe('components/AdminSidebar', () => {
                     Enable: true,
                     EnableUploads: true,
                 } as PluginSettings,
-                GoogleSettings: {
-                    Id: 'googleID',
-                    Secret: 'googleSecret',
-                    Scope: 'scope',
-                } as SSOSettings,
-                GitLabSettings: {
-                    Id: 'gitlabID',
-                    Secret: 'gitlabSecret',
-                    Scope: 'scope',
-                } as SSOSettings,
-                Office365Settings: {
-                    Id: 'office365ID',
-                    Secret: 'office365Secret',
-                    Scope: 'scope',
-                } as Office365Settings,
             },
             adminDefinition: AdminDefinition,
             buildEnterpriseReady: true,
@@ -506,21 +461,6 @@ describe('components/AdminSidebar', () => {
                     Enable: true,
                     EnableUploads: true,
                 } as PluginSettings,
-                GoogleSettings: {
-                    Id: 'googleID',
-                    Secret: 'googleSecret',
-                    Scope: 'scope',
-                } as SSOSettings,
-                GitLabSettings: {
-                    Id: 'gitlabID',
-                    Secret: 'gitlabSecret',
-                    Scope: 'scope',
-                } as SSOSettings,
-                Office365Settings: {
-                    Id: 'office365ID',
-                    Secret: 'office365Secret',
-                    Scope: 'scope',
-                } as Office365Settings,
                 FeatureFlags: {
                     AttributeBasedAccessControl: true,
                     CustomProfileAttributes: true,

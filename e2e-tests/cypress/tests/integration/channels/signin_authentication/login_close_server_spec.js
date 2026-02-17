@@ -15,7 +15,6 @@ describe('Login page with close server', () => {
     before(() => {
         // Back up config, and disable other auth options
         const newSettings = {
-            Office365Settings: {Enable: false},
             LdapSettings: {Enable: false},
             TeamSettings: {EnableOpenServer: false},
         };

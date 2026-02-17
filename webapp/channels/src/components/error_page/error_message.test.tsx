@@ -32,24 +32,6 @@ describe('components/error_page/ErrorMessage', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot, oauth_missing_code type', () => {
-        const props = {...baseProps, type: ErrorPageTypes.OAUTH_MISSING_CODE, service: 'Gitlab'};
-        const wrapper = shallow(
-            <ErrorMessage {...props}/>,
-        );
-
-        expect(wrapper).toMatchSnapshot();
-    });
-
-    test('should match snapshot, oauth_access_denied type', () => {
-        const props = {...baseProps, type: ErrorPageTypes.OAUTH_ACCESS_DENIED, service: 'Gitlab'};
-        const wrapper = shallow(
-            <ErrorMessage {...props}/>,
-        );
-
-        expect(wrapper).toMatchSnapshot();
-    });
-
     test('should match snapshot, oauth_invalid_param type', () => {
         const props = {...baseProps, type: ErrorPageTypes.OAUTH_INVALID_PARAM, message: 'error message'};
         const wrapper = shallow(

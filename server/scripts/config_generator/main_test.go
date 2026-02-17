@@ -26,9 +26,4 @@ func TestDefaultsGenerator(t *testing.T) {
 	require.NoError(t, json.Unmarshal(b, &config))
 	require.Equal(t, *config.SqlSettings.AtRestEncryptKey, "")
 	require.Equal(t, *config.FileSettings.PublicLinkSalt, "")
-
-	require.Equal(t, *config.Office365Settings.Scope, model.Office365SettingsDefaultScope)
-	require.Equal(t, *config.Office365Settings.AuthEndpoint, model.Office365SettingsDefaultAuthEndpoint)
-	require.Equal(t, *config.Office365Settings.UserAPIEndpoint, model.Office365SettingsDefaultUserAPIEndpoint)
-	require.Equal(t, *config.Office365Settings.TokenEndpoint, model.Office365SettingsDefaultTokenEndpoint)
 }

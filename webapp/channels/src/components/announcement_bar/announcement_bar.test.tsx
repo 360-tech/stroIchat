@@ -24,7 +24,6 @@ describe('components/AnnouncementBar', () => {
         enableBanner: true,
         bannerColor: 'green',
         bannerTextColor: 'black',
-        enableSignUpWithGitLab: false,
         message: 'text',
         announcementBarCount: 0,
         actions: {

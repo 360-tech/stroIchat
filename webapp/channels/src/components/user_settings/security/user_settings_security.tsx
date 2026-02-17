@@ -62,7 +62,6 @@ type Props = {
     enableSignUpWithOpenId: boolean;
     enableLdap: boolean;
     enableSaml: boolean;
-    enableSignUpWithOffice365: boolean;
     experimentalEnableAuthenticationTransfer: boolean;
     passwordConfig: PasswordConfig;
     militaryTime: boolean;
@@ -400,22 +399,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                         </div>
                     </div>,
                 );
-            } else if (
-                this.props.user.auth_service === Constants.OFFICE365_SERVICE
-            ) {
-                inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
-                        <div className='pb-3'>
-                            <FormattedMessage
-                                id='user.settings.security.passwordOffice365CantUpdate'
-                                defaultMessage='Login occurs through Entra ID. Password cannot be updated.'
-                            />
-                        </div>
-                    </div>,
-                );
             }
 
             max = (
@@ -479,15 +462,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
                     defaultMessage='Login done through SAML'
                 />
             );
-        } else if (
-            this.props.user.auth_service === Constants.OFFICE365_SERVICE
-        ) {
-            describe = (
-                <FormattedMessage
-                    id='user.settings.security.loginOffice365'
-                    defaultMessage='Login done through Entra ID'
-                />
-            );
         }
 
         return (
@@ -515,36 +489,11 @@ export class SecurityTab extends React.PureComponent<Props, State> {
         let max = null;
         if (active) {
             let emailOption;
-            let office365Option;
             let openidOption;
             let ldapOption;
             let samlOption;
 
             if (user.auth_service === '') {
-                if (this.props.enableSignUpWithOffice365) {
-                    office365Option = (
-                        <div className='pb-3'>
-                            <Link
-                                className='btn btn-primary'
-                                to={
-                                    '/claim/email_to_oauth?email=' +
-                                    encodeURIComponent(user.email) +
-                                    '&old_type=' +
-                                    user.auth_service +
-                                    '&new_type=' +
-                                    Constants.OFFICE365_SERVICE
-                                }
-                            >
-                                <FormattedMessage
-                                    id='user.settings.security.switchOffice365'
-                                    defaultMessage='Switch to Using Entra ID SSO'
-                                />
-                            </Link>
-                            <br/>
-                        </div>
-                    );
-                }
-
                 if (this.props.enableSignUpWithOpenId) {
                     openidOption = (
                         <div className='pb-3'>
@@ -646,7 +595,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
             inputs.push(
                 <div key='userSignInOption'>
                     {emailOption}
-                    {office365Option}
                     {openidOption}
                     {ldapOption}
                     {samlOption}
@@ -683,15 +631,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
             />
         );
         if (
-            this.props.user.auth_service === Constants.OFFICE365_SERVICE
-        ) {
-            describe = (
-                <FormattedMessage
-                    id='user.settings.security.office365'
-                    defaultMessage='Entra ID'
-                />
-            );
-        } else if (
             this.props.user.auth_service === Constants.OPENID_SERVICE
         ) {
             describe = (
@@ -881,7 +820,6 @@ export class SecurityTab extends React.PureComponent<Props, State> {
         const passwordSection = this.createPasswordSection();
 
         let numMethods = 0;
-        numMethods = this.props.enableSignUpWithOffice365 ? numMethods + 1 : numMethods;
         numMethods = this.props.enableSignUpWithOpenId ? numMethods + 1 : numMethods;
         numMethods = this.props.enableLdap ? numMethods + 1 : numMethods;
         numMethods = this.props.enableSaml ? numMethods + 1 : numMethods;

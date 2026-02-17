@@ -1960,9 +1960,8 @@ func login(c *Context, w http.ResponseWriter, r *http.Request) {
 		enableEmail := *config.EmailSettings.EnableSignInWithEmail
 		samlEnabled := *config.SamlSettings.Enable
 		openidEnabled := *config.OpenIdSettings.Enable
-		office365Enabled := *config.Office365Settings.Enable
 
-		if samlEnabled || office365Enabled || openidEnabled {
+		if samlEnabled || openidEnabled {
 			c.Err = model.NewAppError("login", "api.user.login.invalid_credentials_sso", nil, "", http.StatusUnauthorized)
 			return
 		}
@@ -3215,7 +3214,7 @@ func migrateAuthToLDAP(c *Context, w http.ResponseWriter, r *http.Request) {
 		c.SetInvalidParam("from")
 		return
 	}
-	if from == "" || (from != "email" && from != "saml" && from != "office365") {
+	if from == "" || (from != "email" && from != "saml") {
 		c.SetInvalidParam("from")
 		return
 	}
@@ -3274,7 +3273,7 @@ func migrateAuthToSaml(c *Context, w http.ResponseWriter, r *http.Request) {
 		c.SetInvalidParam("from")
 		return
 	}
-	if from == "" || (from != "email" && from != "ldap" && from != "office365") {
+	if from == "" || (from != "email" && from != "ldap") {
 		c.SetInvalidParam("from")
 		return
 	}

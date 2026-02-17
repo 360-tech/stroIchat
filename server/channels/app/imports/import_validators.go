@@ -362,7 +362,6 @@ var validAuthServices = []string{
 	model.UserAuthServiceEmail,
 	model.UserAuthServiceSaml,
 	model.UserAuthServiceLdap,
-	model.ServiceOffice365,
 	model.ServiceOpenid,
 }
 

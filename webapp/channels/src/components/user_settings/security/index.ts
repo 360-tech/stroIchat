@@ -38,7 +38,6 @@ function mapStateToProps(state: GlobalState, ownProps: Props) {
     const enableSignUpWithOpenId = config.EnableSignUpWithOpenId === 'true';
     const enableLdap = config.EnableLdap === 'true';
     const enableSaml = config.EnableSaml === 'true';
-    const enableSignUpWithOffice365 = config.EnableSignUpWithOffice365 === 'true';
     const experimentalEnableAuthenticationTransfer = config.ExperimentalEnableAuthenticationTransfer === 'true';
 
     return {
@@ -48,7 +47,6 @@ function mapStateToProps(state: GlobalState, ownProps: Props) {
         enableSignUpWithOpenId,
         enableLdap,
         enableSaml,
-        enableSignUpWithOffice365,
         experimentalEnableAuthenticationTransfer,
         passwordConfig: getPasswordConfig(state),
         militaryTime: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false),

@@ -29,14 +29,9 @@ describe('components/login/Login', () => {
                     EnableSignInWithEmail: 'false',
                     EnableSignInWithUsername: 'false',
                     EnableSignUpWithEmail: 'false',
-                    EnableSignUpWithGitLab: 'false',
-                    EnableSignUpWithOffice365: 'false',
-                    EnableSignUpWithGoogle: 'false',
                     EnableSignUpWithOpenId: 'false',
                     EnableOpenServer: 'false',
                     LdapLoginFieldName: '',
-                    GitLabButtonText: '',
-                    GitLabButtonColor: '',
                     OpenIdButtonText: '',
                     OpenIdButtonColor: '',
                     SamlLoginButtonText: '',
@@ -249,33 +244,6 @@ describe('components/login/Login', () => {
         await userEvent.click(screen.getByRole('button', {name: 'Log in'}));
 
         expect(screen.queryByText('Your session has expired. Please log in again.')).not.toBeInTheDocument();
-    });
-
-    it('should handle gitlab text and color props', () => {
-        const state = mergeObjects(baseState, {
-            entities: {
-                general: {
-                    config: {
-                        EnableSignInWithEmail: 'true',
-                        EnableSignUpWithGitLab: 'true',
-                        GitLabButtonText: 'GitLab 2',
-                        GitLabButtonColor: '#00ff00',
-                    },
-                },
-            },
-        });
-
-        renderWithContext(
-            <Login/>,
-            state,
-        );
-
-        const button = screen.getByRole('link', {name: 'Gitlab Icon GitLab 2'});
-
-        expect(button.style).toMatchObject({
-            color: 'rgb(0, 255, 0)',
-            borderColor: '#00ff00',
-        });
     });
 
     it('should focus username field when there is an error', async () => {

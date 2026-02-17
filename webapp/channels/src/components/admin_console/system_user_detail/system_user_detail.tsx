@@ -1022,12 +1022,6 @@ export function getUserAuthenticationTextField(intl: IntlShape, mfaEnabled: Prop
         let service;
         if (user.auth_service === Constants.LDAP_SERVICE || user.auth_service === Constants.SAML_SERVICE) {
             service = user.auth_service.toUpperCase();
-        } else if (user.auth_service === Constants.OFFICE365_SERVICE) {
-            // override service name office365 to text Entra ID
-            service = intl.formatMessage({
-                id: 'admin.oauth.office365',
-                defaultMessage: 'Entra ID',
-            });
         } else {
             service = toTitleCase(user.auth_service);
         }

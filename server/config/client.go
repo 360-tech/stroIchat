@@ -343,7 +343,6 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 	props["SamlLoginButtonColor"] = ""
 	props["SamlLoginButtonBorderColor"] = ""
 	props["SamlLoginButtonTextColor"] = ""
-	props["EnableSignUpWithOffice365"] = "false"
 	props["EnableSignUpWithOpenId"] = "false"
 	props["OpenIdButtonText"] = ""
 	props["OpenIdButtonColor"] = ""
@@ -381,10 +380,6 @@ func GenerateLimitedClientConfig(c *model.Config, telemetryID string, license *m
 
 		if *license.Features.MFA {
 			props["EnforceMultifactorAuthentication"] = strconv.FormatBool(*c.ServiceSettings.EnforceMultifactorAuthentication)
-		}
-
-		if *license.Features.Office365OAuth {
-			props["EnableSignUpWithOffice365"] = strconv.FormatBool(*c.Office365Settings.Enable)
 		}
 
 		if *license.Features.OpenId {

@@ -23,8 +23,6 @@ import (
 	// Needed to ensure the init() method in the EE gets run
 	_ "github.com/mattermost/enterprise/oauth/google"
 	// Needed to ensure the init() method in the EE gets run
-	_ "github.com/mattermost/enterprise/oauth/office365"
-	// Needed to ensure the init() method in the EE gets run
 	_ "github.com/mattermost/enterprise/saml"
 	// Needed to ensure the init() method in the EE gets run
 	_ "github.com/mattermost/enterprise/oauth/openid"

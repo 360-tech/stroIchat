@@ -20,7 +20,6 @@ func TestLicenseFeaturesToMap(t *testing.T) {
 	CheckTrue(t, m["ldap"].(bool))
 	CheckTrue(t, m["ldap_groups"].(bool))
 	CheckTrue(t, m["mfa"].(bool))
-	CheckTrue(t, m["office365"].(bool))
 	CheckTrue(t, m["compliance"].(bool))
 	CheckTrue(t, m["cluster"].(bool))
 	CheckTrue(t, m["metrics"].(bool))
@@ -45,7 +44,6 @@ func TestLicenseFeaturesSetDefaults(t *testing.T) {
 	CheckTrue(t, *f.LDAP)
 	CheckTrue(t, *f.LDAPGroups)
 	CheckTrue(t, *f.MFA)
-	CheckTrue(t, *f.Office365OAuth)
 	CheckTrue(t, *f.Compliance)
 	CheckTrue(t, *f.Cluster)
 	CheckTrue(t, *f.Metrics)
@@ -70,7 +68,6 @@ func TestLicenseFeaturesSetDefaults(t *testing.T) {
 	*f.LDAP = true
 	*f.LDAPGroups = true
 	*f.MFA = true
-	*f.Office365OAuth = true
 	*f.Compliance = true
 	*f.Cluster = true
 	*f.Metrics = true
@@ -92,7 +89,6 @@ func TestLicenseFeaturesSetDefaults(t *testing.T) {
 	CheckTrue(t, *f.LDAP)
 	CheckTrue(t, *f.LDAPGroups)
 	CheckTrue(t, *f.MFA)
-	CheckTrue(t, *f.Office365OAuth)
 	CheckTrue(t, *f.Compliance)
 	CheckTrue(t, *f.Cluster)
 	CheckTrue(t, *f.Metrics)

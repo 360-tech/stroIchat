@@ -43,7 +43,7 @@ import PolicyList from './access_control';
 import AccessControlPolicyJobs from './access_control/jobs';
 import PolicyDetails from './access_control/policy_details';
 import * as DefinitionConstants from './admin_definition_constants';
-import {getRestrictedIndicator, it, usesLegacyOauth, validators} from './admin_definition_helpers';
+import {getRestrictedIndicator, it, validators} from './admin_definition_helpers';
 import BrandImageSetting from './brand_image_setting/brand_image_setting';
 import ClientSideUserIdsSetting from './client_side_userids_setting';
 import ClusterSettings, {searchableStrings as clusterSearchableStrings} from './cluster_settings';
@@ -3541,166 +3541,6 @@ const AdminDefinition: AdminDefinitionType = {
                 },
                 restrictedIndicator: getRestrictedIndicator(),
             },
-            oauth: {
-                url: 'authentication/oauth',
-                title: defineMessage({id: 'admin.sidebar.oauth', defaultMessage: 'OAuth 2.0'}),
-                isHidden: it.any(
-                    it.any(
-                        it.not(it.licensed),
-                        it.licensedForSku('starter'),
-                    ),
-                    it.all(
-                        it.licensedForFeature('OpenId'),
-                        it.not(usesLegacyOauth),
-                    ),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                ),
-                schema: {
-                    id: 'OAuthSettings',
-                    name: defineMessage({id: 'admin.authentication.oauth', defaultMessage: 'OAuth 2.0'}),
-                    onConfigLoad: (config) => {
-                        const newState: { oauthType?: string; } = {};
-                        if (config.Office365Settings?.Enable) {
-                            newState.oauthType = Constants.OFFICE365_SERVICE;
-                        }
-
-                        return newState;
-                    },
-                    onConfigSave: (config) => {
-                        const newConfig = {...config};
-                        newConfig.Office365Settings = config.Office365Settings || {};
-                        newConfig.OpenIdSettings = config.OpenIdSettings || {};
-
-                        newConfig.Office365Settings.Enable = false;
-                        newConfig.OpenIdSettings.Enable = false;
-
-                        if (config.oauthType === Constants.OFFICE365_SERVICE) {
-                            newConfig.Office365Settings.Enable = true;
-                        }
-                        delete newConfig.oauthType;
-                        return newConfig;
-                    },
-                    settings: [
-                        {
-                            type: 'custom',
-                            component: OpenIdConvert,
-                            key: 'OpenIdConvert',
-                            isHidden: it.any(
-                                it.all(it.not(it.licensedForFeature('OpenId')), it.not(it.cloudLicensed)),
-                                it.not(usesLegacyOauth),
-                            ),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'dropdown',
-                            key: 'oauthType',
-                            label: defineMessage({id: 'admin.openid.select', defaultMessage: 'Select service provider:'}),
-                            options: [
-                                {
-                                    value: 'off',
-                                    display_name: defineMessage({id: 'admin.oauth.off', defaultMessage: 'Do not allow sign-in via an OAuth 2.0 provider.'}),
-                                },
-                                {
-                                    value: Constants.OFFICE365_SERVICE,
-                                    display_name: defineMessage({id: 'admin.oauth.office365', defaultMessage: 'Entra ID'}),
-                                    isHidden: it.all(it.not(it.licensedForFeature('Office365OAuth')), it.not(it.cloudLicensed)),
-                                    help_text: defineMessage({id: 'admin.office365.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Microsoft account. \n2. In Microsoft, go to <strong>Applications</strong> and <strong>App Registrations</strong> in the left pane.\n3. Select <strong>New registration</strong>, then enter "Stroichat - your-company-name" as the <strong>Application Name</strong>. \n4. Under <strong>Redirect URI</strong>, select <strong>Web</strong>, and enter "your-stroichat-url/signup/office365/complete" as the <strong>Redirect URI</strong>. Select <strong>Register</strong>.\n5. Copy the Microsoft <strong>Application (client) ID</strong> value, and paste it below as the <strong>Client ID</strong> value. \n6. Copy the Microsoft <strong>Directory (tenant) ID</strong> value, and paste it below as the <strong>Directory (tenant) ID</strong> value. \n7. In Microsoft, create a new client secret. Copy the resulting client secret value, and paste it below as the <strong>Client Secret</strong> value. Select <strong>Save</strong>.'}),
-                                    help_text_markdown: false,
-                                    help_text_values: {
-                                        linkLogin: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://entra.microsoft.com'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        linkTenant: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://msdn.microsoft.com/en-us/library/azure/jj573650.aspx#Anchor_0'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        linkApps: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://entra.microsoft.com'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        strong: (msg: string) => <strong>{msg}</strong>,
-                                    },
-                                },
-                            ],
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.Id',
-                            label: defineMessage({id: 'admin.office365.clientIdTitle', defaultMessage: 'Application ID:'}),
-                            help_text: defineMessage({id: 'admin.office365.clientIdDescription', defaultMessage: 'The Application/Client ID you received when registering your application with Microsoft.'}),
-                            placeholder: defineMessage({id: 'admin.office365.clientIdExample', defaultMessage: 'E.g.: "adf3sfa2-ag3f-sn4n-ids0-sh1hdax192qq"'}),
-                            isHidden: it.not(it.stateEquals('oauthType', 'office365')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.Secret',
-                            label: defineMessage({id: 'admin.office365.clientSecretTitle', defaultMessage: 'Application Secret Password:'}),
-                            help_text: defineMessage({id: 'admin.office365.clientSecretDescription', defaultMessage: 'The Application Secret Password you generated when registering your application with Microsoft.'}),
-                            placeholder: defineMessage({id: 'admin.office365.clientSecretExample', defaultMessage: 'E.g.: "shAieM47sNBfgl20f8ci294"'}),
-                            isHidden: it.not(it.stateEquals('oauthType', 'office365')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.DirectoryId',
-                            label: defineMessage({id: 'admin.office365.directoryIdTitle', defaultMessage: 'Directory (tenant) ID:'}),
-                            help_text: defineMessage({id: 'admin.office365.directoryIdDescription', defaultMessage: 'The Directory (tenant) ID you received when registering your application with Microsoft.'}),
-                            placeholder: defineMessage({id: 'admin.office365.directoryIdExample', defaultMessage: 'E.g.: "adf3sfa2-ag3f-sn4n-ids0-sh1hdax192qq"'}),
-                            isHidden: it.not(it.stateEquals('oauthType', 'office365')),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.UserAPIEndpoint',
-                            label: defineMessage({id: 'admin.office365.userTitle', defaultMessage: 'User API Endpoint:'}),
-                            dynamic_value: () => 'https://graph.microsoft.com/v1.0/me',
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'office365')),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.AuthEndpoint',
-                            label: defineMessage({id: 'admin.office365.authTitle', defaultMessage: 'Auth Endpoint:'}),
-                            dynamic_value: (value, config, state) => {
-                                if (state['Office365Settings.DirectoryId']) {
-                                    return 'https://login.microsoftonline.com/' + state['Office365Settings.DirectoryId'] + '/oauth2/v2.0/authorize';
-                                }
-                                return 'https://login.microsoftonline.com/{directoryId}/oauth2/v2.0/authorize';
-                            },
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'office365')),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.TokenEndpoint',
-                            label: defineMessage({id: 'admin.office365.tokenTitle', defaultMessage: 'Token Endpoint:'}),
-                            dynamic_value: (value, config, state) => {
-                                if (state['Office365Settings.DirectoryId']) {
-                                    return 'https://login.microsoftonline.com/' + state['Office365Settings.DirectoryId'] + '/oauth2/v2.0/token';
-                                }
-                                return 'https://login.microsoftonline.com/{directoryId}/oauth2/v2.0/token';
-                            },
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('oauthType', 'office365')),
-                        },
-                    ],
-                },
-            },
             openid: {
                 url: 'authentication/openid',
                 title: defineMessage({id: 'admin.sidebar.openid', defaultMessage: 'OpenID Connect'}),
@@ -3713,9 +3553,6 @@ const AdminDefinition: AdminDefinitionType = {
                     name: defineMessage({id: 'admin.authentication.openid', defaultMessage: 'OpenID Connect'}),
                     onConfigLoad: (config) => {
                         const newState: { openidType?: string; } = {};
-                        if (config.Office365Settings?.Enable) {
-                            newState.openidType = Constants.OFFICE365_SERVICE;
-                        }
                         if (config.OpenIdSettings?.Enable) {
                             newState.openidType = Constants.OPENID_SERVICE;
                         }
@@ -3724,16 +3561,12 @@ const AdminDefinition: AdminDefinitionType = {
                     },
                     onConfigSave: (config) => {
                         const newConfig = {...config};
-                        newConfig.Office365Settings = config.Office365Settings || {};
                         newConfig.OpenIdSettings = config.OpenIdSettings || {};
 
-                        newConfig.Office365Settings.Enable = false;
                         newConfig.OpenIdSettings.Enable = false;
 
                         let configSetting = '';
-                        if (config.openidType === Constants.OFFICE365_SERVICE) {
-                            configSetting = 'Office365Settings';
-                        } else if (config.openidType === Constants.OPENID_SERVICE) {
+                        if (config.openidType === Constants.OPENID_SERVICE) {
                             configSetting = 'OpenIdSettings';
                         }
 
@@ -3753,9 +3586,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'custom',
                             component: OpenIdConvert,
                             key: 'OpenIdConvert',
-                            isHidden: it.any(
-                                it.not(usesLegacyOauth),
-                            ),
+                            isHidden: true,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
                         },
                         {
@@ -3769,39 +3600,6 @@ const AdminDefinition: AdminDefinitionType = {
                                     display_name: defineMessage({id: 'admin.openid.off', defaultMessage: 'Do not allow sign-in via an OpenID provider.'}),
                                 },
                                 {
-                                    value: Constants.OFFICE365_SERVICE,
-                                    display_name: defineMessage({id: 'admin.openid.office365', defaultMessage: 'Entra ID'}),
-                                    help_text: defineMessage({id: 'admin.office365.EnableMarkdownDesc', defaultMessage: '1. <linkLogin>Log in</linkLogin> to your Microsoft account. \n2. In Microsoft, go to <strong>Applications</strong> and <strong>App Registrations</strong> in the left pane.\n3. Select <strong>New registration</strong>, then enter "Stroichat - your-company-name" as the <strong>Application Name</strong>. \n4. Under <strong>Redirect URI</strong>, select <strong>Web</strong>, and enter "your-stroichat-url/signup/office365/complete" as the <strong>Redirect URI</strong>. Select <strong>Register</strong>.\n5. Copy the Microsoft <strong>Application (client) ID</strong> value, and paste it below as the <strong>Client ID</strong> value. \n6. Copy the Microsoft <strong>Directory (tenant) ID</strong> value, and paste it below as the <strong>Directory (tenant) ID</strong> value. \n7. In Microsoft, create a new client secret. Copy the resulting client secret value, and paste it below as the <strong>Client Secret</strong> value. Select <strong>Save</strong>.'}),
-                                    help_text_markdown: false,
-                                    help_text_values: {
-                                        linkLogin: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://entra.microsoft.com'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        linkTenant: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://msdn.microsoft.com/en-us/library/azure/jj573650.aspx#Anchor_0'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        linkApps: (msg: string) => (
-                                            <ExternalLink
-                                                location='admin_console'
-                                                href='https://entra.microsoft.com'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
-                                        ),
-                                        strong: (msg: string) => <strong>{msg}</strong>,
-                                    },
-                                },
-                                {
                                     value: Constants.OPENID_SERVICE,
                                     display_name: defineMessage({id: 'admin.oauth.openid', defaultMessage: 'OpenID Connect (Other)'}),
                                     help_text: defineMessage({id: 'admin.openid.EnableMarkdownDesc', defaultMessage: 'Follow provider directions for creating an OpenID Application. Most OpenID Connect providers require authorization of all redirect URIs. In the appropriate field, enter "your-stroichat-url/signup/openid/complete" (example: http://domain.com/signup/openid/complete)'}),
@@ -3810,49 +3608,6 @@ const AdminDefinition: AdminDefinitionType = {
                             ],
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
                         },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.DirectoryId',
-                            label: defineMessage({id: 'admin.office365.directoryIdTitle', defaultMessage: 'Directory (tenant) ID:'}),
-                            help_text: defineMessage({id: 'admin.office365.directoryIdDescription', defaultMessage: 'The Directory (tenant) ID you received when registering your application with Microsoft.'}),
-                            placeholder: defineMessage({id: 'admin.office365.directoryIdExample', defaultMessage: 'E.g.: "adf3sfa2-ag3f-sn4n-ids0-sh1hdax192qq"'}),
-                            isHidden: it.not(it.stateEquals('openidType', Constants.OFFICE365_SERVICE)),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.DiscoveryEndpoint',
-                            label: defineMessage({id: 'admin.openid.discoveryEndpointTitle', defaultMessage: 'Discovery Endpoint:'}),
-                            help_text: defineMessage({id: 'admin.office365.discoveryEndpointDesc', defaultMessage: 'The URL of the discovery document for OpenID Connect with Entra ID.'}),
-                            help_text_markdown: false,
-                            dynamic_value: (value, config, state) => {
-                                if (state['Office365Settings.DirectoryId']) {
-                                    return 'https://login.microsoftonline.com/' + state['Office365Settings.DirectoryId'] + '/v2.0/.well-known/openid-configuration';
-                                }
-                                return 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration';
-                            },
-                            isDisabled: true,
-                            isHidden: it.not(it.stateEquals('openidType', Constants.OFFICE365_SERVICE)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.Id',
-                            label: defineMessage({id: 'admin.openid.clientIdTitle', defaultMessage: 'Client ID:'}),
-                            help_text: defineMessage({id: 'admin.openid.clientIdDescription', defaultMessage: 'Obtaining the Client ID differs across providers. Please check you provider\'s documentation'}),
-                            placeholder: defineMessage({id: 'admin.office365.clientIdExample', defaultMessage: 'E.g.: "adf3sfa2-ag3f-sn4n-ids0-sh1hdax192qq"'}),
-                            isHidden: it.not(it.stateEquals('openidType', Constants.OFFICE365_SERVICE)),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-                        {
-                            type: 'text',
-                            key: 'Office365Settings.Secret',
-                            label: defineMessage({id: 'admin.openid.clientSecretTitle', defaultMessage: 'Client Secret:'}),
-                            help_text: defineMessage({id: 'admin.openid.clientSecretDescription', defaultMessage: 'Obtaining the Client Secret differs across providers. Please check you provider\'s documentation'}),
-                            placeholder: defineMessage({id: 'admin.office365.clientSecretExample', defaultMessage: 'E.g.: "shAieM47sNBfgl20f8ci294"'}),
-                            isHidden: it.not(it.stateEquals('openidType', Constants.OFFICE365_SERVICE)),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.AUTHENTICATION.OPENID)),
-                        },
-
                         {
                             type: 'text',
                             key: 'OpenIdSettings.ButtonText',

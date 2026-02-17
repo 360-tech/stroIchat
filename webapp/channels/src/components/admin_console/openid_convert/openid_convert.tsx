@@ -38,18 +38,6 @@ const OpenIdConvert = ({
 
         const newConfig = JSON.parse(JSON.stringify(config));
 
-        if (newConfig.Office365Settings.DirectoryId) {
-            newConfig.Office365Settings.DiscoveryEndpoint = 'https://login.microsoftonline.com/' + newConfig.Office365Settings.DirectoryId + '/v2.0/.well-known/openid-configuration';
-        }
-
-
-        ['Office365Settings'].forEach((setting) => {
-            newConfig[setting].Scope = Constants.OPENID_SCOPES;
-            newConfig[setting].UserAPIEndpoint = '';
-            newConfig[setting].AuthEndpoint = '';
-            newConfig[setting].TokenEndpoint = '';
-        });
-
         const {error: err} = await actions.patchConfig(newConfig);
         if (err) {
             setServerError(err.message);

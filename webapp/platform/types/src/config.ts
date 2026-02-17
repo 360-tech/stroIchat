@@ -99,7 +99,6 @@ export type ClientConfig = {
     EnableSignInWithEmail: string;
     EnableSignInWithUsername: string;
     EnableSignUpWithEmail: string;
-    EnableSignUpWithOffice365: string;
     EnableSignUpWithOpenId: string;
     EnableSVGs: string;
     EnableTesting: string;
@@ -251,7 +250,6 @@ export type LicenseFeatures = {
     ldap?: boolean;
     ldap_groups?: boolean;
     mfa?: boolean;
-    office365_oauth?: boolean;
     compliance?: boolean;
     cluster?: boolean;
     metrics?: boolean;
@@ -664,18 +662,6 @@ export type SSOSettings = {
     ButtonColor: string;
 };
 
-export type Office365Settings = {
-    Enable: boolean;
-    Secret: string;
-    Id: string;
-    Scope: string;
-    AuthEndpoint: string;
-    TokenEndpoint: string;
-    UserAPIEndpoint: string;
-    DiscoveryEndpoint: string;
-    DirectoryId: string;
-};
-
 export type LdapSettings = {
     Enable: boolean;
     EnableSync: boolean;
@@ -1012,7 +998,6 @@ export type AdminConfig = {
     SupportSettings: SupportSettings;
     AnnouncementSettings: AnnouncementSettings;
     ThemeSettings: ThemeSettings;
-    Office365Settings: Office365Settings;
     OpenIdSettings: SSOSettings;
     LdapSettings: LdapSettings;
     ComplianceSettings: ComplianceSettings;

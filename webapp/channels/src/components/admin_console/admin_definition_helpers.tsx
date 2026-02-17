@@ -64,22 +64,6 @@ export const validators = {
     maxValue: (max: number, text: MessageDescriptor | string) => (value: number) => new ValidationResult((value <= max), text),
 };
 
-export const usesLegacyOauth = (config: Partial<AdminConfig>, state: any, license?: ClientLicense, enterpriseReady?: boolean, consoleAccess?: ConsoleAccess, cloud?: CloudState) => {
-    if (!config.Office365Settings) {
-        return false;
-    }
-
-    return it.any(
-        it.all(
-            it.not(it.configContains('Office365Settings', 'Scope', 'openid')),
-            it.any(
-                it.configIsTrue('Office365Settings', 'Id'),
-                it.configIsTrue('Office365Settings', 'Secret'),
-            ),
-        ),
-    )(config, state, license, enterpriseReady, consoleAccess, cloud);
-};
-
 export const getRestrictedIndicator = (displayBlocked = false, minimumPlanRequiredForFeature = LicenseSkus.Professional) => ({
     value: (cloud: CloudState) => (
         <RestrictedIndicator

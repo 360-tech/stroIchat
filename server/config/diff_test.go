@@ -316,27 +316,6 @@ func TestDiffSanitized(t *testing.T) {
 			"",
 		},
 		{
-			"sensitive Office365Settings.Secret",
-			func() *model.Config {
-				cfg := defaultConfigGen()
-				cfg.Office365Settings.Secret = model.NewPointer("base")
-				return cfg
-			}(),
-			func() *model.Config {
-				cfg := defaultConfigGen()
-				cfg.Office365Settings.Secret = model.NewPointer("actual")
-				return cfg
-			}(),
-			ConfigDiffs{
-				{
-					Path:      "Office365Settings.Secret",
-					BaseVal:   model.FakeSetting,
-					ActualVal: model.FakeSetting,
-				},
-			},
-			"",
-		},
-		{
 			"sensitive OpenIdSettings.Secret",
 			func() *model.Config {
 				cfg := defaultConfigGen()

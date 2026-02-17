@@ -157,26 +157,4 @@ describe('Authentication', () => {
             });
         });
     });
-
-    it('MM-T1765 - Authentication - Email - Creation with email = false', () => {
-        // # Disable user sign up and enable GitLab
-        cy.apiUpdateConfig({
-            EmailSettings: {
-                EnableSignUpWithEmail: false,
-            },
-            GitLabSettings: {
-                Enable: true,
-            },
-        });
-
-        cy.apiLogout();
-        cy.visit(`/signup_user_complete/?id=${testTeam.invite_id}`);
-
-        cy.findByText('Create your account with one of the following:').should('exist');
-        cy.findByText('GitLab', {timeout: TIMEOUTS.ONE_MIN}).should('be.visible');
-
-        // * Email and Password option does not exist
-        cy.findByText('Email address').should('not.exist');
-        cy.findByText('Choose a Password').should('not.exist');
-    });
 });

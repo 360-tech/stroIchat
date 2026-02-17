@@ -270,12 +270,6 @@ export const adminConsoleNavigation = [
         url: 'admin_console/authentication/saml',
     },
     {
-        type: ['team'],
-        header: 'GitLab',
-        sidebar: 'GitLab',
-        url: 'admin_console/authentication/gitlab',
-    },
-    {
         type: ['team', 'e20', 'cloud_enterprise'],
         header: 'OpenID Connect',
         sidebar: 'OpenID Connect',

@@ -923,8 +923,7 @@ func (u *User) IsSSOUser() bool {
 }
 
 func (u *User) IsOAuthUser() bool {
-	return u.AuthService == ServiceOffice365 ||
-		u.AuthService == ServiceOpenid
+	return u.AuthService == ServiceOpenid
 }
 
 func (u *User) IsLDAPUser() bool {

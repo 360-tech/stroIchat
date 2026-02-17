@@ -23,44 +23,9 @@ import (
 	"github.com/mattermost/mattermost/server/v8/channels/store"
 	storemocks "github.com/mattermost/mattermost/server/v8/channels/store/storetest/mocks"
 	"github.com/mattermost/mattermost/server/v8/channels/utils/testutils"
-	"github.com/mattermost/mattermost/server/v8/einterfaces"
 	"github.com/mattermost/mattermost/server/v8/einterfaces/mocks"
 	"github.com/mattermost/mattermost/server/v8/platform/services/sharedchannel"
 )
-
-func TestCreateOAuthUser(t *testing.T) {
-	mainHelper.Parallel(t)
-	th := Setup(t).InitBasic()
-	defer th.TearDown()
-
-	t.Run("user exists, update authdata successfully", func(t *testing.T) {
-		th.App.UpdateConfig(func(cfg *model.Config) {
-			*cfg.Office365Settings.Enable = true
-		})
-
-		dbUser := th.BasicUser
-
-		// mock oAuth Provider, return data
-		mockUser := &model.User{Id: "abcdef", AuthData: model.NewPointer("e7110007-64be-43d8-9840-4a7e9c26b710"), Email: dbUser.Email}
-		providerMock := &mocks.OAuthProvider{}
-		providerMock.On("IsSameUser", mock.AnythingOfType("*request.Context"), mock.Anything, mock.Anything).Return(true)
-		providerMock.On("GetUserFromJSON", mock.AnythingOfType("*request.Context"), mock.Anything, mock.Anything).Return(mockUser, nil)
-		einterfaces.RegisterOAuthProvider(model.ServiceOffice365, providerMock)
-
-		// Update user to be OAuth, formatting to match Office365 OAuth data
-		s, er2 := th.App.Srv().Store().User().UpdateAuthData(dbUser.Id, model.ServiceOffice365, model.NewPointer("e711000764be43d898404a7e9c26b710"), "", false)
-		assert.NoError(t, er2)
-		assert.Equal(t, dbUser.Id, s)
-
-		// data passed doesn't matter as return is mocked
-		_, err := th.App.CreateOAuthUser(th.Context, model.ServiceOffice365, strings.NewReader("{}"), "", "", nil)
-		assert.Nil(t, err)
-		u, er := th.App.Srv().Store().User().GetByEmail(dbUser.Email)
-		assert.NoError(t, er)
-		// make sure authdata is updated
-		assert.Equal(t, "e7110007-64be-43d8-9840-4a7e9c26b710", *u.AuthData)
-	})
-}
 
 func TestUpdateDefaultProfileImage(t *testing.T) {
 	mainHelper.Parallel(t)

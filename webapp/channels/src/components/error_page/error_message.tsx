@@ -109,54 +109,7 @@ const ErrorMessage: React.FC<Props> = ({type, message, service, isPartner}: Prop
                             }}
                         />
                     </p>
-                    <p>
-                        <FormattedMessage
-                            id='error.oauth_missing_code.office365'
-                            defaultMessage='For {link} make sure the administrator of your Microsoft organization has enabled the Mattermost app.'
-                            values={{
-                                link: (
-                                    <ErrorLink
-                                        url={'https://docs.mattermost.com/deployment/sso-office.html'}
-                                        message={defineMessage({
-                                            id: 'error.oauth_missing_code.office365.link',
-                                            defaultMessage: 'Entra ID',
-                                        })}
-                                    />
-                                ),
-                            }}
-                        />
-                    </p>
-                    <p>
-                        <FormattedMessage
-                            id='error.oauth_missing_code.forum'
-                            defaultMessage="If you reviewed the above and are still having trouble with configuration, you may post in our {link} where we'll be happy to help with issues during setup."
-                            values={{
-                                link: (
-                                    <ErrorLink
-                                        url={'https://forum.mattermost.com/c/trouble-shoot'}
-                                        message={defineMessage({
-                                            id: 'error.oauth_missing_code.forum.link',
-                                            defaultMessage: 'Troubleshooting forum',
-                                        })}
-                                    />
-                                ),
-                            }}
-                        />
-                    </p>
                 </div>
-            );
-            break;
-        case ErrorPageTypes.OAUTH_ACCESS_DENIED:
-            errorMessage = (
-                <p>
-                    <FormattedMessage
-                        id='error.oauth_access_denied'
-                        defaultMessage='You must authorize Mattermost to log in with {service}.'
-                        values={{
-                            service,
-                        }}
-                    />
-                </p>
             );
             break;
         case ErrorPageTypes.OAUTH_INVALID_REDIRECT_URL:

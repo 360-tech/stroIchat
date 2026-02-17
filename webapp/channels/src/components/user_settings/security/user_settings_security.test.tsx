@@ -40,12 +40,9 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
         canUseAccessTokens: true,
         enableOAuthServiceProvider: false,
         allowedToSwitchToEmail: true,
-        enableSignUpWithGitLab: false,
-        enableSignUpWithGoogle: true,
         enableSignUpWithOpenId: false,
         enableLdap: false,
         enableSaml: true,
-        enableSignUpWithOffice365: false,
         experimentalEnableAuthenticationTransfer: true,
         passwordConfig: {} as PasswordConfig,
         militaryTime: false,
@@ -53,27 +50,6 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
             formatMessage: jest.fn(({id, defaultMessage}) => defaultMessage || id),
         } as MockIntl,
     };
-
-    test('should match snapshot, enable google', () => {
-        const props = {...requiredProps, enableSaml: false};
-
-        const wrapper = shallow<SecurityTab>(<SecurityTab {...props}/>);
-        expect(wrapper).toMatchSnapshot();
-    });
-
-    test('should match snapshot, enable gitlab', () => {
-        const props = {...requiredProps, enableSignUpWithGoogle: false, enableSaml: false, enableSignUpWithGitLab: true};
-
-        const wrapper = shallow<SecurityTab>(<SecurityTab {...props}/>);
-        expect(wrapper).toMatchSnapshot();
-    });
-
-    test('should match snapshot, enable office365', () => {
-        const props = {...requiredProps, enableSignUpWithGoogle: false, enableSaml: false, enableSignUpWithOffice365: true};
-
-        const wrapper = shallow<SecurityTab>(<SecurityTab {...props}/>);
-        expect(wrapper).toMatchSnapshot();
-    });
 
     test('should match snapshot, enable openID', () => {
         const props = {...requiredProps, enableSignUpWithGoogle: false, enableSaml: false, enableSignUpWithOpenId: true};

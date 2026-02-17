@@ -47,7 +47,6 @@ const (
 	PasswordMaximumLength = 72
 	PasswordMinimumLength = 5
 
-	ServiceOffice365 = "office365"
 	ServiceOpenid    = "openid"
 
 	GenericNoChannelNotification = "generic_no_channel"
@@ -253,11 +252,6 @@ const (
 
 	ImageProxyTypeLocal     = "local"
 	ImageProxyTypeAtmosCamo = "atmos/camo"
-
-	Office365SettingsDefaultScope           = "User.Read"
-	Office365SettingsDefaultAuthEndpoint    = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
-	Office365SettingsDefaultTokenEndpoint   = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
-	Office365SettingsDefaultUserAPIEndpoint = "https://graph.microsoft.com/v1.0/me"
 
 	CloudSettingsDefaultCwsURL        = ""
 	CloudSettingsDefaultCwsAPIURL     = ""
@@ -1275,57 +1269,7 @@ func (s *SSOSettings) setDefaults(scope, authEndpoint, tokenEndpoint, userAPIEnd
 	}
 }
 
-type Office365Settings struct {
-	Enable            *bool   `access:"authentication_openid"`
-	Secret            *string `access:"authentication_openid"` // telemetry: none
-	Id                *string `access:"authentication_openid"` // telemetry: none
-	Scope             *string `access:"authentication_openid"`
-	AuthEndpoint      *string `access:"authentication_openid"` // telemetry: none
-	TokenEndpoint     *string `access:"authentication_openid"` // telemetry: none
-	UserAPIEndpoint   *string `access:"authentication_openid"` // telemetry: none
-	DiscoveryEndpoint *string `access:"authentication_openid"` // telemetry: none
-	DirectoryId       *string `access:"authentication_openid"` // telemetry: none
-}
-
-func (s *Office365Settings) setDefaults() {
-	if s.Enable == nil {
-		s.Enable = NewPointer(false)
-	}
-
-	if s.Id == nil {
-		s.Id = NewPointer("")
-	}
-
-	if s.Secret == nil {
-		s.Secret = NewPointer("")
-	}
-
-	if s.Scope == nil {
-		s.Scope = NewPointer(Office365SettingsDefaultScope)
-	}
-
-	if s.DiscoveryEndpoint == nil {
-		s.DiscoveryEndpoint = NewPointer("")
-	}
-
-	if s.AuthEndpoint == nil {
-		s.AuthEndpoint = NewPointer(Office365SettingsDefaultAuthEndpoint)
-	}
-
-	if s.TokenEndpoint == nil {
-		s.TokenEndpoint = NewPointer(Office365SettingsDefaultTokenEndpoint)
-	}
-
-	if s.UserAPIEndpoint == nil {
-		s.UserAPIEndpoint = NewPointer(Office365SettingsDefaultUserAPIEndpoint)
-	}
-
-	if s.DirectoryId == nil {
-		s.DirectoryId = NewPointer("")
-	}
-}
-
-func (s *Office365Settings) SSOSettings() *SSOSettings {
+func (s *SSOSettings) SSOSettings() *SSOSettings {
 	ssoSettings := SSOSettings{}
 	ssoSettings.Enable = s.Enable
 	ssoSettings.Secret = s.Secret
@@ -3818,7 +3762,6 @@ type Config struct {
 	SupportSettings             SupportSettings
 	AnnouncementSettings        AnnouncementSettings
 	ThemeSettings               ThemeSettings
-	Office365Settings           Office365Settings
 	OpenIdSettings              SSOSettings
 	LdapSettings                LdapSettings
 	ComplianceSettings          ComplianceSettings
@@ -3881,8 +3824,6 @@ func (o *Config) ToJSONFiltered(tagType, tagValue string) ([]byte, error) {
 
 func (o *Config) GetSSOService(service string) *SSOSettings {
 	switch service {
-	case ServiceOffice365:
-		return o.Office365Settings.SSOSettings()
 	case ServiceOpenid:
 		return &o.OpenIdSettings
 	}
@@ -3919,8 +3860,6 @@ func (o *Config) SetDefaults() {
 	o.FileSettings.SetDefaults(isUpdate)
 	o.EmailSettings.SetDefaults(isUpdate)
 	o.PrivacySettings.setDefaults()
-	o.Office365Settings.setDefaults()
-	o.Office365Settings.setDefaults()
 	o.OpenIdSettings.setDefaults(OpenidSettingsDefaultScope, "", "", "", "#145DBF")
 	o.ServiceSettings.SetDefaults(isUpdate)
 	o.PasswordSettings.SetDefaults()
@@ -4820,10 +4759,6 @@ func (o *Config) Sanitize(pluginManifests []*Manifest, opts *SanitizeOptions) {
 
 	if o.EmailSettings.SMTPPassword != nil && *o.EmailSettings.SMTPPassword != "" {
 		*o.EmailSettings.SMTPPassword = FakeSetting
-	}
-
-	if o.Office365Settings.Secret != nil && *o.Office365Settings.Secret != "" {
-		*o.Office365Settings.Secret = FakeSetting
 	}
 
 	if o.OpenIdSettings.Secret != nil && *o.OpenIdSettings.Secret != "" {

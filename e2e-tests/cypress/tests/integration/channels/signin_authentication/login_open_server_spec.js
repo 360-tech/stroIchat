@@ -18,7 +18,6 @@ describe('Login page with open server', () => {
     before(() => {
         // Disable other auth options
         const newSettings = {
-            Office365Settings: {Enable: false},
             LdapSettings: {Enable: false},
         };
         cy.apiUpdateConfig(newSettings).then((data) => {
