@@ -324,6 +324,7 @@ const AdvancedTextEditor = ({
     );
 
     const {
+
         // emojiPicker,
         // enableEmojiPicker,
         toggleEmojiPicker,
@@ -725,6 +726,9 @@ const AdvancedTextEditor = ({
 
     const containsAtMentionsInMessage = allAtMentions(draft?.message)?.length > 0;
 
+    const isMobileContainerInsideChannel = isMobileView && (location === Locations.CENTER || location === Locations.RHS_COMMENT)
+    const isMobileContainerInsideReply = isMobileView && location === Locations.RHS_COMMENT;
+
     return (
         <form
             id={rootId ? undefined : 'create_post'}
@@ -746,7 +750,8 @@ const AdvancedTextEditor = ({
                     'AdvancedTextEditor__attachment-disabled': !canUploadFiles,
                     scroll: renderScrollbar,
                     'formatting-bar': showFormattingBar,
-                    AdvancedTextEditor__mobileContainerInsideChannel: isMobileView && (location === Locations.CENTER || location === Locations.RHS_COMMENT),
+                    AdvancedTextEditor__mobileContainerInsideChannel: isMobileContainerInsideChannel,
+                    AdvancedTextEditor__mobileContainerInsideReply: isMobileContainerInsideReply,
                 })}
             >
                 {!wasNotifiedOfLogIn && (

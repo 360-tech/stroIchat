@@ -98,6 +98,19 @@
         max-width: calc(100% - 2 * var(--mobile-container-margin));
     }
 
+    &__mobileContainerInsideReply {
+        --mobile-container-margin: 2rem;
+        margin-bottom: var(--mobile-container-margin);
+
+        & .AdvancedTextEditor__cell {
+            flex-direction: row;
+        }
+
+        & .AdvancedTextEditor__body {
+            border-radius: 20px;
+        }
+    }
+
     &__body {
         position: relative;
         max-width: 100%;
@@ -223,14 +236,14 @@
                 // border-right: none;
                 // border-left: none;
 
-                &:focus-visible,
-                &:focus-within,
-                &:focus-visible:hover,
-                &:focus-within:hover,
-                &:hover {
-                    border-right: none;
-                    border-left: none;
-                }
+                // &:focus-visible,
+                // &:focus-within,
+                // &:focus-visible:hover,
+                // &:focus-within:hover,
+                // &:hover {
+                //     border-right: none;
+                //     border-left: none;
+                // }
             }
 
             .ThreadViewer & {
