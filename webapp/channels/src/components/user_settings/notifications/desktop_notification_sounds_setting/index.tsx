@@ -226,13 +226,15 @@ function DesktopNotificationSoundsSettings({
         onSubmit();
     }
 
+    console.log({active})
+
     if (active) {
         return (
             <SettingItemMax
                 title={
                     <FormattedMessage
                         id='user.settings.notifications.desktopNotificationSounds.title'
-                        defaultMessage='Desktop notification sounds'
+                        defaultMessage='Desktop notification'
                     />
                 }
                 inputs={maximizedSettingInputs}
@@ -250,7 +252,7 @@ function DesktopNotificationSoundsSettings({
             title={
                 <FormattedMessage
                     id='user.settings.notifications.desktopNotificationSounds.title'
-                    defaultMessage='Desktop notification sounds'
+                    defaultMessage='Desktop notification'
                 />
             }
             describe={getCollapsedText(isCallsRingingEnabled, desktopSound, desktopNotificationSound, callsDesktopSound, callsNotificationSound)}

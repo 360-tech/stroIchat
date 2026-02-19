@@ -11,14 +11,12 @@ import type {InputProps, OnChangeValue, StylesConfig} from 'react-select';
 import {components} from 'react-select';
 import CreatableReactSelect from 'react-select/creatable';
 
-import type {PreferencesType} from '@mattermost/types/preferences';
 import type {UserNotifyProps, UserProfile} from '@mattermost/types/users';
 
 import SettingItem from 'components/setting_item';
 import SettingItemMax from 'components/setting_item_max';
-import RestrictedIndicator from 'components/widgets/menu/menu_items/restricted_indicator';
 
-import Constants, {NotificationLevels, MattermostFeatures, LicenseSkus, UserSettingsNotificationSections} from 'utils/constants';
+import Constants, {NotificationLevels, UserSettingsNotificationSections} from 'utils/constants';
 import {notificationSoundKeys, stopTryNotificationRing} from 'utils/notification_sounds';
 import {a11yFocus} from 'utils/utils';
 
@@ -26,7 +24,6 @@ import DesktopAndMobileNotificationSettings from './desktop_and_mobile_notificat
 import DesktopNotificationSoundsSettings from './desktop_notification_sounds_setting';
 import EmailNotificationSetting from './email_notification_setting';
 import ManageAutoResponder from './manage_auto_responder/manage_auto_responder';
-import SendTestNotificationNotice from './send_test_notification_notice';
 
 import SettingDesktopHeader from '../headers/setting_desktop_header';
 import SettingMobileHeader from '../headers/setting_mobile_header';
@@ -48,7 +45,6 @@ export type OwnProps = {
     closeModal: () => void;
     collapseModal: () => void;
     adminMode?: boolean;
-    userPreferences?: PreferencesType;
 }
 
 export type Props = PropsFromRedux & OwnProps & WrappedComponentProps;
@@ -441,57 +437,6 @@ class NotificationsTab extends React.PureComponent<Props, State> {
         }
     };
 
-    handleChangeForCustomKeysWithHighlightInput = (values: OnChangeValue<{ value: string }, true>) => {
-        if (values && Array.isArray(values) && values.length > 0) {
-            const customKeysWithHighlight = values.
-                map((value: MultiInputValue) => {
-                    const formattedValue = value.value.trim();
-                    return {value: formattedValue, label: formattedValue};
-                }).
-                filter((value) => value.value.length > 0);
-            this.setState({customKeysWithHighlight});
-        } else {
-            this.setState({
-                customKeysWithHighlight: [],
-            });
-        }
-    };
-
-    handleChangeForCustomKeysWithHighlightInputValue = (value: string) => {
-        if (!value.includes(Constants.KeyCodes.COMMA[0])) {
-            this.setState({customKeysWithHighlightInputValue: value});
-        }
-    };
-
-    updateCustomKeysWithHighlightWithInputValue = (newValue: State['customKeysWithHighlightInputValue']) => {
-        const unsavedCustomKeyWithHighlight = newValue?.trim()?.replace(COMMA_REGEX, '') ?? '';
-
-        if (unsavedCustomKeyWithHighlight.length > 0) {
-            const customKeysWithHighlight = [
-                ...this.state.customKeysWithHighlight,
-                {
-                    value: unsavedCustomKeyWithHighlight,
-                    label: unsavedCustomKeyWithHighlight,
-                },
-            ];
-
-            this.setState({
-                customKeysWithHighlight,
-                customKeysWithHighlightInputValue: '',
-            });
-        }
-    };
-
-    handleBlurForCustomKeysWithHighlightInput = () => {
-        this.updateCustomKeysWithHighlightWithInputValue(this.state.customKeysWithHighlightInputValue);
-    };
-
-    handleOnKeydownForCustomKeysWithHighlightInput = (event: React.KeyboardEvent) => {
-        if (event.key === Constants.KeyCodes.COMMA[0] || event.key === Constants.KeyCodes.TAB[0]) {
-            this.updateCustomKeysWithHighlightWithInputValue(this.state.customKeysWithHighlightInputValue);
-        }
-    };
-
     handleCloseSettingsModal = () => {
         this.props.closeModal();
     };
@@ -674,140 +619,6 @@ class NotificationsTab extends React.PureComponent<Props, State> {
             />);
     };
 
-    createKeywordsWithHighlightSection = () => {
-        const isSectionExpanded = this.props.activeSection === UserSettingsNotificationSections.KEYWORDS_HIGHLIGHT;
-
-        let expandedSection = null;
-        if (isSectionExpanded) {
-            const inputs = [(
-                <div
-                    key='userNotificationHighlightOption'
-                    className='customKeywordsWithNotificationSubsection'
-                >
-                    <label htmlFor='mentionKeysWithHighlightInput'>
-                        <FormattedMessage
-                            id='user.settings.notifications.keywordsWithHighlight.inputTitle'
-                            defaultMessage='Enter non case-sensitive keywords, press Tab or use commas to separate them:'
-                        />
-                    </label>
-                    <CreatableReactSelect
-                        inputId='mentionKeysWithHighlightInput'
-                        autoFocus={true}
-                        isClearable={false}
-                        isMulti={true}
-                        styles={customKeywordsSelectorStyles}
-                        placeholder=''
-                        components={{
-                            DropdownIndicator: () => null,
-                            Menu: () => null,
-                            MenuList: () => null,
-                        }}
-                        aria-labelledby='mentionKeysWithHighlightInput'
-                        onChange={this.handleChangeForCustomKeysWithHighlightInput}
-                        value={this.state.customKeysWithHighlight}
-                        inputValue={this.state.customKeysWithHighlightInputValue}
-                        onInputChange={this.handleChangeForCustomKeysWithHighlightInputValue}
-                        onBlur={this.handleBlurForCustomKeysWithHighlightInput}
-                        onKeyDown={this.handleOnKeydownForCustomKeysWithHighlightInput}
-                    />
-                </div>
-            )];
-
-            const extraInfo = (
-                <FormattedMessage
-                    id='user.settings.notifications.keywordsWithHighlight.extraInfo'
-                    defaultMessage='These keywords will be shown to you with a highlight when anyone sends a message that includes them.'
-                />
-            );
-
-            expandedSection = (
-                <SettingItemMax
-                    title={this.props.intl.formatMessage({id: 'user.settings.notifications.keywordsWithHighlight.title', defaultMessage: 'Keywords that get highlighted (without notifications)'})}
-                    inputs={inputs}
-                    submit={this.handleSubmit}
-                    saving={this.state.isSaving}
-                    serverError={this.state.serverError}
-                    extraInfo={extraInfo}
-                    updateSection={this.handleUpdateSection}
-                />
-            );
-        }
-
-        let collapsedDescription = this.props.intl.formatMessage({id: 'user.settings.notifications.keywordsWithHighlight.none', defaultMessage: 'None'});
-        if (!this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady && this.state.customKeysWithHighlight.length > 0) {
-            const customKeysWithHighlightStringArray = this.state.customKeysWithHighlight.map((key) => key.value);
-            collapsedDescription = customKeysWithHighlightStringArray.map((key) => `"${key}"`).join(', ');
-        }
-
-        // const collapsedEditButtonWhenDisabled = (
-        //     <RestrictedIndicator
-        //         blocked={this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady}
-        //         feature={MattermostFeatures.HIGHLIGHT_WITHOUT_NOTIFICATION}
-        //         minimumPlanRequiredForFeature={LicenseSkus.Professional}
-        //         tooltipTitle={this.props.intl.formatMessage({
-        //             id: 'user.settings.notifications.keywordsWithHighlight.disabledTooltipTitle',
-        //             defaultMessage: 'Professional feature',
-        //         })}
-        //         tooltipMessageBlocked={this.props.intl.formatMessage({
-        //             id: 'user.settings.notifications.keywordsWithHighlight.disabledTooltipMessage',
-        //             defaultMessage:
-        //             'This feature is available on the Professional plan',
-        //         })}
-        //         titleAdminPreTrial={this.props.intl.formatMessage({
-        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleAdminPreTrial',
-        //             defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
-        //         })}
-        //         messageAdminPreTrial={this.props.intl.formatMessage({
-        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageAdminPreTrial',
-        //             defaultMessage: 'Get the ability to passively highlight keywords that you care about. Upgrade to Professional plan to unlock this feature.',
-        //         })}
-        //         titleAdminPostTrial={this.props.intl.formatMessage({
-        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleAdminPostTrial',
-        //             defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
-        //         })}
-        //         messageAdminPostTrial={this.props.intl.formatMessage({
-        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageAdminPostTrial',
-        //             defaultMessage: 'Get the ability to passively highlight keywords that you care about. Upgrade to Professional plan to unlock this feature.',
-        //         },
-        //         )}
-        //         titleEndUser={this.props.intl.formatMessage({
-        //             id: 'user.settings.notifications.keywordsWithHighlight.userModal.titleEndUser',
-        //             defaultMessage: 'Highlight keywords without notifications with Mattermost Professional',
-        //         })}
-        //         messageEndUser={this.props.intl.formatMessage(
-        //             {
-        //                 id: 'user.settings.notifications.keywordsWithHighlight.userModal.messageEndUser',
-        //                 defaultMessage: 'Get the ability to passively highlight keywords that you care about.{br}{br}Request your admin to upgrade to Mattermost Professional to access this feature.',
-        //             },
-        //             {
-        //                 br: <br/>,
-        //             },
-        //         )}
-        //         ctaExtraContent={
-        //             <FormattedMessage
-        //                 id='user.settings.notifications.keywordsWithHighlight.professional'
-        //                 defaultMessage='Professional'
-        //             />
-        //         }
-        //         clickCallback={this.handleCloseSettingsModal}
-        //     />
-        // );
-
-        return (
-            <SettingItem
-                title={this.props.intl.formatMessage({id: 'user.settings.notifications.keywordsWithHighlight.title', defaultMessage: 'Keywords that get highlighted (without notifications)'})}
-                section={UserSettingsNotificationSections.KEYWORDS_HIGHLIGHT}
-                active={isSectionExpanded}
-                areAllSectionsInactive={this.props.activeSection === ''}
-                describe={collapsedDescription}
-                updateSection={this.handleUpdateSection}
-                max={expandedSection}
-                isDisabled={this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady}
-
-                // collapsedEditButtonWhenDisabled={collapsedEditButtonWhenDisabled}
-            />);
-    };
-
     createCommentsSection = () => {
         const serverError = this.state.serverError;
 
@@ -987,7 +798,6 @@ class NotificationsTab extends React.PureComponent<Props, State> {
 
     render() {
         const keywordsWithNotificationSection = this.createKeywordsWithNotificationSection();
-        const keywordsWithHighlightSection = this.createKeywordsWithHighlightSection();
         const commentsSection = this.createCommentsSection();
         const autoResponderSection = this.createAutoResponderSection();
 
@@ -1073,12 +883,6 @@ class NotificationsTab extends React.PureComponent<Props, State> {
                     />
                     <div className='divider-light'/>
                     {keywordsWithNotificationSection}
-                    {(!this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady) && (
-                        <>
-                            <div className='divider-light'/>
-                            {keywordsWithHighlightSection}
-                        </>
-                    )}
                     <div className='divider-light'/>
                     {!this.props.isCollapsedThreadsEnabled && (
                         <>
@@ -1092,15 +896,6 @@ class NotificationsTab extends React.PureComponent<Props, State> {
                             {autoResponderSection}
                         </>
                     )}
-
-                    {/*  We placed the disabled items in the last */}
-                    {(this.props.isEnterpriseOrCloudOrSKUStarterFree && this.props.isEnterpriseReady) && (
-                        <>
-                            <div className='divider-light'/>
-                            {keywordsWithHighlightSection}
-                        </>
-                    )}
-                    <SendTestNotificationNotice adminMode={this.props.adminMode}/>
                 </div>
             </div>
 

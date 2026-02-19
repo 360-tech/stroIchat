@@ -35,12 +35,3 @@ export function notifyMe(title: string, body: string, channelId: string, teamId:
         }
     };
 }
-
-export const sendTestNotification = async () => {
-    try {
-        const result = await Client4.sendTestNotificaiton();
-        return result;
-    } catch (error) {
-        return error;
-    }
-};
