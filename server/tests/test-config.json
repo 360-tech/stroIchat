@@ -64,7 +64,7 @@
         "ExperimentalEnableHardenedMode": false
     },
     "TeamSettings": {
-        "SiteName": "Mattermost",
+        "SiteName": "Стройчат",
         "MaxUsersPerTeam": 50,
         "EnableUserCreation": true,
         "EnableOpenServer": false,
@@ -182,14 +182,14 @@
         "ShowFullName": true
     },
     "SupportSettings": {
-        "TermsOfServiceLink": "https://mattermost.com/pl/terms-of-use/",
-        "PrivacyPolicyLink": "https://mattermost.com/pl/privacy-policy/",
-        "AboutLink": "https://mattermost.com/default-about/",
-        "HelpLink": "https://mattermost.com/pl/help/",
-        "ReportAProblemLink": "https://mattermost.com/pl/report-a-bug",
+        "TermsOfServiceLink": "https://360tech.pro/chat/termss/",
+        "PrivacyPolicyLink": "https://360tech.pro/chat/privacy-policy/",
+        "AboutLink": "https://360tech.pro/chat/default-about/",
+        "HelpLink": "https://360tech.pro/chat/help/",
+        "ReportAProblemLink": "https://360tech.pro/chat/report-a-bug",
         "ReportAProblemType": "link",
         "ForgotPasswordLink": "",
-        "SupportEmail": "feedback@mattermost.com"
+        "SupportEmail": "feedback@360tech.pro"
     },
     "AnnouncementSettings": {
         "EnableBanner": false,
@@ -266,20 +266,6 @@
         "LoginButtonColor": "",
         "LoginButtonBorderColor": "",
         "LoginButtonTextColor": ""
-    },
-    "NativeAppSettings": {
-        "AppDownloadLink": "https://mattermost.com/download/",
-        "AndroidAppDownloadLink": "https://mattermost.com/pl/android-app/",
-        "IosAppDownloadLink": "https://mattermost.com/pl/ios-app/"
-    },
-    "ClusterSettings": {
-        "Enable": false,
-        "ClusterName": "",
-        "OverrideHostname": "",
-        "UseIPAddress": true,
-        "UseExperimentalGossip": true,
-        "ReadOnlyConfig": true,
-        "GossipPort": 8074
     },
     "MetricsSettings": {
         "Enable": false,

@@ -7,22 +7,12 @@ import {Link} from 'react-router-dom';
 
 import {GenericModal} from '@mattermost/components';
 
-import ExternalLink from 'components/external_link';
-
 export default function ReactionLimitReachedModal(props: {isAdmin: boolean; onExited: () => void}) {
     const body = props.isAdmin ? (
         <FormattedMessage
             id='reaction_limit_reached_modal.body.admin'
-            defaultMessage="Oops! It looks like we've hit a ceiling on emoji reactions for this message. We've <link>set a limit</link> to keep things running smoothly on your server. As a system administrator, you can adjust this limit from the <linkAdmin>system console</linkAdmin>."
+            defaultMessage="Oops! It looks like we've hit a ceiling on emoji reactions for this message. We've set a limit to keep things running smoothly on your server. As a system administrator, you can adjust this limit from the <linkAdmin>system console</linkAdmin>."
             values={{
-                link: (msg: React.ReactNode) => (
-                    <ExternalLink
-                        location='reaction_limit_reached_modal'
-                        href='https://mattermost.com/pl/configure-unique-emoji-reaction-limit'
-                    >
-                        {msg}
-                    </ExternalLink>
-                ),
                 linkAdmin: (msg: React.ReactNode) => (
                     <Link
                         onClick={props.onExited}

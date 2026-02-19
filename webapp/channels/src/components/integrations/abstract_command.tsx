@@ -521,12 +521,7 @@ export default class AbstractCommand extends React.PureComponent<Props, State> {
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id={'add_command.outgoing_oauth_connections.help_text'}
-                                        defaultMessage={'You can connect commands to <link>outgoing OAuth connections</link>.'}
-                                        values={{
-                                            link: (text) => (
-                                                <a href='https://mattermost.com/pl/outgoing-oauth-connections'>{text}</a>
-                                            ),
-                                        }}
+                                        defaultMessage={'You can connect commands to outgoing OAuth connections.'}
                                     />
                                 </div>
                             </div>

@@ -752,33 +752,6 @@ export type SamlSettings = {
     LoginButtonTextColor: string;
 };
 
-export type NativeAppSettings = {
-    AppCustomURLSchemes: string[];
-    AppDownloadLink: string;
-    AndroidAppDownloadLink: string;
-    IosAppDownloadLink: string;
-    MobileExternalBrowser: boolean;
-    MobileEnableBiometrics: boolean;
-    MobilePreventScreenCapture: boolean;
-    MobileJailbreakProtection: boolean;
-    MobileEnableSecureFilePreview: boolean;
-    MobileAllowPdfLinkNavigation: boolean;
-};
-
-export type ClusterSettings = {
-    Enable: boolean;
-    ClusterName: string;
-    OverrideHostname: string;
-    NetworkInterface: string;
-    BindAddress: string;
-    AdvertiseAddress: string;
-    UseIPAddress: boolean;
-    EnableGossipCompression: boolean;
-    EnableGossipEncryption: boolean;
-    ReadOnlyConfig: boolean;
-    GossipPort: number;
-};
-
 export type MetricsSettings = {
     Enable: boolean;
     BlockProfileRate: number;
@@ -1003,8 +976,6 @@ export type AdminConfig = {
     ComplianceSettings: ComplianceSettings;
     LocalizationSettings: LocalizationSettings;
     SamlSettings: SamlSettings;
-    NativeAppSettings: NativeAppSettings;
-    ClusterSettings: ClusterSettings;
     MetricsSettings: MetricsSettings;
     ExperimentalSettings: ExperimentalSettings;
     AnalyticsSettings: AnalyticsSettings;

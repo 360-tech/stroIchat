@@ -964,25 +964,21 @@ export const DraggingStateTypes = {
 };
 
 export const AboutLinks = {
-    TERMS_OF_SERVICE: 'https://360tech.pro',
-    PRIVACY_POLICY: 'https://360tech.pro',
+    TERMS_OF_SERVICE: 'https://360tech.pro/chat/terms',
+    PRIVACY_POLICY: 'https://360tech.pro/chat/privacy-policy',
 };
 
 export const DocLinks = {
     CONFIGURE_DOCUMENT_CONTENT_SEARCH: 'https://mattermost.com/pl/configure-document-content-search',
     COMPILANCE_EXPORT: 'https://mattermost.com/pl/compliance-export',
-    DATA_RETENTION_POLICY: 'https://mattermost.com/pl/data-retention-policy',
     DEFAULT_LDAP_GROUP_SYNC: 'https://mattermost.com/pl/default-ldap-group-sync',
     ELASTICSEARCH: 'https://mattermost.com/pl/setup-elasticsearch',
     FILE_STORAGE: 'https://mattermost.com/pl/configure-file-storage',
-    HIGH_AVAILABILITY_CLUSTER: 'https://mattermost.com/pl/high-availability-cluster',
-    IN_PRODUCT_NOTICES: 'https://mattermost.com/pl/in-product-notices',
     MULTI_FACTOR_AUTH: 'https://mattermost.com/pl/multi-factor-authentication',
     ONBOARD_ADVANCED_PERMISSIONS: 'https://mattermost.com/pl/advanced-permissions',
     SESSION_LENGTHS: 'https://mattermost.com/pl/configure-session-lengths',
     SETUP_LDAP: 'https://mattermost.com/pl/setup-ldap',
     SETUP_PUSH_NOTIFICATIONS: 'https://mattermost.com/pl/setup-push-notifications',
-    SHARE_LINKS_TO_MESSAGES: 'https://mattermost.com/pl/share-links-to-messages',
     SITE_URL: 'https://mattermost.com/pl/configure-site-url',
     SSL_CERTIFICATE: 'https://mattermost.com/pl/setup-ssl-client-certificate',
     TRUSTED_CONNECTION: 'https://mattermost.com/pl/default-allow-untrusted-internal-connections',
@@ -1935,7 +1931,6 @@ export const ValidationErrors = {
 
 export const ConsolePages = {
     AD_LDAP: '/admin_console/authentication/ldap',
-    COMPLIANCE_EXPORT: '/admin_console/compliance/export',
     CUSTOM_TERMS: '/admin_console/compliance/custom_terms_of_service',
     DATA_RETENTION: '/admin_console/compliance/data_retention_settings',
     ELASTICSEARCH: '/admin_console/environment/elasticsearch',

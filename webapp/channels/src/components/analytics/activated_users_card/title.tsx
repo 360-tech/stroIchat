@@ -6,7 +6,6 @@ import {defineMessage, defineMessages, useIntl} from 'react-intl';
 
 import {InformationOutlineIcon} from '@mattermost/compass-icons/components';
 
-import ExternalLink from 'components/external_link';
 import WithTooltip from 'components/with_tooltip';
 
 export const messages = defineMessages({
@@ -21,13 +20,8 @@ const Title = () => {
             hint={defineMessage({id: 'analytics.team.totalUsers.title.tooltip.hint', defaultMessage: 'Also called Registered Users'})}
         >
             <span>
-                <ExternalLink
-                    location='activated_users_card.title'
-                    href='https://mattermost.com/pl/site-statistics-definitions'
-                >
-                    {intl.formatMessage(messages.totalUsers)}
-                    <InformationOutlineIcon size='16'/>
-                </ExternalLink>
+                {intl.formatMessage(messages.totalUsers)}
+                <InformationOutlineIcon size='16'/>
             </span>
         </WithTooltip>
     );

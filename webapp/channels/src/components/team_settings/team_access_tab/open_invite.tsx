@@ -21,16 +21,7 @@ const OpenInvite = ({isGroupConstrained, allowOpenInvite, setAllowOpenInvite}: P
             <p id='groupConstrainedContent' >{
                 formatMessage({
                     id: 'team_settings.openInviteDescription.groupConstrained',
-                    defaultMessage: 'Members of this team are added and removed by linked groups. <link>Learn More</link>',
-                }, {
-                    link: (msg: React.ReactNode) => (
-                        <ExternalLink
-                            href='https://mattermost.com/pl/default-ldap-group-constrained-team-channel.html'
-                            location='open_invite'
-                        >
-                            {msg}
-                        </ExternalLink>
-                    ),
+                    defaultMessage: 'Members of this team are added and removed by linked groups.',
                 })}
             </p>
         );

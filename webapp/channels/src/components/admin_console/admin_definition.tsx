@@ -46,7 +46,6 @@ import * as DefinitionConstants from './admin_definition_constants';
 import {getRestrictedIndicator, it, validators} from './admin_definition_helpers';
 import BrandImageSetting from './brand_image_setting/brand_image_setting';
 import ClientSideUserIdsSetting from './client_side_userids_setting';
-import ClusterSettings, {searchableStrings as clusterSearchableStrings} from './cluster_settings';
 import CustomURLSchemesSetting from './custom_url_schemes_setting';
 import DatabaseSettings, {searchableStrings as databaseSearchableStrings} from './database_settings';
 import ElasticSearchSettings, {searchableStrings as elasticSearchSearchableStrings} from './elasticsearch_settings';
@@ -1420,21 +1419,6 @@ const AdminDefinition: AdminDefinitionType = {
                     component: PushNotificationsSettings,
                 },
             },
-            high_availability: {
-                url: 'environment/high_availability',
-                title: defineMessage({id: 'admin.sidebar.highAvailability', defaultMessage: 'High Availability'}),
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('Cluster')),
-                    it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.HIGH_AVAILABILITY)),
-                ),
-                searchableStrings: clusterSearchableStrings,
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.HIGH_AVAILABILITY)),
-                schema: {
-                    id: 'ClusterSettings',
-                    component: ClusterSettings,
-                },
-            },
             cache_settings: {
                 url: 'environment/cache_settings',
                 title: adminDefinitionMessages.cache_settings_title,
@@ -2234,7 +2218,6 @@ const AdminDefinition: AdminDefinitionType = {
                             isDisabled: it.any(
                                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.NOTIFICATIONS)),
                                 it.stateIsFalse('EmailSettings.SendEmailNotifications'),
-                                it.configIsTrue('ClusterSettings', 'Enable'),
                                 it.configIsFalse('ServiceSettings', 'SiteURL'),
                             ),
                             isHidden: it.licensedForFeature('Cloud'),
@@ -2597,16 +2580,6 @@ const AdminDefinition: AdminDefinitionType = {
                             key: 'ServiceSettings.EnablePermalinkPreviews',
                             label: defineMessage({id: 'admin.customization.enablePermalinkPreviewsTitle', defaultMessage: 'Enable message link previews:'}),
                             help_text: defineMessage({id: 'admin.customization.enablePermalinkPreviewsDesc', defaultMessage: 'When enabled, links to Stroichat messages will generate a preview for any users that have access to the original message.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.SHARE_LINKS_TO_MESSAGES}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                         },
@@ -2848,17 +2821,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'AnnouncementSettings.AdminNoticesEnabled',
                             label: defineMessage({id: 'admin.notices.enableAdminNoticesTitle', defaultMessage: 'Enable Admin Notices: '}),
-                            help_text: defineMessage({id: 'admin.notices.enableAdminNoticesDescription', defaultMessage: 'When enabled, System Admins will receive notices about available server upgrades and relevant system administration features. <link>Learn more about notices</link> in our documentation.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.IN_PRODUCT_NOTICES}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.notices.enableAdminNoticesDescription', defaultMessage: 'When enabled, System Admins will receive notices about available server upgrades and relevant system administration features.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.NOTICES)),
                         },
@@ -2866,17 +2829,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'AnnouncementSettings.UserNoticesEnabled',
                             label: defineMessage({id: 'admin.notices.enableEndUserNoticesTitle', defaultMessage: 'Enable End User Notices: '}),
-                            help_text: defineMessage({id: 'admin.notices.enableEndUserNoticesDescription', defaultMessage: 'When enabled, all users will receive notices about available client upgrades and relevant end user features to improve user experience. <link>Learn more about notices</link> in our documentation.'}),
-                            help_text_values: {
-                                link: (msg: string) => (
-                                    <ExternalLink
-                                        location='admin_console'
-                                        href={DocLinks.IN_PRODUCT_NOTICES}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            },
+                            help_text: defineMessage({id: 'admin.notices.enableEndUserNoticesDescription', defaultMessage: 'When enabled, all users will receive notices about available client upgrades and relevant end user features to improve user experience.'}),
                             help_text_markdown: false,
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.NOTICES)),
                         },

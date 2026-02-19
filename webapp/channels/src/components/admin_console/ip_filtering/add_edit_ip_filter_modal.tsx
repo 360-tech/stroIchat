@@ -107,17 +107,7 @@ export default function IPFilteringAddOrEditModal({onExited, onSave, existingRan
                         <p>
                             <FormattedMessage
                                 id={'admin.ip_filtering.more_info'}
-                                defaultMessage={'Enter ranges in CIDR format (e.g. 192.168.0.1/8). <link>More info</link>'}
-                                values={{
-                                    link: (msg) => (
-                                        <ExternalLink
-                                            href='https://mattermost.com/pl/cloud-ip-filtering'
-                                            location={'ip_filtering_add_edit_rule_modal'}
-                                        >
-                                            {msg}
-                                        </ExternalLink>
-                                    ),
-                                }}
+                                defaultMessage={'Enter ranges in CIDR format (e.g. 192.168.0.1/8).'}
                             />
                         </p>
                     </div>

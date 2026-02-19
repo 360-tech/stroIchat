@@ -25,17 +25,7 @@ const EnableSectionContent: React.FC<Props> = ({filterToggle, setFilterToggle}) 
                     <div className='Subtitle'>
                         <FormattedMessage
                             id={'admin.ip_filtering.enable_ip_filtering_description'}
-                            defaultMessage={'Limit access to your workspace by IP address. <learnmore>Learn more in the docs</learnmore>'}
-                            values={{
-                                learnmore: (msg) => (
-                                    <ExternalLink
-                                        href='https://mattermost.com/pl/cloud-ip-filtering'
-                                        location={'ip_filtering_enable_section'}
-                                    >
-                                        {msg}
-                                    </ExternalLink>
-                                ),
-                            }}
+                            defaultMessage={'Limit access to your workspace by IP address.'}
                         />
                     </div>
                 </div>

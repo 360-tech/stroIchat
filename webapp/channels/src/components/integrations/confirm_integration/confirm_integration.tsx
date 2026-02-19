@@ -370,18 +370,10 @@ const ConfirmIntegration = ({team, location, commands, oauthApps, incomingHooks,
             <p>
                 <FormattedMessage
                     id='bots.manage.created.text'
-                    defaultMessage='Your bot account **{botname}** has been created successfully. Please use the following access token to connect to the bot (see [documentation](https://mattermost.com/pl/default-bot-accounts) for further details).'
+                    defaultMessage='Your bot account **{botname}** has been created successfully. Please use the following access token to connect to the bot.'
                     values={{
                         botname: bot.display_name || bot.username,
                         b: (msg) => <b>{msg}</b>,
-                        link: (msg) => (
-                            <ExternalLink
-                                href='https://mattermost.com/pl/default-bot-accounts'
-                                location='confirm_integration'
-                            >
-                                {msg}
-                            </ExternalLink>
-                        ),
                     }}
                 />
             </p>

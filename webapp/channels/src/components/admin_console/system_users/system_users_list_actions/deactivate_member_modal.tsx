@@ -105,7 +105,7 @@ export default function DeactivateMemberModal({user, onExited, onSuccess, onErro
                             <li>
                                 <FormattedMessage
                                     id='deactivate_member_modal.desc.for_users_with_bot_accounts3'
-                                    defaultMessage='Bot accounts they manage will be disabled along with their integrations. To enable them again, go to <linkBots>Integrations > Bot Accounts</linkBots>. <linkDocumentation>Learn more about bot accounts</linkDocumentation>.'
+                                    defaultMessage='Bot accounts they manage will be disabled along with their integrations. To enable them again, go to <linkBots>Integrations > Bot Accounts</linkBots>.'
                                     values={{
                                         siteURL,
                                         linkBots: (msg: React.ReactNode) => (
@@ -114,14 +114,6 @@ export default function DeactivateMemberModal({user, onExited, onSuccess, onErro
                                             >
                                                 {msg}
                                             </a>
-                                        ),
-                                        linkDocumentation: (msg: React.ReactNode) => (
-                                            <ExternalLink
-                                                href='https://mattermost.com/pl/default-bot-accounts'
-                                                location='system_users_dropdown'
-                                            >
-                                                {msg}
-                                            </ExternalLink>
                                         ),
                                     }}
                                 />

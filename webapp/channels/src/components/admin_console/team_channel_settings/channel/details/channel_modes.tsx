@@ -44,17 +44,7 @@ const SyncGroupsToggle = (props: Props): JSX.Element => {
             subTitle={(
                 <FormattedMessage
                     id='admin.channel_settings.channel_details.syncGroupMembersDescr'
-                    defaultMessage='When enabled, adding and removing users from groups will add or remove them from this channel. The only way of inviting members to this channel is by adding the groups they belong to. <link>Learn More</link>'
-                    values={{
-                        link: (msg: React.ReactNode) => (
-                            <ExternalLink
-                                href='https://www.mattermost.com/pl/default-ldap-group-constrained-team-channel.html'
-                                location='channel_modes'
-                            >
-                                {msg}
-                            </ExternalLink>
-                        ),
-                    }}
+                    defaultMessage='When enabled, adding and removing users from groups will add or remove them from this channel. The only way of inviting members to this channel is by adding the groups they belong to.'
                 />
             )}
         />

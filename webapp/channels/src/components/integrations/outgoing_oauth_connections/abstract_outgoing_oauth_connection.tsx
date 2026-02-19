@@ -526,17 +526,6 @@ export default function AbstractOutgoingOAuthConnection(props: Props) {
                     </div>
                 </form>
             </div>
-            <div className='outgoing-oauth-connections-docs-link'>
-                <FormattedMessage
-                    id={'add_outgoing_oauth_connection.documentation_link'}
-                    defaultMessage={'Get help with <link>configuring outgoing OAuth connections</link>.'}
-                    values={{
-                        link: (text) => (
-                            <a href='https://mattermost.com/pl/outgoing-oauth-connections'>{text}</a>
-                        ),
-                    }}
-                />
-            </div>
             <ConfirmModal
                 show={isValidationModalOpen}
                 message={intl.formatMessage({
