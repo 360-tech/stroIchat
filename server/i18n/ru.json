@@ -9776,6 +9776,18 @@
     "translation": "Невозможно получить системного бота"
   },
   {
+    "id": "app.notifications.send_test_message.errors.no_channel",
+    "translation": "Не удалось получить прямое сообщение от системного бота."
+  },
+  {
+    "id": "app.notifications.send_test_message.errors.no_user",
+    "translation": "Не получилось найти пользователя"
+  },
+  {
+    "id": "app.notifications.send_test_message.message_body",
+    "translation": "Если Вы получили это тестовое уведомление – оно работает"
+  },
+  {
     "id": "app.file_info.undelete_for_post_ids.app_error",
     "translation": "Не удалось восстановить вложения файлов в сообщении."
   },
