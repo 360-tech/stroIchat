@@ -30,12 +30,15 @@ const KeyboardShortcutsModal = makeAsyncComponent('KeyboardShortcutsModal', lazy
 const NewChannelModal = makeAsyncComponent('NewChannelModal', lazy(() => import('components/new_channel_modal/new_channel_modal')));
 const UserSettingsModal = makeAsyncComponent('UserSettingsModal', lazy(() => import('components/user_settings/modal')));
 
+const LHS_SIDEBAR_WIDTH_PX = 290;
+
 type Props = {
     teamId: string;
     canCreatePublicChannel: boolean;
     canCreatePrivateChannel: boolean;
     canJoinPublicChannel: boolean;
     isOpen: boolean;
+    dragOffset: number;
     actions: {
         fetchMyCategories: (teamId: string) => void;
         openModal: <P>(modalData: ModalData<P>) => void;
@@ -223,13 +226,23 @@ export default class Sidebar extends React.PureComponent<Props, State> {
 
         const ariaLabel = localizeMessage({id: 'accessibility.sections.lhsNavigator', defaultMessage: 'channel navigator region'});
 
+        const {isOpen, isMobileView, dragOffset} = this.props;
+        const isDragging = dragOffset !== 0;
+        const baseX = isOpen ? 0 : -LHS_SIDEBAR_WIDTH_PX;
+        const translateX = baseX + dragOffset;
+        const lhsStyle = isMobileView ? {
+            transform: `translate3d(${translateX}px, 0, 0)`,
+            transition: isDragging ? 'none' : undefined,
+        } : undefined;
+
         return (
             <ResizableLhs
                 id='SidebarContainer'
                 className={classNames({
-                    'move--right': this.props.isOpen && this.props.isMobileView,
+                    'move--right': isOpen && isMobileView && !isDragging,
                     dragging: this.state.isDragging,
                 })}
+                style={lhsStyle}
             >
                 {this.props.isMobileView ? <MobileSidebarHeader/> : (
                     <SidebarHeader

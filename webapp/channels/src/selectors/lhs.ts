@@ -17,6 +17,10 @@ export function getIsLhsOpen(state: GlobalState): boolean {
     return state.views.lhs.isOpen;
 }
 
+export function getLhsDragOffset(state: GlobalState): number {
+    return state.views.lhs.dragOffset ?? 0;
+}
+
 export function getLhsSize(state: GlobalState): SidebarSize {
     return state.views.lhs.size;
 }

@@ -246,6 +246,7 @@ export const ActionTypes = keyMirror({
     TOGGLE_LHS: null,
     OPEN_LHS: null,
     CLOSE_LHS: null,
+    SET_LHS_DRAG_OFFSET: null,
     SET_LHS_SIZE: null,
     SELECT_STATIC_PAGE: null,
 

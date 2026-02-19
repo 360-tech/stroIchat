@@ -15,6 +15,8 @@ function ResizableLhs({
     children,
     id,
     className,
+    style,
+    ...rest
 }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -22,7 +24,9 @@ function ResizableLhs({
         <div
             id={id}
             className={className}
+            style={style}
             ref={containerRef}
+            {...rest}
         >
             {children}
             <ResizableDivider

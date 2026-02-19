@@ -53,6 +53,11 @@ export const close = () => ({
     type: ActionTypes.CLOSE_LHS,
 });
 
+export const setDragOffset = (offset: number) => ({
+    type: ActionTypes.SET_LHS_DRAG_OFFSET,
+    data: offset,
+});
+
 export const selectStaticPage = (itemId: string) => ({
     type: ActionTypes.SELECT_STATIC_PAGE,
     data: itemId,

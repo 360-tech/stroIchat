@@ -24,6 +24,7 @@ import {Constants} from 'utils/constants';
 
 const ResetStatusModal = makeAsyncComponent('ResetStatusModal', lazy(() => import('components/reset_status_modal')));
 const MobileSidebarRight = makeAsyncComponent('MobileSidebarRight', lazy(() => import('components/mobile_sidebar_right')));
+const MobileTouchGestures = makeAsyncComponent('MobileTouchGestures', lazy(() => import('components/mobile_touch_gestures')));
 
 const BODY_CLASS_FOR_CHANNEL = ['app__body', 'channel-view'];
 
@@ -84,7 +85,12 @@ export default function ChannelController(props: Props) {
                     <ResetStatusModal/>
                 </div>
             </div>
-            {isMobileView && <MobileSidebarRight/>}
+            {isMobileView && (
+                <>
+                    <MobileSidebarRight/>
+                    <MobileTouchGestures/>
+                </>
+            )}
         </>
     );
 }

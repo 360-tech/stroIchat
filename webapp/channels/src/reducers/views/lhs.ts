@@ -11,6 +11,19 @@ import {ActionTypes} from 'utils/constants';
 
 import type {MMAction} from 'types/store';
 
+function dragOffset(state = 0, action: MMAction) {
+    switch (action.type) {
+    case ActionTypes.SET_LHS_DRAG_OFFSET:
+        return action.data ?? 0;
+    case ActionTypes.OPEN_LHS:
+    case ActionTypes.CLOSE_LHS:
+    case ActionTypes.TOGGLE_LHS:
+        return 0;
+    default:
+        return state;
+    }
+}
+
 function isOpen(state = false, action: MMAction) {
     switch (action.type) {
     case ActionTypes.TOGGLE_LHS:
@@ -56,5 +69,6 @@ function currentStaticPageId(state = '', action: MMAction) {
 export default combineReducers({
     isOpen,
     size,
+    dragOffset,
     currentStaticPageId,
 });

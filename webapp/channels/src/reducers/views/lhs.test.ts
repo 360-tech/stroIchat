@@ -12,6 +12,7 @@ describe('Reducers.LHS', () => {
         isOpen: false,
         currentStaticPageId: '',
         size: 'medium',
+        dragOffset: 0,
     };
 
     test('initial state', () => {
@@ -20,6 +21,7 @@ describe('Reducers.LHS', () => {
                 isOpen: false,
                 currentStaticPageId: '',
                 size: 'medium',
+                dragOffset: 0,
             },
             {type: 'testinit'},
         );
@@ -33,6 +35,7 @@ describe('Reducers.LHS', () => {
                 isOpen: true,
                 currentStaticPageId: '',
                 size: 'medium',
+                dragOffset: 0,
             },
             {
                 type: ActionTypes.TOGGLE_LHS,
@@ -51,6 +54,7 @@ describe('Reducers.LHS', () => {
                 isOpen: false,
                 currentStaticPageId: '',
                 size: 'medium',
+                dragOffset: 0,
             },
             {
                 type: ActionTypes.TOGGLE_LHS,
@@ -69,6 +73,7 @@ describe('Reducers.LHS', () => {
                 isOpen: false,
                 currentStaticPageId: '',
                 size: 'medium',
+                dragOffset: 0,
             },
             {
                 type: ActionTypes.OPEN_LHS,
@@ -87,6 +92,7 @@ describe('Reducers.LHS', () => {
                 isOpen: true,
                 currentStaticPageId: '',
                 size: 'medium',
+                dragOffset: 0,
             },
             {
                 type: ActionTypes.CLOSE_LHS,
@@ -97,6 +103,20 @@ describe('Reducers.LHS', () => {
             ...initialState,
             isOpen: false,
         });
+    });
+
+    test(`should set dragOffset and reset on open/close`, () => {
+        const withDrag = lhsReducer(
+            initialState as Parameters<typeof lhsReducer>[0],
+            {type: ActionTypes.SET_LHS_DRAG_OFFSET, data: 100},
+        );
+        expect(withDrag).toMatchObject({dragOffset: 100});
+
+        const afterOpen = lhsReducer(
+            withDrag as Parameters<typeof lhsReducer>[0],
+            {type: ActionTypes.OPEN_LHS},
+        );
+        expect(afterOpen).toMatchObject({dragOffset: 0});
     });
 
     describe('should close', () => {
@@ -111,6 +131,7 @@ describe('Reducers.LHS', () => {
                         isOpen: true,
                         currentStaticPageId: '',
                         size: 'medium',
+                        dragOffset: 0,
                     },
                     {
                         type: action,

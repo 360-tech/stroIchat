@@ -1514,6 +1514,11 @@
         }
     }
 
+    // Let horizontal swipes be handled by app gestures (sidebar open/close), not browser back
+    #channel_view.channel-view {
+        touch-action: pan-y;
+    }
+
     .post-comments {
         padding: 9px 21px 10px 10px !important;
     }

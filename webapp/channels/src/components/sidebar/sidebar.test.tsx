@@ -71,6 +71,7 @@ describe('components/sidebar', () => {
         canCreatePrivateChannel: true,
         canJoinPublicChannel: true,
         isOpen: false,
+        dragOffset: 0,
         teamId: currentTeam.id,
         hasSeenModal: true,
         isCloud: false,

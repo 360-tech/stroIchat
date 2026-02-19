@@ -8,6 +8,9 @@ export type LhsViewState = {
 
     size: SidebarSize;
 
+    /** Transient drag offset during touch gesture (px). Positive = opening, negative = closing. */
+    dragOffset: number;
+
     // Static pages (e.g. Threads, Insights, etc.)
     currentStaticPageId: string;
 }
