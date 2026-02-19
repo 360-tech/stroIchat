@@ -703,44 +703,13 @@ function handleChannelMemberUpdatedEvent(msg) {
     dispatch({type: ChannelTypes.RECEIVED_MY_CHANNEL_MEMBER, data: channelMember});
 }
 
-function debouncePostEvent(wait) {
-    let timeout;
-    let queue = [];
-    let count = 0;
-
-    // Called when timeout triggered
-    const triggered = () => {
-        timeout = null;
-
-        if (queue.length > 0) {
-            dispatch(handleNewPostEvents(queue));
-        }
-
-        queue = [];
-        count = 0;
-    };
-
-    return function fx(msg) {
-        if (timeout && count > 4) {
-            // If the timeout is going this is the second or further event so queue them up.
-            if (queue.push(msg) > 200) {
-                // Don't run us out of memory, give up if the queue gets insane
-                queue = [];
-                console.log('channel broken because of too many incoming messages'); //eslint-disable-line no-console
-            }
-            clearTimeout(timeout);
-            timeout = setTimeout(triggered, wait);
-        } else {
-            // Apply immediately for events up until count reaches limit
-            count += 1;
-            dispatch(handleNewPostEvent(msg));
-            clearTimeout(timeout);
-            timeout = setTimeout(triggered, wait);
-        }
-    };
+// Process every POSTED event immediately so messages and sidebar counts update in real time
+// (no batching/queue — previously messages 6+ were queued and processed after 100ms, causing delays and missed updates)
+function handleNewPostEventImmediate(msg) {
+    dispatch(handleNewPostEvent(msg));
 }
 
-const handleNewPostEventDebounced = debouncePostEvent(100);
+const handleNewPostEventDebounced = handleNewPostEventImmediate;
 
 export function handleNewPostEvent(msg) {
     return (myDispatch, myGetState) => {
