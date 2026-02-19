@@ -82,6 +82,7 @@ jest.mock('mattermost-redux/actions/users', () => ({
 }));
 
 jest.mock('mattermost-redux/actions/channels', () => ({
+    ...jest.requireActual('mattermost-redux/actions/channels'),
     getChannelStats: jest.fn(() => ({type: 'GET_CHANNEL_STATS'})),
     fetchAllMyChannelMembers: jest.fn(() => ({type: 'FETCH_ALL_MY_CHANNEL_MEMBERS'})),
     fetchAllMyTeamsChannels: jest.fn(),
@@ -650,6 +651,28 @@ describe('handleNewPostEvents', () => {
             preferences: {
                 myPreferences: {},
             },
+            users: {
+                currentUserId: 'currentUserId',
+            },
+            channels: {
+                currentChannelId: 'channel1',
+                channels: {
+                    channel1: {id: 'channel1', team_id: 'team1'},
+                    channel2: {id: 'channel2', team_id: 'team1'},
+                },
+                myMembers: {
+                    channel1: {channel_id: 'channel1', msg_count: 0, msg_count_root: 0, mention_count: 0},
+                    channel2: {channel_id: 'channel2', msg_count: 0, msg_count_root: 0, mention_count: 0},
+                },
+                messageCounts: {
+                    channel1: {total: 0, root: 0},
+                    channel2: {total: 0, root: 0},
+                },
+                manuallyUnread: {},
+            },
+            teams: {
+                currentTeamId: 'team1',
+            },
         },
     };
 
@@ -657,16 +680,20 @@ describe('handleNewPostEvents', () => {
         const testStore = configureStore(initialState);
 
         const posts = [
-            {id: 'post1', channel_id: 'channel1'},
-            {id: 'post2', channel_id: 'channel1'},
-            {id: 'post3', channel_id: 'channel2'},
-            {id: 'post4', channel_id: 'channel2'},
-            {id: 'post5', channel_id: 'channel1'},
+            {id: 'post1', channel_id: 'channel1', root_id: '', user_id: 'otherUser'},
+            {id: 'post2', channel_id: 'channel1', root_id: '', user_id: 'otherUser'},
+            {id: 'post3', channel_id: 'channel2', root_id: '', user_id: 'otherUser'},
+            {id: 'post4', channel_id: 'channel2', root_id: '', user_id: 'otherUser'},
+            {id: 'post5', channel_id: 'channel1', root_id: '', user_id: 'otherUser'},
         ];
 
         const queue = posts.map((post) => {
             return {
-                data: {post: JSON.stringify(post)},
+                data: {
+                    post: JSON.stringify(post),
+                    team_id: 'team1',
+                    channel_type: 'O',
+                },
             };
         });
 
@@ -683,6 +710,12 @@ describe('handleNewPostEvents', () => {
 
         expect(getPostThreads).toHaveBeenCalledWith(posts);
         expect(batchFetchStatusesProfilesGroupsFromPosts).toHaveBeenCalledWith(posts);
+
+        const allActions = testStore.getActions();
+        const hasIncrementTotalMsgCount = allActions.some(
+            (a) => a.type === 'INCREMENT_TOTAL_MSG_COUNT' || (a.payload && Array.isArray(a.payload) && a.payload.some((p) => p.type === 'INCREMENT_TOTAL_MSG_COUNT')),
+        );
+        expect(hasIncrementTotalMsgCount).toBe(true);
     });
 });
 

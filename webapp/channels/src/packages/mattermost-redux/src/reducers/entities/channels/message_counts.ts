@@ -58,7 +58,13 @@ export default function messageCounts(state: RelationOneToOne<Channel, ChannelMe
         const existing = state[channelId];
 
         if (!existing) {
-            return state;
+            return {
+                ...state,
+                [channelId]: {
+                    root: amountRoot,
+                    total: amount,
+                },
+            };
         }
 
         return {

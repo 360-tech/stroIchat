@@ -3,7 +3,9 @@
 
 import type {ServerChannel} from '@mattermost/types/channels';
 
-import {updateMessageCount} from './message_counts';
+import {ChannelTypes} from 'mattermost-redux/action_types';
+
+import messageCountsReducer, {updateMessageCount} from './message_counts';
 
 describe('reducers.entities.channels', () => {
     describe('updateMessageCounts', () => {
@@ -22,6 +24,22 @@ describe('reducers.entities.channels', () => {
             const results = updateMessageCount(state, channel as ServerChannel);
             expect(results.myid.root).toBe(1);
             expect(results.myid.total).toBe(5);
+        });
+    });
+
+    describe('messageCounts', () => {
+        it('INCREMENT_TOTAL_MSG_COUNT creates entry when channel has no existing messageCount', () => {
+            const state = {};
+            const action = {
+                type: ChannelTypes.INCREMENT_TOTAL_MSG_COUNT,
+                data: {
+                    channelId: 'new-channel-id',
+                    amount: 1,
+                    amountRoot: 1,
+                },
+            };
+            const result = messageCountsReducer(state, action);
+            expect(result['new-channel-id']).toEqual({root: 1, total: 1});
         });
     });
 });

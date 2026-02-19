@@ -101,11 +101,12 @@ import {isPartner} from 'mattermost-redux/utils/user_utils';
 import {loadChannelsForCurrentUser} from 'actions/channel_actions';
 import {loadCustomEmojisIfNeeded} from 'actions/emoji_actions';
 import {redirectUserToDefaultTeam} from 'actions/global_actions';
+import {setChannelReadAndViewed} from 'actions/new_post';
 import {sendDesktopNotification} from 'actions/notification_actions';
 import {handleNewPost} from 'actions/post_actions';
 import * as StatusActions from 'actions/status_actions';
 import {setGlobalItem} from 'actions/storage';
-import {loadProfilesForDM, loadProfilesForGM, loadProfilesForSidebar} from 'actions/user_actions';
+import {loadNewDMIfNeeded, loadNewGMIfNeeded, loadProfilesForDM, loadProfilesForGM, loadProfilesForSidebar} from 'actions/user_actions';
 import {syncPostsInChannel} from 'actions/views/channel';
 import {setGlobalDraft, transformServerDraft} from 'actions/views/drafts';
 import {openModal} from 'actions/views/modals';
@@ -773,7 +774,6 @@ export function handleNewPostEvent(msg) {
 
 export function handleNewPostEvents(queue) {
     return (myDispatch, myGetState) => {
-        // Note that this method doesn't properly update the sidebar state for these posts
         const posts = queue.map((msg) => JSON.parse(msg.data.post));
 
         if (window.logPostEvents) {
@@ -795,6 +795,43 @@ export function handleNewPostEvents(queue) {
         // Load the posts' threads
         myDispatch(getPostThreads(posts));
         myDispatch(batchFetchStatusesProfilesGroupsFromPosts(posts));
+
+        // Update sidebar and counts for each post (same logic as handleNewPost / completePostReceive)
+        const currentChannelId = getCurrentChannelId(myGetState());
+        for (let i = 0; i < posts.length; i++) {
+            const post = posts[i];
+            const msgData = queue[i].data || {};
+            const websocketMessageProps = {
+                channel_type: msgData.channel_type,
+                channel_display_name: msgData.channel_display_name || '',
+                channel_name: msgData.channel_name || '',
+                sender_name: msgData.sender_name || '',
+                set_online: msgData.set_online,
+                mentions: msgData.mentions,
+                followers: msgData.followers,
+                team_id: msgData.team_id || '',
+                should_ack: msgData.should_ack,
+                otherFile: msgData.otherFile,
+                image: msgData.image,
+                post: msgData.post,
+            };
+            if (post.channel_id === currentChannelId) {
+                myDispatch({
+                    type: ActionTypes.INCREASE_POST_VISIBILITY,
+                    data: post.channel_id,
+                    amount: 1,
+                });
+            }
+            const readViewedActions = setChannelReadAndViewed(myDispatch, myGetState, post, websocketMessageProps, false);
+            if (readViewedActions.length > 0) {
+                myDispatch(batchActions(readViewedActions));
+            }
+            if (msgData.channel_type === Constants.DM_CHANNEL) {
+                myDispatch(loadNewDMIfNeeded(post.channel_id));
+            } else if (msgData.channel_type === Constants.GM_CHANNEL) {
+                myDispatch(loadNewGMIfNeeded(post.channel_id));
+            }
+        }
     };
 }
 
