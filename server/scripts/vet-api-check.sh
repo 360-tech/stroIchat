@@ -47,7 +47,6 @@ OUTPUT_EXCLUDING_IGNORED=$(echo "$OUTPUT" | grep -Fv \
     -e 'Cannot find /api/v4/posts/{post_id}/info method: GET in OpenAPI 3 spec.' \
     -e 'Cannot find /api/v4/posts/search method: POST in OpenAPI 3 spec.' \
     -e 'Cannot find /api/v4/logs/query method: POST in OpenAPI 3 spec.' \
-    -e 'Cannot find /api/v4/latest_version method: GET in OpenAPI 3 spec.' \
     -e 'Cannot find /api/v4/system/onboarding/complete method: GET in OpenAPI 3 spec.' \
     -e 'Cannot find /api/v4/system/onboarding/complete method: POST in OpenAPI 3 spec.' \
     -e 'Cannot find /api/v4/system/schema/version method: GET in OpenAPI 3 spec.' \

@@ -40,14 +40,6 @@ export type ItemModel = {
     infoText?: string;
 }
 
-export type UpdatesParam = {
-    serverVersion: {
-        type: string;
-        status: ItemStatus;
-        description: string;
-    };
-}
-
 type Analytics = {
     DAILY_ACTIVE_USERS: number;
     MONTHLY_ACTIVE_USERS: number;
@@ -71,5 +63,4 @@ export type Options = {
     isCloud: boolean;
     isStarterLicense: boolean;
     analytics: Analytics | undefined;
-    installedVersion: string;
 };

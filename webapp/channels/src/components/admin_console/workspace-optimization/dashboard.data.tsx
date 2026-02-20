@@ -8,14 +8,11 @@ import {useSelector} from 'react-redux';
 import {
     ChartLineIcon,
     ServerVariantIcon,
-    ArrowUpBoldCircleOutlineIcon,
     TuneIcon,
     AccountMultipleOutlineIcon,
 } from '@mattermost/compass-icons/components';
 import type {AdminConfig} from '@mattermost/types/config';
 import type {GlobalState} from '@mattermost/types/store';
-
-import {getServerVersion} from 'mattermost-redux/selectors/entities/general';
 
 import {ItemStatus} from './dashboard.type';
 import type {DataModel, Options} from './dashboard.type';
@@ -23,7 +20,6 @@ import {runAccessChecks} from './dashboard_checks/access';
 import {runConfigChecks} from './dashboard_checks/config';
 import {runEaseOfUseChecks} from './dashboard_checks/easy_management';
 import {runPerformanceChecks} from './dashboard_checks/performance';
-import {runUpdateChecks} from './dashboard_checks/updates';
 
 export const impactModifiers: Record<ItemStatus, number> = {
     [ItemStatus.NONE]: 1,
@@ -32,34 +28,6 @@ export const impactModifiers: Record<ItemStatus, number> = {
     [ItemStatus.WARNING]: 0.25,
     [ItemStatus.ERROR]: 0,
 };
-
-const getUpdatesData = async (
-    config: Partial<AdminConfig>,
-    formatMessage: ReturnType<typeof useIntl>['formatMessage'],
-    options: Options,
-) => ({
-    title: formatMessage({
-        id: 'admin.reporting.workspace_optimization.updates.title',
-        defaultMessage: 'Server updates',
-    }),
-    description: formatMessage({
-        id: 'admin.reporting.workspace_optimization.updates.description',
-        defaultMessage: 'An update is available.',
-    }),
-    descriptionOk: formatMessage({
-        id: 'admin.reporting.workspace_optimization.updates.descriptionOk',
-        defaultMessage: 'Your workspace is completely up to date!',
-    }),
-    icon: (
-        <div className='icon'>
-            <ArrowUpBoldCircleOutlineIcon
-                size={20}
-                color={'var(--sys-center-channel-color)'}
-            />
-        </div>
-    ),
-    items: await runUpdateChecks(config, formatMessage, options),
-});
 
 const getConfigurationData = async (
     config: Partial<AdminConfig>,
@@ -189,8 +157,6 @@ const useMetricsData = (
 
     const {formatMessage} = useIntl();
 
-    // get the currently installed server version
-    const installedVersion = useSelector((state: GlobalState) => getServerVersion(state));
     const analytics = useSelector((state: GlobalState) => state.entities.admin.analytics) as unknown as Options['analytics'];
 
     const options: Options = useMemo(() => ({
@@ -200,14 +166,12 @@ const useMetricsData = (
         isStarterLicense: false,
         isCloud: false,
         analytics,
-        installedVersion,
-    }), [analytics, installedVersion]);
+    }), [analytics]);
 
     useEffect(() => {
         setLoading(true);
         const refreshData = async () => {
             const data = {
-                updates: await getUpdatesData(config, formatMessage, options),
                 configuration: await getConfigurationData(config, formatMessage, options),
                 access: await getAccessData(config, formatMessage, options),
                 performance: await getPerformanceData(config, formatMessage, options),

@@ -4,7 +4,6 @@
 package app
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"maps"
@@ -14,13 +13,8 @@ import (
 	"github.com/mattermost/mattermost/server/public/model"
 	"github.com/mattermost/mattermost/server/public/shared/i18n"
 	"github.com/mattermost/mattermost/server/public/shared/request"
-	"github.com/mattermost/mattermost/server/v8/platform/services/cache"
 	"github.com/mattermost/mattermost/server/v8/platform/shared/mail"
 )
-
-var latestVersionCache = cache.NewLRU(&cache.CacheOptions{
-	Size: 1,
-})
 
 func (s *Server) GetLogs(rctx request.CTX, page, perPage int) ([]string, *model.AppError) {
 	var lines []string
@@ -199,44 +193,4 @@ func (a *App) TestEmail(rctx request.CTX, userID string, cfg *model.Config) *mod
 	}
 
 	return nil
-}
-
-func (a *App) GetLatestVersion(rctx request.CTX, latestVersionUrl string) (*model.GithubReleaseInfo, *model.AppError) {
-	var cachedLatestVersion *model.GithubReleaseInfo
-	if cacheErr := latestVersionCache.Get("latest_version_cache", &cachedLatestVersion); cacheErr == nil {
-		return cachedLatestVersion, nil
-	}
-
-	res, err := http.Get(latestVersionUrl)
-	if err != nil {
-		return nil, model.NewAppError("GetLatestVersion", model.NoTranslation, nil, "", http.StatusInternalServerError).Wrap(err)
-	}
-
-	defer res.Body.Close()
-
-	responseData, err := io.ReadAll(res.Body)
-	if err != nil {
-		return nil, model.NewAppError("GetLatestVersion", model.NoTranslation, nil, "", http.StatusInternalServerError).Wrap(err)
-	}
-
-	var releaseInfoResponse *model.GithubReleaseInfo
-	err = json.Unmarshal(responseData, &releaseInfoResponse)
-	if err != nil {
-		return nil, model.NewAppError("GetLatestVersion", model.NoTranslation, nil, "", http.StatusInternalServerError).Wrap(err)
-	}
-
-	if validErr := releaseInfoResponse.IsValid(); validErr != nil {
-		return nil, model.NewAppError("GetLatestVersion", model.NoTranslation, nil, "", http.StatusInternalServerError).Wrap(validErr)
-	}
-
-	err = latestVersionCache.SetWithExpiry("latest_version_cache", releaseInfoResponse, 24*time.Hour)
-	if err != nil {
-		return nil, model.NewAppError("GetLatestVersion", model.NoTranslation, nil, "", http.StatusInternalServerError).Wrap(err)
-	}
-
-	return releaseInfoResponse, nil
-}
-
-func (a *App) clearLatestVersionCache() error {
-	return latestVersionCache.Remove("latest_version_cache")
 }
