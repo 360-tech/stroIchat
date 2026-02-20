@@ -22,67 +22,19 @@ exports[`components/onboarding_tasklist/onboarding_tasklist_completed.tsx should
         className="completed-subtitle"
       >
         <MemoizedFormattedMessage
-          defaultMessage="We hope Mattermost is more familiar now."
+          defaultMessage="We hope Stroichat is more familiar now."
           id="onboardingTask.checklist.completed_subtitle"
         />
       </span>
-      <span
-        className="start-trial-text"
-      >
-        <MemoizedFormattedMessage
-          defaultMessage="Interested in our higher-security features?"
-          id="onboardingTask.checklist.higher_security_features"
-        />
-         
-        <br />
-        <MemoizedFormattedMessage
-          defaultMessage="Start your free Enterprise trial now!"
-          id="onboardingTask.checklist.start_enterprise_now"
-        />
-      </span>
-      <StartTrialBtn
-        onClick={[MockFunction]}
-      />
       <button
-        className="no-thanks-link style-link"
+        className="got-it-button"
         onClick={[MockFunction]}
       >
         <MemoizedFormattedMessage
-          defaultMessage="No, thanks"
-          id="onboardingTask.checklist.no_thanks"
+          defaultMessage="Got it"
+          id="collapsed_reply_threads_modal.confirm"
         />
       </button>
-      <div
-        className="download-apps"
-      >
-        <span>
-          <MemoizedFormattedMessage
-            defaultMessage="Now that you’re all set up, <link>download our apps.</link>!"
-            id="onboardingTask.checklist.downloads"
-            values={
-              Object {
-                "link": [Function],
-              }
-            }
-          />
-        </span>
-      </div>
-      <div
-        className="disclaimer"
-      >
-        <span>
-          <MemoizedFormattedMessage
-            defaultMessage="By clicking “Start trial”, I agree to the <linkEvaluation>Mattermost Software and Services License Agreement</linkEvaluation>, <linkPrivacy>privacy policy</linkPrivacy> and receiving product emails."
-            id="onboardingTask.checklist.disclaimer"
-            values={
-              Object {
-                "linkEvaluation": [Function],
-                "linkPrivacy": [Function],
-              }
-            }
-          />
-        </span>
-      </div>
     </CompletedWrapper>
   </CSSTransition>
 </Fragment>

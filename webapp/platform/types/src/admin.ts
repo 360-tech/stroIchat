@@ -69,7 +69,6 @@ export type AdminState = {
     samlMetadataResponse?: SamlMetadataResponse;
     dataRetentionCustomPolicies: DataRetentionCustomPolicies;
     dataRetentionCustomPoliciesCount: number;
-    prevTrialLicense: ClientLicense;
     accessControlPolicies: IDMappedObjects<AccessControlPolicy>;
     channelsForAccessControlPolicy: Record<string, string[]>;
 };

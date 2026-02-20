@@ -32,11 +32,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
 
     const state = {
         entities: {
-            admin: {
-                prevTrialLicense: {
-                    IsLicensed: 'true',
-                },
-            },
+            admin: {},
             general: {
                 config: {
                     BuildEnterpriseReady: 'true',
@@ -84,11 +80,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
     test('partner radio-button is disabled and shows the badge partner restricted feature to invite partner when is NOT free trial for cloud', () => {
         const state = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'false',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',
@@ -137,11 +129,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
     test('restricted badge shows "Upgrade" for cloud post trial', () => {
         const state = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'false',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',
@@ -190,11 +178,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
     test('partner radio-button is disabled and shows the badge partner restricted feature to invite partner when is NOT free trial for self hosted starter', () => {
         const state = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'false',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',
@@ -229,11 +213,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
     test('restricted badge shows "Upgrade" for self hosted starter post trial', () => {
         const state = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'true',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',
@@ -268,11 +248,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
     test('shows the badge partner highligh feature to invite partner when IS FREE trial for cloud', () => {
         const state = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'false',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',
@@ -314,11 +290,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
     test('shows the badge partner highligh feature to invite partner when IS FREE trial for self hosted starter', () => {
         const state = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'false',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',
@@ -360,11 +332,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
         // Use a state where normally partners would be allowed (paid subscription)
         const paidState = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'true',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',
@@ -416,11 +384,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
         // Use a state where partners would be allowed (paid subscription)
         const paidState = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'true',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',
@@ -467,11 +431,7 @@ describe('components/cloud_start_trial_btn/cloud_start_trial_btn', () => {
         // Test with starter plan where partners should be disabled by default
         const state = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'false',
-                    },
-                },
+                admin: {},
                 general: {
                     config: {
                         BuildEnterpriseReady: 'true',

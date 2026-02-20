@@ -1,11 +1,10 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
-import {getPrevTrialLicense} from 'mattermost-redux/actions/admin';
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {isAdmin} from 'mattermost-redux/utils/user_utils';
@@ -15,12 +14,7 @@ import {LicenseSkus} from 'utils/constants';
 function ADLDAPUpsellBanner() {
     const [show, setShow] = useState(true);
 
-    const dispatch = useDispatch();
     const {formatMessage} = useIntl();
-
-    useEffect(() => {
-        dispatch(getPrevTrialLicense());
-    }, []);
 
     const isAdminUser = isAdmin(useSelector(getCurrentUser).roles);
     const currentLicense = useSelector(getLicense);

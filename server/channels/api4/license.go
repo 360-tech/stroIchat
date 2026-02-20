@@ -19,7 +19,6 @@ import (
 
 func (api *API) InitLicense() {
 	api.BaseRoutes.APIRoot.Handle("/trial-license", api.APISessionRequired(requestTrialLicense)).Methods(http.MethodPost)
-	api.BaseRoutes.APIRoot.Handle("/trial-license/prev", api.APISessionRequired(getPrevTrialLicense)).Methods(http.MethodGet)
 	api.BaseRoutes.APIRoot.Handle("/license", api.APISessionRequired(addLicense, handlerParamFileAPI)).Methods(http.MethodPost)
 	api.BaseRoutes.APIRoot.Handle("/license", api.APISessionRequired(removeLicense)).Methods(http.MethodDelete)
 	api.BaseRoutes.APIRoot.Handle("/license/client", api.APIHandler(getClientLicense)).Methods(http.MethodGet)
@@ -232,32 +231,6 @@ func requestTrialLicense(c *Context, w http.ResponseWriter, r *http.Request) {
 	c.LogAudit("success")
 
 	ReturnStatusOK(w)
-}
-
-func getPrevTrialLicense(c *Context, w http.ResponseWriter, r *http.Request) {
-	if c.App.Srv().Platform().LicenseManager() == nil {
-		c.Err = model.NewAppError("getPrevTrialLicense", "api.license.upgrade_needed.app_error", nil, "", http.StatusForbidden)
-		return
-	}
-
-	license, err := c.App.Srv().Platform().LicenseManager().GetPrevTrial()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	var clientLicense map[string]string
-
-	if c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionReadLicenseInformation) {
-		clientLicense = utils.GetClientLicense(license)
-	} else {
-		clientLicense = utils.GetSanitizedClientLicense(utils.GetClientLicense(license))
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	if _, err := w.Write([]byte(model.MapToJSON(clientLicense))); err != nil {
-		c.Logger.Warn("Error while writing response", mlog.Err(err))
-	}
 }
 
 // getLicenseLoadMetric returns a load metric computed as (mau / licensed) * 1000.

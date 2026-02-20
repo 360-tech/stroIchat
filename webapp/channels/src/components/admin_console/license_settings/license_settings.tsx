@@ -27,13 +27,11 @@ type Props = {
     upgradedFromTE: boolean;
     totalUsers: number;
     isDisabled: boolean;
-    prevTrialLicense: ClientLicense;
     environmentConfig: Partial<EnvironmentConfig>;
     actions: {
         getLicenseConfig: () => void;
         uploadLicense: (file: File) => Promise<ActionResult>;
         removeLicense: () => Promise<ActionResult<boolean, ServerError>>;
-        getPrevTrialLicense: () => void;
         upgradeToE0: () => Promise<StatusOK>;
         upgradeToE0Status: () => Promise<{percentage: number; error: string | JSX.Element | null}>;
         isAllowedToUpgradeToEnterprise: () => Promise<ActionResult>;

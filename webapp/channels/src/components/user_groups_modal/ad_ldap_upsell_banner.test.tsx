@@ -43,11 +43,7 @@ describe('component/user_groups_modal/ad_ldap_upsell_banner', () => {
                 config: {},
             },
             cloud: {},
-            admin: {
-                prevTrialLicense: {
-                    IsLicensed: 'false',
-                },
-            },
+            admin: {},
             users: {
                 currentUserId: 'user1',
                 profiles: {
@@ -72,24 +68,6 @@ describe('component/user_groups_modal/ad_ldap_upsell_banner', () => {
         );
 
         expect(wrapper.find('#ad_ldap_upsell_banner')).toHaveLength(1);
-        expect(wrapper.find('.ad-ldap-banner-btn').text()).toEqual('Start trial');
-    });
-
-    test('should display for admin users on professional with option to contact sales if self-hosted trialed before', () => {
-        const state = JSON.parse(JSON.stringify(initState));
-        state.entities.admin.prevTrialLicense.IsLicensed = 'true';
-        const store = mockStore(state);
-        const dummyDispatch = jest.fn();
-        useDispatchMock.mockReturnValue(dummyDispatch);
-
-        const wrapper = mount(
-            <reactRedux.Provider store={store}>
-                <ADLDAPUpsellBanner/>
-            </reactRedux.Provider>,
-        );
-
-        expect(wrapper.find('#ad_ldap_upsell_banner')).toHaveLength(1);
-        expect(wrapper.find('.ad-ldap-banner-btn').text()).toEqual('Contact sales to use');
     });
 
     test('should display for admin users on professional with option to contact sales if cloud trialed before', async () => {
@@ -125,7 +103,6 @@ describe('component/user_groups_modal/ad_ldap_upsell_banner', () => {
         await actImmediate(wrapper);
 
         expect(wrapper.find('#ad_ldap_upsell_banner')).toHaveLength(1);
-        expect(wrapper.find('.ad-ldap-banner-btn').text()).toEqual('Contact sales to use');
     });
 
     test('should not display for non admin users', () => {

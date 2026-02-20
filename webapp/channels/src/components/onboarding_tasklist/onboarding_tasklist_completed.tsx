@@ -1,13 +1,10 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import {useDispatch} from 'react-redux';
 import {CSSTransition} from 'react-transition-group';
 import styled from 'styled-components';
-
-import {getPrevTrialLicense} from 'mattermost-redux/actions/admin';
 
 import completedImg from 'images/completed.svg';
 
@@ -120,12 +117,6 @@ interface Props {
 
 const Completed = (props: Props): JSX.Element => {
     const {dismissAction} = props;
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getPrevTrialLicense());
-    }, []);
 
     return (
         <>

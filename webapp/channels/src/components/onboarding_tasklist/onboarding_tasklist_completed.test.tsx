@@ -26,11 +26,7 @@ describe('components/onboarding_tasklist/onboarding_tasklist_completed.tsx', () 
     beforeEach(() => {
         mockState = {
             entities: {
-                admin: {
-                    prevTrialLicense: {
-                        IsLicensed: 'false',
-                    },
-                },
+                admin: {},
                 general: {
                     license: {
                         IsLicensed: 'false',
@@ -61,13 +57,13 @@ describe('components/onboarding_tasklist/onboarding_tasklist_completed.tsx', () 
         expect(wrapper.find('.completed-subtitle')).toHaveLength(1);
     });
 
-    test('displays the no thanks option to close the onboarding list', () => {
+    test('displays the got it button to close the onboarding list', () => {
         const wrapper = shallow(<Completed {...props}/>);
-        const noThanksLink = wrapper.find('.no-thanks-link');
-        expect(noThanksLink).toHaveLength(1);
+        const gotItButton = wrapper.find('.got-it-button');
+        expect(gotItButton).toHaveLength(1);
 
-        // calls the dissmiss function on click
-        noThanksLink.simulate('click');
+        // calls the dismiss function on click
+        gotItButton.simulate('click');
         expect(dismissMockFn).toHaveBeenCalledTimes(1);
     });
 });

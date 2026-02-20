@@ -36,9 +36,6 @@ describe('components/admin_console/license_settings/LicenseSettings', () => {
             Company: 'Mattermost Inc.',
             Users: '100',
         },
-        prevTrialLicense: {
-            IsLicensed: 'false',
-        },
         upgradedFromTE: false,
         enterpriseReady: true,
         totalUsers: 10,
@@ -51,7 +48,6 @@ describe('components/admin_console/license_settings/LicenseSettings', () => {
             ping: jest.fn(),
             requestTrialLicense: jest.fn(),
             restartServer: jest.fn(),
-            getPrevTrialLicense: jest.fn(),
             upgradeToE0Status: jest.fn().mockImplementation(() => Promise.resolve({percentage: 0, error: null})),
             openModal: jest.fn(),
             getFilteredUsersStats: jest.fn(),
@@ -167,7 +163,7 @@ describe('components/admin_console/license_settings/LicenseSettings', () => {
     });
 
     test('should match snapshot team edition with expired trial in the past', () => {
-        const props = {...defaultProps, license: {IsLicensed: 'false'}, prevTrialLicense: {IsLicensed: 'true'}};
+        const props = {...defaultProps, license: {IsLicensed: 'false'}};
         const wrapper = shallow<LicenseSettings>(<LicenseSettings {...props}/>);
         expect(wrapper).toMatchSnapshot();
     });

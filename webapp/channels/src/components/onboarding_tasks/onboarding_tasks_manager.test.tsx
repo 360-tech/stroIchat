@@ -25,11 +25,7 @@ describe('onboarding tasks manager', () => {
 
     const initialState = {
         entities: {
-            admin: {
-                prevTrialLicense: {
-                    IsLicensed: 'false',
-                },
-            },
+            admin: {},
             general: {
                 license: {
                     IsLicensed: 'false',

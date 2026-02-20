@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import type {Dispatch} from 'redux';
 
-import {uploadLicense, removeLicense, getPrevTrialLicense} from 'mattermost-redux/actions/admin';
+import {uploadLicense, removeLicense} from 'mattermost-redux/actions/admin';
 import {getLicenseConfig} from 'mattermost-redux/actions/general';
 import {getServerLimits} from 'mattermost-redux/actions/limits';
 import {getFilteredUsersStats} from 'mattermost-redux/actions/users';
@@ -25,7 +25,6 @@ function mapStateToProps(state: GlobalState) {
     return {
         totalUsers: selectFilteredUserStats(state)?.total_users_count || 0,
         upgradedFromTE: config.UpgradedFromTE === 'true',
-        prevTrialLicense: state.entities.admin.prevTrialLicense,
     };
 }
 
@@ -35,7 +34,6 @@ function mapDispatchToProps(dispatch: Dispatch) {
             getLicenseConfig,
             uploadLicense,
             removeLicense,
-            getPrevTrialLicense,
             upgradeToE0,
             upgradeToE0Status,
             restartServer,

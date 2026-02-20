@@ -32,16 +32,6 @@ function simulateSubscription(subscription) {
     });
 }
 
-function withTrialBefore(trialed) {
-    cy.intercept('GET', '**/api/v4/trial-license/prev', {
-        statusCode: 200,
-        body: {
-            IsLicensed: trialed,
-            IsTrial: trialed,
-        },
-    });
-}
-
 describe('Feature discovery cloud', () => {
     beforeEach(() => {
         // * Check if server has license for Cloud
@@ -73,7 +63,6 @@ describe('Feature discovery cloud', () => {
             is_free_trial: 'false',
         };
         simulateSubscription(subscription);
-        withTrialBefore('false');
         [...professionalPaidFeatures, ...enterprisePaidFeatures].forEach(({sidebarName, featureDiscoveryTitle}) => {
             cy.get('li').contains(sidebarName).click();
             cy.get("div[data-testid='featureDiscovery_title']").should('contain', featureDiscoveryTitle);
@@ -89,7 +78,6 @@ describe('Feature discovery cloud', () => {
             trial_end_at: 1,
         };
         simulateSubscription(subscription);
-        withTrialBefore('false');
         professionalPaidFeatures.forEach(({sidebarName, featureDiscoveryTitle}) => {
             cy.get('li').contains(sidebarName).click();
             cy.get("div[data-testid='featureDiscovery_title']").should('contain', featureDiscoveryTitle);
@@ -105,7 +93,6 @@ describe('Feature discovery cloud', () => {
             trial_end_at: 1,
         };
         simulateSubscription(subscription);
-        withTrialBefore('false');
         enterprisePaidFeatures.forEach(({sidebarName, featureDiscoveryTitle}) => {
             cy.get('li').contains(sidebarName).click();
             cy.get("div[data-testid='featureDiscovery_title']").should('contain', featureDiscoveryTitle);

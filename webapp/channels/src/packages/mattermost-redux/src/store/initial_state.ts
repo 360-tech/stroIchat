@@ -121,7 +121,6 @@ const state: GlobalState = {
             teamAnalytics: {},
             dataRetentionCustomPolicies: {},
             dataRetentionCustomPoliciesCount: 0,
-            prevTrialLicense: {},
             accessControlPolicies: {},
             channelsForAccessControlPolicy: {},
         },

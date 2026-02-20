@@ -443,21 +443,6 @@ export function removeLicense(): ActionFuncAsync<boolean> {
     };
 }
 
-export function getPrevTrialLicense(): ActionFuncAsync {
-    return async (dispatch, getState) => {
-        let data;
-        try {
-            data = await Client4.getPrevTrialLicense();
-        } catch (error) {
-            forceLogoutIfNecessary(error as ServerError, dispatch, getState);
-            return {error};
-        }
-
-        dispatch({type: AdminTypes.PREV_TRIAL_LICENSE_SUCCESS, data});
-        return {data};
-    };
-}
-
 export function getAnalytics(name: string, teamId = ''): ActionFuncAsync {
     return async (dispatch, getState) => {
         let data;

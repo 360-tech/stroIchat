@@ -44,7 +44,6 @@ describe('Self hosted Pricing modal', () => {
 
     it('should not show Upgrade button for admin users on non trial licensed server', () => {
         // * Ensure the server has trial license
-        withTrialBefore('false');
         withTrialLicense('false');
         cy.apiLogout();
         cy.apiAdminLogin();
@@ -59,9 +58,6 @@ describe('Self hosted Pricing modal', () => {
     });
 
     it('Upgrade button should open pricing modal admin users when no trial has ever been added on free plan', () => {
-        // *Ensure the server has had no trial license before
-        withTrialBefore('false');
-
         cy.apiLogout();
         cy.apiAdminLogin();
         cy.visit(urlL);
@@ -86,9 +82,6 @@ describe('Self hosted Pricing modal', () => {
     });
 
     it('Upgrade button should open pricing modal admin users when the server has requested a trial before on free plan', () => {
-        // *Ensure the server has had no trial license before
-        withTrialBefore('true');
-
         cy.apiLogout();
         cy.apiAdminLogin();
         cy.visit(urlL);
@@ -118,7 +111,6 @@ describe('Self hosted Pricing modal', () => {
 
     it('Upgrade button should open pricing modal admin users when the server is on a trial', () => {
         // * Ensure the server has trial license
-        withTrialBefore('false');
         withTrialLicense('true');
 
         cy.apiLogout();
@@ -171,16 +163,6 @@ describe('Self hosted Pricing modal', () => {
 
         cy.findByText('https://mattermost.com/pl/pricing/#self-hosted').last().should('exist');
     });
-
-    function withTrialBefore(trialed: string) {
-        cy.intercept('GET', '**/api/v4/trial-license/prev', {
-            statusCode: 200,
-            body: {
-                IsLicensed: trialed,
-                IsTrial: trialed,
-            },
-        });
-    }
 
     function withTrialLicense(trial: string) {
         cy.intercept('GET', '**/api/v4/license/client?format=old', {
