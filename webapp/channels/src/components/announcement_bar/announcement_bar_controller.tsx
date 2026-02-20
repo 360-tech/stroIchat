@@ -64,7 +64,7 @@ class AnnouncementBarController extends React.PureComponent<Props> {
         // If set with class 'admin-announcement', they will always be visible, stacked vertically.
         return (
             <>
-                <NotificationPermissionBar/>
+                {/* <NotificationPermissionBar/> */}
                 {adminConfiguredAnnouncementBar}
                 {errorBar}
                 <UsersLimitsAnnouncementBar
