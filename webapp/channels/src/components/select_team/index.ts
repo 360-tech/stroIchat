@@ -40,8 +40,6 @@ function mapStateToProps(state: GlobalState) {
         canJoinPublicTeams: haveISystemPermission(state, {permission: Permissions.JOIN_PUBLIC_TEAMS}),
         canJoinPrivateTeams: haveISystemPermission(state, {permission: Permissions.JOIN_PRIVATE_TEAMS}),
         totalTeamsCount: state.entities.teams.totalCount || 0,
-        isCloud: false,
-        isFreeTrial: false,
     };
 }
 

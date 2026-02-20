@@ -25,16 +25,10 @@ type Props = {
     userIsAdmin: boolean;
 };
 
-const learnMoreExternalLink = 'https://mattermost.com/pl/error-code-error-safety-limits-exceeded';
-
 function UsersLimitsAnnouncementBar(props: Props) {
     const dispatch = useDispatch();
     const serverLimits = useSelector(getServerLimits);
     const currentUser = useSelector(getCurrentUser);
-
-    const handleCTAClick = useCallback(() => {
-        window.open(learnMoreExternalLink, '_blank');
-    }, []);
 
     const isLicensed = props?.license?.IsLicensed === 'true';
     const maxUsersLimit = serverLimits?.maxUsersLimit ?? 0;
@@ -76,15 +70,6 @@ function UsersLimitsAnnouncementBar(props: Props) {
                 }
                 type={AnnouncementBarTypes.CRITICAL}
                 icon={<AlertOutlineIcon size={16}/>}
-                showCTA={true}
-                showLinkAsButton={true}
-                ctaText={
-                    <FormattedMessage
-                        id='users_limits_announcement_bar.ctaText'
-                        defaultMessage='Learn More'
-                    />
-                }
-                onButtonClick={handleCTAClick}
             />
         );
     }
@@ -108,15 +93,6 @@ function UsersLimitsAnnouncementBar(props: Props) {
                 }
                 type='warning'
                 icon={<AlertOutlineIcon size={16}/>}
-                showCTA={true}
-                showLinkAsButton={true}
-                ctaText={
-                    <FormattedMessage
-                        id='users_limits_announcement_bar.ctaText'
-                        defaultMessage='Learn More'
-                    />
-                }
-                onButtonClick={handleCTAClick}
             />
         );
     }

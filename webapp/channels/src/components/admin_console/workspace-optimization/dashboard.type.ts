@@ -55,12 +55,9 @@ type Analytics = {
 }
 export type Options = {
     isLicensed: boolean;
-    isEnterpriseLicense: boolean;
     trialOrEnterpriseCtaConfig: {
         configUrl: string;
         configText: string;
     };
-    isCloud: boolean;
-    isStarterLicense: boolean;
     analytics: Analytics | undefined;
 };

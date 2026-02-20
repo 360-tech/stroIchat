@@ -5811,8 +5811,6 @@
   "userSettings.adminMode.admin_mode_badge": "Режим администратора",
   "userSettings.adminMode.modal_header": "Управление настройками {userDisplayName}",
   "userSettingsModal.pluginPreferences.header": "НАСТРОЙКИ ПЛАГИНА",
-  "version_bar.new": "Доступна новая версия Стройчат.",
-  "version_bar.refresh": "Обновить приложение",
   "view_image_popover.download": "Скачать",
   "view_image_popover.publicLink": "Получить общедоступную ссылку",
   "view_image.loading": "Загрузка ",

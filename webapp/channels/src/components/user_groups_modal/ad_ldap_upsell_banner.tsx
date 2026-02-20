@@ -5,11 +5,8 @@ import React, {memo, useState} from 'react';
 import {useIntl} from 'react-intl';
 import {useSelector} from 'react-redux';
 
-import {getLicense} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {isAdmin} from 'mattermost-redux/utils/user_utils';
-
-import {LicenseSkus} from 'utils/constants';
 
 function ADLDAPUpsellBanner() {
     const [show, setShow] = useState(true);
@@ -17,11 +14,8 @@ function ADLDAPUpsellBanner() {
     const {formatMessage} = useIntl();
 
     const isAdminUser = isAdmin(useSelector(getCurrentUser).roles);
-    const currentLicense = useSelector(getLicense);
 
-    const isSelfHostedProfessional = currentLicense?.SkuShortName === LicenseSkus.Professional;
-    const isCloudProfessional = false;
-    const isProfessional = isSelfHostedProfessional || isCloudProfessional;
+    const isProfessional = false;
 
     if (!show) {
         return null;

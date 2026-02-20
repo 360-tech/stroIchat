@@ -23,7 +23,6 @@ import {
     ScheduledPostTypes,
     ContentFlaggingTypes,
 } from 'mattermost-redux/action_types';
-import {getStandardAnalytics} from 'mattermost-redux/actions/admin';
 import {fetchAppBindings, fetchRHSAppsBindings} from 'mattermost-redux/actions/apps';
 import {addChannelToInitialCategory, fetchMyCategories, receivedCategoryOrder} from 'mattermost-redux/actions/channel_categories';
 import {
@@ -95,7 +94,7 @@ import {
     getRelativeTeamUrl,
 } from 'mattermost-redux/selectors/entities/teams';
 import {getNewestThreadInTeam, getThread, getThreads} from 'mattermost-redux/selectors/entities/threads';
-import {getCurrentUser, getCurrentUserId, getUser, getIsManualStatusForUserId, isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/users';
+import {getCurrentUser, getCurrentUserId, getUser, getIsManualStatusForUserId} from 'mattermost-redux/selectors/entities/users';
 import {isPartner} from 'mattermost-redux/utils/user_utils';
 
 import {loadChannelsForCurrentUser} from 'actions/channel_actions';
@@ -1057,11 +1056,6 @@ function handleUserAddedEvent(msg) {
             doDispatch(fetchChannelAndAddToSidebar(msg.broadcast.channel_id));
         }
 
-        // This event is fired when a user first joins the server, so refresh analytics to see if we're now over the user limit
-        if (license.Cloud === 'true' && isCurrentUserSystemAdmin(doGetState())) {
-            doDispatch(getStandardAnalytics());
-        }
-
         if (msg.data.team_id && config.RestrictDirectMessage === 'team') {
             dispatch({type: ChannelTypes.RESTRICTED_DMS_TEAMS_CHANGED});
         }
@@ -1594,15 +1588,6 @@ function handleSidebarCategoryOrderUpdated(msg) {
 
 export function handleUserActivationStatusChange() {
     return (doDispatch, doGetState) => {
-        const state = doGetState();
-        const license = getLicense(state);
-
-        // This event is fired when a user first joins the server, so refresh analytics to see if we're now over the user limit
-        if (license.Cloud === 'true') {
-            if (isCurrentUserSystemAdmin(state)) {
-                doDispatch(getStandardAnalytics());
-            }
-        }
     };
 }
 

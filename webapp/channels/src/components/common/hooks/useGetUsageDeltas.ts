@@ -5,7 +5,6 @@ import {useMemo} from 'react';
 
 import type {CloudUsage} from '@mattermost/types/cloud';
 
-import useGetLimits from './useGetLimits';
 import useGetUsage from './useGetUsage';
 
 // Returns an object of type CloudUsage with the values being the delta between the limit, and the actual usage of this installation.
@@ -14,25 +13,24 @@ import useGetUsage from './useGetUsage';
 // 10MB files used, minus 1000MB limit = value < 0, limit not exceeded.
 // etc.
 // withBackupValue will set the limit arbitrarily high in the event that the limit isn't set
-export const withBackupValue = (maybeLimit: number | undefined, limitsLoaded: boolean) => (limitsLoaded ? (maybeLimit ?? Number.MAX_VALUE) : Number.MAX_VALUE);
+export const withBackupValue = () => Number.MAX_VALUE;
 
 export default function useGetUsageDeltas(): CloudUsage {
     const usage = useGetUsage();
-    const [limits, limitsLoaded] = useGetLimits();
 
     const usageDelta = useMemo(() => {
         return (
             {
                 files: {
-                    totalStorage: usage.files.totalStorage - withBackupValue(limits.files?.total_storage, limitsLoaded),
+                    totalStorage: usage.files.totalStorage - withBackupValue(),
                     totalStorageLoaded: usage.files.totalStorageLoaded,
                 },
                 messages: {
-                    history: usage.messages.history - withBackupValue(limits.messages?.history, limitsLoaded),
+                    history: usage.messages.history - withBackupValue(),
                     historyLoaded: usage.messages.historyLoaded,
                 },
                 teams: {
-                    active: usage.teams.active - withBackupValue(limits.teams?.active, limitsLoaded),
+                    active: usage.teams.active - withBackupValue(),
 
                     // cloudArchived doesn't count against usage, but we pass the value along for convenience
                     cloudArchived: usage.teams.cloudArchived,
@@ -40,7 +38,7 @@ export default function useGetUsageDeltas(): CloudUsage {
                 },
             }
         );
-    }, [usage, limits, limitsLoaded]);
+    }, [usage]);
 
     return usageDelta;
 }

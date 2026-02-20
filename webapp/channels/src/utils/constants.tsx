@@ -994,11 +994,6 @@ export const DeveloperLinks = {
     SETUP_OUTGOING_WEBHOOKS: 'https://mattermost.com/pl/setup-outgoing-webhooks',
 };
 
-export const RecurringIntervals = {
-    YEAR: 'year',
-    MONTH: 'month',
-};
-
 export const PermissionsScope = {
     [Permissions.INVITE_USER]: 'team_scope',
     [Permissions.INVITE_PARTNER]: 'team_scope',

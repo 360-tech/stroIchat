@@ -83,7 +83,6 @@ export function mapStateToProps(state: GlobalState, props: OwnProps) {
         canInvitePartners,
         canAddUsers,
         emailInvitationsEnabled,
-        isCloud: false,
         isAdmin: isAdmin(getCurrentUser(state).roles),
         currentChannel,
         townSquareDisplayName,

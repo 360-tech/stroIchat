@@ -46,7 +46,6 @@ function mapStateToProps(state: GlobalState) {
         deactivatedChannel: channel ? isDeactivatedDirectChannel(state, channel.id) : false,
         enableOnboardingFlow,
         channelIsArchived: channel ? channel.delete_at !== 0 : false,
-        isCloud: false,
         teamUrl: getCurrentRelativeTeamUrl(state),
         isFirstAdmin: isFirstAdmin(state),
         enableWebSocketEventScope,

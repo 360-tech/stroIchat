@@ -4,8 +4,6 @@
 import React from 'react';
 import {useIntl} from 'react-intl';
 
-import useGetLimits from 'components/common/hooks/useGetLimits';
-
 import {asGBString} from 'utils/limits';
 
 export default function ArchivedTooltip() {
@@ -26,7 +24,7 @@ export default function ArchivedTooltip() {
                         defaultMessage: 'Your workspace has hit the file storage limit of {storageLimit}. To view this again, upgrade to a paid plan',
                     },
                     {
-                        storageLimit: asGBString(useGetLimits()[0].files?.total_storage || 0, intl.formatNumber),
+                        storageLimit: asGBString(0, intl.formatNumber),
                     },
                 )}
             </div>

@@ -36,7 +36,7 @@ function makeGetPluginSchema() {
         (state: GlobalState, pluginId: string) => getAdminConsoleCustomSections(state, pluginId),
         (state) => appsFeatureFlagEnabled(state),
         () => false,
-        (plugin: PluginRedux | undefined, customComponents: Record<string, AdminConsolePluginComponent>, customSections: Record<string, AdminConsolePluginCustomSection>, appsFeatureFlagIsEnabled, isCloudLicense) => {
+        (plugin: PluginRedux | undefined, customComponents: Record<string, AdminConsolePluginComponent>, customSections: Record<string, AdminConsolePluginCustomSection>, appsFeatureFlagIsEnabled) => {
             if (!plugin) {
                 return null;
             }
@@ -65,8 +65,7 @@ function makeGetPluginSchema() {
                     }
 
                     const isHidden = () => {
-                        return (isCloudLicense && setting.hosting === 'on-prem') ||
-                            (!isCloudLicense && setting.hosting === 'cloud');
+                        return false;
                     };
 
                     return {

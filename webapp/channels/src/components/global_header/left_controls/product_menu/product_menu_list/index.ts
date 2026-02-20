@@ -48,15 +48,6 @@ function mapStateToProps(state: GlobalState) {
     const enableCustomUserGroups = isCustomGroupsEnabled(state);
     const isMobile = getIsMobileView(state);
 
-    const isCloudStarterFree = false;
-    const isCloudFreeTrial = false;
-
-    const isSelfHostedStarter = false;
-    const isSelfHostedFreeTrial = false;
-
-    const isStarterFree = isCloudStarterFree || isSelfHostedStarter;
-    const isFreeTrial = isCloudFreeTrial || isSelfHostedFreeTrial;
-
     return {
         isMobile,
         appDownloadLink,
@@ -75,8 +66,6 @@ function mapStateToProps(state: GlobalState) {
         firstAdminVisitMarketplaceStatus: getFirstAdminVisitMarketplaceStatus(state),
         showVisitSystemConsoleTour,
         enableCustomUserGroups,
-        isStarterFree,
-        isFreeTrial,
     };
 }
 

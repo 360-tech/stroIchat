@@ -22,8 +22,6 @@ function mapStateToProps(state: GlobalState) {
         teams: getMyTeams(state),
         siteName: getConfig(state).SiteName,
         navigationBlocked: getNavigationBlocked(state),
-        isLicensed: false,
-        isCloud: false,
     };
 }
 

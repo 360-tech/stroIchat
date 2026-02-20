@@ -42,7 +42,7 @@ const getConfigurationData = async (
         id: 'admin.reporting.workspace_optimization.configuration.description',
         defaultMessage: 'You have configuration issues to resolve',
     }),
-    hide: options.isCloud,
+    hide: false,
     descriptionOk: formatMessage({
         id: 'admin.reporting.workspace_optimization.configuration.descriptionOk',
         defaultMessage: 'You\'ve successfully configured SSL and Session Lengths!',
@@ -61,7 +61,6 @@ const getConfigurationData = async (
 const getAccessData = async (
     config: Partial<AdminConfig>,
     formatMessage: ReturnType<typeof useIntl>['formatMessage'],
-    options: Options,
 ) => ({
     title: formatMessage({
         id: 'admin.reporting.workspace_optimization.access.title',
@@ -71,7 +70,7 @@ const getAccessData = async (
         id: 'admin.reporting.workspace_optimization.access.description',
         defaultMessage: 'Web server configuration may be affecting access to your Mattermost workspace.',
     }),
-    hide: options.isCloud,
+    hide: false,
     descriptionOk: formatMessage({
         id: 'admin.reporting.workspace_optimization.access.descriptionOk',
         defaultMessage: 'Your web server configuration is passing a live URL test!',
@@ -100,7 +99,7 @@ const getPerformanceData = async (
         id: 'admin.reporting.workspace_optimization.performance.description',
         defaultMessage: 'Your server would benefit from some performance tweaks.',
     }),
-    hide: options.isCloud,
+    hide: false,
     descriptionOk: formatMessage({
         id: 'admin.reporting.workspace_optimization.performance.descriptionOk',
         defaultMessage: 'Your search performance suits your workspace usage!',
@@ -161,10 +160,7 @@ const useMetricsData = (
 
     const options: Options = useMemo(() => ({
         isLicensed: false,
-        isEnterpriseLicense: false,
         trialOrEnterpriseCtaConfig,
-        isStarterLicense: false,
-        isCloud: false,
         analytics,
     }), [analytics]);
 
@@ -173,7 +169,7 @@ const useMetricsData = (
         const refreshData = async () => {
             const data = {
                 configuration: await getConfigurationData(config, formatMessage, options),
-                access: await getAccessData(config, formatMessage, options),
+                access: await getAccessData(config, formatMessage),
                 performance: await getPerformanceData(config, formatMessage, options),
                 easyManagement: await getEaseOfManagementData(config, formatMessage, options),
             };

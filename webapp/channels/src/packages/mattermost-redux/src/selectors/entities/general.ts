@@ -48,12 +48,6 @@ export function getLicense(state: GlobalState): ClientLicense {
     return state.entities.general.license;
 }
 
-export const isCloudLicense: (state: GlobalState) => boolean = createSelector(
-    'isCloudLicense',
-    getLicense,
-    (license: ClientLicense) => license?.Cloud === 'true',
-);
-
 export function isCompatibleWithJoinViewTeamPermissions(state: GlobalState): boolean {
     const version = state.entities.general.serverVersion;
     return isMinimumServerVersion(version, 5, 10, 0) ||

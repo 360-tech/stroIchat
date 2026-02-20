@@ -5806,8 +5806,6 @@
   "userSettings.adminMode.admin_mode_badge": "Admin Mode",
   "userSettings.adminMode.modal_header": "Manage {userDisplayName}'s Settings",
   "userSettingsModal.pluginPreferences.header": "PLUGIN PREFERENCES",
-  "version_bar.new": "A new version of Stroichat is available.",
-  "version_bar.refresh": "Refresh the app now",
   "view_image_popover.download": "Download",
   "view_image_popover.publicLink": "Get a public link",
   "view_image.loading": "Loading ",

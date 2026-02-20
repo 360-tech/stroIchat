@@ -70,7 +70,6 @@ function mapStateToProps(state: GlobalState) {
         rhsIsOpen: getIsRhsOpen(state),
         rhsState: getRhsState(state),
         shouldShowAppBar: shouldShowAppBar(state),
-        isCloud: false,
         isDevModeEnabled: isDevModeEnabled(state),
     };
 }

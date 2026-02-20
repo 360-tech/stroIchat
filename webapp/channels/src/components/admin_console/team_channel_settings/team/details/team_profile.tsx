@@ -3,15 +3,11 @@
 
 import classNames from 'classnames';
 import noop from 'lodash/noop';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FormattedMessage, defineMessage, useIntl} from 'react-intl';
-import {useSelector} from 'react-redux';
 
 import type {Team} from '@mattermost/types/teams';
 
-import {getLicense} from 'mattermost-redux/selectors/entities/general';
-
-import useGetUsage from 'components/common/hooks/useGetUsage';
 import useGetUsageDeltas from 'components/common/hooks/useGetUsageDeltas';
 import AdminPanel from 'components/widgets/admin_console/admin_panel';
 import TeamIcon from 'components/widgets/team_icon/team_icon';
@@ -26,27 +22,16 @@ type Props = {
     isArchived: boolean;
     onToggleArchive: () => void;
     isDisabled?: boolean;
-    saveNeeded?: boolean;
 }
 
-export function TeamProfile({team, isArchived, onToggleArchive, isDisabled, saveNeeded}: Props) {
+export function TeamProfile({team, isArchived, onToggleArchive, isDisabled}: Props) {
     const teamIconUrl = imageURLForTeam(team);
     const usageDeltas = useGetUsageDeltas();
-    const usage = useGetUsage();
-    const license = useSelector(getLicense);
     const intl = useIntl();
 
-    const [overrideRestoreDisabled, setOverrideRestoreDisabled] = useState(false);
-    const [restoreDisabled, setRestoreDisabled] = useState(usageDeltas.teams.teamsLoaded && usageDeltas.teams.active >= 0 && isArchived);
+    const [, setOverrideRestoreDisabled] = useState(false);
+    const [restoreDisabled] = useState(usageDeltas.teams.teamsLoaded && usageDeltas.teams.active >= 0 && isArchived);
 
-    useEffect(() => {
-        setRestoreDisabled(license.Cloud === 'true' && usageDeltas.teams.teamsLoaded && usageDeltas.teams.active >= 0 && isArchived && !overrideRestoreDisabled && !saveNeeded);
-    }, [usageDeltas, isArchived, overrideRestoreDisabled, saveNeeded, license]);
-
-    // If in a cloud context and the teams usage hasn't loaded, don't render anything to prevent weird flashes on the screen
-    if (license.Cloud === 'true' && !usage.teams.teamsLoaded) {
-        return null;//
-    }
 
     const archiveBtn = isArchived ?
         defineMessage({id: 'admin.team_settings.team_details.unarchiveTeam', defaultMessage: 'Unarchive Team'}) :

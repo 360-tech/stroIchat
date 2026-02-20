@@ -4105,23 +4105,9 @@ export default class Client4 {
         );
     };
 
-    getSubscription = () => {
-        return this.doFetch<Subscription>(
-            `${this.getCloudRoute()}/subscription`,
-            {method: 'get'},
-        );
-    };
-
     getInstallation = () => {
         return this.doFetch<Installation>(
             `${this.getCloudRoute()}/installation`,
-            {method: 'get'},
-        );
-    };
-
-    getCloudLimits = () => {
-        return this.doFetch<Limits>(
-            `${this.getCloudRoute()}/limits`,
             {method: 'get'},
         );
     };

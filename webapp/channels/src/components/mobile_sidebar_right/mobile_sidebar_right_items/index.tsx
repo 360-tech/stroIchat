@@ -52,8 +52,6 @@ function mapStateToProps(state: GlobalState) {
         teamIsGroupConstrained: Boolean(currentTeam?.group_constrained),
         isLicensedForLDAPGroups: state.entities.general.license.LDAPGroups === 'true',
         partnerAccessEnabled: config.EnablePartnerAccounts === 'true',
-        isStarterFree: false,
-        isFreeTrial: false,
     };
 }
 

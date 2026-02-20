@@ -26,8 +26,6 @@ function mapStateToProps(state: GlobalState) {
         currentTeam,
         customDescriptionText,
         siteName,
-        isCloud: false,
-        isFreeTrial: false,
     };
 }
 

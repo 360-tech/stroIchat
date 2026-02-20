@@ -4,15 +4,12 @@
 import {useSelector} from 'react-redux';
 import {useLocation, matchPath} from 'react-router-dom';
 
-import type {Product} from '@mattermost/types/cloud';
 import type {ProductIdentifier, ProductScope} from '@mattermost/types/products';
 
 import {selectProducts, selectCurrentProductId, selectCurrentProduct} from 'selectors/products';
 
 import type {GlobalState} from 'types/store';
 import type {ProductComponent} from 'types/store/plugins';
-
-import {RecurringIntervals} from './constants';
 
 export const getCurrentProductId = (
     products: ProductComponent[],
@@ -53,35 +50,3 @@ export const inScope = (scope: ProductScope, productId: ProductIdentifier, plugi
 };
 
 export const isChannels = (productId: ProductIdentifier) => productId === null;
-
-// find a product based on its SKU an RecurringInterval
-export const findProductBySkuAndInterval = (products: Record<string, Product>, sku: string, interval: string) => {
-    return Object.values(products).find(((product) => {
-        return product.sku === sku && product.recurring_interval === interval;
-    }));
-};
-
-export const findProductBySku = (products: Record<string, Product>, sku: string) => {
-    return Object.values(products).find(((product) => {
-        return product.sku === sku;
-    }));
-};
-
-export const findProductByID = (products: Record<string, Product>, id: string) => {
-    return Object.values(products).find(((product) => {
-        return product.id === id;
-    }));
-};
-
-const filterProductsRecord = (data: Record<string, Product>, predicate: (product: Product) => boolean): Record<string, Product> => {
-    return Object.keys(data).reduce((acc: Record<string, Product>, current: string) => {
-        if (predicate(data[current])) {
-            acc[current] = data[current];
-        }
-        return acc;
-    }, {});
-};
-
-export const findOnlyYearlyProducts = (products: Record<string, Product>) => {
-    return filterProductsRecord(products, (product: Product) => product.recurring_interval === RecurringIntervals.YEAR);
-};
