@@ -2,7 +2,6 @@
 // See LICENSE.txt for license information.
 
 import classNames from 'classnames';
-import noop from 'lodash/noop';
 import React, {useState} from 'react';
 import {FormattedMessage, defineMessage, useIntl} from 'react-intl';
 
@@ -11,7 +10,6 @@ import type {Team} from '@mattermost/types/teams';
 import useGetUsageDeltas from 'components/common/hooks/useGetUsageDeltas';
 import AdminPanel from 'components/widgets/admin_console/admin_panel';
 import TeamIcon from 'components/widgets/team_icon/team_icon';
-import WithTooltip from 'components/with_tooltip';
 
 import {imageURLForTeam} from 'utils/utils';
 
@@ -41,43 +39,6 @@ export function TeamProfile({team, isArchived, onToggleArchive, isDisabled}: Pro
         onToggleArchive();
     };
     const button = () => {
-        if (restoreDisabled) {
-            return (
-                <WithTooltip
-                    title={intl.formatMessage({id: 'workspace_limits.teams_limit_reached.upgrade_to_unarchive', defaultMessage: 'Upgrade to Unarchive'})}
-                    hint={intl.formatMessage({id: 'workspace_limits.teams_limit_reached.tool_tip', defaultMessage: 'You\'ve reached the team limit for your current plan. Consider upgrading to unarchive this team or archive your other teams'})}
-                >
-                    <div
-                        className={'disabled-overlay-wrapper'}
-                    >
-                        <button
-                            type='button'
-                            disabled={restoreDisabled}
-                            style={{pointerEvents: 'none'}}
-                            className={
-                                classNames(
-                                    'btn',
-                                    'btn-danger',
-                                    'ArchiveButton',
-                                    {ArchiveButton___archived: isArchived},
-                                    {ArchiveButton___unarchived: !isArchived},
-                                    {disabled: isDisabled},
-                                    'cloud-limits-disabled',
-                                )
-                            }
-                            onClick={noop}
-                        >
-                            {isArchived ? (
-                                <i className='icon icon-archive-arrow-up-outline'/>
-                            ) : (
-                                <i className='icon icon-archive-outline'/>
-                            )}
-                            <FormattedMessage {...archiveBtn}/>
-                        </button>
-                    </div>
-                </WithTooltip>
-            );
-        }
         return (
             <button
                 type='button'
