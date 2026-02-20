@@ -10,6 +10,7 @@ import (
 	"maps"
 	"runtime"
 	"runtime/debug"
+	"slices"
 	"strconv"
 	"sync/atomic"
 	"time"
@@ -83,6 +84,7 @@ type Hub struct {
 	stop            chan struct{}
 	didStop         chan struct{}
 	invalidateUser  chan string
+	invalidateChannelMembersCache chan string
 	activity        chan *webConnActivityMessage
 	directMsg       chan *webConnDirectMessage
 	explicitStop    bool
@@ -105,6 +107,7 @@ func newWebHub(ps *PlatformService) *Hub {
 		stop:            make(chan struct{}),
 		didStop:         make(chan struct{}),
 		invalidateUser:  make(chan string),
+		invalidateChannelMembersCache: make(chan string),
 		activity:        make(chan *webConnActivityMessage),
 		directMsg:       make(chan *webConnDirectMessage),
 		checkRegistered: make(chan *webConnSessionMessage),
@@ -237,6 +240,16 @@ func (ps *PlatformService) InvalidateChannelCacheForUser(userID string) {
 	ps.Store.Channel().InvalidateAllChannelMembersForUser(userID)
 	ps.invalidateWebConnSessionCacheForUser(userID)
 	ps.Store.User().InvalidateProfilesInChannelCacheByUser(userID)
+}
+
+// InvalidateChannelMembersCacheForUser resets the per-connection channel membership
+// cache for the user's WebConns. Used when the user is added to a new DM so they
+// receive the next WebsocketEventPosted without waiting for cache expiry.
+func (ps *PlatformService) InvalidateChannelMembersCacheForUser(userID string) {
+	hub := ps.GetHubForUserId(userID)
+	if hub != nil {
+		hub.InvalidateChannelMembersCacheForUser(userID)
+	}
 }
 
 func (ps *PlatformService) InvalidateCacheForUserTeams(userID string) {
@@ -452,6 +465,15 @@ func (h *Hub) InvalidateUser(userID string) {
 	}
 }
 
+// InvalidateChannelMembersCacheForUser resets the per-connection channel membership
+// cache for all of the user's connections (used when user is added to a new DM).
+func (h *Hub) InvalidateChannelMembersCacheForUser(userID string) {
+	select {
+	case h.invalidateChannelMembersCache <- userID:
+	case <-h.stop:
+	}
+}
+
 // UpdateActivity sets the LastUserActivityAt field for the connection
 // of the user.
 func (h *Hub) UpdateActivity(userID, sessionToken string, activityAt int64) {
@@ -653,6 +675,10 @@ func (h *Hub) Start() {
 						closeAndRemoveConn(connIndex, webConn)
 					}
 				}
+			case userID := <-h.invalidateChannelMembersCache:
+				for webConn := range connIndex.ForUser(userID) {
+					webConn.InvalidateChannelMembersCache()
+				}
 			case activity := <-h.activity:
 				for webConn := range connIndex.ForUser(activity.userID) {
 					if !webConn.Active.Load() {
@@ -714,14 +740,40 @@ func (h *Hub) Start() {
 
 				fastIteration := *h.platform.Config().ServiceSettings.EnableWebHubChannelIteration
 				var targetConns iter.Seq[*WebConn]
+				channelID := msg.GetBroadcast().ChannelId
 				if userID := msg.GetBroadcast().UserId; userID != "" {
 					targetConns = connIndex.ForUser(userID)
-				} else if channelID := msg.GetBroadcast().ChannelId; channelID != "" && fastIteration {
+				} else if channelID != "" && fastIteration {
 					targetConns = connIndex.ForChannel(channelID)
 				}
 				if targetConns != nil {
-					for webConn := range targetConns {
-						broadcast(webConn)
+					if channelID != "" && fastIteration {
+						connsToBroadcast := slices.Collect(targetConns)
+						if len(connsToBroadcast) == 0 {
+							eventType := msg.EventType()
+							if eventType == model.WebsocketEventPosted || eventType == model.WebsocketEventPostEdited {
+								ch, err := h.platform.Store.Channel().Get(channelID, true)
+								if err == nil && ch != nil && ch.Type == model.ChannelTypeDirect {
+									memberIds, memberErr := h.platform.Store.Channel().GetAllChannelMemberIdsByChannelId(channelID)
+									if memberErr == nil {
+										for _, uid := range memberIds {
+											for wc := range connIndex.ForUser(uid) {
+												broadcast(wc)
+											}
+										}
+										h.platform.Log().Debug("DM websocket fallback: delivered by member list", mlog.String("channel_id", channelID))
+									}
+								}
+							}
+						} else {
+							for _, webConn := range connsToBroadcast {
+								broadcast(webConn)
+							}
+						}
+					} else {
+						for webConn := range targetConns {
+							broadcast(webConn)
+						}
 					}
 					continue
 				}
@@ -730,7 +782,7 @@ func (h *Hub) Start() {
 				// method, there would be events scoped to a channel being sent to multiple hubs. And only one hub would
 				// have the targetConns. Therefore, we need to stop here if channel based iteration is enabled, and it's a
 				// channel-scoped event.
-				if channelID := msg.GetBroadcast().ChannelId; channelID != "" && fastIteration {
+				if channelID != "" && fastIteration {
 					continue
 				}
 

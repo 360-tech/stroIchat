@@ -770,6 +770,13 @@ func (wc *WebConn) InvalidateCache() {
 	wc.SetSessionExpiresAt(0)
 }
 
+// InvalidateChannelMembersCache resets the per-connection channel membership cache
+// so that the next ShouldSendEvent will refetch from the store (e.g. after user is added to a new DM).
+func (wc *WebConn) InvalidateChannelMembersCache() {
+	wc.allChannelMembers = nil
+	wc.lastAllChannelMembersTime = 0
+}
+
 // IsBasicAuthenticated returns whether the given WebConn has a valid session.
 func (wc *WebConn) IsBasicAuthenticated() bool {
 	// Check the expiry to see if we need to check for a new session

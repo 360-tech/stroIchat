@@ -386,6 +386,11 @@ func (a *App) handleCreationEvent(rctx request.CTX, userID, otherUserID string, 
 	a.Srv().Platform().InvalidateChannelCacheForUser(userID)
 	a.Srv().Platform().InvalidateChannelCacheForUser(otherUserID)
 
+	if channel.Type == model.ChannelTypeDirect {
+		a.Srv().Platform().InvalidateChannelMembersCacheForUser(userID)
+		a.Srv().Platform().InvalidateChannelMembersCacheForUser(otherUserID)
+	}
+
 	a.Srv().Go(func() {
 		pluginContext := pluginContext(rctx)
 		a.ch.RunMultiHook(func(hooks plugin.Hooks, _ *model.Manifest) bool {
