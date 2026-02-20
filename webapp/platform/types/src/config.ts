@@ -701,13 +701,6 @@ export type LdapSettings = {
     MaximumLoginAttempts: number;
 };
 
-export type ComplianceSettings = {
-    Enable: boolean;
-    Directory: string;
-    EnableDaily: boolean;
-    BatchSize: number;
-};
-
 export type LocalizationSettings = {
     DefaultServerLocale: string;
     DefaultClientLocale: string;
@@ -973,7 +966,6 @@ export type AdminConfig = {
     ThemeSettings: ThemeSettings;
     OpenIdSettings: SSOSettings;
     LdapSettings: LdapSettings;
-    ComplianceSettings: ComplianceSettings;
     LocalizationSettings: LocalizationSettings;
     SamlSettings: SamlSettings;
     MetricsSettings: MetricsSettings;

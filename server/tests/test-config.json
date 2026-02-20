@@ -231,11 +231,6 @@
         "LoginButtonBorderColor": "",
         "LoginButtonTextColor": ""
     },
-    "ComplianceSettings": {
-        "Enable": false,
-        "Directory": "./data/",
-        "EnableDaily": false
-    },
     "LocalizationSettings": {
         "DefaultServerLocale": "ru",
         "DefaultClientLocale": "ru",
