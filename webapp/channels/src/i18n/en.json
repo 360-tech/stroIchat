@@ -5863,8 +5863,6 @@
   "workspace_limits.message_history.short": "Messages",
   "workspace_limits.message_history.short.usage": "{actual} / {limit}",
   "workspace_limits.message_history.usage": "{actual} of {limit} messages ({percent}%)",
-  "workspace_limits.post_history_banner.cta_button": "Restore Access",
-  "workspace_limits.post_history_banner.text": "{limit, number}-message limit reached. Messages sent before {date} are hidden",
   "workspace_limits.teams_limit_reached.tool_tip": "You've reached the team limit for your current plan. Consider upgrading to unarchive this team or archive your other teams",
   "workspace_limits.teams_limit_reached.upgrade_to_unarchive": "Upgrade to Unarchive",
   "workspace_limits.teams_limit_reached.view_upgrade_options": "View upgrade options",

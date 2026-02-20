@@ -3,13 +3,12 @@
 
 import React from 'react';
 
-import type {ClientLicense, ClientConfig, WarnMetricStatus} from '@mattermost/types/config';
+import type {ClientLicense, ClientConfig} from '@mattermost/types/config';
 
 import ConfigurationAnnouncementBar from './configuration_bar';
 import AnnouncementBar from './default_announcement_bar';
 import NotificationPermissionBar from './notification_permission_bar';
 import OverageUsersBanner from './overage_users_banner';
-import PostHistoryLimitBanner from './post_history_limit_banner';
 import TextDismissableBar from './text_dismissable_bar';
 import UsersLimitsAnnouncementBar from './users_limits_announcement_bar';
 
@@ -21,7 +20,6 @@ type Props = {
     latestError?: {
         error: any;
     };
-    warnMetricsStatus?: Record<string, WarnMetricStatus>;
     actions: {
         dismissError: (index: number) => void;
     };
@@ -74,7 +72,6 @@ class AnnouncementBarController extends React.PureComponent<Props> {
                     userIsAdmin={this.props.userIsAdmin}
                 />
                 {this.props.license?.Cloud !== 'true' && <OverageUsersBanner/>}
-                <PostHistoryLimitBanner/>
                 <ConfigurationAnnouncementBar
                     config={this.props.config}
                     canViewSystemErrors={this.props.canViewSystemErrors}

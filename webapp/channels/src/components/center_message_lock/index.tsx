@@ -6,14 +6,11 @@ import {useIntl} from 'react-intl';
 
 import {EyeOffOutlineIcon} from '@mattermost/compass-icons/components';
 
-import useGetServerLimits from 'components/common/hooks/useGetServerLimits';
-
 import './index.scss';
 
+const limitsLoaded = true;
 export default function CenterMessageLock() {
     const intl = useIntl();
-
-    const [limitsLoaded] = useGetServerLimits();
 
     if (!limitsLoaded) {
         return null;

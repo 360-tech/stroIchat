@@ -5793,7 +5793,6 @@
   "workspace_limits.message_history.short": "消息",
   "workspace_limits.message_history.short.usage": "{actual} / {limit}",
   "workspace_limits.message_history.usage": "{actual} 条消息中的 {limit} 条（{percent}%）",
-  "workspace_limits.post_history_banner.text": "已达到{limit, number}条消息上限。{date}之前发送的消息已被隐藏。升级以恢复访问权限",
   "workspace_limits.teams_limit_reached.tool_tip": "您当前的套餐已达到团队限制。考虑升级以取消存档此团队或存档其他团队",
   "workspace_limits.teams_limit_reached.upgrade_to_unarchive": "升级以取消存档",
   "workspace_limits.teams_limit_reached.view_upgrade_options": "查看升级选项",

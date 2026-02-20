@@ -5868,8 +5868,6 @@
   "workspace_limits.message_history.short": "Сообщения",
   "workspace_limits.message_history.short.usage": "{actual} / {limit}",
   "workspace_limits.message_history.usage": "{actual} из {limit} сообщений ({percent}%)",
-  "workspace_limits.post_history_banner.cta_button": "Восстановить доступ",
-  "workspace_limits.post_history_banner.text": "{limit, number} – достигнут лимит сообщений. Сообщения, отправленные до {date}, скрыты.",
   "workspace_limits.teams_limit_reached.tool_tip": "Вы достигли лимита команд для вашего текущего тарифного плана. Рассмотрите возможность повышения тарифного плана, чтобы снять архивацию этой команды или архивировать другие команды",
   "workspace_limits.teams_limit_reached.upgrade_to_unarchive": "Обновление до Unarchive",
   "workspace_limits.teams_limit_reached.view_upgrade_options": "Посмотреть варианты обновления",

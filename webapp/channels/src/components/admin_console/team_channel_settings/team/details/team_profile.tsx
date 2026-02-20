@@ -32,7 +32,6 @@ export function TeamProfile({team, isArchived, onToggleArchive, isDisabled}: Pro
     const [, setOverrideRestoreDisabled] = useState(false);
     const [restoreDisabled] = useState(usageDeltas.teams.teamsLoaded && usageDeltas.teams.active >= 0 && isArchived);
 
-
     const archiveBtn = isArchived ?
         defineMessage({id: 'admin.team_settings.team_details.unarchiveTeam', defaultMessage: 'Unarchive Team'}) :
         defineMessage({id: 'admin.team_settings.team_details.archiveTeam', defaultMessage: 'Archive Team'});

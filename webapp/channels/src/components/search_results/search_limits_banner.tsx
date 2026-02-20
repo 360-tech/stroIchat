@@ -11,7 +11,6 @@ import {isSearchTruncated} from 'mattermost-redux/selectors/entities/search';
 import {getRhsState} from 'selectors/rhs';
 
 import CenterMessageLock from 'components/center_message_lock';
-import useGetServerLimits from 'components/common/hooks/useGetServerLimits';
 
 import {DataSearchTypes, RHSStates} from 'utils/constants';
 
@@ -22,8 +21,6 @@ type Props = {
 }
 
 function SearchLimitsBanner(props: Props) {
-    const [serverLimits] = useGetServerLimits();
-
     // Check if current search results were actually truncated
     const searchTruncated = useSelector((state: GlobalState) => {
         const searchType = props.searchType === DataSearchTypes.FILES_SEARCH_TYPE ? 'files' : 'posts';
@@ -35,7 +32,7 @@ function SearchLimitsBanner(props: Props) {
     const isShowingSearchResults = rhsState === RHSStates.SEARCH;
 
     // Only show banner if search results were actually truncated AND currently showing search results
-    if (!searchTruncated || !serverLimits?.postHistoryLimit || !isShowingSearchResults) {
+    if (!searchTruncated || !isShowingSearchResults) {
         return null;
     }
 
