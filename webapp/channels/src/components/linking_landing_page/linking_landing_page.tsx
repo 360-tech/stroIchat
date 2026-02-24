@@ -215,26 +215,6 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         );
     };
 
-    renderDownloadLinkText = () => {
-        const isMobile = UserAgent.isMobile();
-
-        if (isMobile) {
-            return (
-                <FormattedMessage
-                    id='get_app.dontHaveTheMobileApp'
-                    defaultMessage={'Don\'t have the Mobile App?'}
-                />
-            );
-        }
-
-        return (
-            <FormattedMessage
-                id='get_app.dontHaveTheDesktopApp'
-                defaultMessage={'Don\'t have the Desktop App?'}
-            />
-        );
-    };
-
     renderDownloadLinkSection = () => {
         const downloadLink = this.getDownloadLink();
 
@@ -260,7 +240,6 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         } else if (downloadLink) {
             return (
                 <div className='get-app__download-link'>
-                    {this.renderDownloadLinkText()}
                     {'\u00A0'}
                     <br/>
                     <a href={downloadLink}>
@@ -308,7 +287,6 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                             defaultMessage='You will be redirected in a few moments.'
                         />
                         <br/>
-                        {this.renderDownloadLinkText()}
                         {'\u00A0'}
                         <br className='mobile-only'/>
                         <a href={downloadLink}>

@@ -246,20 +246,21 @@ function DesktopNotificationSoundsSettings({
         );
     }
 
-    return (
-        <SettingItemMin
-            ref={editButtonRef}
-            title={
-                <FormattedMessage
-                    id='user.settings.notifications.desktopNotificationSounds.title'
-                    defaultMessage='Desktop notification'
-                />
-            }
-            describe={getCollapsedText(isCallsRingingEnabled, desktopSound, desktopNotificationSound, callsDesktopSound, callsNotificationSound)}
-            section={UserSettingsNotificationSections.DESKTOP_NOTIFICATION_SOUND}
-            updateSection={handleChangeForMinSection}
-        />
-    );
+    return null;
+    // return (
+    //     <SettingItemMin
+    //         ref={editButtonRef}
+    //         title={
+    //             <FormattedMessage
+    //                 id='user.settings.notifications.desktopNotificationSounds.title'
+    //                 defaultMessage='Desktop notification'
+    //             />
+    //         }
+    //         describe={getCollapsedText(isCallsRingingEnabled, desktopSound, desktopNotificationSound, callsDesktopSound, callsNotificationSound)}
+    //         section={UserSettingsNotificationSections.DESKTOP_NOTIFICATION_SOUND}
+    //         updateSection={handleChangeForMinSection}
+    //     />
+    // );
 }
 
 function NoIndicatorSeparatorComponent() {
