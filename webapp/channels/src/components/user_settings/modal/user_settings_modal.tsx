@@ -173,7 +173,7 @@ class UserSettingsModal extends React.PureComponent<Props, State> {
 
     // Called to hide the settings pane when on mobile
     handleCollapse = () => {
-        const el = ReactDOM.findDOMNode(this.modalBodyRef.current) as HTMLDivElement;
+        const el = this.modalBodyRef.current as HTMLDivElement;
         el.closest('.modal-dialog')!.classList.remove('display--content');
 
         this.setState({
