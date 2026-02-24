@@ -5799,6 +5799,8 @@
   "widget.input.min_length": "Должно быть не менее {minLength} символов.",
   "widget.input.required": "Это поле обязательно",
   "widget.passwordInput.createPassword": "Создать пароль",
+  "widget.passwordInput.hidePassword": "Скрыть пароль",
+  "widget.passwordInput.showPassword": "Показать пароль",
   "widget.passwordInput.password": "Пароль",
   "widgets.channels_input.empty": "Не найдено ни одного канала",
   "widgets.channels_input.loading": "Загрузка",

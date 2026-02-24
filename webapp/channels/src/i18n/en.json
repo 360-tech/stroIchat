@@ -5795,6 +5795,8 @@
   "widget.input.required": "This field is required",
   "widget.passwordInput.createPassword": "Choose a Password",
   "widget.passwordInput.password": "Password",
+  "widget.passwordInput.hidePassword": "Hide password",
+  "widget.passwordInput.showPassword": "Show password",
   "widgets.channels_input.empty": "No channels found",
   "widgets.channels_input.loading": "Loading",
   "widgets.users_emails_input.loading": "Loading",
