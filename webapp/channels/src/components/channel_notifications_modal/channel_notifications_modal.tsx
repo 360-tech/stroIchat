@@ -3,26 +3,28 @@
 
 import React, {useCallback, useState} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
-import type {OnChangeValue} from 'react-select';
+// import type {OnChangeValue} from 'react-select';
 
-import {BellOffOutlineIcon} from '@mattermost/compass-icons/components';
+// import {BellOffOutlineIcon} from '@mattermost/compass-icons/components';
 import {GenericModal} from '@mattermost/components';
 import type {Channel, ChannelMembership, ChannelNotifyProps} from '@mattermost/types/channels';
 import type {UserNotifyProps, UserProfile} from '@mattermost/types/users';
 
-import AlertBanner from 'components/alert_banner';
+// import AlertBanner from 'components/alert_banner';
 import CheckboxSettingItem from 'components/widgets/modals/components/checkbox_setting_item';
-import CheckboxWithSelectSettingItem from 'components/widgets/modals/components/checkbox_with_select_item';
+// import CheckboxWithSelectSettingItem from 'components/widgets/modals/components/checkbox_with_select_item';
 import ModalHeader from 'components/widgets/modals/components/modal_header';
 import ModalSection from 'components/widgets/modals/components/modal_section';
-import RadioSettingItem from 'components/widgets/modals/components/radio_setting_item';
-import type {SelectOption} from 'components/widgets/modals/components/react_select_item';
+// import RadioSettingItem from 'components/widgets/modals/components/radio_setting_item';
+// import type {SelectOption} from 'components/widgets/modals/components/react_select_item';
 
 import {focusElement} from 'utils/a11y_utils';
 import {NotificationLevels, DesktopSound, IgnoreChannelMentions} from 'utils/constants';
-import {convertDesktopSoundNotifyPropFromUserToDesktop, DesktopNotificationSounds, getValueOfNotificationSoundsSelect, stopTryNotificationRing, tryNotificationSound} from 'utils/notification_sounds';
+import {convertDesktopSoundNotifyPropFromUserToDesktop, DesktopNotificationSounds,
+    /* getValueOfNotificationSoundsSelect, stopTryNotificationRing, tryNotificationSound */
+    } from 'utils/notification_sounds';
 
-import ResetToDefaultButton, {SectionName} from './reset_to_default_button';
+// import ResetToDefaultButton, {SectionName} from './reset_to_default_button';
 import utils from './utils';
 
 import type {PropsFromRedux} from './index';
@@ -83,36 +85,36 @@ export default function ChannelNotificationsModal(props: Props) {
         setSettings((prevSettings) => ({...prevSettings, ...values}));
     }, []);
 
-    function handleUseSameMobileSettingsAsDesktopCheckboxChange(value: boolean) {
-        const newValueOfSettings = {...settings};
-        const newValueOfDesktopAndMobileSettingsDifferent = !value;
+    // function handleUseSameMobileSettingsAsDesktopCheckboxChange(value: boolean) {
+    //     const newValueOfSettings = {...settings};
+    //     const newValueOfDesktopAndMobileSettingsDifferent = !value;
 
-        if (newValueOfDesktopAndMobileSettingsDifferent === false) {
-            newValueOfSettings.push = settings.desktop;
-            newValueOfSettings.push_threads = settings.desktop_threads;
-        } else {
-            newValueOfSettings.push = getInitialValuesOfChannelNotifyProps(NotificationLevels.ALL, props.channelMember?.notify_props?.push, props.currentUser?.notify_props?.push);
-            newValueOfSettings.push_threads = getInitialValuesOfChannelNotifyProps(NotificationLevels.ALL, props.channelMember?.notify_props?.push_threads, props.currentUser?.notify_props?.push_threads);
-        }
-        setSettings(newValueOfSettings);
-        setDesktopAndMobileSettingDifferent(newValueOfDesktopAndMobileSettingsDifferent);
-    }
+    //     if (newValueOfDesktopAndMobileSettingsDifferent === false) {
+    //         newValueOfSettings.push = settings.desktop;
+    //         newValueOfSettings.push_threads = settings.desktop_threads;
+    //     } else {
+    //         newValueOfSettings.push = getInitialValuesOfChannelNotifyProps(NotificationLevels.ALL, props.channelMember?.notify_props?.push, props.currentUser?.notify_props?.push);
+    //         newValueOfSettings.push_threads = getInitialValuesOfChannelNotifyProps(NotificationLevels.ALL, props.channelMember?.notify_props?.push_threads, props.currentUser?.notify_props?.push_threads);
+    //     }
+    //     setSettings(newValueOfSettings);
+    //     setDesktopAndMobileSettingDifferent(newValueOfDesktopAndMobileSettingsDifferent);
+    // }
 
-    function handleResetToDefaultClicked(channelNotifyPropsDefaultedToUserNotifyProps: ChannelMembership['notify_props'], sectionName: SectionName) {
-        if (sectionName === SectionName.Mobile) {
-            const desktopAndMobileSettingsDiff = areDesktopAndMobileSettingsDifferent(
-                props.collapsedReplyThreads,
-                settings.desktop,
-                settings.desktop_threads,
-                channelNotifyPropsDefaultedToUserNotifyProps.push,
-                channelNotifyPropsDefaultedToUserNotifyProps.push_threads,
-            );
+    // function handleResetToDefaultClicked(channelNotifyPropsDefaultedToUserNotifyProps: ChannelMembership['notify_props'], sectionName: SectionName) {
+    //     if (sectionName === SectionName.Mobile) {
+    //         const desktopAndMobileSettingsDiff = areDesktopAndMobileSettingsDifferent(
+    //             props.collapsedReplyThreads,
+    //             settings.desktop,
+    //             settings.desktop_threads,
+    //             channelNotifyPropsDefaultedToUserNotifyProps.push,
+    //             channelNotifyPropsDefaultedToUserNotifyProps.push_threads,
+    //         );
 
-            setDesktopAndMobileSettingDifferent(desktopAndMobileSettingsDiff);
-        }
+    //         setDesktopAndMobileSettingDifferent(desktopAndMobileSettingsDiff);
+    //     }
 
-        setSettings({...settings, ...channelNotifyPropsDefaultedToUserNotifyProps});
-    }
+    //     setSettings({...settings, ...channelNotifyPropsDefaultedToUserNotifyProps});
+    // }
 
     function handleSave() {
         const channelNotifyProps = createChannelNotifyPropsFromSelectedSettings(props.currentUser.notify_props, settings, desktopAndMobileSettingsDifferent);
@@ -162,117 +164,117 @@ export default function ChannelNotificationsModal(props: Props) {
         </>
     );
 
-    const handleChangeForMessageNotificationSoundSelect = (selectedOption: OnChangeValue<SelectOption, boolean>) => {
-        stopTryNotificationRing();
+    // const handleChangeForMessageNotificationSoundSelect = (selectedOption: OnChangeValue<SelectOption, boolean>) => {
+    //     stopTryNotificationRing();
 
-        if (selectedOption && 'value' in selectedOption) {
-            handleChange({desktop_notification_sound: ((selectedOption as SelectOption).value)});
-            tryNotificationSound(selectedOption.value);
-        }
-    };
+    //     if (selectedOption && 'value' in selectedOption) {
+    //         handleChange({desktop_notification_sound: ((selectedOption as SelectOption).value)});
+    //         tryNotificationSound(selectedOption.value);
+    //     }
+    // };
 
-    const desktopNotificationsSectionContent = (
-        <>
-            <RadioSettingItem
-                title={formatMessage({
-                    id: 'channel_notifications.NotifyMeTitle',
-                    defaultMessage: 'Notify me about…',
-                })}
-                inputFieldValue={settings.desktop || ''}
-                inputFieldData={utils.desktopNotificationInputFieldData(props.currentUser.notify_props.desktop)}
-                handleChange={(e) => handleChange({desktop: e.target.value})}
-            />
-            {props.collapsedReplyThreads && settings.desktop === 'mention' &&
-                <CheckboxSettingItem
-                    title={formatMessage({
-                        id: 'channel_notifications.ThreadsReplyTitle',
-                        defaultMessage: 'Thread reply notifications',
-                    })}
-                    inputFieldValue={settings.desktop_threads === 'all'}
-                    inputFieldData={utils.DesktopReplyThreadsInputFieldData}
-                    inputFieldTitle={
-                        <FormattedMessage
-                            id='channel_notifications.checkbox.threadsReplyTitle'
-                            defaultMessage="Notify me about replies to threads I\'m following"
-                        />
-                    }
-                    handleChange={(e) => handleChange({desktop_threads: e ? 'all' : 'mention'})}
-                />
-            }
-            {settings.desktop !== 'none' && (
-                <CheckboxWithSelectSettingItem
-                    title={formatMessage({
-                        id: 'channel_notifications.desktopNotifications.title',
-                        defaultMessage: 'Sounds',
-                    })}
-                    checkboxFieldTitle={
-                        <FormattedMessage
-                            id='channel_notifications.desktopNotifications.soundEnable'
-                            defaultMessage='Message notification sounds'
-                        />
-                    }
-                    checkboxFieldValue={settings.desktop_sound === DesktopSound.ON}
-                    checkboxFieldData={utils.desktopNotificationSoundsCheckboxFieldData}
-                    handleCheckboxChange={(isChecked) => handleChange({desktop_sound: isChecked ? DesktopSound.ON : DesktopSound.OFF})}
-                    selectFieldData={utils.desktopNotificationSoundsSelectFieldData}
-                    selectFieldValue={getValueOfNotificationSoundsSelect(settings.desktop_notification_sound)}
-                    isSelectDisabled={settings.desktop_sound !== 'on'}
-                    selectPlaceholder={formatMessage({
-                        id: 'channel_notifications.desktopNotifications.soundSelectPlaceholder',
-                        defaultMessage: 'Select a sound',
-                    })}
-                    handleSelectChange={handleChangeForMessageNotificationSoundSelect}
-                />
-            )}
-        </>
-    );
+    // const desktopNotificationsSectionContent = (
+    //     <>
+    //         <RadioSettingItem
+    //             title={formatMessage({
+    //                 id: 'channel_notifications.NotifyMeTitle',
+    //                 defaultMessage: 'Notify me about…',
+    //             })}
+    //             inputFieldValue={settings.desktop || ''}
+    //             inputFieldData={utils.desktopNotificationInputFieldData(props.currentUser.notify_props.desktop)}
+    //             handleChange={(e) => handleChange({desktop: e.target.value})}
+    //         />
+    //         {props.collapsedReplyThreads && settings.desktop === 'mention' &&
+    //             <CheckboxSettingItem
+    //                 title={formatMessage({
+    //                     id: 'channel_notifications.ThreadsReplyTitle',
+    //                     defaultMessage: 'Thread reply notifications',
+    //                 })}
+    //                 inputFieldValue={settings.desktop_threads === 'all'}
+    //                 inputFieldData={utils.DesktopReplyThreadsInputFieldData}
+    //                 inputFieldTitle={
+    //                     <FormattedMessage
+    //                         id='channel_notifications.checkbox.threadsReplyTitle'
+    //                         defaultMessage="Notify me about replies to threads I\'m following"
+    //                     />
+    //                 }
+    //                 handleChange={(e) => handleChange({desktop_threads: e ? 'all' : 'mention'})}
+    //             />
+    //         }
+    //         {settings.desktop !== 'none' && (
+    //             <CheckboxWithSelectSettingItem
+    //                 title={formatMessage({
+    //                     id: 'channel_notifications.desktopNotifications.title',
+    //                     defaultMessage: 'Sounds',
+    //                 })}
+    //                 checkboxFieldTitle={
+    //                     <FormattedMessage
+    //                         id='channel_notifications.desktopNotifications.soundEnable'
+    //                         defaultMessage='Message notification sounds'
+    //                     />
+    //                 }
+    //                 checkboxFieldValue={settings.desktop_sound === DesktopSound.ON}
+    //                 checkboxFieldData={utils.desktopNotificationSoundsCheckboxFieldData}
+    //                 handleCheckboxChange={(isChecked) => handleChange({desktop_sound: isChecked ? DesktopSound.ON : DesktopSound.OFF})}
+    //                 selectFieldData={utils.desktopNotificationSoundsSelectFieldData}
+    //                 selectFieldValue={getValueOfNotificationSoundsSelect(settings.desktop_notification_sound)}
+    //                 isSelectDisabled={settings.desktop_sound !== 'on'}
+    //                 selectPlaceholder={formatMessage({
+    //                     id: 'channel_notifications.desktopNotifications.soundSelectPlaceholder',
+    //                     defaultMessage: 'Select a sound',
+    //                 })}
+    //                 handleSelectChange={handleChangeForMessageNotificationSoundSelect}
+    //             />
+    //         )}
+    //     </>
+    // );
 
-    const mobileNotificationsSectionContent = (
-        <>
-            <CheckboxSettingItem
-                inputFieldTitle={
-                    <FormattedMessage
-                        id='channel_notifications.checkbox.sameMobileSettingsDesktop'
-                        defaultMessage='Use the same notification settings as desktop'
-                    />
-                }
-                inputFieldValue={!desktopAndMobileSettingsDifferent}
-                inputFieldData={utils.sameMobileSettingsDesktopInputFieldData}
-                handleChange={handleUseSameMobileSettingsAsDesktopCheckboxChange}
-            />
-            {desktopAndMobileSettingsDifferent && (
-                <>
-                    <RadioSettingItem
-                        dataTestId='mobile-notify-me-radio-section'
-                        title={formatMessage({
-                            id: 'channel_notifications.NotifyMeTitle',
-                            defaultMessage: 'Notify me about…',
-                        })}
-                        inputFieldValue={settings.push || ''}
-                        inputFieldData={utils.mobileNotificationInputFieldData(props.currentUser.notify_props.push)}
-                        handleChange={(e) => handleChange({push: e.target.value})}
-                    />
-                    {props.collapsedReplyThreads && settings.push === 'mention' &&
-                        <CheckboxSettingItem
-                            dataTestId='mobile-reply-threads-checkbox-section'
-                            title={formatMessage({
-                                id: 'channel_notifications.ThreadsReplyTitle',
-                                defaultMessage: 'Thread reply notifications',
-                            })}
-                            inputFieldTitle={
-                                <FormattedMessage
-                                    id='channel_notifications.checkbox.threadsReplyTitle'
-                                    defaultMessage="Notify me about replies to threads I\'m following"
-                                />
-                            }
-                            inputFieldValue={settings.push_threads === 'all'}
-                            inputFieldData={utils.MobileReplyThreadsInputFieldData}
-                            handleChange={(e) => handleChange({push_threads: e ? 'all' : 'mention'})}
-                        />}
-                </>
-            )}
-        </>
-    );
+    // const mobileNotificationsSectionContent = (
+    //     <>
+    //         <CheckboxSettingItem
+    //             inputFieldTitle={
+    //                 <FormattedMessage
+    //                     id='channel_notifications.checkbox.sameMobileSettingsDesktop'
+    //                     defaultMessage='Use the same notification settings as desktop'
+    //                 />
+    //             }
+    //             inputFieldValue={!desktopAndMobileSettingsDifferent}
+    //             inputFieldData={utils.sameMobileSettingsDesktopInputFieldData}
+    //             handleChange={handleUseSameMobileSettingsAsDesktopCheckboxChange}
+    //         />
+    //         {desktopAndMobileSettingsDifferent && (
+    //             <>
+    //                 <RadioSettingItem
+    //                     dataTestId='mobile-notify-me-radio-section'
+    //                     title={formatMessage({
+    //                         id: 'channel_notifications.NotifyMeTitle',
+    //                         defaultMessage: 'Notify me about…',
+    //                     })}
+    //                     inputFieldValue={settings.push || ''}
+    //                     inputFieldData={utils.mobileNotificationInputFieldData(props.currentUser.notify_props.push)}
+    //                     handleChange={(e) => handleChange({push: e.target.value})}
+    //                 />
+    //                 {props.collapsedReplyThreads && settings.push === 'mention' &&
+    //                     <CheckboxSettingItem
+    //                         dataTestId='mobile-reply-threads-checkbox-section'
+    //                         title={formatMessage({
+    //                             id: 'channel_notifications.ThreadsReplyTitle',
+    //                             defaultMessage: 'Thread reply notifications',
+    //                         })}
+    //                         inputFieldTitle={
+    //                             <FormattedMessage
+    //                                 id='channel_notifications.checkbox.threadsReplyTitle'
+    //                                 defaultMessage="Notify me about replies to threads I\'m following"
+    //                             />
+    //                         }
+    //                         inputFieldValue={settings.push_threads === 'all'}
+    //                         inputFieldData={utils.MobileReplyThreadsInputFieldData}
+    //                         handleChange={(e) => handleChange({push_threads: e ? 'all' : 'mention'})}
+    //                     />}
+    //             </>
+    //         )}
+    //     </>
+    // );
 
     const autoFollowThreadsSectionContent = (
         <CheckboxSettingItem
@@ -288,74 +290,54 @@ export default function ChannelNotificationsModal(props: Props) {
         />
     );
 
-    const desktopAndMobileNotificationSectionContent = settings.mark_unread === 'all' ? (
-        <>
-            <div className='ChannelNotificationModal__divider'/>
-            <ModalSection
-                title={formatMessage({
-                    id: 'channel_notifications.desktopNotificationsTitle',
-                    defaultMessage: 'Desktop Notifications',
-                })}
-                titleSuffix={
-                    <ResetToDefaultButton
-                        sectionName={SectionName.Desktop}
-                        userNotifyProps={props.currentUser.notify_props}
-                        userSelectedChannelNotifyProps={settings}
-                        onClick={handleResetToDefaultClicked}
-                    />
-                }
-                description={formatMessage({
-                    id: 'channel_notifications.desktopNotificationsDesc',
-                    defaultMessage: 'Available on Chrome, Edge, Firefox, and the Mattermost Desktop App.',
-                })}
-                content={desktopNotificationsSectionContent}
-            />
-            <div className='ChannelNotificationModal__divider'/>
-            <ModalSection
-                title={formatMessage({
-                    id: 'channel_notifications.mobileNotificationsTitle',
-                    defaultMessage: 'Mobile Notifications',
-                })}
-                titleSuffix={
-                    <ResetToDefaultButton
-                        sectionName={SectionName.Mobile}
-                        userNotifyProps={props.currentUser.notify_props}
-                        userSelectedChannelNotifyProps={settings}
-                        onClick={handleResetToDefaultClicked}
-                    />
-                }
-                description={formatMessage({
-                    id: 'channel_notifications.mobileNotificationsDesc',
-                    defaultMessage: 'Notification alerts are pushed to your mobile device when there is activity in Mattermost.',
-                })}
-                content={mobileNotificationsSectionContent}
-            />
-        </>
-    ) : (
-        <AlertBanner
-            id='channelNotificationsMutedBanner'
-            mode='info'
-            variant='app'
-            customIcon={
-                <BellOffOutlineIcon
-                    size={24}
-                    color={'currentColor'}
-                />
-            }
-            title={
-                <FormattedMessage
-                    id='channel_notifications.alertBanner.title'
-                    defaultMessage='This channel is muted'
-                />
-            }
-            message={
-                <FormattedMessage
-                    id='channel_notifications.alertBanner.description'
-                    defaultMessage='All other notification preferences for this channel are disabled'
-                />
-            }
-        />
-    );
+    // const desktopAndMobileNotificationSectionContent = settings.mark_unread === 'all' ? (
+    //     <>
+    //         <div className='ChannelNotificationModal__divider'/>
+    //         <ModalSection
+    //             title={formatMessage({
+    //                 id: 'channel_notifications.desktopNotificationsTitle',
+    //                 defaultMessage: 'Desktop Notifications',
+    //             })}
+    //             titleSuffix={
+    //                 <ResetToDefaultButton
+    //                     sectionName={SectionName.Desktop}
+    //                     userNotifyProps={props.currentUser.notify_props}
+    //                     userSelectedChannelNotifyProps={settings}
+    //                     onClick={handleResetToDefaultClicked}
+    //                 />
+    //             }
+    //             description={formatMessage({
+    //                 id: 'channel_notifications.desktopNotificationsDesc',
+    //                 defaultMessage: 'Available on Chrome, Edge, Firefox.',
+    //             })}
+    //             content={desktopNotificationsSectionContent}
+    //         />
+    //     </>
+    // ) : (
+    //     <AlertBanner
+    //         id='channelNotificationsMutedBanner'
+    //         mode='info'
+    //         variant='app'
+    //         customIcon={
+    //             <BellOffOutlineIcon
+    //                 size={24}
+    //                 color={'currentColor'}
+    //             />
+    //         }
+    //         title={
+    //             <FormattedMessage
+    //                 id='channel_notifications.alertBanner.title'
+    //                 defaultMessage='This channel is muted'
+    //             />
+    //         }
+    //         message={
+    //             <FormattedMessage
+    //                 id='channel_notifications.alertBanner.description'
+    //                 defaultMessage='All other notification preferences for this channel are disabled'
+    //             />
+    //         }
+    //     />
+    // );
 
     const footerContent = (
         <footer className='ChannelNotificationModal__footer'>
@@ -431,7 +413,7 @@ export default function ChannelNotificationsModal(props: Props) {
                         content={muteOrIgnoreSectionContent}
                     />
                 </fieldset>
-                {desktopAndMobileNotificationSectionContent}
+                {/* {desktopAndMobileNotificationSectionContent} */}
                 {props.collapsedReplyThreads &&
                     <>
                         <div className='ChannelNotificationModal__divider'/>

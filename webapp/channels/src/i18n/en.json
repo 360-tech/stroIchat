@@ -3219,8 +3219,6 @@
   "channel_notifications.ignoreMentionsDesc": "When enabled, @channel, @here and @all will not trigger mentions or mention notifications in this channel",
   "channel_notifications.ignoreMentionsTitle": "Ignore mentions for @channel, @here and @all",
   "channel_notifications.levels.all": "All",
-  "channel_notifications.mobileNotificationsDesc": "Notification alerts are pushed to your mobile device when there is activity in Stroichat.",
-  "channel_notifications.mobileNotificationsTitle": "Mobile Notifications",
   "channel_notifications.muteAndIgnore": "Mute or ignore",
   "channel_notifications.muteChannelDesc": "Turns off notifications for this channel. You’ll still see badges if you’re mentioned.",
   "channel_notifications.muteChannelTitle": "Mute channel",

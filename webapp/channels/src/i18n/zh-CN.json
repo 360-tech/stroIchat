@@ -3222,8 +3222,6 @@
   "channel_notifications.ignoreMentionsDesc": "当启用时，@channel、@here 和 @all 将不会在此频道中触发提及或提及通知",
   "channel_notifications.ignoreMentionsTitle": "忽略 @channel、@here 和 @all 的提及",
   "channel_notifications.levels.all": "全部",
-  "channel_notifications.mobileNotificationsDesc": "当 stroichat 有活动时，通知将被推送到您的移动设备。",
-  "channel_notifications.mobileNotificationsTitle": "移动设备通知",
   "channel_notifications.muteAndIgnore": "静音或忽略",
   "channel_notifications.muteChannelDesc": "关闭此频道的通知。您仍会在被提及时看到角标。",
   "channel_notifications.muteChannelTitle": "静音频道",

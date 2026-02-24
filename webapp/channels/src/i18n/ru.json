@@ -3223,8 +3223,6 @@
   "channel_notifications.ignoreMentionsDesc": "Когда включено, @channel, @here и @all не вызывают упоминания или уведомления об упоминаниях на этом канале",
   "channel_notifications.ignoreMentionsTitle": "Игнорировать упоминания для @channel, @here и @all",
   "channel_notifications.levels.all": "Все",
-  "channel_notifications.mobileNotificationsDesc": "Уведомления отправляются на ваше мобильное устройство, когда в Стройчат есть активность.",
-  "channel_notifications.mobileNotificationsTitle": "Уведомления на мобильное устройство",
   "channel_notifications.muteAndIgnore": "Отключить звук или игнорировать",
   "channel_notifications.muteChannelDesc": "Отключает уведомления для этого канала. Вы по-прежнему будете видеть значки, если вас упомянут.",
   "channel_notifications.muteChannelTitle": "Отключить уведомления",
