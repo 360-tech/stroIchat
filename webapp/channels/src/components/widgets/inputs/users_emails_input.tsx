@@ -530,6 +530,14 @@ export class UsersEmailsInput extends React.PureComponent<Props, State> {
                     textAlign: 'left',
                 },
             }),
+            menuPortal: (provided) => ({
+                ...provided,
+                zIndex: 1060,
+            }),
+            menuList: (provided) => ({
+                ...provided,
+                padding: 0,
+            }),
         } satisfies StylesConfig<UserProfile | EmailInvite, true >;
 
         return (
@@ -566,6 +574,8 @@ export class UsersEmailsInput extends React.PureComponent<Props, State> {
                     aria-label={this.props.ariaLabel}
                     autoFocus={this.props.autoFocus}
                     styles={styles}
+                    menuPortalTarget={document.body}
+                    menuPosition='fixed'
                 />
                 {this.props.showError && (
                     <div className='InputErrorBox'>

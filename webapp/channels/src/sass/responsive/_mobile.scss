@@ -1605,12 +1605,9 @@
     .app__body {
         &.announcement-bar--fixed {
             .modal {
-                padding-top: calc(var(--announcement-bar-count, 1) * #{variables.$announcement-bar-height});
-
-                @media screen and (max-width: 768px) {
-                    padding-top: 0;
+                // padding-top: calc(var(--announcement-bar-count, 1) * #{variables.$announcement-bar-height});
+                padding-top: 0;
                     
-                }
             }
         }
 
