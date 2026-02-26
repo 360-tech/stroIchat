@@ -18,13 +18,9 @@ export const getListing = createSelector(
     getPlugins,
     getApps,
     (plugins, apps) => {
-        // if (plugins) {
-        //     return (plugins as Array<MarketplacePlugin | MarketplaceApp>).concat(apps);
-        // }
-
-        // return apps;
-
-        return [];
+        const pluginList = (plugins ?? []) as Array<MarketplacePlugin | MarketplaceApp>;
+        const appList = apps ?? [];
+        return pluginList.concat(appList);
     },
 );
 
