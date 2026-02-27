@@ -39,11 +39,6 @@ describe('Collapsed Reply Threads', () => {
                 category: 'crt_thread_pane_step',
                 name: user.id,
                 value: '0',
-            }, {
-                user_id: user.id,
-                category: 'crt_tutorial_triggered',
-                name: user.id,
-                value: '0',
             }], user.id);
 
             cy.apiCreateUser({prefix: 'other'}).then(({user: user1}) => {
@@ -94,26 +89,10 @@ describe('Collapsed Reply Threads', () => {
         cy.get('#rhsContainer').find('.FollowButton').click();
         cy.postMessageAs({sender: otherUser, message: 'other reply!', channelId: testChannel.id, rootId: rootPost.id});
 
-        // * Verify green pulsing dot on global threads
-        cy.get('#sidebar-threads-button').find('[data-testid="pulsating_dot"]').should('be.visible');
-
         // # Click on global Threads sidebar item
         cy.uiGetSidebarItem('threads').click();
 
-        // * Verify "A new way to view and follow thread" modal is present
-        cy.get('#collapsed_reply_threads_modal').should('be.visible').as('crtModal');
-        cy.get('@crtModal').findByText('A new way to view and follow threads').should('be.visible');
-
-        // * Verify "Take the Tour" button is present
-        cy.get('@crtModal').findByText('Take the Tour').should('be.visible');
-
-        // * Verify "Skip Tour" button is present
-        cy.get('@crtModal').findByText('Skip Tour').should('be.visible');
-
-        // # Click on Take the tour button
-        cy.get('@crtModal').findByText('Take the Tour').click();
-
-        // * Verify "Welcome to the Threads view!" tour tip
+        // * Verify \"Welcome to the Threads view!\" tour tip appears when opening Threads
         cy.get('[data-testid="current_tutorial_tip"]').findByText('Welcome to the Threads view!').should('be.visible');
 
         // * Verify Next button is present
@@ -210,45 +189,12 @@ describe('Collapsed Reply Threads', () => {
         cy.get('#rhsContainer').find('.FollowButton').click();
         cy.postMessageAs({sender: otherUser, message: 'other reply!', channelId: testChannel.id, rootId: rootPost.id});
 
-        // * Verify green pulsing dot on global threads
-        cy.get('#sidebar-threads-button').find('[data-testid="pulsating_dot"]').should('be.visible');
-
         // # Click on global Threads sidebar item
         cy.uiGetSidebarItem('threads').click();
 
-        // * Verify "A new way to view and follow thread" modal is present
-        cy.get('#collapsed_reply_threads_modal').should('be.visible').within(() => {
-            cy.findByText('A new way to view and follow threads').should('be.visible');
-
-            // * Verify "Take the Tour" button is present
-            cy.findByText('Take the Tour').should('be.visible');
-
-            // * Verify "Skip Tour" button is present
-            cy.findByText('Skip Tour').should('be.visible');
-
-            // # Click on "x" button to dismiss the tour point
-            cy.get('.close').click();
-        });
-
-        // * Verify tutorial modal is dismissed
-        cy.get('[data-testid="current_tutorial_tip"]').should('not.exist');
-
-        // * Verify green dot is still present
-        cy.get('#sidebar-threads-button').find('[data-testid="pulsating_dot"]').should('be.visible');
-
-        // # Click on global Threads sidebar item
-        cy.uiGetSidebarItem('threads').click();
-
-        // # Click on "Skip tour" button
-        cy.get('#collapsed_reply_threads_modal').should('be.visible').findByText('Skip Tour').click();
-
-        // * Verify modal is dismissed and tour is no longer available
-        cy.get('[data-testid="current_tutorial_tip"]').should('not.exist');
-        cy.get('[data-testid="threads_list"]').find('#tipButton').should('not.exist');
-        cy.get('#threads-list-unread-button').find('#tipButton').should('not.exist');
-
-        // * Verify no pulsing green dot on global threads item
-        cy.get('#sidebar-threads-button').find('[data-testid="pulsating_dot"]').should('not.exist');
+        // * Verify that tour can be skipped from the first tip
+        cy.get('[data-testid="current_tutorial_tip"]').findByText('Welcome to the Threads view!').should('be.visible');
+        cy.get('[data-testid="close_tutorial_tip"]').click();
     });
 
     it('MM-T4695 CRT - cancel any tour point by using x', () => {
