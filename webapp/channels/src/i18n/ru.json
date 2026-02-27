@@ -11,7 +11,7 @@
   "about.serverHostname": "Имя сервера:",
   "about.serverUnknown": "сервер не предоставил имя хоста",
   "about.serverVersion": "Версия сервера:",
-  "about.teamEditionSt": "Вся коммуникация в одном месте: с привязкой к объектам, универсальным поиском и доступом для подрядчиков.",
+  "about.teamEditionSt": "Все коммуникации в одном месте: с привязкой к объектам, универсальным поиском и доступом для подрядчиков.",
   "about.title": "О {appTitle}",
   "access_history.title": "История активности",
   "accessibility.button.attachment": "вложение",
