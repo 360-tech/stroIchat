@@ -67,6 +67,7 @@ export type CommandArgs = {
     channel_id: string;
     team_id?: string;
     root_id?: string;
+    file_ids?: string[];
 }
 
 export type DialogArgs = {

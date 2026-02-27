@@ -232,7 +232,7 @@ const (
 
 	PluginSettingsDefaultDirectory         = "./plugins"
 	PluginSettingsDefaultClientDirectory   = "./client/plugins"
-	PluginSettingsDefaultEnableMarketplace = false
+	PluginSettingsDefaultEnableMarketplace = true
 	PluginSettingsDefaultMarketplaceURL    = "https://api.integrations.mattermost.com"
 	PluginSettingsOldMarketplaceURL        = "https://marketplace.integrations.mattermost.com"
 

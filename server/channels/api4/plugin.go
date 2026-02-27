@@ -305,8 +305,20 @@ func getMarketplacePlugins(c *Context, w http.ResponseWriter, r *http.Request) {
 
 	plugins, appErr := c.App.GetMarketplacePlugins(c.AppContext, filter)
 	if appErr != nil {
-		c.Err = appErr
-		return
+		// On remote marketplace timeout/unreachable, retry with LocalOnly so we still
+		// return prepackaged and local plugins instead of 500 or empty list.
+		if appErr.Id == "app.plugin.marketplace_client.failed_to_fetch" {
+			localFilter := *filter
+			localFilter.LocalOnly = true
+			plugins, appErr = c.App.GetMarketplacePlugins(c.AppContext, &localFilter)
+			if appErr != nil {
+				c.Err = appErr
+				return
+			}
+		} else {
+			c.Err = appErr
+			return
+		}
 	}
 
 	json, err := json.Marshal(plugins)

@@ -300,13 +300,24 @@ endif
 plugin-checker:
 	$(GO) run $(GOFLAGS) ./public/plugin/checker
 
-prepackaged-plugins: ## Populate the prepackaged-plugins directory.
+prepackaged-plugins: build-safety-compliance-plugin ## Populate the prepackaged-plugins directory.
 	@echo Downloading prepackaged plugins: $(PLUGIN_PACKAGES)
 	mkdir -p prepackaged_plugins
 	@cd prepackaged_plugins && for plugin_package in $(PLUGIN_PACKAGES) ; do \
 		curl -f -O -L https://plugins.releases.mattermost.com/release/$$plugin_package.tar.gz; \
 		curl -f -O -L https://plugins.releases.mattermost.com/release/$$plugin_package.tar.gz.sig; \
 	done
+
+build-safety-compliance-plugin: ## Build Safety and Compliance plugin and copy to prepackaged_plugins
+	@echo Building Safety Compliance plugin
+	@if [ -d "$(ROOT)../plugins/safety-compliance" ]; then \
+		$(MAKE) -C $(ROOT)../plugins/safety-compliance dist && \
+		mkdir -p prepackaged_plugins && \
+		cp $(ROOT)../plugins/safety-compliance/dist/com.company.safety-compliance-*.tar.gz prepackaged_plugins/ 2>/dev/null || true; \
+		echo "Safety Compliance plugin copied to prepackaged_plugins"; \
+	else \
+		echo "Safety Compliance plugin source not found at plugins/safety-compliance, skipping"; \
+	fi
 
 prepackaged-binaries: ## Populate the prepackaged-binaries to the bin directory
 ifeq ($(shell test -f bin/mmctl && printf "yes"),yes)
@@ -587,7 +598,7 @@ validate-go-version: ## Validates the installed version of go against Mattermost
 build-templates: ## Compile all mjml email templates
 	cd $(TEMPLATES_DIR) && $(MAKE) build
 
-run-server: setup-go-work prepackaged-binaries validate-go-version start-docker client ## Starts the server.
+run-server: setup-go-work prepackaged-binaries build-safety-compliance-plugin validate-go-version start-docker client ## Starts the server.
 	@echo Running mattermost for development
 ifeq ($(MM_USE_PGVECTOR),true)
 	@echo With pgvector PostgreSQL support enabled

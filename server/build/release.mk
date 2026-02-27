@@ -195,6 +195,12 @@ package-plugins: fetch-prepackaged-plugins
 	@# Create needed directories
 	mkdir -p $(DIST_PATH_GENERIC)/prepackaged_plugins
 
+	@# Build and copy Safety & Compliance plugin (internal fork plugin, no signature required)
+	@if [ -d "$(ROOT)../plugins/safety-compliance" ]; then \
+		$(MAKE) -C $(ROOT)../plugins/safety-compliance dist && \
+		cp $(ROOT)../plugins/safety-compliance/dist/com.company.safety-compliance-*.tar.gz $(DIST_PATH_GENERIC)/prepackaged_plugins/ 2>/dev/null || true; \
+	fi
+
 	@# Prepackage plugins
 	@for plugin_package in $(PLUGIN_PACKAGES) ; do \
 		ARCH=$(PLUGIN_ARCH); \

@@ -15,6 +15,7 @@ type CommandArgs struct {
 	ParentId        string             `json:"parent_id"`
 	TriggerId       string             `json:"trigger_id,omitempty"`
 	Command         string             `json:"command"`
+	FileIds         StringArray        `json:"file_ids,omitempty"`
 	SiteURL         string             `json:"-"`
 	T               i18n.TranslateFunc `json:"-"`
 	UserMentions    UserMentionMap     `json:"-"`

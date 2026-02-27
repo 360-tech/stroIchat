@@ -36,6 +36,7 @@ import {
     fetchChannelsAndMembers,
 } from 'mattermost-redux/actions/channels';
 import {clearErrors, logError} from 'mattermost-redux/actions/errors';
+import {getMissingFilesByPosts} from 'mattermost-redux/actions/files';
 import {setServerVersion, getClientConfig, getCustomProfileAttributeFields} from 'mattermost-redux/actions/general';
 import {getGroup as fetchGroup} from 'mattermost-redux/actions/groups';
 import {getServerLimits} from 'mattermost-redux/actions/limits';
@@ -721,6 +722,7 @@ export function handleNewPostEvent(msg) {
 
         myDispatch(handleNewPost(post, msg));
         myDispatch(batchFetchStatusesProfilesGroupsFromPosts([post]));
+        myDispatch(getMissingFilesByPosts([post]));
 
         // Since status updates aren't real time, assume another user is online if they have posted and:
         // 1. The user hasn't set their status manually to something that isn't online
@@ -763,6 +765,7 @@ export function handleNewPostEvents(queue) {
         // Load the posts' threads
         myDispatch(getPostThreads(posts));
         myDispatch(batchFetchStatusesProfilesGroupsFromPosts(posts));
+        myDispatch(getMissingFilesByPosts(posts));
 
         // Update sidebar and counts for each post (same logic as handleNewPost / completePostReceive)
         const currentChannelId = getCurrentChannelId(myGetState());
