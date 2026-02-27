@@ -36,7 +36,7 @@
             justify-content: center;
 
             .signup-body-no-login-title {
-                --title-color-indigo-500: var(--center-channel-color);
+                --title-color-indigo-500: var(--title-color-black);
                 color: var(--title-color-indigo-500);
                 font-family: Unbounded;
                 font-size: 40px;
@@ -70,6 +70,7 @@
             align-self: flex-start;
 
             .signup-body-message-title {
+                --title-color-indigo-500: var(--title-color-black);
                 padding-right: 60px;
                 color: var(--title-color-indigo-500);
                 font-family: Unbounded;
