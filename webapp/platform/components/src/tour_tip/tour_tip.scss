@@ -7,7 +7,7 @@ $z-index-tour-tips-backdrop: 1250;
         &.tippy-box {
             padding: 18px 24px 24px;
             border: 1px solid rgba(var(--center-channel-color-rgb), 0.16);
-            background: var(--button-bg);
+            background-color: var(--stroichat-color-primary);
             border-radius: var(--radius-s);
             color: var(--button-color);
             filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.12));
@@ -28,7 +28,8 @@ $z-index-tour-tips-backdrop: 1250;
             .tippy-arrow {
                 width: 12px;
                 height: 12px;
-                border-color: rgba(var(--center-channel-color-rgb), 0.16);
+                // border-color: rgba(var(--center-channel-color-rgb), 0.16);
+                border-color: var(--stroichat-color-primary);
                 color: var(--center-channel-bg);
                 color: var(--center-channel-bg);
             }
@@ -36,8 +37,10 @@ $z-index-tour-tips-backdrop: 1250;
             .tippy-arrow::before {
                 width: 12px;
                 height: 12px;
-                border-color: rgba(var(--center-channel-color-rgb), 0.16);
-                background: var(--button-bg);
+                // border-color: rgba(var(--center-channel-color-rgb), 0.16);
+                border-color: var(--stroichat-color-primary);
+                // background: var(--button-bg);
+                background-color: var(--stroichat-color-primary);
                 color: var(--button-color);
                 transform-origin: center;
             }
@@ -223,14 +226,12 @@ $z-index-tour-tips-backdrop: 1250;
     }
 
     &__header {
-        display: flex;
-        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: baseline;
         justify-content: flex-start;
 
         &__title {
-            flex: none;
-            flex-grow: 1;
-            order: 0;
             margin: 0;
             font-family: inherit;
             font-size: 1.4rem;
