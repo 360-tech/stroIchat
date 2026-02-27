@@ -13,11 +13,8 @@ import {setThreadFollow} from 'mattermost-redux/actions/threads';
 import {makeGetChannel} from 'mattermost-redux/selectors/entities/channels';
 import {getPost, makeGetPostsForThread} from 'mattermost-redux/selectors/entities/posts';
 
-import PopoutButton from 'components/popout_button';
 import Header from 'components/widgets/header';
 import WithTooltip from 'components/with_tooltip';
-
-import {popoutThread} from 'utils/popouts/popout_windows';
 
 import type {GlobalState} from 'types/store';
 
@@ -44,9 +41,6 @@ const ThreadPane = ({
     const {formatMessage} = intl;
     const dispatch = useDispatch();
     const {
-        params: {
-            team,
-        },
         currentTeamId,
         currentUserId,
         goToInChannel,
@@ -80,10 +74,6 @@ const ThreadPane = ({
     const followHandler = useCallback(() => {
         dispatch(setThreadFollow(currentUserId, currentTeamId, threadId, !isFollowing));
     }, [dispatch, currentUserId, currentTeamId, threadId, isFollowing]);
-
-    const popout = useCallback(() => {
-        popoutThread(intl, threadId, team);
-    }, [threadId, team, intl]);
 
     return (
         <div
@@ -123,7 +113,6 @@ const ThreadPane = ({
                             isFollowing={isFollowing}
                             onClick={followHandler}
                         />
-                        <PopoutButton onClick={popout}/>
                         <ThreadMenu
                             threadId={threadId}
                             isFollowing={isFollowing}
