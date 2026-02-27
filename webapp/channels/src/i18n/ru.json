@@ -5094,7 +5094,7 @@
   "signup_user_completed.return": "Вернуться к входу в систему",
   "signup_user_completed.saving": "Создание учетной записи…",
   "signup_user_completed.signIn": "Войти",
-  "signup_user_completed.subtitle": "Создайте свой аккаунт Стройчат, чтобы начать сотрудничать с командой",
+  "signup_user_completed.subtitle": "Создайте учетную запись, чтобы начать работу вашей организации в Стройчате",
   "signup_user_completed.title": "Давайте начнем",
   "signup_user_completed.userHelp": "Вы можете использовать строчные буквы, цифры, точки, тире и подчеркивания.",
   "signup_user_completed.usernameLength": "Имена пользователей должны начинаться со строчной буквы и иметь длину {min}-{max} символов. Вы можете использовать строчные буквы, цифры, точки, тире и подчеркивания.",
