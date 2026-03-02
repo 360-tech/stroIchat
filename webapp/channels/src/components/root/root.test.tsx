@@ -64,7 +64,6 @@ describe('components/Root', () => {
         rhsState: null,
         shouldShowAppBar: false,
         isCloud: false,
-        enableDesktopLandingPage: true,
         actions: {
             loadConfigAndMe: jest.fn().mockImplementation(() => {
                 return Promise.resolve({
@@ -235,59 +234,6 @@ describe('components/Root', () => {
         });
     });
 
-    describe('showLandingPageIfNecessary', () => {
-        const landingProps = {
-            ...baseProps,
-            iosDownloadLink: 'http://iosapp.com',
-            androidDownloadLink: 'http://androidapp.com',
-            appDownloadLink: 'http://desktopapp.com',
-            ...{
-                location: {
-                    pathname: '/',
-                    search: '',
-                },
-            } as RouteComponentProps,
-        };
-
-        test('should show for normal cases', async () => {
-            renderWithContext(<Root {...landingProps}/>);
-
-            await waitFor(() => {
-                expect(landingProps.history.push).toHaveBeenCalledWith('/landing#/');
-            });
-        });
-
-        test('should not show for Desktop App login flow', async () => {
-            const props = {
-                ...landingProps,
-                ...{
-                    location: {
-                        pathname: '/login/desktop',
-                    },
-                } as RouteComponentProps,
-            };
-
-            renderWithContext(<Root {...props}/>);
-
-            await waitFor(() => {
-                expect(props.history.push).not.toHaveBeenCalled();
-            });
-        });
-
-        test('should not show when disabled', async () => {
-            const props = {
-                ...landingProps,
-                enableDesktopLandingPage: false,
-            };
-
-            renderWithContext(<Root {...props}/>);
-
-            await waitFor(() => {
-                expect(props.history.push).not.toHaveBeenCalled();
-            });
-        });
-    });
-
     describe('applyTheme', () => {
         test('should apply theme initially and on change', async () => {
             const props = {
@@ -367,7 +313,6 @@ describe('doesRouteBelongToTeamControllerRoutes', () => {
         expect(doesRouteBelongToTeamControllerRoutes('/oauth/authorize')).toBe(false);
         expect(doesRouteBelongToTeamControllerRoutes('/select_team')).toBe(false);
         expect(doesRouteBelongToTeamControllerRoutes('/admin_console')).toBe(false);
-        expect(doesRouteBelongToTeamControllerRoutes('/landing')).toBe(false);
         expect(doesRouteBelongToTeamControllerRoutes('/terms_of_service')).toBe(false);
         expect(doesRouteBelongToTeamControllerRoutes('/claim')).toBe(false);
         expect(doesRouteBelongToTeamControllerRoutes('/do_verify_email')).toBe(false);

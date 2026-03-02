@@ -789,7 +789,7 @@ func TestGetNotificationEmailBodyPublicChannelMention(t *testing.T) {
 
 	sender := buildTestUser("test-sender-id", "user1", "user1", true)
 	team := buildTestTeam("test-team-id", "testteam", "testteam")
-	teamURL := th.App.GetSiteURL() + "/landing#" + "/testteam"
+	teamURL := th.App.GetSiteURL() + "/testteam"
 
 	storeMock := th.App.Srv().Store().(*mocks.Store)
 	teamStoreMock := mocks.TeamStore{}
@@ -848,7 +848,7 @@ func TestGetNotificationEmailBodyMultiPublicChannelMention(t *testing.T) {
 		Message: message,
 	}
 
-	teamURL := th.App.GetSiteURL() + "/landing#" + "/testteam"
+	teamURL := th.App.GetSiteURL() + "/testteam"
 
 	storeMock := th.App.Srv().Store().(*mocks.Store)
 	teamStoreMock := mocks.TeamStore{}
@@ -1075,7 +1075,7 @@ func TestLandingLink(t *testing.T) {
 	}
 	sender := buildTestUser("test-sender-id", "sender", "sender", true)
 	team := buildTestTeam("test-team-id", "testteam", "testteam")
-	teamURL := "http://localhost:8065/landing#/testteam"
+	teamURL := "http://localhost:8065/testteam"
 
 	storeMock := th.App.Srv().Store().(*mocks.Store)
 	teamStoreMock := mocks.TeamStore{}

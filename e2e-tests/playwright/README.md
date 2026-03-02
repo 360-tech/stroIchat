@@ -127,17 +127,17 @@ Example:
 
 ```typescript
 /**
- * @objective Capture visual snapshot of the landing/login page
+ * @objective Capture visual snapshot of the login page
  */
 test(
-    'displays landing page with login options',
-    {tag: ['@visual', '@landing_page']},
+    'displays login page',
+    {tag: ['@visual', '@login_page']},
     async ({pw, page, browserName, viewport}, testInfo) => {
-        // # Go to landing login page
-        await pw.landingLoginPage.goto();
-        await pw.landingLoginPage.toBeVisible();
+        // # Go to login page
+        await pw.loginPage.goto();
+        await pw.loginPage.toBeVisible();
 
-        // * Verify landing page appears as expected
+        // * Verify login page appears as expected
         await pw.matchSnapshot(testInfo, {page, browserName, viewport});
     },
 );

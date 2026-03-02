@@ -77,7 +77,6 @@ describe('cleanLocalStorage', () => {
         const keys = [
             'theme',
             'was_logged_in',
-            '__landingPageSeen__',
             'emoji-mart.frequently',
         ];
 

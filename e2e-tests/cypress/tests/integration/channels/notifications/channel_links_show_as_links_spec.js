@@ -75,7 +75,7 @@ describe('Notifications', () => {
         const baseUrl = Cypress.config('baseUrl');
         const message = {
             orig: `This is a message in ~${testChannel.name} channel for @${receiver.username} `,
-            emailLinked: `This is a message in ~${testChannel.name} ( ${baseUrl}/landing#/${testTeam.name}/channels/${testChannel.name} ) channel for @${receiver.username}`,
+            emailLinked: `This is a message in ~${testChannel.name} ( ${baseUrl}/${testTeam.name}/channels/${testChannel.name} ) channel for @${receiver.username}`,
             posted: `This is a message in ~${testChannel.display_name} channel for @${receiver.username} `,
         };
 

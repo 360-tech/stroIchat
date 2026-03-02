@@ -4,9 +4,6 @@
 import {expect, test} from '@mattermost/playwright-lib';
 
 test('/reset_password accessibility quick check', async ({pw, axe}) => {
-    // Set up the page not to redirect to the landing page
-    await pw.hasSeenLandingPage();
-
     // # Go to reset password page
     await pw.resetPasswordPage.goto();
     await pw.resetPasswordPage.toBeVisible();
@@ -21,9 +18,6 @@ test('/reset_password accessibility quick check', async ({pw, axe}) => {
 });
 
 test('/reset_password accessibility tab support', async ({pw}) => {
-    // Set up the page not to redirect to the landing page
-    await pw.hasSeenLandingPage();
-
     // # Go to reset password page
     await pw.resetPasswordPage.goto();
     await pw.resetPasswordPage.toBeVisible();

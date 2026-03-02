@@ -4,9 +4,6 @@
 import {expect, test} from '@mattermost/playwright-lib';
 
 test('/login accessibility quick check', async ({pw, axe}) => {
-    // Set up the page not to redirect to the landing page
-    await pw.hasSeenLandingPage();
-
     // # Go to login page
     await pw.loginPage.goto();
     await pw.loginPage.toBeVisible();
@@ -19,9 +16,6 @@ test('/login accessibility quick check', async ({pw, axe}) => {
 });
 
 test('/login accessibility tab support', async ({pw}) => {
-    // Set up the page not to redirect to the landing page
-    await pw.hasSeenLandingPage();
-
     // # Go to login page
     await pw.loginPage.goto();
     await pw.loginPage.toBeVisible();

@@ -768,18 +768,11 @@ export const StoragePrefixes = {
     LOGOUT: '__logout__',
     LOGIN: '__login__',
     ANNOUNCEMENT: '__announcement__',
-    LANDING_PAGE_SEEN: '__landingPageSeen__',
-    LANDING_PREFERENCE: '__landing-preference__',
     CHANNEL_CATEGORY_COLLAPSED: 'channelCategoryCollapsed_',
     INLINE_IMAGE_VISIBLE: 'isInlineImageVisible_',
     DELINQUENCY: 'delinquency_',
     HIDE_JOINED_CHANNELS: 'hideJoinedChannels',
     HIDE_NOTIFICATION_PERMISSION_REQUEST_BANNER: 'hideNotificationPermissionRequestBanner',
-};
-
-export const LandingPreferenceTypes = {
-    MATTERMOSTAPP: 'mattermostapp',
-    BROWSER: 'browser',
 };
 
 export const ErrorPageTypes = {
