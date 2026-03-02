@@ -8,13 +8,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import type {ClientConfig} from '@mattermost/types/config';
 
 import Logo from 'components/common/svg_images_components/logo_dark_blue_svg';
-import CopyButton from 'components/copy_button';
 import Nbsp from 'components/html_entities/nbsp';
-
-type SocketStatus = {
-    connected: boolean;
-    serverHostname: string | undefined;
-}
 
 type Props = {
 
@@ -27,8 +21,6 @@ type Props = {
      * Global config object
      */
     config: Partial<ClientConfig>;
-
-    socketStatus: SocketStatus;
 };
 
 export default function AboutBuildModal(props: Props) {
@@ -48,82 +40,6 @@ export default function AboutBuildModal(props: Props) {
             defaultMessage='All your team communication in one place, instantly searchable and accessible anywhere.'
         />
     );
-
-    const getServerVersionString = () => {
-        return intl.formatMessage(
-            {id: 'about.serverVersion', defaultMessage: 'Server Version:'},
-        ) + '\u00a0' + (config.BuildNumber === 'dev' ? config.BuildNumber : config.Version);
-    };
-
-    const getDbVersionString = () => {
-        return intl.formatMessage(
-            {id: 'about.dbversion', defaultMessage: 'Database Schema Version:'},
-        ) + '\u00a0' + config.SchemaVersion;
-    };
-
-    const getBuildNumberString = () => {
-        return intl.formatMessage(
-            {id: 'about.buildnumber', defaultMessage: 'Build Number:'},
-        ) + '\u00a0' + (config.BuildNumber === 'dev' ? 'n/a' : config.BuildNumber);
-    };
-
-    const getDatabaseString = () => {
-        return intl.formatMessage(
-            {id: 'about.database', defaultMessage: 'Database:'},
-        ) + '\u00a0' + config.SQLDriverName;
-    };
-
-    const versionInfo = () => {
-        const parts = [
-            getServerVersionString(),
-            getDbVersionString(),
-            getBuildNumberString(),
-            getDatabaseString(),
-        ].filter(Boolean);
-        return parts.join('\n');
-    };
-
-    let serverHostname;
-    if (!props.socketStatus.connected) {
-        serverHostname = (
-            <div>
-                <FormattedMessage
-                    id='about.serverHostname'
-                    defaultMessage='Hostname:'
-                />
-                <Nbsp/>
-                <FormattedMessage
-                    id='about.serverDisconnected'
-                    defaultMessage='disconnected'
-                />
-            </div>
-        );
-    } else if (props.socketStatus.serverHostname) {
-        serverHostname = (
-            <div>
-                <FormattedMessage
-                    id='about.serverHostname'
-                    defaultMessage='Hostname:'
-                />
-                <Nbsp/>
-                {props.socketStatus.serverHostname}
-            </div>
-        );
-    } else {
-        serverHostname = (
-            <div>
-                <FormattedMessage
-                    id='about.serverHostname'
-                    defaultMessage='Hostname:'
-                />
-                <Nbsp/>
-                <FormattedMessage
-                    id='about.serverUnknown'
-                    defaultMessage='server did not provide hostname'
-                />
-            </div>
-        );
-    }
 
     const siteName = config.SiteName || 'Стройчат';
 
@@ -165,21 +81,26 @@ export default function AboutBuildModal(props: Props) {
                             {subTitle}
                         </p>
                         <div className='form-group less'>
-                            <div
-                                className='about-modal__version-info'
-                                data-testid='aboutModalVersionInfo'
-                            >
-                                {getServerVersionString()}<br/>
-                                {getDbVersionString()}<br/>
-                                {getBuildNumberString()}<br/>
-                                {getDatabaseString()}<br/>
-                                <CopyButton
-                                    className='about-modal__version-info-copy-button'
-                                    isForText={true}
-                                    content={versionInfo()}
-                                />
+                            <div>
+                                <span>{intl.formatMessage(
+                                    {id: 'about.reportBug', defaultMessage: 'Report Bug'},
+                                )}{': '}</span>
+                                <span>
+                                    <a href='mailto:k@360tech.pro'>
+                                        {'k@360tech.pro'}
+                                    </a>
+                                </span>
                             </div>
-                            {serverHostname}
+                            <div>
+                                <span>{intl.formatMessage(
+                                    {id: 'about.termsOfUse', defaultMessage: 'Terms of Use'},
+                                )}{': '}</span>
+                                <span>
+                                    <a href='https://360tech.pro' target='_blank' rel='noopener noreferrer'>
+                                        {'360tech.pro'}
+                                    </a>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
