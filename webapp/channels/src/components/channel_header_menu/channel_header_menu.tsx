@@ -36,6 +36,7 @@ import ChannelPublicPrivateMenu from './channel_header_menu_items/channel_header
 import ChannelHeaderTitleDirect from '../channel_header/channel_header_title_direct';
 import ChannelHeaderTitleGroup from '../channel_header/channel_header_title_group';
 import {usePluginVisibilityInSharedChannel} from '../common/hooks/usePluginVisibilityInSharedChannel';
+import './channel_header_menu.scss';
 
 type Props = {
     dmUser?: UserProfile;
@@ -129,7 +130,7 @@ export default function ChannelHeaderMenu({dmUser, gmMembers, isMobile, archived
                         {sharedIcon}
                         <ChevronDownIcon
                             size={16}
-                            className='mt-1'
+                            className='channel-header-menu-icon'
                         />
                     </>
                 ),

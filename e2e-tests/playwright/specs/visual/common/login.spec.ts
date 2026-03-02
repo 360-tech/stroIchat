@@ -10,9 +10,6 @@ test(
     'login page visual check',
     {tag: ['@visual', '@login_page', '@snapshots']},
     async ({pw, page, browserName, viewport}, testInfo) => {
-        // # Set up the page not to redirect to the landing page
-        await pw.hasSeenLandingPage();
-
         // # Go to login page
         const {adminClient} = await pw.getAdminClient();
         await pw.loginPage.goto();

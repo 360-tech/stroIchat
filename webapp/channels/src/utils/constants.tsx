@@ -80,7 +80,6 @@ export const Preferences = {
     CATEGORY_ADVANCED_SETTINGS: 'advanced_settings',
     TUTORIAL_STEP: 'tutorial_step',
     TUTORIAL_STEP_AUTO_TOUR_STATUS: 'tutorial_step_auto_tour_status',
-    CRT_TUTORIAL_TRIGGERED: 'crt_tutorial_triggered',
     CRT_TUTORIAL_AUTO_TOUR_STATUS: 'crt_tutorial_auto_tour_status',
     CRT_TUTORIAL_STEP: 'crt_tutorial_step',
     EXPLORE_OTHER_TOOLS_TUTORIAL_STEP: 'explore_other_tools_step',
@@ -633,12 +632,6 @@ export const CrtTutorialSteps = {
     FINISHED: 999,
 };
 
-export const CrtTutorialTriggerSteps = {
-    START: 0,
-    STARTED: 1,
-    FINISHED: 999,
-};
-
 export const CrtThreadPaneSteps = {
     THREADS_PANE_POPOVER: 0,
     FINISHED: 999,
@@ -775,18 +768,11 @@ export const StoragePrefixes = {
     LOGOUT: '__logout__',
     LOGIN: '__login__',
     ANNOUNCEMENT: '__announcement__',
-    LANDING_PAGE_SEEN: '__landingPageSeen__',
-    LANDING_PREFERENCE: '__landing-preference__',
     CHANNEL_CATEGORY_COLLAPSED: 'channelCategoryCollapsed_',
     INLINE_IMAGE_VISIBLE: 'isInlineImageVisible_',
     DELINQUENCY: 'delinquency_',
     HIDE_JOINED_CHANNELS: 'hideJoinedChannels',
     HIDE_NOTIFICATION_PERMISSION_REQUEST_BANNER: 'hideNotificationPermissionRequestBanner',
-};
-
-export const LandingPreferenceTypes = {
-    MATTERMOSTAPP: 'mattermostapp',
-    BROWSER: 'browser',
 };
 
 export const ErrorPageTypes = {
@@ -1298,7 +1284,6 @@ export const Constants = {
     UserStatuses,
     TutorialSteps,
     CrtTutorialSteps,
-    CrtTutorialTriggerSteps,
     CrtThreadPaneSteps,
     PostTypes,
     ErrorPageTypes,

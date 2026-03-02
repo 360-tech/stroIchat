@@ -2,8 +2,8 @@
 // See LICENSE.txt for license information.
 
 import classNames from 'classnames';
-import React, {memo, forwardRef} from 'react';
-import type {HTMLAttributes, RefObject, SyntheticEvent} from 'react';
+import React, {memo, forwardRef, useState, useEffect} from 'react';
+import type {HTMLAttributes, RefObject} from 'react';
 import {useIntl} from 'react-intl';
 
 import {Client4} from 'mattermost-redux/client';
@@ -11,6 +11,8 @@ import {Client4} from 'mattermost-redux/client';
 import BotDefaultIcon from 'images/bot_default_icon.png';
 
 import './avatar.scss';
+
+const isURLForUser = (url: string) => url.startsWith(Client4.getUsersRoute());
 
 export type TAvatarSizeToken = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xl-custom-GM' | 'xl-custom-DM' | 'xxl' | 'inherit';
 
@@ -55,9 +57,6 @@ type Props = {
 
 type Attrs = HTMLAttributes<HTMLElement>;
 
-const isURLForUser = (url: string) => url.startsWith(Client4.getUsersRoute());
-const replaceURLWithDefaultImageURL = (url: string) => url.replace(/\?_=(\w+)/, '/default');
-
 const Avatar = forwardRef<HTMLElement, Props & Attrs>(({
     url,
     username,
@@ -67,6 +66,11 @@ const Avatar = forwardRef<HTMLElement, Props & Attrs>(({
     ...attrs
 }, ref) => {
     const {formatMessage} = useIntl();
+    const [imageLoadFailed, setImageLoadFailed] = useState(false);
+
+    useEffect(() => {
+        setImageLoadFailed(false);
+    }, [url]);
 
     const classes = classNames(`Avatar Avatar-${size}`, attrs.className);
 
@@ -81,12 +85,32 @@ const Avatar = forwardRef<HTMLElement, Props & Attrs>(({
         );
     }
 
-    function handleOnError(e: SyntheticEvent<HTMLImageElement, Event>) {
-        const fallbackSrc = (url && isURLForUser(url)) ? replaceURLWithDefaultImageURL(url) : BotDefaultIcon;
+    const handleOnError = () => {
+        setImageLoadFailed(true);
+    };
 
-        if (e.currentTarget.src !== fallbackSrc) {
-            e.currentTarget.src = fallbackSrc;
+    if (url && imageLoadFailed) {
+        if (isURLForUser(url)) {
+            const firstLetter = username ? username.charAt(0).toUpperCase() : '?';
+            return (
+                <div
+                    {...attrs}
+                    ref={ref as RefObject<HTMLDivElement>}
+                    className={classNames(classes, 'Avatar-plain')}
+                    data-content={firstLetter}
+                />
+            );
         }
+
+        return (
+            <img
+                {...attrs}
+                ref={ref as RefObject<HTMLImageElement>}
+                className={classes}
+                alt={alt ?? 'user'}
+                src={BotDefaultIcon}
+            />
+        );
     }
 
     return (

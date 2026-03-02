@@ -144,8 +144,8 @@ func (es *Service) prepareNotificationMessageForEmail(postMessage, teamName, sit
 		mdPostMessage = postMessage
 	}
 
-	landingURL := siteURL + "/landing#/" + teamName
-	normalizedPostMessage, err := es.GenerateHyperlinkForChannels(mdPostMessage, teamName, landingURL)
+	teamURL := siteURL + "/" + teamName
+	normalizedPostMessage, err := es.GenerateHyperlinkForChannels(mdPostMessage, teamName, teamURL)
 	if err != nil {
 		mlog.Warn("Encountered error while generating hyperlink for channels", mlog.String("team_name", teamName), mlog.Err(err))
 		normalizedPostMessage = mdPostMessage
@@ -153,7 +153,7 @@ func (es *Service) prepareNotificationMessageForEmail(postMessage, teamName, sit
 	return normalizedPostMessage
 }
 
-func (es *Service) GenerateHyperlinkForChannels(postMessage, teamName, landingURL string) (string, error) {
+func (es *Service) GenerateHyperlinkForChannels(postMessage, teamName, teamURL string) (string, error) {
 	channelNames := model.ChannelMentions(postMessage)
 	if len(channelNames) == 0 {
 		return postMessage, nil
@@ -173,7 +173,7 @@ func (es *Service) GenerateHyperlinkForChannels(postMessage, teamName, landingUR
 	visited := make(map[string]bool)
 	for _, ch := range channels {
 		if !visited[ch.Id] && ch.Type == model.ChannelTypeOpen {
-			channelURL := landingURL + "/channels/" + ch.Name
+			channelURL := teamURL + "/channels/" + ch.Name
 			channelHyperLink := fmt.Sprintf("<a href='%s'>%s</a>", channelURL, "~"+ch.Name)
 			postMessage = strings.Replace(postMessage, "~"+ch.Name, channelHyperLink, -1)
 			visited[ch.Id] = true

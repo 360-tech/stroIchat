@@ -12,7 +12,6 @@ import {setUrl} from 'mattermost-redux/actions/general';
 import {Client4} from 'mattermost-redux/client';
 
 import {temporarilySetPageLoadContext} from 'actions/telemetry_actions.jsx';
-import BrowserStore from 'stores/browser_store';
 
 import {makeAsyncComponent, makeAsyncPluggableComponent} from 'components/async_load';
 import GlobalHeader from 'components/global_header/global_header';
@@ -32,7 +31,6 @@ import {PageLoadContext, SCHEDULED_POST_URL_SUFFIX} from 'utils/constants';
 import {EmojiIndicesByAlias} from 'utils/emoji';
 import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
 import {getSiteURL} from 'utils/url';
-import {isAndroidWeb, isIosWeb} from 'utils/user_agent';
 import {applyTheme, isTextDroppableEvent} from 'utils/utils';
 
 import LuxonController from './luxon_controller';
@@ -55,7 +53,6 @@ const Signup = makeAsyncComponent('SignupController', lazy(() => import('compone
 const ShouldVerifyEmail = makeAsyncComponent('ShouldVerifyEmail', lazy(() => import('components/should_verify_email/should_verify_email')));
 const DoVerifyEmail = makeAsyncComponent('DoVerifyEmail', lazy(() => import('components/do_verify_email/do_verify_email')));
 const ClaimController = makeAsyncComponent('ClaimController', lazy(() => import('components/claim')));
-const LinkingLandingPage = makeAsyncComponent('LinkingLandingPage', lazy(() => import('components/linking_landing_page')));
 const AdminConsole = makeAsyncComponent('AdminConsole', lazy(() => import('components/admin_console')));
 const SelectTeam = makeAsyncComponent('SelectTeam', lazy(() => import('components/select_team')));
 const Authorize = makeAsyncComponent('Authorize', lazy(() => import('components/authorize')));
@@ -109,56 +106,8 @@ export default class Root extends React.PureComponent<Props, State> {
 
         this.props.actions.migrateRecentEmojis();
         this.props.actions.loadRecentlyUsedCustomEmojis();
-        this.showLandingPageIfNecessary();
 
         this.applyTheme();
-    };
-
-    private showLandingPageIfNecessary = () => {
-        return;
-
-        // Nothing to link to if we've removed the Android App download link
-        if (isAndroidWeb() && !this.props.androidDownloadLink) {
-            return;
-        }
-
-        // Nothing to link to if we've removed the iOS App download link
-        if (isIosWeb() && !this.props.iosDownloadLink) {
-            return;
-        }
-
-        // Nothing to link to if we've removed the Desktop App download link
-        if (!this.props.appDownloadLink) {
-            return;
-        }
-
-        // Only show the landing page once
-        if (BrowserStore.hasSeenLandingPage()) {
-            return;
-        }
-
-        // We don't want to show when resetting the password
-        if (this.props.location.pathname === '/reset_password_complete') {
-            return;
-        }
-
-        // We don't want to show when we're doing Desktop App external login
-        if (this.props.location.pathname === '/login/desktop') {
-            return;
-        }
-
-        // Stop this infinitely redirecting
-        if (this.props.location.pathname.includes('/landing')) {
-            return;
-        }
-
-        // // Disable for Rainforest tests
-        // if (window.location.hostname?.endsWith('.test.mattermost.com')) {
-        //     return;
-        // }
-
-        this.props.history.push('/landing#' + this.props.location.pathname + this.props.location.search);
-        BrowserStore.setLandingPageSeen(true);
     };
 
     applyTheme() {
@@ -337,10 +286,6 @@ export default class Root extends React.PureComponent<Props, State> {
                     <HFTRoute
                         path={'/claim'}
                         component={ClaimController}
-                    />
-                    <Route
-                        path={'/landing'}
-                        component={LinkingLandingPage}
                     />
                     {this.props.isDevModeEnabled && (
                         <Route

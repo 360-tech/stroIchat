@@ -48,7 +48,7 @@ export function getMentionEmailTemplate(sender, message, postId, siteName, teamN
         `@${sender} mentioned you in a message`,
         `While you were away, @${sender} mentioned you in the ${channelDisplayName} channel.`,
         '',
-        `Reply in Mattermost ( ${baseUrl}/landing#/${teamName}/pl/${postId} )`,
+        `Reply in Mattermost ( ${baseUrl}/${teamName}/pl/${postId} )`,
         '',
         `@${sender}`,
         '<skip-local-time-check>',

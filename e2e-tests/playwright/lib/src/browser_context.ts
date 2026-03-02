@@ -75,11 +75,6 @@ export async function loginByAPI(loginId: string, password: string, token = '', 
     const storageState = await requestContext.storageState({path: storagePath});
     await requestContext.dispose();
 
-    // Append origins to bypass seeing landing page then write to file
-    storageState.origins.push({
-        origin: testConfig.baseURL,
-        localStorage: [{name: '__landingPageSeen__', value: 'true'}],
-    });
     await writeFile(storagePath, JSON.stringify(storageState));
 
     return storagePath;
