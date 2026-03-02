@@ -4214,8 +4214,6 @@
   "marketplace_modal.tabs.all_listing": "All",
   "marketplace_modal.tabs.installed_listing": "Installed ({count})",
   "marketplace_modal.title": "App Marketplace",
-  "marketplace_modal.web_marketplace_link.desc": "Connect the tools you use most to Stroichat",
-  "marketplace_modal.web_marketplace_link.title": "Discover community integrations",
   "message_submit_error.invalidCommand": "Command with a trigger of ''{command}'' not found. ",
   "message_submit_error.sendAsMessageLink": "Click here to send as a message.",
   "mfa.confirm.complete": "Set up complete!",

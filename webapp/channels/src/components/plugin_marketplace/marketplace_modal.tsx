@@ -32,7 +32,6 @@ import {ModalIdentifiers} from 'utils/constants';
 import type {GlobalState} from 'types/store';
 
 import MarketplaceList, {ITEMS_PER_PAGE} from './marketplace_list/marketplace_list';
-import WebMarketplaceBanner from './web_marketplace_banner';
 
 import './marketplace_modal.scss';
 
@@ -201,7 +200,7 @@ const MarketplaceModal = () => {
             return null;
         }
 
-        return <WebMarketplaceBanner/>;
+        return null;
     };
 
     return (

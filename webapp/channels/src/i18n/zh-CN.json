@@ -4165,8 +4165,6 @@
   "marketplace_modal.tabs.all_listing": "全部",
   "marketplace_modal.tabs.installed_listing": "已安装（{count}）",
   "marketplace_modal.title": "应用市场",
-  "marketplace_modal.web_marketplace_link.desc": "连接您最常使用的工具到 stroichat",
-  "marketplace_modal.web_marketplace_link.title": "发现社区集成",
   "marketplace_modal_list.no_plugins_filter": "“{filter}”没有结果",
   "message_submit_error.invalidCommand": "未找到拥有触发“{command}”的命令。 ",
   "message_submit_error.sendAsMessageLink": "点击这里以消息发送。",

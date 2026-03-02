@@ -4218,8 +4218,6 @@
   "marketplace_modal.tabs.all_listing": "Все",
   "marketplace_modal.tabs.installed_listing": "Установлено ({count})",
   "marketplace_modal.title": "Магазин плагинов",
-  "marketplace_modal.web_marketplace_link.desc": "Подключите наиболее часто используемые инструменты к Стройчат",
-  "marketplace_modal.web_marketplace_link.title": "Откройте для себя интеграцию с сообществами",
   "message_submit_error.invalidCommand": "Команда с триггером ''{command}'' не найдена. ",
   "message_submit_error.sendAsMessageLink": "Нажмите здесь, чтобы отправить сообщение.",
   "mfa.confirm.complete": "Настройка завершена!",
