@@ -3973,8 +3973,6 @@
   "integrations.done": "Готово",
   "integrations.edit": "Изменить",
   "integrations.header": "Интеграции",
-  "integrations.help": "Посетите {appDirectory}, чтобы найти сторонние приложения и интеграции для Стройчат.",
-  "integrations.help.appDirectory": "Каталог приложений",
   "integrations.incomingWebhook.description": "Входящие вебхуки позволяют внешним приложениям отправлять сообщения",
   "integrations.incomingWebhook.title": "Входящие вебхуки",
   "integrations.oauthApps.description": "OAuth 2.0 позволяет внешним приложения делать авторизованные запросы к Стройчат API",

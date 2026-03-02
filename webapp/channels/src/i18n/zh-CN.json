@@ -3951,8 +3951,6 @@
   "integrations.done": "完成",
   "integrations.edit": "编辑",
   "integrations.header": "集成",
-  "integrations.help": "访问 {appDirectory} 为 stroichat 寻找自托管的第三方应用。",
-  "integrations.help.appDirectory": "应用目录",
   "integrations.incomingWebhook.description": "传入 webhook 允许外部集成发送消息",
   "integrations.incomingWebhook.title": "传入 Webhook",
   "integrations.oauthApps.description": "OAuth 2.0 允许外部应用向 stroichat API 发出已授权的请求",

@@ -23,8 +23,6 @@ import Menu from 'components/widgets/menu/menu';
 
 import {ModalIdentifiers} from 'utils/constants';
 
-import type {ModalData} from 'types/actions';
-
 import './product_menu_list.scss';
 
 export type Props = {
@@ -40,13 +38,9 @@ export type Props = {
     enableOutgoingWebhooks: boolean;
     canManageSystemBots: boolean;
     canManageIntegrations: boolean;
-    enablePluginMarketplace: boolean;
     showVisitSystemConsoleTour: boolean;
     onClick?: React.MouseEventHandler<HTMLElement>;
     handleVisitConsoleClick: React.MouseEventHandler<HTMLElement>;
-    actions: {
-        openModal: <P>(modalData: ModalData<P>) => void;
-    };
 };
 
 const ProductMenuList = (props: Props): JSX.Element | null => {
@@ -64,15 +58,12 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
         canManageSystemBots,
         canManageIntegrations,
 
-        enablePluginMarketplace,
         showVisitSystemConsoleTour,
         onClick,
         handleVisitConsoleClick,
         isMobile = false,
     } = props;
     const {formatMessage} = useIntl();
-
-    console.log({enablePluginMarketplace})
 
     if (!currentUser) {
         return null;
