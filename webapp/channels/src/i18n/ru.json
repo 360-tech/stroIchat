@@ -4987,7 +4987,7 @@
   "sidebar_left.sidebar_channel_menu.moveTo": "Перенести в...",
   "sidebar_left.sidebar_channel_menu.moveTo.dropdownAriaLabel": "Переход к подменю",
   "sidebar_left.sidebar_channel_menu.moveToNewCategory": "Новая категория",
-  "sidebar_left.sidebar_channel_menu.mute": "Выключить уведомления",
+  "sidebar_left.sidebar_channel_menu.mute": "Без уведомлений",
   "sidebar_left.sidebar_channel_menu.muteChannel": "Отключить уведомления",
   "sidebar_left.sidebar_channel_menu.unfavoriteChannel": "Удалить из избранного",
   "sidebar_left.sidebar_channel_menu.unmute": "Включить звук",
