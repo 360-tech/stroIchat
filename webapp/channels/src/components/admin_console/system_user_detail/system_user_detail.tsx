@@ -3,7 +3,6 @@
 
 /* eslint-disable max-lines */
 
-import classNames from 'classnames';
 import React, {PureComponent} from 'react';
 import type {ChangeEvent, MouseEvent} from 'react';
 import type {IntlShape, WrappedComponentProps} from 'react-intl';
@@ -35,7 +34,6 @@ import AdminPanel from 'components/widgets/admin_console/admin_panel';
 import AtIcon from 'components/widgets/icons/at_icon';
 import SheidOutlineIcon from 'components/widgets/icons/shield_outline_icon';
 import LoadingSpinner from 'components/widgets/loading/loading_spinner';
-import WithTooltip from 'components/with_tooltip';
 
 import {Constants, ModalIdentifiers} from 'utils/constants';
 import {validHttpUrl} from 'utils/url';
@@ -852,32 +850,6 @@ export class SystemUserDetail extends PureComponent<Props, State> {
                                                 defaultMessage='Manage User Settings'
                                             />
                                         </button>
-                                    }
-
-                                    {
-                                        this.props.showLockedManageUserSettings &&
-                                        <WithTooltip
-                                            title={defineMessage({
-                                                id: 'generic.enterprise_feature',
-                                                defaultMessage: 'Enterprise feature',
-                                            })}
-                                            hint={defineMessage({
-                                                id: 'admin.user_item.manageSettings.disabled_tooltip',
-                                                defaultMessage: 'Please upgrade to Enterprise to manage user settings',
-                                            })}
-                                        >
-                                            <button
-                                                className='manageUserSettingsBtn btn disabled'
-                                            >
-                                                <div className='RestrictedIndicator__content'>
-                                                    <i className={classNames('RestrictedIndicator__icon-tooltip', 'icon', 'icon-key-variant')}/>
-                                                </div>
-                                                <FormattedMessage
-                                                    id='admin.user_item.manageSettings'
-                                                    defaultMessage='Manage User Settings'
-                                                />
-                                            </button>
-                                        </WithTooltip>
                                     }
                                 </>
                             }
