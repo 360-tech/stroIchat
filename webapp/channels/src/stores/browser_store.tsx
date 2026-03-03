@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import {getHistory} from 'utils/browser_history';
-import {ErrorPageTypes, StoragePrefixes, LandingPreferenceTypes} from 'utils/constants';
+import {ErrorPageTypes, StoragePrefixes} from 'utils/constants';
 import * as Utils from 'utils/utils';
 
 class BrowserStoreClass {
@@ -70,30 +70,6 @@ class BrowserStoreClass {
         this.hasCheckedLocalStorage = true;
 
         return this.localStorageSupported;
-    }
-
-    hasSeenLandingPage() {
-        return localStorage.getItem(StoragePrefixes.LANDING_PAGE_SEEN);
-    }
-
-    setLandingPageSeen(landingPageSeen: boolean) {
-        localStorage.setItem(StoragePrefixes.LANDING_PAGE_SEEN, String(landingPageSeen));
-    }
-
-    getLandingPreference(siteUrl?: string) {
-        return localStorage.getItem(StoragePrefixes.LANDING_PREFERENCE + String(siteUrl));
-    }
-
-    setLandingPreferenceToMattermostApp(siteUrl?: string) {
-        localStorage.setItem(StoragePrefixes.LANDING_PREFERENCE + String(siteUrl), LandingPreferenceTypes.MATTERMOSTAPP);
-    }
-
-    setLandingPreferenceToBrowser(siteUrl?: string) {
-        localStorage.setItem(StoragePrefixes.LANDING_PREFERENCE + String(siteUrl), LandingPreferenceTypes.BROWSER);
-    }
-
-    clearLandingPreference(siteUrl?: string) {
-        localStorage.removeItem(StoragePrefixes.LANDING_PREFERENCE + String(siteUrl));
     }
 
     getHideNotificationPermissionRequestBanner() {

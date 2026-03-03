@@ -7,32 +7,21 @@ import {useIntl} from 'react-intl';
 import {useSelector, useDispatch} from 'react-redux';
 import {Link, useRouteMatch, useLocation, matchPath} from 'react-router-dom';
 
-import {PulsatingDot} from '@mattermost/components';
-
 import {getThreadCounts} from 'mattermost-redux/actions/threads';
 import {getInt, isCollapsedThreadsEnabled} from 'mattermost-redux/selectors/entities/preferences';
 import {
     getThreadCountsInCurrentTeam, getThreadsInCurrentTeam,
 } from 'mattermost-redux/selectors/entities/threads';
 
-import {openModal} from 'actions/views/modals';
 import {closeRightHandSide} from 'actions/views/rhs';
 import {getIsRhsOpen, getRhsState} from 'selectors/rhs';
 import {isAnyModalOpen} from 'selectors/views/modals';
 
 import ChannelMentionBadge from 'components/sidebar/sidebar_channel/channel_mention_badge';
-import CollapsedReplyThreadsModal
-    from 'components/tours/crt_tour/collapsed_reply_threads_modal';
 import CRTWelcomeTutorialTip
     from 'components/tours/crt_tour/crt_welcome_tutorial_tip';
 
-import Constants, {
-    CrtTutorialSteps,
-    CrtTutorialTriggerSteps,
-    ModalIdentifiers,
-    Preferences,
-    RHSStates,
-} from 'utils/constants';
+import {Preferences, RHSStates} from 'utils/constants';
 import {Mark} from 'utils/performance_telemetry';
 
 import type {GlobalState} from 'types/store';
@@ -56,33 +45,26 @@ const GlobalThreadsLink = () => {
     const counts = useSelector(getThreadCountsInCurrentTeam);
     const someUnreadThreads = counts?.total_unread_threads;
     const appHaveOpenModal = useSelector(isAnyModalOpen);
-    const tipStep = useSelector((state: GlobalState) => getInt(state, Preferences.CRT_TUTORIAL_STEP, currentUserId, CrtTutorialSteps.WELCOME_POPOVER));
-    const crtTutorialTrigger = useSelector((state: GlobalState) => getInt(state, Preferences.CRT_TUTORIAL_TRIGGERED, currentUserId, Constants.CrtTutorialTriggerSteps.START));
+    const tipStep = useSelector((state: GlobalState) => getInt(state, Preferences.CRT_TUTORIAL_STEP, currentUserId, 0));
     const threads = useSelector(getThreadsInCurrentTeam);
-    const showTutorialTip = crtTutorialTrigger === CrtTutorialTriggerSteps.STARTED && tipStep === CrtTutorialSteps.WELCOME_POPOVER && threads.length >= 1;
+    const showTutorialTip = tipStep === 0 && threads.length >= 1 && !appHaveOpenModal;
     const rhsOpen = useSelector(getIsRhsOpen);
     const rhsState = useSelector(getRhsState);
-    const showTutorialTrigger = isFeatureEnabled && crtTutorialTrigger === Constants.CrtTutorialTriggerSteps.START && !appHaveOpenModal && Boolean(counts) && counts.total >= 1;
     const openThreads = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
 
         performance.mark(Mark.GlobalThreadsLinkClicked);
 
-        if (showTutorialTrigger) {
-            dispatch(openModal({modalId: ModalIdentifiers.COLLAPSED_REPLY_THREADS_MODAL, dialogType: CollapsedReplyThreadsModal, dialogProps: {}}));
-        }
-
         if (rhsOpen && rhsState === RHSStates.EDIT_HISTORY) {
             dispatch(closeRightHandSide());
         }
-    }, [showTutorialTrigger, counts, threads, rhsOpen, rhsState]);
+    }, [dispatch, rhsOpen, rhsState]);
 
     useEffect(() => {
-        // load counts if necessary
         if (isFeatureEnabled) {
             dispatch(getThreadCounts(currentUserId, currentTeamId));
         }
-    }, [currentUserId, currentTeamId, isFeatureEnabled]);
+    }, [currentUserId, currentTeamId, dispatch, isFeatureEnabled]);
 
     if (!isFeatureEnabled) {
         // hide link if feature disabled
@@ -123,7 +105,6 @@ const GlobalThreadsLink = () => {
                             hasUrgent={Boolean(counts?.total_unread_urgent_mentions)}
                         />
                     )}
-                    {showTutorialTrigger && <PulsatingDot/>}
                 </Link>
                 {showTutorialTip && <CRTWelcomeTutorialTip/>}
             </li>

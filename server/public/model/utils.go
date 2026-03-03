@@ -652,7 +652,6 @@ var reservedName = []string{
 	"error",
 	"files",
 	"help",
-	"landing",
 	"login",
 	"mfa",
 	"oauth",

@@ -94,6 +94,7 @@ describe('components/AdminSidebar', () => {
             errors: {},
         },
         showTaskList: false,
+        isCurrentUserSystemAdmin: true,
     };
 
     Object.keys(RESOURCE_KEYS).forEach((key) => {

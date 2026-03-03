@@ -168,7 +168,6 @@ const defaultServerConfig: AdminConfig = {
         EnableAPITriggerAdminNotifications: false,
         EnableAPIUserDeletion: false,
         EnableAPIPostDeletion: false,
-        EnableDesktopLandingPage: true,
         ExperimentalEnableHardenedMode: false,
         ExperimentalStrictCSRFEnforcement: false,
         EnableEmailInvitations: false,

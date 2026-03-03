@@ -9,7 +9,6 @@ import SaveChangesPanel, {type SaveChangesPanelState} from 'components/widgets/m
 
 import AllowedDomainsSelect from './allowed_domains_select';
 import InviteSectionInput from './invite_section_input';
-import OpenInvite from './open_invite';
 
 import type {PropsFromRedux, OwnProps} from '.';
 
@@ -57,12 +56,6 @@ const AccessTab = ({closeModal, collapseModal, hasChangeTabError, hasChanges, se
         }
         return true;
     }, [actions, allowOpenInvite, team]);
-
-    const updateOpenInvite = useCallback((value: boolean) => {
-        setHasChanges(true);
-        setSaveChangesPanelState('editing');
-        setAllowOpenInvite(value);
-    }, [setHasChanges]);
 
     const handleClose = useCallback(() => {
         setSaveChangesPanelState('editing');
@@ -140,12 +133,6 @@ const AccessTab = ({closeModal, collapseModal, hasChangeTabError, hasChanges, se
                                 setSaveChangesPanelState={setSaveChangesPanelState}
                             />
                         }
-                        <div className='divider-light'/>
-                        <OpenInvite
-                            isGroupConstrained={team.group_constrained}
-                            allowOpenInvite={allowOpenInvite}
-                            setAllowOpenInvite={updateOpenInvite}
-                        />
                         <div className='divider-light'/>
                         {team.group_constrained ?
                             undefined :

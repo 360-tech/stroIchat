@@ -114,11 +114,8 @@ export class PlaywrightExtended {
 
     // unauthenticated page
     readonly loginPage;
-    readonly landingLoginPage;
     readonly signupPage;
     readonly resetPasswordPage;
-
-    readonly hasSeenLandingPage;
 
     constructor(browser: Browser, page: Page, isMobile: boolean) {
         // ./browser_context
@@ -152,7 +149,6 @@ export class PlaywrightExtended {
 
         // unauthenticated page
         this.loginPage = new pages.LoginPage(page);
-        this.landingLoginPage = new pages.LandingLoginPage(page, isMobile);
         this.signupPage = new pages.SignupPage(page);
         this.resetPasswordPage = new pages.ResetPasswordPage(page);
 
@@ -177,12 +173,6 @@ export class PlaywrightExtended {
             post: createRandomPost,
             team: createRandomTeam,
             user: createRandomUser,
-        };
-
-        this.hasSeenLandingPage = async () => {
-            // Visit the base URL to be able to set the localStorage
-            await page.goto('/');
-            return await waitUntilLocalStorageIsSet(page, '__landingPageSeen__', 'true');
         };
     }
 }

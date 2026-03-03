@@ -108,7 +108,7 @@
     .users-emails-input__menu {
         margin-top: 0;
         background: var(--center-channel-bg);
-        box-shadow: 0 0 0 0 hsla(0, 0%, 0%, 0.1), 0 4px 11px hsla(0, 0%, 0%, 0.1);
+        // box-shadow: 0 0 0 0 hsla(0, 0%, 0%, 0.1), 0 4px 11px hsla(0, 0%, 0%, 0.1);
         color: var(--center-channel-color);
     }
 
@@ -307,6 +307,112 @@
 
         span {
             color: var(--sys-button-bg);
+        }
+    }
+}
+
+.users-emails-input__menu-portal {
+    .users-emails-input__menu {
+        margin-top: 0;
+        background: var(--center-channel-bg);
+        // box-shadow: 0 0 0 0 hsla(0, 0%, 0%, 0.1), 0 4px 11px hsla(0, 0%, 0%, 0.1);
+        color: var(--center-channel-color);
+    }
+    
+    .users-emails-input__menu-list {
+        padding: 0;
+    }
+    
+    .users-emails-input__menu-notice {
+        display: flex;
+        height: 60px;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        border-radius: 4px 4px 0 0;
+    }
+    
+    .users-emails-input__option {
+        display: flex;
+        height: 60px;
+        align-items: center;
+        padding: 12px;
+        cursor: pointer;
+        gap: 8px;
+    
+        &--no-matches {
+            color: rgba(var(--center-channel-color-rgb), 0.75);
+            text-align: center;
+            height: unset
+    
+            span {
+                width: 100%;
+            }
+    
+            strong {
+                font-weight: 600;
+            }
+        }
+    
+        &:first-child {
+            border-radius: 4px 4px 0 0;
+        }
+    
+        &:last-child {
+            border-radius: 0 0 4px 4px;
+        }
+    
+        &--is-focused {
+            background: rgba(var(--button-bg-rgb), 0.08);
+        }
+    
+        &--no-matches:hover {
+            background: none;
+            cursor: default;
+        }
+    
+        .fullname {
+            overflow: hidden;
+            opacity: 0.5;
+            text-overflow: ellipsis;
+    
+            &::before {
+                padding: 5px;
+                content: "-";
+            }
+        }
+    
+        .nickname {
+            overflow: hidden;
+            opacity: 0.5;
+            text-overflow: ellipsis;
+    
+            &::before {
+                content: "(";
+                opacity: 0.5;
+            }
+    
+            &::after {
+                content: ")";
+                opacity: 0.5;
+            }
+        }
+    
+        .mail-plus-icon {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            padding: 3px;
+            border-radius: 18px;
+            margin-right: 8px;
+            background: var(--button-bg);
+    
+            svg {
+                width: 24px;
+                height: 24px;
+                margin: 3px;
+                fill: var(--button-color);
+            }
         }
     }
 }

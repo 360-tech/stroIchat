@@ -6,7 +6,7 @@
 import React from 'react';
 import {FormattedMessage, defineMessage, defineMessages} from 'react-intl';
 
-import {AccountMultipleOutlineIcon, ChartBarIcon, CogOutlineIcon, FlaskOutlineIcon, InformationOutlineIcon, ServerVariantIcon, ShieldOutlineIcon, SitemapIcon} from '@mattermost/compass-icons/components';
+import {AccountMultipleOutlineIcon, ChartBarIcon, CogOutlineIcon, FlaskOutlineIcon, InformationOutlineIcon, PowerPlugOutlineIcon, ServerVariantIcon, ShieldOutlineIcon, SitemapIcon} from '@mattermost/compass-icons/components';
 
 import {RESOURCE_KEYS} from 'mattermost-redux/constants/permissions_sysconsole';
 
@@ -28,7 +28,9 @@ import {
 } from 'actions/admin_actions';
 
 import ContentFlaggingSettings from 'components/admin_console/content_flagging/content_flagging_settings';
+import CustomPluginSettings from 'components/admin_console/custom_plugin_settings';
 import CustomProfileAttributes from 'components/admin_console/custom_profile_attributes/custom_profile_attributes';
+import PluginManagement from 'components/admin_console/plugin_management';
 import SystemAnalytics from 'components/analytics/system_analytics';
 import {searchableStrings as systemAnalyticsSearchableStrings} from 'components/analytics/system_analytics/system_analytics';
 import TeamAnalytics from 'components/analytics/team_analytics';
@@ -82,7 +84,6 @@ import TeamDetails from './team_channel_settings/team/details';
 import type {AdminDefinition as AdminDefinitionType} from './types';
 import ValidationResult from './validation';
 import WorkspaceOptimizationDashboard from './workspace-optimization/dashboard';
-
 // Re-export for backward compatibility
 export {it};
 
@@ -2349,7 +2350,7 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'bool',
                             key: 'MetricsSettings.EnableNotificationMetrics',
                             label: defineMessage({id: 'admin.metrics.enableNotificationMetricsTitle', defaultMessage: 'Enable Notification Monitoring:'}),
-                            help_text: defineMessage({id: 'admin.metrics.enableNotificationMetricsDescription', defaultMessage: 'When true, Stroichat will enable notification data collection for web and Desktop App users.'}),
+                            help_text: defineMessage({id: 'admin.metrics.enableNotificationMetricsDescription', defaultMessage: 'When true, Stroichat will enable notification data collection for web users.'}),
                             isDisabled: it.any(
                                 it.configIsFalse('MetricsSettings', 'Enable'),
                             ),
@@ -2610,13 +2611,6 @@ const AdminDefinition: AdminDefinitionType = {
                             type: 'custom',
                             component: CustomURLSchemesSetting,
                             key: 'DisplaySettings.CustomURLSchemes',
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
-                        },
-                        {
-                            type: 'number',
-                            key: 'DisplaySettings.MaxMarkdownNodes',
-                            label: defineMessage({id: 'admin.customization.maxMarkdownNodesTitle', defaultMessage: 'Max Markdown Nodes:'}),
-                            help_text: defineMessage({id: 'admin.customization.maxMarkdownNodesDesc', defaultMessage: 'When rendering Markdown text in the mobile app, controls the maximum number of Markdown elements (eg. emojis, links, table cells, etc) that can be in a single piece of text. If set to 0, a default limit will be used.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.SITE.POSTS)),
                         },
                         {
@@ -3613,37 +3607,37 @@ const AdminDefinition: AdminDefinitionType = {
         },
     },
 
-    // plugins: {
-    //     icon: (
-    //         <PowerPlugOutlineIcon
-    //             size={16}
-    //             color={'currentColor'}
-    //         />
-    //     ),
-    //     sectionTitle: defineMessage({id: 'admin.sidebar.plugins', defaultMessage: 'Plugins'}),
-    //     id: 'plugins',
-    //     isHidden: it.not(it.userHasReadPermissionOnResource('plugins')),
-    //     subsections: {
-    //         plugin_management: {
-    //             url: 'plugins/plugin_management',
-    //             title: defineMessage({id: 'admin.plugins.pluginManagement', defaultMessage: 'Plugin Management'}),
-    //             searchableStrings: pluginManagementSearchableStrings,
-    //             isDisabled: it.not(it.userHasWritePermissionOnResource('plugins')),
-    //             schema: {
-    //                 id: 'PluginManagementSettings',
-    //                 component: PluginManagement,
-    //             },
-    //         },
-    //         custom: {
-    //             url: 'plugins/plugin_:plugin_id',
-    //             isDisabled: it.not(it.userHasWritePermissionOnResource('plugins')),
-    //             schema: {
-    //                 id: 'CustomPluginSettings',
-    //                 component: CustomPluginSettings,
-    //             },
-    //         },
-    //     },
-    // },
+    plugins: {
+        icon: (
+            <PowerPlugOutlineIcon
+                size={16}
+                color={'currentColor'}
+            />
+        ),
+        sectionTitle: defineMessage({id: 'admin.sidebar.plugins', defaultMessage: 'Plugins'}),
+        id: 'plugins',
+        isHidden: it.not(it.any(it.isSystemAdmin, it.userHasReadPermissionOnResource('plugins'))),
+        subsections: {
+            plugin_management: {
+                url: 'plugins/plugin_management',
+                title: defineMessage({id: 'admin.plugins.pluginManagement', defaultMessage: 'Plugin Management'}),
+                searchableStrings: pluginManagementSearchableStrings,
+                isDisabled: it.not(it.userHasWritePermissionOnResource('plugins')),
+                schema: {
+                    id: 'PluginManagementSettings',
+                    component: PluginManagement,
+                },
+            },
+            custom: {
+                url: 'plugins/plugin_:plugin_id',
+                isDisabled: it.not(it.userHasWritePermissionOnResource('plugins')),
+                schema: {
+                    id: 'CustomPluginSettings',
+                    component: CustomPluginSettings,
+                },
+            },
+        },
+    },
     integrations: {
         icon: (
             <SitemapIcon

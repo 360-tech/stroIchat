@@ -7,7 +7,6 @@ import {useSelector} from 'react-redux';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 import NotificationPermissionNeverGrantedBar from 'components/announcement_bar/notification_permission_bar/notification_permission_never_granted_bar';
-import NotificationPermissionUnsupportedBar from 'components/announcement_bar/notification_permission_bar/notification_permission_unsupported_bar';
 
 import {
     isNotificationAPISupported,
@@ -23,9 +22,9 @@ export default function NotificationPermissionBar() {
         return null;
     }
 
-    // When browser does not support notification API, we show the notification bar to update browser
+    // When browser does not support notification API, we show nothing
     if (!isNotificationAPISupported()) {
-        return <NotificationPermissionUnsupportedBar/>;
+        return null;
     }
 
     // When user has not granted permission, we show the notification bar to request permission

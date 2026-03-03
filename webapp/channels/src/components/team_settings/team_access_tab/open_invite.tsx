@@ -4,7 +4,6 @@
 import React from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 
-import ExternalLink from 'components/external_link';
 import BaseSettingItem from 'components/widgets/modals/components/base_setting_item';
 import CheckboxSettingItem from 'components/widgets/modals/components/checkbox_setting_item';
 

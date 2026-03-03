@@ -330,23 +330,24 @@ function DesktopAndMobileNotificationSettings({
         );
     }
 
-    return (
-        <SettingItemMin
-            ref={editButtonRef}
-            title={
-                <>
-                    <FormattedMessage
-                        id='user.settings.notifications.desktopAndMobile.title'
-                        defaultMessage='Desktop and mobile notifications'
-                    />
-                    <NotificationPermissionTitleTag/>
-                </>
-            }
-            describe={getCollapsedText(desktopActivity, pushActivity)}
-            section={UserSettingsNotificationSections.DESKTOP_AND_MOBILE}
-            updateSection={handleChangeForMinSection}
-        />
-    );
+    return null;
+    // return (
+    //     <SettingItemMin
+    //         ref={editButtonRef}
+    //         title={
+    //             <>
+    //                 <FormattedMessage
+    //                     id='user.settings.notifications.desktopAndMobile.title'
+    //                     defaultMessage='Desktop and mobile notifications'
+    //                 />
+    //                 <NotificationPermissionTitleTag/>
+    //             </>
+    //         }
+    //         describe={getCollapsedText(desktopActivity, pushActivity)}
+    //         section={UserSettingsNotificationSections.DESKTOP_AND_MOBILE}
+    //         updateSection={handleChangeForMinSection}
+    //     />
+    // );
 }
 
 function NoIndicatorSeparatorComponent() {

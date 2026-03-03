@@ -10,7 +10,6 @@ import type {Team} from '@mattermost/types/teams';
 import KeyboardShortcutSequence, {
     KEYBOARD_SHORTCUTS,
 } from 'components/keyboard_shortcuts/keyboard_shortcuts_sequence';
-import PopoutButton from 'components/popout_button';
 import FollowButton from 'components/threading/common/follow_button';
 import CRTThreadsPaneTutorialTip
     from 'components/tours/crt_tour/crt_threads_pane_tutorial_tip';
@@ -206,7 +205,6 @@ class RhsHeaderPost extends React.PureComponent<Props> {
                             onClick={this.handleFollowChange}
                         />
                     ) : null}
-                    <PopoutButton onClick={this.popout}/>
                     <WithTooltip
                         title={rhsHeaderTooltipContent}
                     >

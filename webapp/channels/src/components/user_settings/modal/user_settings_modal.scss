@@ -12,6 +12,12 @@
         border-radius: var(--radius-l);
         box-shadow: var(--elevation-6);
 
+        @media screen and (max-width: 768px) {
+            max-height: 100vh;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
         .modal-body {
             display: flex;
             width: 100%;

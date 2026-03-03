@@ -5,8 +5,6 @@ import React from 'react';
 import type {MouseEvent, ReactNode} from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import ExternalLink from 'components/external_link';
-
 type Props = {
     showPreview?: boolean;
     previewMessageLink?: ReactNode;
@@ -115,16 +113,6 @@ function TextboxLinks({
         <div className={'help__text ' + helpTextClass}>
             {helpText}
             {previewLink}
-            <ExternalLink
-                location='textbox_links'
-                href={'https://docs.mattermost.com/collaborate/format-messages.html'}
-                className='textbox-help-link'
-            >
-                <FormattedMessage
-                    id='textbox.help'
-                    defaultMessage='Help'
-                />
-            </ExternalLink>
         </div>
     );
 }

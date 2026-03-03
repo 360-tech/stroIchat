@@ -100,10 +100,10 @@ func (a *App) buildEmailNotification(
 		messageText = post.Message
 	}
 
-	landingURL := a.GetSiteURL() + "/landing#/" + team.Name
-	buttonURL := landingURL
+	teamURL := a.GetSiteURL() + "/" + team.Name
+	buttonURL := teamURL
 	if team.Name != "select_team" {
-		buttonURL = landingURL + "/pl/" + post.Id
+		buttonURL = teamURL + "/pl/" + post.Id
 	}
 
 	return &model.EmailNotification{

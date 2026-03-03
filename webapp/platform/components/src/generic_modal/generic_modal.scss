@@ -112,6 +112,11 @@
         .modal-content {
             max-height: 90vh;
 
+            @media screen and (max-width: 768px) {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
             .modal-body {
                 .GenericModal__body {
                     padding: 0;

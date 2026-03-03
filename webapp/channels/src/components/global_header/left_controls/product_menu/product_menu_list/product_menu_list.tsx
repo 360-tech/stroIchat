@@ -7,8 +7,7 @@ import {useIntl} from 'react-intl';
 import {
     ApplicationCogIcon,
     InformationOutlineIcon,
-
-    // ViewGridPlusOutlineIcon,
+    ViewGridPlusOutlineIcon,
     WebhookIncomingIcon,
 } from '@mattermost/compass-icons/components';
 import type {UserProfile} from '@mattermost/types/users';
@@ -18,14 +17,11 @@ import {Permissions} from 'mattermost-redux/constants';
 import AboutBuildModal from 'components/about_build_modal';
 import {VisitSystemConsoleTour} from 'components/onboarding_tasks';
 import SystemPermissionGate from 'components/permissions_gates/system_permission_gate';
-
-// import TeamPermissionGate from 'components/permissions_gates/team_permission_gate';
-// import MarketplaceModal from 'components/plugin_marketplace/marketplace_modal';
+import TeamPermissionGate from 'components/permissions_gates/team_permission_gate';
+import MarketplaceModal from 'components/plugin_marketplace/marketplace_modal';
 import Menu from 'components/widgets/menu/menu';
 
 import {ModalIdentifiers} from 'utils/constants';
-
-import type {ModalData} from 'types/actions';
 
 import './product_menu_list.scss';
 
@@ -42,19 +38,15 @@ export type Props = {
     enableOutgoingWebhooks: boolean;
     canManageSystemBots: boolean;
     canManageIntegrations: boolean;
-    enablePluginMarketplace: boolean;
     showVisitSystemConsoleTour: boolean;
     onClick?: React.MouseEventHandler<HTMLElement>;
     handleVisitConsoleClick: React.MouseEventHandler<HTMLElement>;
-    actions: {
-        openModal: <P>(modalData: ModalData<P>) => void;
-    };
 };
 
 const ProductMenuList = (props: Props): JSX.Element | null => {
     const {
 
-        // teamId,
+        teamId,
         teamName,
         siteName,
         currentUser,
@@ -66,7 +58,6 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
         canManageSystemBots,
         canManageIntegrations,
 
-        // enablePluginMarketplace,
         showVisitSystemConsoleTour,
         onClick,
         handleVisitConsoleClick,
@@ -112,19 +103,19 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
                     text={formatMessage({id: 'navbar_dropdown.integrations', defaultMessage: 'Integrations'})}
                     icon={<WebhookIncomingIcon size={18}/>}
                 />
-                {/* <TeamPermissionGate
+                <TeamPermissionGate
                     teamId={teamId}
                     permissions={[Permissions.SYSCONSOLE_WRITE_PLUGINS]}
                 >
                     <Menu.ItemToggleModalRedux
                         id='marketplaceModal'
                         modalId={ModalIdentifiers.PLUGIN_MARKETPLACE}
-                        show={isMessaging && !isMobile && enablePluginMarketplace}
+                        show={isMessaging && !isMobile}
                         dialogType={MarketplaceModal}
                         text={formatMessage({id: 'navbar_dropdown.marketplace', defaultMessage: 'App Marketplace'})}
                         icon={<ViewGridPlusOutlineIcon size={18}/>}
                     />
-                </TeamPermissionGate> */}
+                </TeamPermissionGate>
                 <Menu.ItemToggleModalRedux
                     id='about'
                     modalId={ModalIdentifiers.ABOUT}

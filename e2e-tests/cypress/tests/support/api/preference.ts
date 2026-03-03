@@ -506,12 +506,6 @@ function apiDisableTutorials(userId) {
         },
         {
             user_id: userId,
-            category: 'crt_tutorial_triggered',
-            name: userId,
-            value: '999',
-        },
-        {
-            user_id: userId,
             category: 'crt_thread_pane_step',
             name: userId,
             value: '999',
