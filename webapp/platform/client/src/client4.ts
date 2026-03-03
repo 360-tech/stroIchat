@@ -3737,7 +3737,7 @@ export default class Client4 {
         );
     };
 
-    getMarketplacePlugins = (filter: string, localOnly = false) => {
+    getMarketplacePlugins = (filter: string, localOnly = true) => {
         return this.doFetch<MarketplacePlugin[]>(
             `${this.getPluginsMarketplaceRoute()}${buildQueryString({filter: filter || '', local_only: localOnly})}`,
             {method: 'get'},
