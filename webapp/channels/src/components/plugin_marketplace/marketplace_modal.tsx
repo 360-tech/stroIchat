@@ -70,7 +70,7 @@ const MarketplaceModal = () => {
     const [serverError, setServerError] = React.useState(false);
 
     const doFetchListing = useCallback(async () => {
-        const {error} = await dispatch(fetchListing());
+        const {error} = await dispatch(fetchListing(true));
 
         if (error) {
             setServerError(true);
