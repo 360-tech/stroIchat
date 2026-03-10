@@ -13,16 +13,16 @@ import {General, Preferences} from '../constants';
 export function getFullName(user: UserProfile): string {
     const parts: string[] = [];
 
+    if (user.last_name) {
+        parts.push(user.last_name);
+    }
+
     if (user.first_name) {
         parts.push(user.first_name);
     }
 
     if (user.middle_name) {
         parts.push(user.middle_name);
-    }
-
-    if (user.last_name) {
-        parts.push(user.last_name);
     }
 
     return parts.join(' ');

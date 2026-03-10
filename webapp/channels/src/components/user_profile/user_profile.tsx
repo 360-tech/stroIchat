@@ -57,6 +57,8 @@ export default function UserProfile({
         userStyle = {color: userColor};
     }
 
+    console.log({name, overwriteName, displayName})
+
     if (disablePopover) {
         return (
             <div

@@ -426,8 +426,8 @@ func TestUserGetDisplayName(t *testing.T) {
 	user.FirstName = "first"
 	user.LastName = "last"
 
-	assert.Equal(t, user.GetDisplayName(ShowFullName), "first last", "Display name should be full name")
-	assert.Equal(t, user.GetDisplayName(ShowNicknameFullName), "first last", "Display name should be full name since there is no nickname")
+	assert.Equal(t, user.GetDisplayName(ShowFullName), "last first", "Display name should be full name")
+	assert.Equal(t, user.GetDisplayName(ShowNicknameFullName), "last first", "Display name should be full name since there is no nickname")
 	assert.Equal(t, user.GetDisplayName(ShowUsername), "username", "Display name should be username")
 
 	user.Nickname = "nickname"
@@ -444,8 +444,8 @@ func TestUserGetDisplayNameWithPrefix(t *testing.T) {
 	user.FirstName = "first"
 	user.LastName = "last"
 
-	assert.Equal(t, user.GetDisplayNameWithPrefix(ShowFullName, "@"), "first last", "Display name should be full name")
-	assert.Equal(t, user.GetDisplayNameWithPrefix(ShowNicknameFullName, "@"), "first last", "Display name should be full name since there is no nickname")
+	assert.Equal(t, user.GetDisplayNameWithPrefix(ShowFullName, "@"), "last first", "Display name should be full name")
+	assert.Equal(t, user.GetDisplayNameWithPrefix(ShowNicknameFullName, "@"), "last first", "Display name should be full name since there is no nickname")
 	assert.Equal(t, user.GetDisplayNameWithPrefix(ShowUsername, "@"), "@username", "Display name should be username")
 
 	user.Nickname = "nickname"

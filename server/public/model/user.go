@@ -847,16 +847,16 @@ func (u *User) SetPartnerSubtype(subtype string) {
 func (u *User) GetFullName() string {
 	parts := []string{}
 
-	if u.FirstName != "" {
-		parts = append(parts, u.FirstName)
+	if u.LastName != "" {
+		parts = append(parts, u.LastName)
 	}
 
 	if u.MiddleName != "" {
 		parts = append(parts, u.MiddleName)
 	}
 
-	if u.LastName != "" {
-		parts = append(parts, u.LastName)
+	if u.FirstName != "" {
+		parts = append(parts, u.FirstName)
 	}
 
 	return strings.Join(parts, " ")
