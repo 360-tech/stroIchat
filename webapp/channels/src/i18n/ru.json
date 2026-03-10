@@ -2244,7 +2244,7 @@
   "admin.service.writeTimeoutDescription": "При использовании HTTP (небезопасно) — максимально допустимое время с момента окончания чтения заголовка запроса до окончания записи ответа. В случае с HTTPS — полное время с момента установки соединения до окончания записи ответа.",
   "admin.sessionLengths.title": "Продолжительность сессий",
   "admin.set_by_env": "Этот параметр был установлен с помощью переменной среды. Его нельзя изменить через системную консоль.",
-  "admin.sidebar.about": "О системе",
+  "admin.sidebar.about": "О продукте",
   "admin.sidebar.announcement": "Система уведомлений",
   "admin.sidebar.attributeBasedAccessControl": "Доступ на основе атрибутов",
   "admin.sidebar.audit_logging_experimental": "Ведение журнала аудита",
