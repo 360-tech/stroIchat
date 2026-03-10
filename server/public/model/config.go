@@ -3311,7 +3311,7 @@ func (s *PluginSettings) SetDefaults(ls LogSettings) {
 	}
 
 	if s.EnableRemoteMarketplace == nil {
-		s.EnableRemoteMarketplace = NewPointer(true)
+		s.EnableRemoteMarketplace = NewPointer(false)
 	}
 
 	if s.AutomaticPrepackagedPlugins == nil {
