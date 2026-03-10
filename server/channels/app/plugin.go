@@ -540,7 +540,7 @@ func (a *App) GetPlugins() (*model.PluginsResponse, *model.AppError) {
 func (a *App) GetMarketplacePlugins(rctx request.CTX, filter *model.MarketplacePluginFilter) ([]*model.MarketplacePlugin, *model.AppError) {
 	plugins := map[string]*model.MarketplacePlugin{}
 
-	if *a.Config().PluginSettings.EnableRemoteMarketplace && !filter.LocalOnly {
+	if isRemoteMarketplaceEnabled(a.Config()) && !filter.LocalOnly {
 		p, appErr := a.getRemotePlugins()
 		if appErr != nil {
 			// On timeout or network error, log and continue with local/prepackaged only
@@ -741,21 +741,12 @@ func (a *App) mergeLocalPlugins(rctx request.CTX, remoteMarketplacePlugins map[s
 			}
 		}
 
-		var labels []model.MarketplaceLabel
-		if *a.Config().PluginSettings.EnableRemoteMarketplace {
-			// Labels should not (yet) be localized as the labels sent by the Marketplace are not (yet) localizable.
-			labels = append(labels, model.MarketplaceLabel{
-				Name:        "Local",
-				Description: "This plugin is not listed in the marketplace",
-			})
-		}
-
 		remoteMarketplacePlugins[plugin.Manifest.Id] = &model.MarketplacePlugin{
 			BaseMarketplacePlugin: &model.BaseMarketplacePlugin{
 				HomepageURL:     plugin.Manifest.HomepageURL,
 				IconData:        iconData,
 				ReleaseNotesURL: plugin.Manifest.ReleaseNotesURL,
-				Labels:          labels,
+				Labels:          nil,
 				Manifest:        plugin.Manifest,
 			},
 			InstalledVersion: plugin.Manifest.Version,
@@ -790,6 +781,12 @@ func (ch *Channels) getBaseMarketplaceFilter() *model.MarketplacePluginFilter {
 	filter.Platform = runtime.GOOS + "-" + runtime.GOARCH
 
 	return filter
+}
+
+// isRemoteMarketplaceEnabled forces the remote plugin marketplace to be disabled
+// regardless of the value in the configuration.
+func isRemoteMarketplaceEnabled(cfg *model.Config) bool {
+	return false
 }
 
 func pluginMatchesFilter(manifest *model.Manifest, filter string) bool {

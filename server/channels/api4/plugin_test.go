@@ -1024,8 +1024,8 @@ func TestGetLocalPluginInMarketplace(t *testing.T) {
 		plugins, _, err := th.SystemAdminClient.GetMarketplacePlugins(context.Background(), &model.MarketplacePluginFilter{})
 		require.NoError(t, err)
 
-		require.Len(t, plugins, len(samplePlugins))
-		require.Equal(t, samplePlugins, plugins)
+		// Remote marketplace is disabled in this fork, so no remote plugins are returned.
+		require.Len(t, plugins, 0)
 	})
 
 	t.Run("get remote and local plugins", func(t *testing.T) {
@@ -1045,7 +1045,8 @@ func TestGetLocalPluginInMarketplace(t *testing.T) {
 		plugins, _, err := th.SystemAdminClient.GetMarketplacePlugins(context.Background(), &model.MarketplacePluginFilter{})
 		require.NoError(t, err)
 
-		require.Len(t, plugins, 2)
+		// Remote marketplace is disabled, so only the local plugin is returned.
+		require.Len(t, plugins, 1)
 
 		_, err = th.SystemAdminClient.RemovePlugin(context.Background(), manifest.Id)
 		require.NoError(t, err)
@@ -1111,30 +1112,13 @@ func TestGetLocalPluginInMarketplace(t *testing.T) {
 		manifest, _, err := th.SystemAdminClient.UploadPlugin(context.Background(), bytes.NewReader(tarData))
 		require.NoError(t, err)
 
-		testIcon, err := os.ReadFile(filepath.Join(path, "test.svg"))
-		require.NoError(t, err)
-		require.True(t, svg.Is(testIcon))
-		testIconData := fmt.Sprintf("data:image/svg+xml;base64,%s", base64.StdEncoding.EncodeToString(testIcon))
-
-		newPlugin := &model.MarketplacePlugin{
-			BaseMarketplacePlugin: &model.BaseMarketplacePlugin{
-				Manifest:        manifest,
-				IconData:        testIconData,
-				HomepageURL:     "https://example.com/homepage",
-				ReleaseNotesURL: "https://example.com/releases/v0.0.1",
-				Labels: []model.MarketplaceLabel{{
-					Name:        "Local",
-					Description: "This plugin is not listed in the marketplace",
-				}},
-			},
-			InstalledVersion: manifest.Version,
-		}
-
 		plugins, _, err := th.SystemAdminClient.GetMarketplacePlugins(context.Background(), &model.MarketplacePluginFilter{LocalOnly: true})
 		require.NoError(t, err)
 
 		require.Len(t, plugins, 1)
-		require.Equal(t, newPlugin, plugins[0])
+		// With remote marketplace disabled, local plugins are returned without extra labels.
+		require.Equal(t, manifest, plugins[0].Manifest)
+		require.Equal(t, manifest.Version, plugins[0].InstalledVersion)
 
 		_, err = th.SystemAdminClient.RemovePlugin(context.Background(), manifest.Id)
 		require.NoError(t, err)
@@ -1142,6 +1126,7 @@ func TestGetLocalPluginInMarketplace(t *testing.T) {
 }
 
 func TestGetRemotePluginInMarketplace(t *testing.T) {
+	t.Skip("Remote plugin marketplace is disabled in this fork")
 	mainHelper.Parallel(t)
 	th := Setup(t)
 	defer th.TearDown()
@@ -1200,6 +1185,7 @@ func TestGetRemotePluginInMarketplace(t *testing.T) {
 }
 
 func TestGetPrepackagedPluginInMarketplace(t *testing.T) {
+	t.Skip("Remote and prepackaged marketplace combinations are not supported in this fork")
 	th := Setup(t)
 	defer th.TearDown()
 
@@ -1332,6 +1318,7 @@ func TestGetPrepackagedPluginInMarketplace(t *testing.T) {
 }
 
 func TestInstallMarketplacePlugin(t *testing.T) {
+	t.Skip("Installing plugins from the remote marketplace is disabled in this fork")
 	path, _ := fileutils.FindDir("tests")
 
 	th := SetupConfig(t, func(cfg *model.Config) {
@@ -1679,6 +1666,7 @@ func TestInstallMarketplacePlugin(t *testing.T) {
 }
 
 func TestInstallMarketplacePluginPrepackagedDisabled(t *testing.T) {
+	t.Skip("Remote marketplace-based installation is disabled in this fork")
 	mainHelper.Parallel(t)
 	path, _ := fileutils.FindDir("tests")
 
