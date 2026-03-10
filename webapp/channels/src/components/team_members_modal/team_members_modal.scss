@@ -3,4 +3,19 @@
         display: flex;
         justify-content: center;
     }
+
+    @media screen and (max-width:768px) {
+        .modal-header .invite-people-btn {
+            max-width: 40vw;
+        }
+
+        .GenericModal .modal-body {
+            display: block;
+        }
+
+        .modal-header .close {
+            top: 0;
+            right: 0;
+        }
+    }
 }
