@@ -291,3 +291,5 @@ channels/db/migrations/postgres/000148_add_partner_subtype.down.sql
 channels/db/migrations/postgres/000148_add_partner_subtype.up.sql
 channels/db/migrations/postgres/000149_add_schemepartner_columns.down.sql
 channels/db/migrations/postgres/000149_add_schemepartner_columns.up.sql
+channels/db/migrations/postgres/000150_add_middle_name_to_users.down.sql
+channels/db/migrations/postgres/000150_add_middle_name_to_users.up.sql

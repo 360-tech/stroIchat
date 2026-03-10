@@ -5315,6 +5315,7 @@
   "user.settings.general.field_handled_externally": "此字段由您的登录提供者决定。如果您想更改，您需要通过您的登录提供者进行操作。",
   "user.settings.general.field_managed_by_admin": "该字段只能由管理员更改。",
   "user.settings.general.firstName": "名字",
+  "user.settings.general.middleName": "中间名",
   "user.settings.general.fullName": "全名",
   "user.settings.general.imageTooLarge": "无法上传头像。文件太大。",
   "user.settings.general.imageUpdated": "图片上次更新日期 {date}",

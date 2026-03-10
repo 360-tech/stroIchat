@@ -170,6 +170,7 @@ export type Props = {
 type State = {
     username: string;
     firstName: string;
+    middleName: string;
     lastName: string;
     nickname: string;
     position: string;
@@ -271,14 +272,16 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
     submitName = () => {
         const user = Object.assign({}, this.props.user);
         const firstName = this.state.firstName.trim();
+        const middleName = this.state.middleName.trim();
         const lastName = this.state.lastName.trim();
 
-        if (user.first_name === firstName && user.last_name === lastName) {
+        if (user.first_name === firstName && (user.middle_name || '') === middleName && user.last_name === lastName) {
             this.updateSection('');
             return;
         }
 
         user.first_name = firstName;
+        user.middle_name = middleName;
         user.last_name = lastName;
 
         this.submitUser(user, false);
@@ -475,6 +478,10 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
         this.setState({firstName: e.target.value});
     };
 
+    updateMiddleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({middleName: e.target.value});
+    };
+
     updateLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({lastName: e.target.value});
     };
@@ -549,6 +556,7 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
         return {
             username: user.username,
             firstName: user.first_name,
+            middleName: user.middle_name || '',
             lastName: user.last_name,
             nickname: user.nickname,
             position: user.position,
@@ -894,6 +902,34 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
 
                 inputs.push(
                     <div
+                        key='middleNameSetting'
+                        className='form-group'
+                    >
+                        <label
+                            className='col-sm-5 control-label'
+                            htmlFor='middleName'
+                        >
+                            <FormattedMessage
+                                id='user.settings.general.middleName'
+                                defaultMessage='Middle Name'
+                            />
+                        </label>
+                        <div className='col-sm-7'>
+                            <Input
+                                id='middleName'
+                                name='middleName'
+                                type='text'
+                                onChange={this.updateMiddleName}
+                                maxLength={Constants.MAX_FIRSTNAME_LENGTH}
+                                value={this.state.middleName}
+                                aria-label={formatMessage({id: 'user.settings.general.middleName', defaultMessage: 'Middle Name'})}
+                            />
+                        </div>
+                    </div>,
+                );
+
+                inputs.push(
+                    <div
                         key='lastNameSetting'
                         className='form-group'
                     >
@@ -969,7 +1005,7 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
         let describe: JSX.Element|string = '';
 
         if (user.first_name && user.last_name) {
-            describe = user.first_name + ' ' + user.last_name;
+            describe = [user.first_name, user.middle_name, user.last_name].filter(Boolean).join(' ');
         } else if (user.first_name) {
             describe = user.first_name;
         } else if (user.last_name) {

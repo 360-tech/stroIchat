@@ -296,6 +296,7 @@ func TestUserIsValid(t *testing.T) {
 	require.Nil(t, user.IsValid())
 
 	user.FirstName = ""
+	user.MiddleName = ""
 	user.LastName = ""
 	require.Nil(t, user.IsValid())
 
@@ -311,6 +312,11 @@ func TestUserIsValid(t *testing.T) {
 	require.True(t, HasExpectedUserIsValidError(appErr, "first_name", user.Id, user.FirstName), "expected user is valid error: %s", appErr.Error())
 
 	user.FirstName = strings.Repeat("a", 64)
+	user.MiddleName = strings.Repeat("a", 65)
+	appErr = user.IsValid()
+	require.True(t, HasExpectedUserIsValidError(appErr, "middle_name", user.Id, user.MiddleName), "expected user is valid error: %s", appErr.Error())
+
+	user.MiddleName = strings.Repeat("a", 64)
 	user.LastName = strings.Repeat("a", 65)
 	appErr = user.IsValid()
 	require.True(t, HasExpectedUserIsValidError(appErr, "last_name", user.Id, user.LastName), "expected user is valid error: %s", appErr.Error())
@@ -405,6 +411,9 @@ func TestUserGetFullName(t *testing.T) {
 
 	user.FirstName = "first"
 	assert.Equal(t, user.GetFullName(), "first last", "Full name should be first name and last name")
+
+	user.MiddleName = "middle"
+	assert.Equal(t, user.GetFullName(), "first middle last", "Full name should include middle name between first and last")
 }
 
 func TestUserGetDisplayName(t *testing.T) {

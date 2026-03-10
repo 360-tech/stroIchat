@@ -26,7 +26,7 @@ const UserGridName = ({
 
             <div className='UserGrid_name'>
                 <span>
-                    {`${user.username} - ${user.first_name} ${user.last_name}`}
+                    {`${user.username} - ${[user.first_name, user.middle_name, user.last_name].filter(Boolean).join(' ')}`}
                 </span>
                 <span className='ug-email'>
                     {user.email}

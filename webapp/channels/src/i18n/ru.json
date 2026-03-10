@@ -5452,6 +5452,7 @@
   "user.settings.general.field_handled_externally": "Это поле управляется вашим провайдером авторизации. Если вы хотите его изменить, то нужно делать это через него.",
   "user.settings.general.field_managed_by_admin": "Это поле может изменить только администратор.",
   "user.settings.general.firstName": "Имя",
+  "user.settings.general.middleName": "Отчество",
   "user.settings.general.fullName": "Полное имя",
   "user.settings.general.imageTooLarge": "Невозможно загрузить изображение. Файл слишком большой.",
   "user.settings.general.imageUpdated": "Последнее обновление {date}",

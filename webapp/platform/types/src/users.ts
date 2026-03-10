@@ -44,6 +44,7 @@ export type UserProfile = {
     email: string;
     nickname: string;
     first_name: string;
+    middle_name?: string;
     last_name: string;
     position: string;
     roles: string;

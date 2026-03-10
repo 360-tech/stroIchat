@@ -32,9 +32,9 @@ const (
 
 var (
 	UserSearchTypeNamesNoFullName = []string{"Username", "Nickname"}
-	UserSearchTypeNames           = []string{"Username", "FirstName", "LastName", "Nickname"}
+	UserSearchTypeNames           = []string{"Username", "FirstName", "MiddleName", "LastName", "Nickname"}
 	UserSearchTypeAllNoFullName   = []string{"Username", "Nickname", "Email"}
-	UserSearchTypeAll             = []string{"Username", "FirstName", "LastName", "Nickname", "Email"}
+	UserSearchTypeAll             = []string{"Username", "FirstName", "MiddleName", "LastName", "Nickname", "Email"}
 )
 
 type SqlUserStore struct {
@@ -71,6 +71,7 @@ func getUsersColumns() []string {
 		"Users.EmailVerified",
 		"Users.Nickname",
 		"Users.FirstName",
+		"COALESCE(Users.MiddleName, '') AS MiddleName",
 		"Users.LastName",
 		"Users.Position",
 		"Users.Roles",
@@ -135,12 +136,12 @@ func (us SqlUserStore) insert(user *model.User) (sql.Result, error) {
 
 	query := `INSERT INTO Users
 		(Id, CreateAt, UpdateAt, DeleteAt, Username, Password, AuthData, AuthService,
-			Email, EmailVerified, Nickname, FirstName, LastName, Position, Roles, AllowMarketing,
+			Email, EmailVerified, Nickname, FirstName, MiddleName, LastName, Position, Roles, AllowMarketing,
 			Props, NotifyProps, LastPasswordUpdate, LastPictureUpdate, FailedAttempts,
 			Locale, Timezone, MfaActive, MfaSecret, RemoteId, MfaUsedTimestamps)
 		VALUES
 		(:Id, :CreateAt, :UpdateAt, :DeleteAt, :Username, :Password, :AuthData, :AuthService,
-			:Email, :EmailVerified, :Nickname, :FirstName, :LastName, :Position, :Roles, :AllowMarketing,
+			:Email, :EmailVerified, :Nickname, :FirstName, :MiddleName, :LastName, :Position, :Roles, :AllowMarketing,
 			:Props, :NotifyProps, :LastPasswordUpdate, :LastPictureUpdate, :FailedAttempts,
 			:Locale, :Timezone, :MfaActive, :MfaSecret, :RemoteId, :MfaUsedTimestamps)`
 
@@ -281,7 +282,7 @@ func (us SqlUserStore) Update(rctx request.CTX, user *model.User, trustedUpdateD
 	updateQuery := `UPDATE Users
 			SET CreateAt=:CreateAt, UpdateAt=:UpdateAt, DeleteAt=:DeleteAt, Username=:Username, Password=:Password,
 				AuthData=:AuthData, AuthService=:AuthService,Email=:Email, EmailVerified=:EmailVerified,
-				Nickname=:Nickname, FirstName=:FirstName, LastName=:LastName, Position=:Position, Roles=:Roles,
+				Nickname=:Nickname, FirstName=:FirstName, MiddleName=:MiddleName, LastName=:LastName, Position=:Position, Roles=:Roles,
 				AllowMarketing=:AllowMarketing, Props=:Props, NotifyProps=:NotifyProps,
 				LastPasswordUpdate=:LastPasswordUpdate, LastPictureUpdate=:LastPictureUpdate,
 				FailedAttempts=:FailedAttempts,Locale=:Locale, Timezone=:Timezone, MfaActive=:MfaActive,
@@ -537,7 +538,7 @@ func (us SqlUserStore) Get(ctx context.Context, id string) (*model.User, error) 
 	var props, notifyProps, timezone []byte
 	err = row.Scan(&user.Id, &user.CreateAt, &user.UpdateAt, &user.DeleteAt, &user.Username,
 		&user.Password, &user.AuthData, &user.AuthService, &user.Email, &user.EmailVerified,
-		&user.Nickname, &user.FirstName, &user.LastName, &user.Position, &user.Roles,
+		&user.Nickname, &user.FirstName, &user.MiddleName, &user.LastName, &user.Position, &user.Roles,
 		&user.AllowMarketing, &props, &notifyProps, &user.LastPasswordUpdate, &user.LastPictureUpdate,
 		&user.FailedAttempts, &user.Locale, &timezone, &user.MfaActive, &user.MfaSecret, &user.MfaUsedTimestamps,
 		&user.RemoteId, &user.LastLogin, &user.IsBot, &user.BotDescription, &user.BotLastIconUpdate)
@@ -928,7 +929,7 @@ func (us SqlUserStore) GetAllProfilesInChannel(ctx context.Context, channelID st
 	for rows.Next() {
 		var user model.User
 		var props, notifyProps, timezone []byte
-		if err = rows.Scan(&user.Id, &user.CreateAt, &user.UpdateAt, &user.DeleteAt, &user.Username, &user.Password, &user.AuthData, &user.AuthService, &user.Email, &user.EmailVerified, &user.Nickname, &user.FirstName, &user.LastName, &user.Position, &user.Roles, &user.AllowMarketing, &props, &notifyProps, &user.LastPasswordUpdate, &user.LastPictureUpdate, &user.FailedAttempts, &user.Locale, &timezone, &user.MfaActive, &user.MfaSecret, &user.MfaUsedTimestamps, &user.RemoteId, &user.LastLogin, &user.IsBot, &user.BotDescription, &user.BotLastIconUpdate); err != nil {
+		if err = rows.Scan(&user.Id, &user.CreateAt, &user.UpdateAt, &user.DeleteAt, &user.Username, &user.Password, &user.AuthData, &user.AuthService, &user.Email, &user.EmailVerified, &user.Nickname, &user.FirstName, &user.MiddleName, &user.LastName, &user.Position, &user.Roles, &user.AllowMarketing, &props, &notifyProps, &user.LastPasswordUpdate, &user.LastPictureUpdate, &user.FailedAttempts, &user.Locale, &timezone, &user.MfaActive, &user.MfaSecret, &user.MfaUsedTimestamps, &user.RemoteId, &user.LastLogin, &user.IsBot, &user.BotDescription, &user.BotLastIconUpdate); err != nil {
 			return nil, errors.Wrap(err, "failed to scan values from rows into User entity")
 		}
 		if err = json.Unmarshal(props, &user.Props); err != nil {
@@ -2016,6 +2017,7 @@ func (us SqlUserStore) GetUsersBatchForIndexing(startTime int64, startFileID str
 			Username:    user.Username,
 			Nickname:    user.Nickname,
 			FirstName:   user.FirstName,
+			MiddleName:  user.MiddleName,
 			LastName:    user.LastName,
 			Roles:       user.Roles,
 			CreateAt:    user.CreateAt,

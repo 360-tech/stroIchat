@@ -11,15 +11,21 @@ import {localizeMessage} from 'mattermost-redux/utils/i18n_utils';
 import {General, Preferences} from '../constants';
 
 export function getFullName(user: UserProfile): string {
-    if (user.first_name && user.last_name) {
-        return user.first_name + ' ' + user.last_name;
-    } else if (user.first_name) {
-        return user.first_name;
-    } else if (user.last_name) {
-        return user.last_name;
+    const parts: string[] = [];
+
+    if (user.first_name) {
+        parts.push(user.first_name);
     }
 
-    return '';
+    if (user.middle_name) {
+        parts.push(user.middle_name);
+    }
+
+    if (user.last_name) {
+        parts.push(user.last_name);
+    }
+
+    return parts.join(' ');
 }
 
 export function displayUsername(
@@ -166,9 +172,10 @@ export function nameSuggestionsForUser(user: UserProfile, includeFullEmail = fal
     const usernameSuggestions = getSuggestionsSplitByMultiple((user.username || '').toLowerCase(), General.AUTOCOMPLETE_SPLIT_CHARACTERS);
     profileSuggestions.push(...usernameSuggestions);
     const first = (user.first_name || '').toLowerCase();
+    const middle = (user.middle_name || '').toLowerCase();
     const last = (user.last_name || '').toLowerCase();
-    const full = first + ' ' + last;
-    profileSuggestions.push(first, last, full);
+    const full = [first, middle, last].filter((part) => part).join(' ');
+    profileSuggestions.push(first, middle, last, full);
     profileSuggestions.push((user.nickname || '').toLowerCase());
     const positionSuggestions = getSuggestionsSplitBy((user.position || '').toLowerCase(), ' ');
     profileSuggestions.push(...positionSuggestions);
