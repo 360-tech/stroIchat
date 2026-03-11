@@ -48,6 +48,7 @@ const (
 	MigrationKeyAddOutgoingOAuthConnectionsPermissions = "add_outgoing_oauth_connections_permissions"
 	MigrationKeyAddChannelBookmarksPermissions         = "add_channel_bookmarks_permissions"
 	MigrationKeyDeleteDmsPreferences                   = "delete_dms_preferences_migration"
+	MigrationKeyTeammateNameDisplayFullName            = "teammate_name_display_full_name_migration"
 	MigrationKeyAddManageJobAncillaryPermissions       = "add_manage_jobs_ancillary_permissions"
 	MigrationKeyAddUploadFilePermission                = "add_upload_file_permission"
 	RestrictAccessToChannelConversionToPublic          = "restrict_access_to_channel_conversion_to_public_permissions"

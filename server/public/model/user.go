@@ -54,18 +54,19 @@ const (
 	DefaultLocale        = "ru"
 	UserAuthServiceEmail = "email"
 
-	UserEmailMaxLength    = 128
-	UserNicknameMaxRunes  = 64
-	UserPositionMaxRunes  = 128
-	UserFirstNameMaxRunes = 64
-	UserLastNameMaxRunes  = 64
-	UserAuthDataMaxLength = 128
-	UserNameMaxLength     = 64
-	UserNameMinLength     = 1
-	UserPasswordMaxLength = 72
-	UserLocaleMaxLength   = 5
-	UserTimezoneMaxRunes  = 256
-	UserRolesMaxLength    = 256
+	UserEmailMaxLength     = 128
+	UserNicknameMaxRunes   = 64
+	UserPositionMaxRunes   = 128
+	UserFirstNameMaxRunes  = 64
+	UserMiddleNameMaxRunes = 64
+	UserLastNameMaxRunes   = 64
+	UserAuthDataMaxLength  = 128
+	UserNameMaxLength      = 64
+	UserNameMinLength      = 1
+	UserPasswordMaxLength  = 72
+	UserLocaleMaxLength    = 5
+	UserTimezoneMaxRunes   = 256
+	UserRolesMaxLength     = 256
 
 	DesktopTokenTTL = time.Minute * 3
 
@@ -95,6 +96,7 @@ type User struct {
 	EmailVerified          bool        `json:"email_verified,omitempty"`
 	Nickname               string      `json:"nickname"`
 	FirstName              string      `json:"first_name"`
+	MiddleName             string      `json:"middle_name"`
 	LastName               string      `json:"last_name"`
 	Position               string      `json:"position"`
 	Roles                  string      `json:"roles"`
@@ -193,6 +195,7 @@ type UserPatch struct {
 	Password    *string   `json:"password,omitempty"`
 	Nickname    *string   `json:"nickname"`
 	FirstName   *string   `json:"first_name"`
+	MiddleName  *string   `json:"middle_name"`
 	LastName    *string   `json:"last_name"`
 	Position    *string   `json:"position"`
 	Email       *string   `json:"email"`
@@ -237,6 +240,7 @@ type UserForIndexing struct {
 	Username    string   `json:"username"`
 	Nickname    string   `json:"nickname"`
 	FirstName   string   `json:"first_name"`
+	MiddleName  string   `json:"middle_name"`
 	LastName    string   `json:"last_name"`
 	Roles       string   `json:"roles"`
 	CreateAt    int64    `json:"create_at"`
@@ -405,6 +409,10 @@ func (u *User) IsValid() *AppError {
 		return InvalidUserError("first_name", u.Id, u.FirstName)
 	}
 
+	if utf8.RuneCountInString(u.MiddleName) > UserMiddleNameMaxRunes {
+		return InvalidUserError("middle_name", u.Id, u.MiddleName)
+	}
+
 	if utf8.RuneCountInString(u.LastName) > UserLastNameMaxRunes {
 		return InvalidUserError("last_name", u.Id, u.LastName)
 	}
@@ -484,6 +492,7 @@ func (u *User) PreSave() *AppError {
 
 	u.Username = SanitizeUnicode(u.Username)
 	u.FirstName = SanitizeUnicode(u.FirstName)
+	u.MiddleName = SanitizeUnicode(u.MiddleName)
 	u.LastName = SanitizeUnicode(u.LastName)
 	u.Nickname = SanitizeUnicode(u.Nickname)
 
@@ -540,6 +549,7 @@ func (u *User) PreSave() *AppError {
 func (u *User) PreUpdate() {
 	u.Username = SanitizeUnicode(u.Username)
 	u.FirstName = SanitizeUnicode(u.FirstName)
+	u.MiddleName = SanitizeUnicode(u.MiddleName)
 	u.LastName = SanitizeUnicode(u.LastName)
 	u.Nickname = SanitizeUnicode(u.Nickname)
 	u.BotDescription = SanitizeUnicode(u.BotDescription)
@@ -549,6 +559,7 @@ func (u *User) PreUpdate() {
 	u.UpdateAt = GetMillis()
 
 	u.FirstName = SanitizeUnicode(u.FirstName)
+	u.MiddleName = SanitizeUnicode(u.MiddleName)
 	u.LastName = SanitizeUnicode(u.LastName)
 	u.Nickname = SanitizeUnicode(u.Nickname)
 	u.BotDescription = SanitizeUnicode(u.BotDescription)
@@ -639,6 +650,10 @@ func (u *User) Patch(patch *UserPatch) {
 		u.FirstName = *patch.FirstName
 	}
 
+	if patch.MiddleName != nil {
+		u.MiddleName = *patch.MiddleName
+	}
+
 	if patch.LastName != nil {
 		u.LastName = *patch.LastName
 	}
@@ -691,6 +706,7 @@ func (u *User) Sanitize(options map[string]bool) {
 		}
 		if !options["fullname"] {
 			u.FirstName = ""
+			u.MiddleName = ""
 			u.LastName = ""
 		}
 		if !options["passwordupdate"] {
@@ -829,14 +845,21 @@ func (u *User) SetPartnerSubtype(subtype string) {
 }
 
 func (u *User) GetFullName() string {
-	if u.FirstName != "" && u.LastName != "" {
-		return u.FirstName + " " + u.LastName
-	} else if u.FirstName != "" {
-		return u.FirstName
-	} else if u.LastName != "" {
-		return u.LastName
+	parts := []string{}
+
+	if u.LastName != "" {
+		parts = append(parts, u.LastName)
 	}
-	return ""
+
+	if u.MiddleName != "" {
+		parts = append(parts, u.MiddleName)
+	}
+
+	if u.FirstName != "" {
+		parts = append(parts, u.FirstName)
+	}
+
+	return strings.Join(parts, " ")
 }
 
 func (u *User) getDisplayName(baseName, nameFormat string) string {
@@ -994,7 +1017,7 @@ func (u *User) SetProp(name string, value string) {
 func (u *User) ToPatch() *UserPatch {
 	return &UserPatch{
 		Username: &u.Username, Password: &u.Password,
-		Nickname: &u.Nickname, FirstName: &u.FirstName, LastName: &u.LastName,
+		Nickname: &u.Nickname, FirstName: &u.FirstName, MiddleName: &u.MiddleName, LastName: &u.LastName,
 		Position: &u.Position, Email: &u.Email,
 		Props: u.Props, NotifyProps: u.NotifyProps,
 		Locale: &u.Locale, Timezone: u.Timezone,
@@ -1005,6 +1028,8 @@ func (u *UserPatch) SetField(fieldName string, fieldValue string) {
 	switch fieldName {
 	case "FirstName":
 		u.FirstName = &fieldValue
+	case "MiddleName":
+		u.MiddleName = &fieldValue
 	case "LastName":
 		u.LastName = &fieldValue
 	case "Nickname":

@@ -9,12 +9,16 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 
 	"github.com/mattermost/mattermost/server/public/model"
 	"github.com/mattermost/mattermost/server/public/shared/httpservice"
 )
+
+// RequestTimeout is the maximum time to wait for the remote marketplace response.
+const RequestTimeout = 2 * time.Second
 
 // Client is the programmatic interface to the marketplace server API.
 type Client struct {
@@ -33,6 +37,13 @@ func NewClient(address string, httpService httpservice.HTTPService) (*Client, er
 		httpClient = httpService.MakeClient(true)
 	} else {
 		httpClient = httpService.MakeClient(false)
+		// Use a shorter timeout for remote marketplace to avoid long waits on slow/unreachable servers.
+		httpClient = &http.Client{
+			Transport:     httpClient.Transport,
+			Timeout:       RequestTimeout,
+			CheckRedirect: httpClient.CheckRedirect,
+			Jar:           httpClient.Jar,
+		}
 	}
 
 	return &Client{

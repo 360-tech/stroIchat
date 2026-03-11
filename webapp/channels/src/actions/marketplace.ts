@@ -23,7 +23,7 @@ import type {ActionFuncAsync, ThunkActionFunc} from 'types/store';
 import {doAppSubmit, openAppsModal, postEphemeralCallResponseForContext} from './apps';
 
 // fetchPlugins fetches the latest marketplace plugins and apps, subject to any existing search filter.
-export function fetchListing(localOnly = false): ActionFuncAsync<Array<MarketplacePlugin | MarketplaceApp>> {
+export function fetchListing(localOnly = true): ActionFuncAsync<Array<MarketplacePlugin | MarketplaceApp>> {
     return async (dispatch, getState) => {
         const state = getState();
         const filter = getFilter(state);
@@ -75,7 +75,7 @@ export function filterListing(filter: string): ReturnType<typeof fetchListing> {
             filter,
         });
 
-        return dispatch(fetchListing());
+        return dispatch(fetchListing(true));
     };
 }
 
@@ -112,7 +112,7 @@ export function installPlugin(id: string): ThunkActionFunc<void> {
             return;
         }
 
-        await dispatch(fetchListing());
+        await dispatch(fetchListing(true));
         dispatch({
             type: ActionTypes.INSTALLING_MARKETPLACE_ITEM_SUCCEEDED,
             id,

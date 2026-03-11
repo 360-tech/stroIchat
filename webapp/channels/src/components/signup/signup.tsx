@@ -84,6 +84,9 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const usedBefore = useSelector((state: GlobalState) => (!inviteId && !loggedIn && token ? getGlobalItem(state, token, null) : undefined));
 
     const emailInput = useRef<HTMLInputElement>(null);
+    const firstNameInput = useRef<HTMLInputElement>(null);
+    const middleNameInput = useRef<HTMLInputElement>(null);
+    const lastNameInput = useRef<HTMLInputElement>(null);
     const nameInput = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);
 
@@ -99,6 +102,9 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const noOpenServer = !inviteId && !token && !enableOpenServer && !noAccounts && !enableUserCreation;
 
     const [email, setEmail] = useState(parsedEmail ?? '');
+    const [firstName, setFirstName] = useState('');
+    const [middleName, setMiddleName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(Boolean(inviteId));
@@ -118,16 +124,6 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const canSubmit = Boolean(email && name && password) && !hasError && !loading;
     const passwordConfig = useSelector(getPasswordConfig);
     const {error: passwordInfo} = isValidPassword('', passwordConfig, intl);
-
-    // const getExternalSignupOptions = () => {
-    //     const externalLoginOptions: ExternalLoginButtonType[] = [];
-
-    //     if (!enableExternalSignup) {
-    //         return externalLoginOptions;
-    //     }
-
-    //     return externalLoginOptions;
-    // };
 
     const handleHeaderBackButtonOnClick = useCallback(() => {
         history.goBack();
@@ -227,7 +223,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                 id: 'signup.title',
                 defaultMessage: 'Create Account | {siteName}',
             },
-            {siteName: SiteName || 'Mattermost'},
+            {siteName: SiteName || 'Стройчат'},
         );
     }, [formatMessage, SiteName]);
 
@@ -304,13 +300,28 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         }
     };
 
-    const handleNameOnChange = ({target: {value: name}}: React.ChangeEvent<HTMLInputElement>) => {
-        setName(name);
+    const handleNameOnChange = ({target: {value}}: React.ChangeEvent<HTMLInputElement>) => {
+        setName(value);
         dismissAlert();
 
         if (nameError) {
             setNameError('');
         }
+    };
+
+    const handleFirstNameOnChange = ({target: {value}}: React.ChangeEvent<HTMLInputElement>) => {
+        setFirstName(value);
+        dismissAlert();
+    };
+
+    const handleMiddleNameOnChange = ({target: {value}}: React.ChangeEvent<HTMLInputElement>) => {
+        setMiddleName(value);
+        dismissAlert();
+    };
+
+    const handleLastNameOnChange = ({target: {value}}: React.ChangeEvent<HTMLInputElement>) => {
+        setLastName(value);
+        dismissAlert();
     };
 
     const handlePasswordInputOnChange = ({target: {value: password}}: React.ChangeEvent<HTMLInputElement>) => {
@@ -446,6 +457,9 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                 email: emailInput.current?.value.trim(),
                 username: nameInput.current?.value.trim().toLowerCase(),
                 password: passwordInput.current?.value,
+                first_name: firstNameInput.current?.value.trim(),
+                middle_name: (middleNameInput.current?.value.trim() || '') || undefined,
+                last_name: lastNameInput.current?.value.trim(),
             } as UserProfile;
 
             const redirectTo = (new URLSearchParams(search)).get('redirect_to') as string;
@@ -612,6 +626,48 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                                 value: formatMessage({id: 'signup_user_completed.userHelp', defaultMessage: 'You can use lowercase letters, numbers, periods, dashes, and underscores.'}),
                                             }
                                         }
+                                    />
+                                    <Input
+                                        ref={firstNameInput}
+                                        name='firstName'
+                                        className='signup-body-card-form-name-input'
+                                        type='text'
+                                        inputSize={SIZE.LARGE}
+                                        value={firstName}
+                                        onChange={handleFirstNameOnChange}
+                                        placeholder={formatMessage({
+                                            id: 'signup_user_completed.firstName',
+                                            defaultMessage: 'First name',
+                                        })}
+                                        disabled={isWaiting}
+                                    />
+                                    <Input
+                                        ref={middleNameInput}
+                                        name='middleName'
+                                        className='signup-body-card-form-name-input'
+                                        type='text'
+                                        inputSize={SIZE.LARGE}
+                                        value={middleName}
+                                        onChange={handleMiddleNameOnChange}
+                                        placeholder={formatMessage({
+                                            id: 'signup_user_completed.middleName',
+                                            defaultMessage: 'Middle name',
+                                        })}
+                                        disabled={isWaiting}
+                                    />
+                                    <Input
+                                        ref={lastNameInput}
+                                        name='lastName'
+                                        className='signup-body-card-form-name-input'
+                                        type='text'
+                                        inputSize={SIZE.LARGE}
+                                        value={lastName}
+                                        onChange={handleLastNameOnChange}
+                                        placeholder={formatMessage({
+                                            id: 'signup_user_completed.lastName',
+                                            defaultMessage: 'Last name',
+                                        })}
+                                        disabled={isWaiting}
                                     />
                                     <PasswordInput
                                         data-testid='signup-body-card-form-password-input'

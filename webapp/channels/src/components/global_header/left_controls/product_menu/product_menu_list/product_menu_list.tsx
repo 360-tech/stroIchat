@@ -51,12 +51,13 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
         siteName,
         currentUser,
         isMessaging,
-        enableCommands,
-        enableIncomingWebhooks,
-        enableOAuthServiceProvider,
-        enableOutgoingWebhooks,
-        canManageSystemBots,
-        canManageIntegrations,
+
+        // enableCommands,
+        // enableIncomingWebhooks,
+        // enableOAuthServiceProvider,
+        // enableOutgoingWebhooks,
+        // canManageSystemBots,
+        // canManageIntegrations,
 
         showVisitSystemConsoleTour,
         onClick,
@@ -69,8 +70,9 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
         return null;
     }
 
-    const someIntegrationEnabled = enableIncomingWebhooks || enableOutgoingWebhooks || enableCommands || enableOAuthServiceProvider || canManageSystemBots;
-    const showIntegrations = !isMobile && someIntegrationEnabled && canManageIntegrations;
+    // Интеграции временно скрыты
+    // const someIntegrationEnabled = enableIncomingWebhooks || enableOutgoingWebhooks || enableCommands || enableOAuthServiceProvider || canManageSystemBots;
+    const showIntegrations = false; // !isMobile && someIntegrationEnabled && canManageIntegrations;
 
     return (
         <Menu.Group>
@@ -96,6 +98,7 @@ const ProductMenuList = (props: Props): JSX.Element | null => {
                         icon={<ApplicationCogIcon size={18}/>}
                     />
                 </SystemPermissionGate>
+
                 <Menu.ItemLink
                     id='integrations'
                     show={isMessaging && showIntegrations}

@@ -123,10 +123,12 @@ export function submitCommand(channelId: string, rootId: string, draft: PostDraf
 
         const teamId = getCurrentTeamId(state);
 
+        const fileIds = draft.fileInfos?.length ? draft.fileInfos.map((f) => f.id) : undefined;
         let args: CommandArgs = {
             channel_id: channelId,
             team_id: teamId,
             root_id: rootId,
+            ...(fileIds?.length ? {file_ids: fileIds} : {}),
         };
 
         let {message} = draft;

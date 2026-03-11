@@ -1148,6 +1148,7 @@ CREATE TABLE `Users` (
   `EmailVerified` tinyint(1) DEFAULT NULL,
   `Nickname` varchar(64) DEFAULT NULL,
   `FirstName` varchar(64) DEFAULT NULL,
+  `MiddleName` varchar(64) DEFAULT NULL,
   `LastName` varchar(64) DEFAULT NULL,
   `Roles` text,
   `AllowMarketing` tinyint(1) DEFAULT NULL,
@@ -1169,9 +1170,9 @@ CREATE TABLE `Users` (
   KEY `idx_users_update_at` (`UpdateAt`),
   KEY `idx_users_create_at` (`CreateAt`),
   KEY `idx_users_delete_at` (`DeleteAt`),
-  FULLTEXT KEY `idx_users_all_txt` (`Username`,`FirstName`,`LastName`,`Nickname`,`Email`),
+  FULLTEXT KEY `idx_users_all_txt` (`Username`,`FirstName`,`MiddleName`,`LastName`,`Nickname`,`Email`),
   FULLTEXT KEY `idx_users_all_no_full_name_txt` (`Username`,`Nickname`,`Email`),
-  FULLTEXT KEY `idx_users_names_txt` (`Username`,`FirstName`,`LastName`,`Nickname`),
+  FULLTEXT KEY `idx_users_names_txt` (`Username`,`FirstName`,`MiddleName`,`LastName`,`Nickname`),
   FULLTEXT KEY `idx_users_names_no_full_name_txt` (`Username`,`Nickname`)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -226,8 +226,6 @@ function DesktopNotificationSoundsSettings({
         onSubmit();
     }
 
-    console.log({active})
-
     if (active) {
         return (
             <SettingItemMax

@@ -433,6 +433,7 @@
         .Menu__content {
             &.dropdown-menu {
                 max-width: 100%;
+                min-width: 70vw;
             }
         }
     }

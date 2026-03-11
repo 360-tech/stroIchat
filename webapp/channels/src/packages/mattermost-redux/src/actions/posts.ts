@@ -22,6 +22,7 @@ import {
     deletePreferences,
     savePreferences,
 } from 'mattermost-redux/actions/preferences';
+import {getMissingFilesByPosts} from 'mattermost-redux/actions/files';
 import {batchFetchStatusesProfilesGroupsFromPosts} from 'mattermost-redux/actions/status_profile_polling';
 import {decrementThreadCounts} from 'mattermost-redux/actions/threads';
 import {getProfilesByIds, getProfilesByUsernames, getStatusesByIds} from 'mattermost-redux/actions/users';
@@ -724,6 +725,7 @@ export function getPosts(channelId: string, page = 0, perPage = Posts.POST_CHUNK
             receivedPostsInChannel(posts, channelId, page === 0, posts.prev_post_id === ''),
         ]));
         dispatch(batchFetchStatusesProfilesGroupsFromPosts(posts.posts));
+        dispatch(getMissingFilesByPosts(Object.values(posts.posts)));
 
         return {data: posts};
     };
@@ -767,6 +769,10 @@ export function getPostsUnread(channelId: string, fetchThreads = true, collapsed
 
         dispatch(batchActions(actions));
         dispatch(batchFetchStatusesProfilesGroupsFromPosts(posts.posts));
+        dispatch(getMissingFilesByPosts(Object.values(posts.posts)));
+        if (recentPosts) {
+            dispatch(getMissingFilesByPosts(Object.values(recentPosts.posts)));
+        }
 
         return {data: posts};
     };
@@ -789,6 +795,7 @@ export function getPostsSince(channelId: string, since: number, fetchThreads = t
             receivedPostsSince(posts, channelId),
         ]));
         dispatch(batchFetchStatusesProfilesGroupsFromPosts(posts.posts));
+        dispatch(getMissingFilesByPosts(Object.values(posts.posts)));
 
         return {data: posts};
     };
@@ -811,6 +818,7 @@ export function getPostsBefore(channelId: string, postId: string, page = 0, perP
             receivedPostsBefore(posts, channelId, postId, posts.prev_post_id === ''),
         ]));
         dispatch(batchFetchStatusesProfilesGroupsFromPosts(posts.posts));
+        dispatch(getMissingFilesByPosts(Object.values(posts.posts)));
 
         return {data: posts};
     };
@@ -833,6 +841,7 @@ export function getPostsAfter(channelId: string, postId: string, page = 0, perPa
             receivedPostsAfter(posts, channelId, postId, posts.next_post_id === ''),
         ]));
         dispatch(batchFetchStatusesProfilesGroupsFromPosts(posts.posts));
+        dispatch(getMissingFilesByPosts(Object.values(posts.posts)));
 
         return {data: posts};
     };
@@ -879,6 +888,7 @@ export function getPostsAround(channelId: string, postId: string, perPage = Post
             receivedPostsInChannel(posts, channelId, after.next_post_id === '', before.prev_post_id === ''),
         ]));
         dispatch(batchFetchStatusesProfilesGroupsFromPosts(posts.posts));
+        dispatch(getMissingFilesByPosts(Object.values(posts.posts)));
 
         return {data: posts};
     };

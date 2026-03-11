@@ -309,8 +309,6 @@ function DesktopAndMobileNotificationSettings({
         onCancel();
     }
 
-    console.log({active2: active})
-
     if (active) {
         return (
             <SettingItemMax

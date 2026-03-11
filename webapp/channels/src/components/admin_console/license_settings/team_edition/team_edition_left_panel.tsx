@@ -5,7 +5,7 @@ import React from 'react';
 
 import './team_edition.scss';
 
-const title = 'Team Edition';
+const title = 'Стройхаб';
 
 const TeamEdition: React.FC = () => {
     return (
@@ -14,8 +14,8 @@ const TeamEdition: React.FC = () => {
                 <div className='TeamEditionLeftPanel__Title'>{title}</div>
             </div>
             <div className='TeamEditionLeftPanel__LicenseNotices'>
-                <p>{'When using Mattermost Team Edition, the software is offered under a Mattermost MIT Compiled License. See MIT-COMPILED-LICENSE.md in your root install directory for details.'}</p>
-                <p>{'See NOTICE.txt for information about open source software used in the system.'}</p>
+                <p>{'Open-source продукт на базе крупнейшего корпоративного мессенджера Mattermost, разрабатываемый компанией "360 Тех". Распространяется по лицензии MIT.'}</p>
+                <p>{'team@360tech.pro'}</p>
             </div>
         </div>
     );

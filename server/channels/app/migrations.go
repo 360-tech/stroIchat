@@ -820,6 +820,61 @@ func (s *Server) doDeleteDmsPreferencesMigration(rctx request.CTX) error {
 	return nil
 }
 
+func (s *Server) doTeammateNameDisplayFullNameMigration(rctx request.CTX) error {
+	// If the migration is already marked as completed, don't do it again.
+	if _, err := s.Store().System().GetByName(model.MigrationKeyTeammateNameDisplayFullName); err == nil {
+		return nil
+	}
+
+	// Update all existing preferences for teammate name display to use full_name.
+	// This affects only users who previously had username or nickname_full_name set.
+	const batchSize = 1000
+
+	lastUserID := ""
+	for {
+		prefs, err := s.Store().Preference().GetCategoryAndName(model.PreferenceCategoryDisplaySettings, model.PreferenceNameNameFormat)
+		if err != nil {
+			return fmt.Errorf("failed to get name_format display preferences: %w", err)
+		}
+
+		if len(prefs) == 0 {
+			break
+		}
+
+		var toUpdate model.Preferences
+		for _, p := range prefs {
+			if p.Value == model.ShowUsername || p.Value == model.ShowNicknameFullName {
+				p.Value = model.ShowFullName
+				toUpdate = append(toUpdate, p)
+			}
+		}
+
+		if len(toUpdate) > 0 {
+			if err := s.Store().Preference().Save(toUpdate); err != nil {
+				return fmt.Errorf("failed to save updated name_format display preferences: %w", err)
+			}
+		}
+
+		if len(prefs) < batchSize {
+			break
+		}
+
+		lastUserID = prefs[len(prefs)-1].UserId
+		if lastUserID == "" {
+			break
+		}
+	}
+
+	if err := s.Store().System().Save(&model.System{
+		Name:  model.MigrationKeyTeammateNameDisplayFullName,
+		Value: "true",
+	}); err != nil {
+		return fmt.Errorf("failed to mark teammate name display full_name migration as completed: %w", err)
+	}
+
+	return nil
+}
+
 func (a *App) DoAppMigrations() {
 	a.Srv().doAppMigrations()
 }
@@ -864,6 +919,7 @@ func (s *Server) doAppMigrations() {
 		{"Delete Empty Drafts Migration", s.doDeleteEmptyDraftsMigration},
 		{"Delete Orphan Drafts Migration", s.doDeleteOrphanDraftsMigration},
 		{"Delete Invalid Dms Preferences Migration", s.doDeleteDmsPreferencesMigration},
+		{"Teammate Name Display Full Name Migration", s.doTeammateNameDisplayFullNameMigration},
 	}
 
 	rctx := request.EmptyContext(s.Log())

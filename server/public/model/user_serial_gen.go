@@ -17,8 +17,8 @@ func (z *User) DecodeMsg(dc *msgp.Reader) (err error) {
 		err = msgp.WrapError(err)
 		return
 	}
-	if zb0001 != 35 {
-		err = msgp.ArrayError{Wanted: 35, Got: zb0001}
+	if zb0001 != 36 {
+		err = msgp.ArrayError{Wanted: 36, Got: zb0001}
 		return
 	}
 	z.Id, err = dc.ReadString()
@@ -91,6 +91,11 @@ func (z *User) DecodeMsg(dc *msgp.Reader) (err error) {
 	z.FirstName, err = dc.ReadString()
 	if err != nil {
 		err = msgp.WrapError(err, "FirstName")
+		return
+	}
+	z.MiddleName, err = dc.ReadString()
+	if err != nil {
+		err = msgp.WrapError(err, "MiddleName")
 		return
 	}
 	z.LastName, err = dc.ReadString()
@@ -225,8 +230,8 @@ func (z *User) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *User) EncodeMsg(en *msgp.Writer) (err error) {
-	// array header, size 35
-	err = en.Append(0xdc, 0x0, 0x23)
+	// array header, size 36
+	err = en.Append(0xdc, 0x0, 0x24)
 	if err != nil {
 		return
 	}
@@ -295,6 +300,11 @@ func (z *User) EncodeMsg(en *msgp.Writer) (err error) {
 	err = en.WriteString(z.FirstName)
 	if err != nil {
 		err = msgp.WrapError(err, "FirstName")
+		return
+	}
+	err = en.WriteString(z.MiddleName)
+	if err != nil {
+		err = msgp.WrapError(err, "MiddleName")
 		return
 	}
 	err = en.WriteString(z.LastName)
@@ -425,8 +435,8 @@ func (z *User) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *User) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// array header, size 35
-	o = append(o, 0xdc, 0x0, 0x23)
+	// array header, size 36
+	o = append(o, 0xdc, 0x0, 0x24)
 	o = msgp.AppendString(o, z.Id)
 	o = msgp.AppendInt64(o, z.CreateAt)
 	o = msgp.AppendInt64(o, z.UpdateAt)
@@ -443,6 +453,7 @@ func (z *User) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.AppendBool(o, z.EmailVerified)
 	o = msgp.AppendString(o, z.Nickname)
 	o = msgp.AppendString(o, z.FirstName)
+	o = msgp.AppendString(o, z.MiddleName)
 	o = msgp.AppendString(o, z.LastName)
 	o = msgp.AppendString(o, z.Position)
 	o = msgp.AppendString(o, z.Roles)
@@ -497,8 +508,8 @@ func (z *User) UnmarshalMsg(bts []byte) (o []byte, err error) {
 		err = msgp.WrapError(err)
 		return
 	}
-	if zb0001 != 35 {
-		err = msgp.ArrayError{Wanted: 35, Got: zb0001}
+	if zb0001 != 36 {
+		err = msgp.ArrayError{Wanted: 36, Got: zb0001}
 		return
 	}
 	z.Id, bts, err = msgp.ReadStringBytes(bts)
@@ -570,6 +581,11 @@ func (z *User) UnmarshalMsg(bts []byte) (o []byte, err error) {
 	z.FirstName, bts, err = msgp.ReadStringBytes(bts)
 	if err != nil {
 		err = msgp.WrapError(err, "FirstName")
+		return
+	}
+	z.MiddleName, bts, err = msgp.ReadStringBytes(bts)
+	if err != nil {
+		err = msgp.WrapError(err, "MiddleName")
 		return
 	}
 	z.LastName, bts, err = msgp.ReadStringBytes(bts)
@@ -710,7 +726,7 @@ func (z *User) Msgsize() (s int) {
 	} else {
 		s += msgp.StringPrefixSize + len(*z.AuthData)
 	}
-	s += msgp.StringPrefixSize + len(z.AuthService) + msgp.StringPrefixSize + len(z.Email) + msgp.BoolSize + msgp.StringPrefixSize + len(z.Nickname) + msgp.StringPrefixSize + len(z.FirstName) + msgp.StringPrefixSize + len(z.LastName) + msgp.StringPrefixSize + len(z.Position) + msgp.StringPrefixSize + len(z.Roles) + msgp.BoolSize + z.Props.Msgsize() + z.NotifyProps.Msgsize() + msgp.Int64Size + msgp.Int64Size + msgp.IntSize + msgp.StringPrefixSize + len(z.Locale) + z.Timezone.Msgsize() + msgp.BoolSize + msgp.StringPrefixSize + len(z.MfaSecret)
+	s += msgp.StringPrefixSize + len(z.AuthService) + msgp.StringPrefixSize + len(z.Email) + msgp.BoolSize + msgp.StringPrefixSize + len(z.Nickname) + msgp.StringPrefixSize + len(z.FirstName) + msgp.StringPrefixSize + len(z.MiddleName) + msgp.StringPrefixSize + len(z.LastName) + msgp.StringPrefixSize + len(z.Position) + msgp.StringPrefixSize + len(z.Roles) + msgp.BoolSize + z.Props.Msgsize() + z.NotifyProps.Msgsize() + msgp.Int64Size + msgp.Int64Size + msgp.IntSize + msgp.StringPrefixSize + len(z.Locale) + z.Timezone.Msgsize() + msgp.BoolSize + msgp.StringPrefixSize + len(z.MfaSecret)
 	if z.RemoteId == nil {
 		s += msgp.NilSize
 	} else {

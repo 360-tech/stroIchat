@@ -1029,6 +1029,7 @@ func TestPushNotificationAck(t *testing.T) {
 }
 
 func TestCompleteOnboarding(t *testing.T) {
+	t.Skip("Onboarding flow that installs plugins from remote marketplace is disabled in this fork")
 	mainHelper.Parallel(t)
 	th := Setup(t)
 	defer th.TearDown()

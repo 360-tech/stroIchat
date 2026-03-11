@@ -147,6 +147,7 @@ describe('user utils', () => {
             username: 'testUser.split_10-',
             nickname: 'nick',
             first_name: 'First',
+            middle_name: 'Middle',
             last_name: 'Last1',
         });
         const userB = TestHelper.getUserMock({
@@ -154,6 +155,7 @@ describe('user utils', () => {
             username: 'extraPerson-split',
             nickname: 'somebody',
             first_name: 'First',
+            middle_name: 'Middle',
             last_name: 'Last2',
             email: 'left@right.com',
         });
@@ -188,16 +190,16 @@ describe('user utils', () => {
             expect(filterProfilesStartingWithTerm(users, 'Last2')).toEqual([userB]);
         });
 
-        it('should match by fullname prefix', () => {
-            expect(filterProfilesStartingWithTerm(users, 'First Last')).toEqual([userA, userB]);
+        it('should match by fullname prefix (including middle name)', () => {
+            expect(filterProfilesStartingWithTerm(users, 'First Middle Last')).toEqual([userA, userB]);
         });
 
-        it('should match by fullname fully', () => {
-            expect(filterProfilesStartingWithTerm(users, 'First Last1')).toEqual([userA]);
+        it('should match by fullname fully (including middle name)', () => {
+            expect(filterProfilesStartingWithTerm(users, 'First Middle Last1')).toEqual([userA]);
         });
 
-        it('should match by fullname case-insensitive', () => {
-            expect(filterProfilesStartingWithTerm(users, 'first LAST')).toEqual([userA, userB]);
+        it('should match by fullname case-insensitive (including middle name)', () => {
+            expect(filterProfilesStartingWithTerm(users, 'first middle LAST')).toEqual([userA, userB]);
         });
 
         it('should match by nickname', () => {
@@ -294,6 +296,7 @@ describe('user utils', () => {
             username: 'testUser.split_10-',
             nickname: 'nick',
             first_name: 'First',
+            middle_name: 'Middle',
             last_name: 'Last1',
         });
         const userB = TestHelper.getUserMock({
@@ -301,6 +304,7 @@ describe('user utils', () => {
             username: 'extraPerson-split',
             nickname: 'somebody',
             first_name: 'First',
+            middle_name: 'Middle',
             last_name: 'Last2',
             email: 'left@right.com',
         });

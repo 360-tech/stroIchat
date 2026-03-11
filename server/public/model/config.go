@@ -232,7 +232,7 @@ const (
 
 	PluginSettingsDefaultDirectory         = "./plugins"
 	PluginSettingsDefaultClientDirectory   = "./client/plugins"
-	PluginSettingsDefaultEnableMarketplace = false
+	PluginSettingsDefaultEnableMarketplace = true
 	PluginSettingsDefaultMarketplaceURL    = "https://api.integrations.mattermost.com"
 	PluginSettingsOldMarketplaceURL        = "https://marketplace.integrations.mattermost.com"
 
@@ -3311,7 +3311,7 @@ func (s *PluginSettings) SetDefaults(ls LogSettings) {
 	}
 
 	if s.EnableRemoteMarketplace == nil {
-		s.EnableRemoteMarketplace = NewPointer(true)
+		s.EnableRemoteMarketplace = NewPointer(false)
 	}
 
 	if s.AutomaticPrepackagedPlugins == nil {
@@ -3849,11 +3849,7 @@ func (o *Config) SetDefaults() {
 	o.SamlSettings.SetDefaults()
 
 	if o.TeamSettings.TeammateNameDisplay == nil {
-		o.TeamSettings.TeammateNameDisplay = NewPointer(ShowUsername)
-
-		if *o.SamlSettings.Enable || *o.LdapSettings.Enable {
-			*o.TeamSettings.TeammateNameDisplay = ShowFullName
-		}
+		o.TeamSettings.TeammateNameDisplay = NewPointer(ShowFullName)
 	}
 
 	o.SqlSettings.SetDefaults(isUpdate)

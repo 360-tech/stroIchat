@@ -281,18 +281,20 @@ func (ch *Channels) InstallMarketplacePlugin(request *model.InstallMarketplacePl
 		}
 		defer fileReader.Close()
 
-		signatureReader, err := os.Open(prepackagedPlugin.SignaturePath)
-		if err != nil {
-			return nil, model.NewAppError("InstallMarketplacePlugin", "app.plugin.install_marketplace_plugin.app_error", nil, fmt.Sprintf("failed to open prepackaged plugin signature %s", prepackagedPlugin.SignaturePath), http.StatusInternalServerError).Wrap(err)
-		}
-		defer signatureReader.Close()
-
 		pluginFile = fileReader
-		signatureFile = signatureReader
+		if prepackagedPlugin.SignaturePath != "" {
+			signatureReader, err := os.Open(prepackagedPlugin.SignaturePath)
+			if err != nil {
+				return nil, model.NewAppError("InstallMarketplacePlugin", "app.plugin.install_marketplace_plugin.app_error", nil, fmt.Sprintf("failed to open prepackaged plugin signature %s", prepackagedPlugin.SignaturePath), http.StatusInternalServerError).Wrap(err)
+			}
+			defer signatureReader.Close()
+			signatureFile = signatureReader
+		}
+		// Internal prepackaged plugins (e.g. com.company.safety-compliance) may have no signature file
 		logger.Debug("Found matching pre-packaged plugin", mlog.String("bundle_path", prepackagedPlugin.Path), mlog.String("signature_path", prepackagedPlugin.SignaturePath))
 	}
 
-	if *ch.cfgSvc.Config().PluginSettings.EnableRemoteMarketplace {
+	if isRemoteMarketplaceEnabled(ch.cfgSvc.Config()) {
 		var plugin *model.BaseMarketplacePlugin
 		plugin, appErr = ch.getRemoteMarketplacePlugin(request.Id, request.Version)
 		// The plugin might only be prepackaged and not on the Marketplace.
@@ -337,13 +339,16 @@ func (ch *Channels) InstallMarketplacePlugin(request *model.InstallMarketplacePl
 	if pluginFile == nil {
 		return nil, model.NewAppError("InstallMarketplacePlugin", "app.plugin.marketplace_plugins.not_found.app_error", nil, "", http.StatusInternalServerError)
 	}
-	if signatureFile == nil {
+	allowNoSignature := isInternalPrepackagedPlugin(request.Id)
+	if signatureFile == nil && !allowNoSignature {
 		return nil, model.NewAppError("InstallMarketplacePlugin", "app.plugin.marketplace_plugins.signature_not_found.app_error", nil, "", http.StatusInternalServerError)
 	}
 
-	appErr = ch.verifyPlugin(logger, pluginFile, signatureFile)
-	if appErr != nil {
-		return nil, appErr
+	if signatureFile != nil {
+		appErr = ch.verifyPlugin(logger, pluginFile, signatureFile)
+		if appErr != nil {
+			return nil, appErr
+		}
 	}
 
 	manifest, appErr := ch.installPlugin(pluginFile, signatureFile, installPluginLocallyAlways)
