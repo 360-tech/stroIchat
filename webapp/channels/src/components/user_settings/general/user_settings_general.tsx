@@ -872,6 +872,34 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
             } else {
                 inputs.push(
                     <div
+                        key='lastNameSetting'
+                        className='form-group'
+                    >
+                        <label
+                            className='col-sm-5 control-label'
+                            htmlFor='lastName'
+                        >
+                            <FormattedMessage
+                                id='user.settings.general.lastName'
+                                defaultMessage='Last Name'
+                            />
+                        </label>
+                        <div className='col-sm-7'>
+                            <Input
+                                id='lastName'
+                                name='lastName'
+                                type='text'
+                                onChange={this.updateLastName}
+                                maxLength={Constants.MAX_LASTNAME_LENGTH}
+                                value={this.state.lastName}
+                                aria-label={formatMessage({id: 'user.settings.general.lastName', defaultMessage: 'Last Name'})}
+                            />
+                        </div>
+                    </div>,
+                );
+
+                inputs.push(
+                    <div
                         key='firstNameSetting'
                         className='form-group'
                     >
@@ -923,34 +951,6 @@ export class UserSettingsGeneralTab extends PureComponent<Props, State> {
                                 maxLength={Constants.MAX_FIRSTNAME_LENGTH}
                                 value={this.state.middleName}
                                 aria-label={formatMessage({id: 'user.settings.general.middleName', defaultMessage: 'Middle Name'})}
-                            />
-                        </div>
-                    </div>,
-                );
-
-                inputs.push(
-                    <div
-                        key='lastNameSetting'
-                        className='form-group'
-                    >
-                        <label
-                            className='col-sm-5 control-label'
-                            htmlFor='lastName'
-                        >
-                            <FormattedMessage
-                                id='user.settings.general.lastName'
-                                defaultMessage='Last Name'
-                            />
-                        </label>
-                        <div className='col-sm-7'>
-                            <Input
-                                id='lastName'
-                                name='lastName'
-                                type='text'
-                                onChange={this.updateLastName}
-                                maxLength={Constants.MAX_LASTNAME_LENGTH}
-                                value={this.state.lastName}
-                                aria-label={formatMessage({id: 'user.settings.general.lastName', defaultMessage: 'Last Name'})}
                             />
                         </div>
                     </div>,

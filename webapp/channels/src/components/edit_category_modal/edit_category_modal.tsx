@@ -12,7 +12,7 @@ import {localizeMessage} from 'utils/utils';
 
 import '../category_modal.scss';
 
-const MAX_LENGTH = 22;
+const MAX_LENGTH = 60;
 const ACTION_WAIT_MS = 1000;
 
 type Props = {
