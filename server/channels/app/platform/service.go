@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"hash/maphash"
 	"net/http"
+	"reflect"
 	"runtime"
 	"strconv"
 	"sync"
@@ -365,6 +366,52 @@ func New(sc ServiceConfig, options ...Option) (*PlatformService, error) {
 			ps.exportFilestore = backend
 		}
 	}
+
+	// Recreate filestore when FileSettings change
+	ps.configStore.AddListener(func(oldCfg, newCfg *model.Config) {
+		if reflect.DeepEqual(oldCfg.FileSettings, newCfg.FileSettings) {
+			return
+		}
+
+		mlog.Info("FileSettings changed, recreating file backend")
+
+		insecure := newCfg.ServiceSettings.EnableInsecureOutgoingConnections
+		license := ps.License()
+		backend, err := filestore.NewFileBackend(filestore.NewFileBackendSettingsFromConfig(
+			&newCfg.FileSettings,
+			license != nil && *license.Features.Compliance,
+			insecure != nil && *insecure,
+		))
+		if err != nil {
+			mlog.Error("Failed to recreate file backend on config change", mlog.Err(err))
+			return
+		}
+
+		if connErr := backend.TestConnection(); connErr != nil {
+			mlog.Error("New file backend failed connection test, keeping old backend", mlog.Err(connErr))
+			return
+		}
+
+		ps.filestore = backend
+		mlog.Info("File backend recreated successfully", mlog.String("driver", backend.DriverName()))
+
+		// Update export filestore
+		if *newCfg.FileSettings.DedicatedExportStore {
+			exportBackend, errExport := filestore.NewExportFileBackend(
+				filestore.NewExportFileBackendSettingsFromConfig(
+					&newCfg.FileSettings,
+					license != nil && *license.Features.Compliance,
+					false,
+				))
+			if errExport != nil {
+				mlog.Error("Failed to recreate export file backend", mlog.Err(errExport))
+				return
+			}
+			ps.exportFilestore = exportBackend
+		} else {
+			ps.exportFilestore = backend
+		}
+	})
 
 	// Step 10: Init Metrics Server depends on step 6 (store) and 8 (license)
 	if ps.startMetrics {
