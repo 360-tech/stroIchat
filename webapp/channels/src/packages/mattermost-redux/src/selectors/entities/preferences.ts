@@ -98,16 +98,12 @@ export const getGroupShowPreferences = makeGetCategory('getGroupShowPreferences'
 export const getTeammateNameDisplaySetting: (state: GlobalState) => string = createSelector(
     'getTeammateNameDisplaySetting',
     getConfig,
-    (state) => getPreferenceObject(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.NAME_NAME_FORMAT),
-    getLicense,
-    (config, teammateNameDisplayPreference, license) => {
-        const useAdminTeammateNameDisplaySetting = (license && license.LockTeammateNameDisplay === 'true') && config.LockTeammateNameDisplay === 'true';
-        if (teammateNameDisplayPreference && !useAdminTeammateNameDisplaySetting) {
-            return teammateNameDisplayPreference.value || '';
-        } else if (config.TeammateNameDisplay) {
+    (config) => {
+        if (config.TeammateNameDisplay) {
             return config.TeammateNameDisplay;
         }
-        return General.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME;
+
+        return General.TEAMMATE_NAME_DISPLAY.SHOW_FULLNAME;
     },
 );
 
