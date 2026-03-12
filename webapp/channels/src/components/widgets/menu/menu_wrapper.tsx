@@ -28,6 +28,7 @@ type Props = {
     isDisabled?: boolean;
     stopPropagationOnToggle?: boolean;
     open?: boolean;
+    portalRootId?: string;
 }
 
 type State = {
@@ -106,8 +107,21 @@ export default class MenuWrapper extends React.PureComponent<Props, State> {
     };
 
     private closeOnBlur = (e: Event) => {
-        if (this.node && this.node.current && e.target && this.node.current.contains(e.target as Node)) {
+        const target = e.target as Node | null;
+        if (!target) {
+            this.close();
             return;
+        }
+
+        if (this.node && this.node.current && this.node.current.contains(target)) {
+            return;
+        }
+
+        if (this.props.portalRootId) {
+            const portalRoot = document.getElementById(this.props.portalRootId);
+            if (portalRoot && portalRoot.contains(target)) {
+                return;
+            }
         }
 
         this.close();

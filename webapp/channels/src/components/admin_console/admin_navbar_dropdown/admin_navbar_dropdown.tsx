@@ -15,6 +15,7 @@ import Menu from 'components/widgets/menu/menu';
 import {ModalIdentifiers} from 'utils/constants';
 import {filterAndSortTeamsByDisplayName} from 'utils/team_utils';
 
+import AdminNavbarDropdownPortal from './admin_navbar_dropdown_portal';
 import MenuItemBlockableLink from './menu_item_blockable_link';
 
 type Props = {
@@ -24,7 +25,7 @@ type Props = {
     navigationBlocked?: boolean;
     teams: Team[];
     actions: {
-        deferNavigation: (onNavigationConfirmed: any) => any;
+        deferNavigation: (onNavigationConfirmed: () => void) => void;
     };
 };
 
@@ -73,32 +74,28 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
             );
         }
 
-        const adminGuideLink = 'https://docs.mattermost.com/guides/administration.html';
-
         return (
-            <Menu ariaLabel={formatMessage({id: 'admin.nav.menuAriaLabel', defaultMessage: 'Admin Console Menu'})}>
-                <Menu.Group>
-                    {teamToRender}
-                    {switchTeams}
-                </Menu.Group>
-                <Menu.Group>
-                    <Menu.ItemExternalLink
-                        url={adminGuideLink}
-                        text={formatMessage({id: 'admin.nav.administratorsGuide', defaultMessage: 'Administrator Guide'})}
-                    />
-                    <Menu.ItemToggleModalRedux
-                        modalId={ModalIdentifiers.ABOUT}
-                        dialogType={AboutBuildModal}
-                        text={formatMessage({id: 'navbar_dropdown.about', defaultMessage: 'About {appTitle}'}, {appTitle: siteName || 'Mattermost'})}
-                    />
-                </Menu.Group>
-                <Menu.Group>
-                    <Menu.ItemAction
-                        onClick={this.handleLogout}
-                        text={formatMessage({id: 'navbar_dropdown.logout', defaultMessage: 'Log Out'})}
-                    />
-                </Menu.Group>
-            </Menu>
+            <AdminNavbarDropdownPortal>
+                <Menu ariaLabel={formatMessage({id: 'admin.nav.menuAriaLabel', defaultMessage: 'Admin Console Menu'})}>
+                    <Menu.Group>
+                        {teamToRender}
+                        {switchTeams}
+                    </Menu.Group>
+                    <Menu.Group>
+                        <Menu.ItemToggleModalRedux
+                            modalId={ModalIdentifiers.ABOUT}
+                            dialogType={AboutBuildModal}
+                            text={formatMessage({id: 'navbar_dropdown.about', defaultMessage: 'About {appTitle}'}, {appTitle: siteName || 'Mattermost'})}
+                        />
+                    </Menu.Group>
+                    <Menu.Group>
+                        <Menu.ItemAction
+                            onClick={this.handleLogout}
+                            text={formatMessage({id: 'navbar_dropdown.logout', defaultMessage: 'Log Out'})}
+                        />
+                    </Menu.Group>
+                </Menu>
+            </AdminNavbarDropdownPortal>
         );
     }
 }

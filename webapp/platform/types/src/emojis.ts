@@ -12,8 +12,7 @@ export type EmojiCategory =
     | 'travel-places'
     | 'objects'
     | 'symbols'
-    | 'flags'
-    | 'custom';
+    | 'flags';
 
 export type CustomEmoji = {
     id: string;

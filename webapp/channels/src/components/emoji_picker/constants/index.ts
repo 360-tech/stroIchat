@@ -103,14 +103,6 @@ const emojiCategories = {
         }),
         iconClassName: 'icon-flag-outline',
     },
-    custom: {
-        name: 'custom',
-        label: defineMessage({
-            id: 'emoji_picker.custom',
-            defaultMessage: 'Custom',
-        }),
-        iconClassName: 'icon-emoticon-custom-outline',
-    },
 } satisfies Record<EmojiCategory, Category>;
 
 export const RECENT_EMOJI_CATEGORY: Pick<Categories, 'recent'> = {recent: emojiCategories.recent};
