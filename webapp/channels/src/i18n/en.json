@@ -1382,7 +1382,6 @@
   "admin.metrics.listenAddressEx": "E.g.: \":8067\"",
   "admin.metrics.listenAddressTitle": "Listen Address:",
   "admin.mfa.bannerDesc": "<link>Multi-factor authentication</link> is available for accounts with AD/LDAP or email login. If other login methods are used, MFA should be configured with the authentication provider.",
-  "admin.nav.administratorsGuide": "Administrator's Guide",
   "admin.nav.commercialSupport": "Commercial Support",
   "admin.nav.menuAriaLabel": "Admin Console Menu",
   "admin.nav.switch": "Team Selection",

@@ -73,8 +73,6 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
             );
         }
 
-        const adminGuideLink = 'https://docs.mattermost.com/guides/administration.html';
-
         return (
             <Menu ariaLabel={formatMessage({id: 'admin.nav.menuAriaLabel', defaultMessage: 'Admin Console Menu'})}>
                 <Menu.Group>
@@ -82,10 +80,6 @@ class AdminNavbarDropdown extends React.PureComponent<Props> {
                     {switchTeams}
                 </Menu.Group>
                 <Menu.Group>
-                    <Menu.ItemExternalLink
-                        url={adminGuideLink}
-                        text={formatMessage({id: 'admin.nav.administratorsGuide', defaultMessage: 'Administrator Guide'})}
-                    />
                     <Menu.ItemToggleModalRedux
                         modalId={ModalIdentifiers.ABOUT}
                         dialogType={AboutBuildModal}

@@ -1382,7 +1382,6 @@
   "admin.mfa.bannerDesc": "<link>多重验证</link>可在 AD/LDAP 或邮件登录的账号使用。如果使用其他的登录方式，MFA 应该在对应的验证提供商配置。",
   "admin.mobile_security_feature_discovery.copy": "为移动端用户启用生物识别认证、防止屏幕截图和越狱/Root 检测等高级安全功能。",
   "admin.mobile_security_feature_discovery.title": "使用 stroichat 企业版增强移动应用安全性",
-  "admin.nav.administratorsGuide": "管理员手册",
   "admin.nav.commercialSupport": "商业支持",
   "admin.nav.menuAriaLabel": "管理员控制台菜单",
   "admin.nav.switch": "团队选择",
