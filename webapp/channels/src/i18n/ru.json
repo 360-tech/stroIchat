@@ -2952,7 +2952,7 @@
   "backstage_list.previousButton.ariaLabel": "Предыдущий",
   "backstage_list.search": "Поиск",
   "backstage_navbar.back": "Назад",
-  "backstage_navbar.backToMattermost": "Вернуться к {siteName}",
+  "backstage_navbar.backToSiteName": "Вернуться к {siteName}",
   "backstage_sidebar.bots": "Учетные записи ботов",
   "backstage_sidebar.emoji": "Пользовательские смайлы",
   "backstage_sidebar.integrations": "Интеграции",
