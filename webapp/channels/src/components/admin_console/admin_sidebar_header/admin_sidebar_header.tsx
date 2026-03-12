@@ -36,7 +36,10 @@ const SidebarHeader = ({currentUser: me}: Props) => {
     }
 
     return (
-        <MenuWrapper className='AdminSidebarHeader'>
+        <MenuWrapper
+            className='AdminSidebarHeader'
+            portalRootId='admin-navbar-dropdown-portal'
+        >
             <div>
                 {profilePicture}
                 <div className='header__info'>
