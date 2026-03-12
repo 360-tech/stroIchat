@@ -10,7 +10,23 @@ import {getIsLhsOpen} from 'selectors/lhs';
 import {getIsRhsOpen} from 'selectors/rhs';
 import {getIsMobileView} from 'selectors/views/browser';
 
-const LHS_SIDEBAR_WIDTH_PX = 290;
+const getLhsSidebarWidthPx = () => {
+    if (typeof window === 'undefined') {
+        return 290;
+    }
+
+    const width = window.innerWidth;
+
+    if (width <= 320) {
+        return 220;
+    }
+
+    if (width <= 480) {
+        return 260;
+    }
+
+    return 290;
+};
 const EDGE_SWIPE_ZONE_PX = 24;
 const OPEN_CLOSE_THRESHOLD_PX = 120;
 
@@ -32,6 +48,8 @@ export const MobileTouchGestures = (): null => {
             return undefined;
         }
 
+        const LHS_SIDEBAR_WIDTH_PX = getLhsSidebarWidthPx();
+
         const handleTouchStart = (e: TouchEvent) => {
             if (e.touches.length !== 1) {
                 return;
@@ -47,7 +65,7 @@ export const MobileTouchGestures = (): null => {
                 lastOffsetRef.current = 0;
             } else if (isLhsOpen) {
                 gestureRef.current = {type: 'close', startX: x};
-                lastOffsetRef.current = 0;
+                lastOffsetRef.current = LHS_SIDEBAR_WIDTH_PX;
             }
         };
 
@@ -65,7 +83,7 @@ export const MobileTouchGestures = (): null => {
                 lastOffsetRef.current = offset;
                 dispatch(setDragOffset(offset));
             } else if (g.type === 'close') {
-                const offset = Math.min(0, Math.max(deltaX, -LHS_SIDEBAR_WIDTH_PX));
+                const offset = Math.max(0, Math.min(LHS_SIDEBAR_WIDTH_PX + deltaX, LHS_SIDEBAR_WIDTH_PX));
                 lastOffsetRef.current = offset;
                 dispatch(setDragOffset(offset));
             } else {
@@ -85,7 +103,8 @@ export const MobileTouchGestures = (): null => {
                 }
                 dispatch(setDragOffset(0));
             } else if (g.type === 'close') {
-                if (offset <= -OPEN_CLOSE_THRESHOLD_PX) {
+                const closedDistance = LHS_SIDEBAR_WIDTH_PX - offset;
+                if (closedDistance >= OPEN_CLOSE_THRESHOLD_PX) {
                     dispatch(closeLhs());
                 }
                 dispatch(setDragOffset(0));

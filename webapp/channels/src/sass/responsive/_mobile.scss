@@ -1256,15 +1256,9 @@
     #SidebarContainer {
         width: 290px;
         border: none;
-        transform: translate3d(-290px, 0, 0);
-        transition: transform 0.35s ease;
 
         +.inner-wrap #app-content {
             margin-left: 0;
-        }
-
-        &.move--right {
-            transform: translate3d(0, 0, 0);
         }
 
         .search__form {
