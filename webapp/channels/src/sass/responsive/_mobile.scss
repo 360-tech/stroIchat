@@ -1515,6 +1515,12 @@
     // Let horizontal swipes be handled by app gestures (sidebar open/close), not browser back
     #channel_view.channel-view {
         touch-action: pan-y;
+        overscroll-behavior-x: none;
+    }
+
+    #root.channel-view {
+        touch-action: pan-y;
+        overscroll-behavior-x: none;
     }
 
     .post-comments {
