@@ -2948,7 +2948,7 @@
   "backstage_list.previousButton.ariaLabel": "Previous",
   "backstage_list.search": "Search",
   "backstage_navbar.back": "Back",
-  "backstage_navbar.backToMattermost": "Back to {siteName}",
+  "backstage_navbar.backToSiteName": "Back to {siteName}",
   "backstage_sidebar.bots": "Bot Accounts",
   "backstage_sidebar.emoji": "Custom Emoji",
   "backstage_sidebar.integrations": "Integrations",

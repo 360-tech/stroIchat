@@ -64,16 +64,16 @@ export default class CenterChannel extends React.PureComponent<Props, State> {
     }
 
     render() {
-        const {lastChannelPath, isCollapsedThreadsEnabled, isMobileView} = this.props;
+        const {lastChannelPath, isCollapsedThreadsEnabled, isMobileView, lhsOpen, rhsOpen, rhsMenuOpen} = this.props;
         const url = this.props.match.url;
 
         return (
             <div
                 key='inner-wrap'
                 className={classNames('inner-wrap', 'channel__wrap', {
-                    'move--right': this.props.lhsOpen,
-                    'move--left': this.props.rhsOpen,
-                    'move--left-small': this.props.rhsMenuOpen,
+                    'move--right': lhsOpen && !isMobileView,
+                    'move--left': rhsOpen,
+                    'move--left-small': rhsMenuOpen,
                 })}
             >
                 {isMobileView && <MobileChannelHeader/>}

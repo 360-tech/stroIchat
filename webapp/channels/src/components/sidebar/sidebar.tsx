@@ -30,7 +30,23 @@ const KeyboardShortcutsModal = makeAsyncComponent('KeyboardShortcutsModal', lazy
 const NewChannelModal = makeAsyncComponent('NewChannelModal', lazy(() => import('components/new_channel_modal/new_channel_modal')));
 const UserSettingsModal = makeAsyncComponent('UserSettingsModal', lazy(() => import('components/user_settings/modal')));
 
-const LHS_SIDEBAR_WIDTH_PX = 290;
+const getLhsSidebarWidthPx = () => {
+    if (typeof window === 'undefined') {
+        return 290;
+    }
+
+    const width = window.innerWidth;
+
+    if (width <= 320) {
+        return 220;
+    }
+
+    if (width <= 480) {
+        return 260;
+    }
+
+    return 290;
+};
 
 type Props = {
     teamId: string;
@@ -227,12 +243,13 @@ export default class Sidebar extends React.PureComponent<Props, State> {
         const ariaLabel = localizeMessage({id: 'accessibility.sections.lhsNavigator', defaultMessage: 'channel navigator region'});
 
         const {isOpen, isMobileView, dragOffset} = this.props;
+        const sidebarWidth = getLhsSidebarWidthPx();
         const isDragging = dragOffset !== 0;
-        const baseX = isOpen ? 0 : -LHS_SIDEBAR_WIDTH_PX;
-        const translateX = baseX + dragOffset;
+        const baseX = isOpen ? 0 : -sidebarWidth;
+        const translateX = isMobileView && isDragging ? (-sidebarWidth + dragOffset) : baseX;
         const lhsStyle = isMobileView ? {
             transform: `translate3d(${translateX}px, 0, 0)`,
-            transition: isDragging ? 'none' : undefined,
+            transition: isDragging ? 'none' : 'transform 0.35s ease',
         } : undefined;
 
         return (

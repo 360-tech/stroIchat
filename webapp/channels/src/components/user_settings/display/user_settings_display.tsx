@@ -7,7 +7,6 @@ import deepEqual from 'fast-deep-equal';
 import React from 'react';
 import type {MessageDescriptor} from 'react-intl';
 import {FormattedMessage, defineMessage} from 'react-intl';
-import type {Timezone} from 'timezones.json';
 
 import type {PreferencesType, PreferenceType} from '@mattermost/types/preferences';
 import type {UserProfile, UserTimezone} from '@mattermost/types/users';
@@ -93,7 +92,6 @@ type Props = OwnProps & {
     closeModal: () => void;
     collapseModal: () => void;
     setRequireConfirm?: () => void;
-    timezones: Timezone[];
     userTimezone: UserTimezone;
     allowCustomThemes: boolean;
     enableLinkPreviews: boolean;
@@ -777,48 +775,48 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
             }),
         });
 
-        const teammateNameDisplaySection = this.createSection({
-            section: Preferences.NAME_NAME_FORMAT,
-            display: 'teammateNameDisplay',
-            value: this.props.lockTeammateNameDisplay ? this.props.configTeammateNameDisplay : this.state.teammateNameDisplay,
-            defaultDisplay: this.props.configTeammateNameDisplay,
-            title: defineMessage({
-                id: 'user.settings.display.teammateNameDisplayTitle',
-                defaultMessage: 'Teammate Name Display',
-            }),
-            firstOption: {
-                value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME,
-                radionButtonText: {
-                    label: defineMessage({
-                        id: 'user.settings.display.teammateNameDisplayUsername',
-                        defaultMessage: 'Show username',
-                    }),
-                },
-            },
-            secondOption: {
-                value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_NICKNAME_FULLNAME,
-                radionButtonText: {
-                    label: defineMessage({
-                        id: 'user.settings.display.teammateNameDisplayNicknameFullname',
-                        defaultMessage: 'Show nickname if one exists, otherwise show first and last name',
-                    }),
-                },
-            },
-            thirdOption: {
-                value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_FULLNAME,
-                radionButtonText: {
-                    label: defineMessage({
-                        id: 'user.settings.display.teammateNameDisplayFullname',
-                        defaultMessage: 'Show first and last name',
-                    }),
-                },
-            },
-            description: defineMessage({
-                id: 'user.settings.display.teammateNameDisplayDescription',
-                defaultMessage: 'Set how to display other user\'s names in posts and the Direct Messages list.',
-            }),
-            disabled: this.props.lockTeammateNameDisplay,
-        });
+        // const teammateNameDisplaySection = this.createSection({
+        //     section: Preferences.NAME_NAME_FORMAT,
+        //     display: 'teammateNameDisplay',
+        //     value: this.props.lockTeammateNameDisplay ? this.props.configTeammateNameDisplay : this.state.teammateNameDisplay,
+        //     defaultDisplay: this.props.configTeammateNameDisplay,
+        //     title: defineMessage({
+        //         id: 'user.settings.display.teammateNameDisplayTitle',
+        //         defaultMessage: 'Teammate Name Display',
+        //     }),
+        //     firstOption: {
+        //         value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME,
+        //         radionButtonText: {
+        //             label: defineMessage({
+        //                 id: 'user.settings.display.teammateNameDisplayUsername',
+        //                 defaultMessage: 'Show username',
+        //             }),
+        //         },
+        //     },
+        //     secondOption: {
+        //         value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_NICKNAME_FULLNAME,
+        //         radionButtonText: {
+        //             label: defineMessage({
+        //                 id: 'user.settings.display.teammateNameDisplayNicknameFullname',
+        //                 defaultMessage: 'Show nickname if one exists, otherwise show first and last name',
+        //             }),
+        //         },
+        //     },
+        //     thirdOption: {
+        //         value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_FULLNAME,
+        //         radionButtonText: {
+        //             label: defineMessage({
+        //                 id: 'user.settings.display.teammateNameDisplayFullname',
+        //                 defaultMessage: 'Show first and last name',
+        //             }),
+        //         },
+        //     },
+        //     description: defineMessage({
+        //         id: 'user.settings.display.teammateNameDisplayDescription',
+        //         defaultMessage: 'Set how to display other user\'s names in posts and the Direct Messages list.',
+        //     }),
+        //     disabled: this.props.lockTeammateNameDisplay,
+        // });
 
         const availabilityStatusOnPostsSection = this.createSection({
             section: 'availabilityStatus',
@@ -1204,7 +1202,7 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
                     {themeSection}
                     {collapsedReplyThreads}
                     {clockSection}
-                    {teammateNameDisplaySection}
+                    {/* {teammateNameDisplaySection} */}
                     {availabilityStatusOnPostsSection}
                     {lastActiveSection}
                     {timezoneSelection}
