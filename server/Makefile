@@ -325,8 +325,7 @@ build-safety-compliance-plugin: ## Build Safety and Compliance plugin and copy t
 			echo "Safety Compliance plugin unchanged, skipping build"; \
 		else \
 			$(MAKE) -C "$(ROOT)../plugins/safety-compliance" dist; \
-			SRC=""; \
-			for f in "$(ROOT)../plugins/safety-compliance/dist"/com.company.safety-compliance-*.tar.gz; do SRC="$$f"; break; done; \
+			SRC="$(ROOT)../plugins/safety-compliance/dist/com.company.safety-compliance.tar.gz"; \
 			if [ -f "$$SRC" ]; then \
 				DEST="prepackaged_plugins/$$(basename "$$SRC")"; \
 				if [ -f "$$DEST" ] && cmp -s "$$SRC" "$$DEST"; then \
