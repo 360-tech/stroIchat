@@ -34,13 +34,13 @@ const InviteMembersLink = ({
                         id: 'onboarding_wizard.invite_members.copy_link_input',
                         defaultMessage: 'team invite link',
                     })}
-                    data-testid='shareLinkInput'
+                    data-type='copyLinkInput'
                 />
             }
             <button
                 className={`InviteMembersLink__button${inputAndButtonStyle ? '' : '--single'}`}
                 onClick={copyText.onClick}
-                data-testid='shareLinkInputButton'
+                data-type='copyLinkButton'
             >
                 {copyText.copiedRecently ? (
                     <>
