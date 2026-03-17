@@ -82,7 +82,6 @@ export type CloudCustomer = {
     contact_last_name: string;
     billing_address: Address;
     company_address: Address;
-    payment_method: PaymentMethod;
 }
 
 // CustomerPatch model represents a customer patch on the system.
