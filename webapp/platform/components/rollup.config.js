@@ -22,7 +22,7 @@ export default [
         input: 'src/index.tsx',
         output: [
             {
-                sourcemap: true,
+                sourcemap: false,
                 file: packagejson.module,
                 format: 'es',
                 globals: {'styled-components': 'styled'},
