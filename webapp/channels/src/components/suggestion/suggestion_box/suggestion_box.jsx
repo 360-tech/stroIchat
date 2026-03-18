@@ -368,9 +368,9 @@ export default class SuggestionBox extends React.PureComponent {
 
     addTextAtCaret = (term, matchedPretext) => {
         const textbox = this.getTextbox();
-        const caret = textbox.selectionEnd;
-        const text = this.props.value;
-        const pretext = textbox.value.substring(0, textbox.selectionEnd);
+        const liveValue = textbox.value;
+        const caret = (document.activeElement === textbox) ? textbox.selectionEnd : liveValue.length;
+        const pretext = liveValue.substring(0, caret);
 
         let prefix;
         let keepPretext = false;
@@ -390,7 +390,7 @@ export default class SuggestionBox extends React.PureComponent {
             return;
         }
 
-        const suffix = text.substring(caret);
+        const suffix = liveValue.substring(caret);
 
         const newValue = prefix + term + ' ' + suffix;
         textbox.value = newValue;

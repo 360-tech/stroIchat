@@ -146,7 +146,7 @@ const AdvancedTextEditor = ({
 
     const isRHS = isThreadView ? false : Boolean(rootId) || location === Locations.RHS_COMMENT;
 
-    const getFormattingBarPreferenceName = () => {
+    const getFormattingBarPreferenceName = useCallback(() => {
         let name: string;
         if (isRHS) {
             name = isInEditMode ? AdvancedTextEditorConst.EDIT : AdvancedTextEditorConst.COMMENT;
@@ -155,7 +155,7 @@ const AdvancedTextEditor = ({
         }
 
         return name;
-    };
+    }, [isRHS, isInEditMode]);
 
     const currentUserId = useSelector(getCurrentUserId);
     const channel = useSelector((state: GlobalState) => getChannelSelector(state, channelId));

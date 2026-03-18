@@ -189,7 +189,7 @@ export default class CommandProvider extends Provider {
                         }
                         matches.push({
                             Suggestion: s,
-                            Complete: '',
+                            Complete: s,
                             Hint: hint,
                             Description: cmd.auto_complete_desc,
                             IconData: '',
