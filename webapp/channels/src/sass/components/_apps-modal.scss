@@ -1,4 +1,9 @@
 #appsModal {
+    .modal-content {
+        max-height: 100vh;
+        overflow-y: auto !important;
+    }
+    
     .modal-footer {
         .btn {
             margin-bottom: 5px;
