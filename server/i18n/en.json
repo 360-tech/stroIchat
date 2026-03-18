@@ -10793,16 +10793,8 @@
     "translation": "Safari"
   },
   {
-    "id": "web.error.unsupported_browser.download",
-    "translation": "Download the App"
-  },
-  {
     "id": "web.error.unsupported_browser.download_app_or_upgrade_browser",
-    "translation": "Download the Stroichat app or use a supported browser for a better experience."
-  },
-  {
-    "id": "web.error.unsupported_browser.download_the_app",
-    "translation": "Download the App"
+    "translation": "Please upgrade to a supported browser for the best experience."
   },
   {
     "id": "web.error.unsupported_browser.install_guide.mac",

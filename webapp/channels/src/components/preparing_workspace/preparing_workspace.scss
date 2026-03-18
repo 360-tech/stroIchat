@@ -105,6 +105,15 @@
             animation-name: invitationSlideOutRight;
         }
     }
+
+    button[data-type='copyLinkButton'] {
+        width: 190px;
+        font-size: 14px;
+
+        & span {
+            height: unset;
+        }
+    }
 }
 
 .PreparingWorkspacePageContainer {

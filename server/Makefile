@@ -309,12 +309,36 @@ prepackaged-plugins: build-safety-compliance-plugin ## Populate the prepackaged-
 	done
 
 build-safety-compliance-plugin: ## Build Safety and Compliance plugin and copy to prepackaged_plugins
-	@echo Building Safety Compliance plugin
+	@echo "Building Safety Compliance plugin (incremental)"
 	@if [ -d "$(ROOT)../plugins/safety-compliance" ]; then \
-		$(MAKE) -C $(ROOT)../plugins/safety-compliance dist && \
-		mkdir -p prepackaged_plugins && \
-		cp $(ROOT)../plugins/safety-compliance/dist/com.company.safety-compliance-*.tar.gz prepackaged_plugins/ 2>/dev/null || true; \
-		echo "Safety Compliance plugin copied to prepackaged_plugins"; \
+		mkdir -p prepackaged_plugins; \
+		HASH_FILE="prepackaged_plugins/.safety-compliance.git-hash"; \
+		OLD_HASH=""; \
+		if [ -f "$$HASH_FILE" ]; then OLD_HASH="$$(cat "$$HASH_FILE")"; fi; \
+		NEW_HASH="$$(cd "$(ROOT)../plugins/safety-compliance" && { \
+			git ls-files -z | xargs -0 git hash-object 2>/dev/null | { command -v sha256sum >/dev/null 2>&1 && sha256sum || shasum -a 256; } | awk '{print $$1}'; \
+		})"; \
+		if [ -z "$$NEW_HASH" ]; then \
+			echo "Safety Compliance plugin hash could not be computed, building anyway"; \
+		fi; \
+		if [ -n "$$NEW_HASH" ] && [ "$$NEW_HASH" = "$$OLD_HASH" ]; then \
+			echo "Safety Compliance plugin unchanged, skipping build"; \
+		else \
+			$(MAKE) -C "$(ROOT)../plugins/safety-compliance" dist; \
+			SRC="$(ROOT)../plugins/safety-compliance/dist/com.company.safety-compliance.tar.gz"; \
+			if [ -f "$$SRC" ]; then \
+				DEST="prepackaged_plugins/$$(basename "$$SRC")"; \
+				if [ -f "$$DEST" ] && cmp -s "$$SRC" "$$DEST"; then \
+					echo "Safety Compliance plugin bundle unchanged, not copying"; \
+				else \
+					cp "$$SRC" prepackaged_plugins/; \
+					echo "Safety Compliance plugin copied to prepackaged_plugins"; \
+				fi; \
+			else \
+				echo "Safety Compliance plugin bundle not found, skipping copy"; \
+			fi; \
+			if [ -n "$$NEW_HASH" ]; then echo "$$NEW_HASH" > "$$HASH_FILE"; fi; \
+		fi; \
 	else \
 		echo "Safety Compliance plugin source not found at plugins/safety-compliance, skipping"; \
 	fi

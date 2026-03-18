@@ -5440,10 +5440,6 @@
     "translation": "Safari"
   },
   {
-    "id": "web.error.unsupported_browser.download",
-    "translation": "Скачать приложение"
-  },
-  {
     "id": "web.error.unsupported_browser.browser_get_latest.safari",
     "translation": "Установите последнюю версию браузера Safari"
   },
@@ -5457,11 +5453,7 @@
   },
   {
     "id": "web.error.unsupported_browser.download_app_or_upgrade_browser",
-    "translation": "Загрузите приложение Стройчат или используйте поддерживаемый браузер для лучшей работы."
-  },
-  {
-    "id": "web.error.unsupported_browser.download_the_app",
-    "translation": "Скачать приложение"
+    "translation": "Пожалуйста, обновите браузер до поддерживаемой версии для лучшей работы."
   },
   {
     "id": "web.error.unsupported_browser.install_guide.mac",

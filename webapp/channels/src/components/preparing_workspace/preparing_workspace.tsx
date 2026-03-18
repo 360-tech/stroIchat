@@ -43,13 +43,11 @@ import LaunchingWorkspace, {
     START_TRANSITIONING_OUT,
 } from './launching_workspace';
 import Organization from './organization';
-import Plugins from './plugins';
 import Progress from './progress';
 import {
     WizardSteps,
     Animations,
     emptyForm,
-    PLUGIN_NAME_TO_ID_MAP,
 } from './steps';
 import type {WizardStep, AnimationReason, Form} from './steps';
 
@@ -102,7 +100,6 @@ const PreparingWorkspace = ({actions, history, background}: Props) => {
     const team = currentTeam || myTeams?.[0];
 
     const config = useSelector(getConfig);
-    const pluginsEnabled = config.PluginsEnabled === 'true';
     const showOnMountTimeout = useRef<NodeJS.Timeout>();
     const configSiteUrl = config.SiteURL;
     const isConfigSiteUrlDefault = Boolean(
@@ -112,7 +109,6 @@ const PreparingWorkspace = ({actions, history, background}: Props) => {
 
     const stepOrder = [
         isSelfHosted && WizardSteps.Organization,
-        pluginsEnabled && WizardSteps.Plugins,
         WizardSteps.InviteMembers,
         WizardSteps.LaunchingWorkspace,
     ].filter((x) => Boolean(x)) as WizardStep[];
@@ -131,27 +127,11 @@ const PreparingWorkspace = ({actions, history, background}: Props) => {
     const browserSiteUrl = useMemo(getSiteURL, []);
     const [form, setForm] = useState({
         ...emptyForm,
+        plugins: {
+            ...emptyForm.plugins,
+            skipped: true,
+        },
     });
-
-    useEffect(() => {
-        if (!pluginsEnabled) {
-            if (!form.plugins.skipped) {
-                setForm({
-                    ...form,
-                    plugins: {
-                        skipped: false,
-                    },
-                });
-            }
-            if (currentStep === WizardSteps.Plugins) {
-                const mostRecentStepIndex = stepOrder.indexOf(mostRecentStep);
-                setStepHistory([
-                    mostRecentStep,
-                    stepOrder[Math.max(mostRecentStepIndex - 1, 0)],
-                ]);
-            }
-        }
-    }, [pluginsEnabled, currentStep, mostRecentStep]);
 
     const [showFirstPage, setShowFirstPage] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
@@ -264,28 +244,11 @@ const PreparingWorkspace = ({actions, history, background}: Props) => {
             }
         }
 
-        // send plugins
-        const {skipped: skippedPlugins, ...pluginChoices} = form.plugins;
-        let pluginsToSetup: string[] = [];
-
-        if (!skippedPlugins) {
-            pluginsToSetup = Object.entries(pluginChoices).reduce(
-                (acc: string[], [k, v]): string[] =>
-                    (v ? [
-                        ...acc,
-                        PLUGIN_NAME_TO_ID_MAP[
-                            k as keyof Omit<Form['plugins'], 'skipped'>
-                        ],
-                    ] : acc),
-                [],
-            );
-        }
-
         // This endpoint sets setup complete state, so we need to make this request
-        // even if admin skipped submitting plugins.
+        // even if admin skipped selecting anything.
         const completeSetupRequest = {
             organization: form.organization,
-            install_plugins: pluginsToSetup,
+            install_plugins: [],
         };
 
         try {
@@ -295,7 +258,7 @@ const PreparingWorkspace = ({actions, history, background}: Props) => {
                 data: true,
             });
         } catch (e) {
-            redirectWithError(WizardSteps.Plugins, genericSubmitError);
+            redirectWithError(WizardSteps.InviteMembers, genericSubmitError);
             return;
         }
 
@@ -378,22 +341,6 @@ const PreparingWorkspace = ({actions, history, background}: Props) => {
             setStepHistory([currentStep, stepOrder[stepIndex - 1]]);
         },
         [currentStep],
-    );
-
-    const skipPlugins = useCallback(
-        (skipped: boolean) => {
-            if (skipped === form.plugins.skipped) {
-                return;
-            }
-            setForm({
-                ...form,
-                plugins: {
-                    ...form.plugins,
-                    skipped,
-                },
-            });
-        },
-        [form],
     );
 
     const skipTeamMembers = useCallback(
@@ -488,35 +435,6 @@ const PreparingWorkspace = ({actions, history, background}: Props) => {
                     className='child-page'
                     createTeam={createTeam}
                     updateTeam={updateTeam}
-                />
-
-                <Plugins
-                    isSelfHosted={isSelfHosted}
-                    previous={previous}
-                    next={() => {
-                        makeNext(WizardSteps.Plugins)();
-                        skipPlugins(false);
-                    }}
-                    skip={() => {
-                        makeNext(WizardSteps.Plugins)();
-                        skipPlugins(true);
-                    }}
-                    options={form.plugins}
-                    setOption={(option: keyof Form['plugins']) => {
-                        setForm({
-                            ...form,
-                            plugins: {
-                                ...form.plugins,
-                                [option]: !form.plugins[option],
-                            },
-                        });
-                    }}
-                    show={shouldShowPage(WizardSteps.Plugins)}
-                    transitionDirection={getTransitionDirection(
-                        WizardSteps.Plugins,
-                    )}
-                    className='child-page'
-                    handleVisitMarketPlaceClick={() => {}}
                 />
                 <InviteMembers
                     next={() => {
