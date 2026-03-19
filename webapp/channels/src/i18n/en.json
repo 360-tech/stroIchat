@@ -5797,5 +5797,22 @@
   "yourcomputer": "Your computer",
   "youtube_video.play_button.aria_label": "Play video",
   "youtube_video.play.aria_label": "Play {videoTitle} on YouTube",
-  "youtube_video.thumbnail.alt_text": "Thumbnail for {videoTitle} on YouTube"
+  "youtube_video.thumbnail.alt_text": "Thumbnail for {videoTitle} on YouTube",
+  "sidebar_left.sidebar_category_menu.shareCategory": "Share Category",
+  "share_category_modal.title": "Share Category",
+  "share_category_modal.createLink": "Create Link",
+  "share_category_modal.copyLink": "Copy Link",
+  "share_category_modal.categoryPlaceholder": "Category name",
+  "share_category_modal.channelsLabel": "Select public channels",
+  "share_category_modal.generatedLink": "Share link",
+  "share_category_modal.copySuccess": "Link copied to clipboard",
+  "share_category_modal.copyError": "Failed to copy link. Please copy it manually.",
+  "share_category_modal.errorFallback": "Failed to create share link. Please try again.",
+  "category_share_apply.loading": "Loading shared category...",
+  "category_share_apply.title": "Shared Category",
+  "category_share_apply.description": "Category: {categoryName}. Channels: {count}.",
+  "category_share_apply.joinButton": "Join channels and create category",
+  "category_share_apply.success": "Done. Added to {count} channels in category {categoryName}.",
+  "category_share_apply.previewError": "Failed to load shared category.",
+  "category_share_apply.applyError": "Failed to apply shared category."
 }

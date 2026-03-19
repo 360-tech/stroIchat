@@ -69,6 +69,7 @@ const ModalController = makeAsyncComponent('ModalController', lazy(() => import(
 const AppBar = makeAsyncComponent('AppBar', lazy(() => import('components/app_bar/app_bar')));
 const ComponentLibrary = makeAsyncComponent('ComponentLibrary', lazy(() => import('components/component_library')));
 const PopoutController = makeAsyncComponent('PopoutController', lazy(() => import('components/popout_controller')));
+const CategoryShareApply = makeAsyncComponent('CategoryShareApply', lazy(() => import('components/category_share_apply/category_share_apply')));
 
 const Pluggable = makeAsyncPluggableComponent();
 
@@ -323,6 +324,10 @@ export default class Root extends React.PureComponent<Props, State> {
                     <LoggedInRoute
                         path={'/preparing-workspace'}
                         component={PreparingWorkspace}
+                    />
+                    <LoggedInRoute
+                        path={'/category-share/:token'}
+                        component={CategoryShareApply}
                     />
                     <Redirect
                         from={'/_redirect/integrations/:subpath*'}

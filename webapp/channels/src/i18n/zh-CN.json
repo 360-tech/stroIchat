@@ -5722,5 +5722,22 @@
   "yourcomputer": "您的电脑",
   "youtube_video.play.aria_label": "在 YouTube 上播放 {videoTitle}",
   "youtube_video.play_button.aria_label": "播放视频",
-  "youtube_video.thumbnail.alt_text": "YouTube 上的 {videoTitle} 的缩略图"
+  "youtube_video.thumbnail.alt_text": "YouTube 上的 {videoTitle} 的缩略图",
+  "sidebar_left.sidebar_category_menu.shareCategory": "共享分类",
+  "share_category_modal.title": "共享分类",
+  "share_category_modal.createLink": "创建链接",
+  "share_category_modal.copyLink": "复制链接",
+  "share_category_modal.categoryPlaceholder": "分类名称",
+  "share_category_modal.channelsLabel": "选择公开频道",
+  "share_category_modal.generatedLink": "共享链接",
+  "share_category_modal.copySuccess": "链接已复制到剪贴板",
+  "share_category_modal.copyError": "复制链接失败，请手动复制。",
+  "share_category_modal.errorFallback": "创建共享链接失败，请重试。",
+  "category_share_apply.loading": "正在加载共享分类...",
+  "category_share_apply.title": "共享分类",
+  "category_share_apply.description": "分类：{categoryName}。频道数：{count}。",
+  "category_share_apply.joinButton": "加入频道并创建分类",
+  "category_share_apply.success": "完成。已将 {count} 个频道添加到分类 {categoryName}。",
+  "category_share_apply.previewError": "加载共享分类失败。",
+  "category_share_apply.applyError": "应用共享分类失败。"
 }

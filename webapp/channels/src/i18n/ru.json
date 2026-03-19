@@ -5802,5 +5802,22 @@
   "yourcomputer": "Ваш компьютер",
   "youtube_video.play_button.aria_label": "Воспроизвести видео",
   "youtube_video.play.aria_label": "Включи {videoTitle} на YouTube",
-  "youtube_video.thumbnail.alt_text": "Миниатюра {videoTitle} на YouTube"
+  "youtube_video.thumbnail.alt_text": "Миниатюра {videoTitle} на YouTube",
+  "sidebar_left.sidebar_category_menu.shareCategory": "Поделиться категорией",
+  "share_category_modal.title": "Поделиться категорией",
+  "share_category_modal.createLink": "Создать ссылку",
+  "share_category_modal.copyLink": "Скопировать ссылку",
+  "share_category_modal.categoryPlaceholder": "Название категории",
+  "share_category_modal.channelsLabel": "Выберите публичные каналы",
+  "share_category_modal.generatedLink": "Ссылка",
+  "share_category_modal.copySuccess": "Ссылка скопирована в буфер обмена",
+  "share_category_modal.copyError": "Не удалось скопировать ссылку. Скопируйте ее вручную.",
+  "share_category_modal.errorFallback": "Не удалось создать ссылку. Попробуйте снова.",
+  "category_share_apply.loading": "Загрузка общей категории...",
+  "category_share_apply.title": "Общая категория",
+  "category_share_apply.description": "Категория: {categoryName}. Каналов: {count}.",
+  "category_share_apply.joinButton": "Вступить в каналы и создать категорию",
+  "category_share_apply.success": "Готово. Добавлено {count} каналов в категорию {categoryName}.",
+  "category_share_apply.previewError": "Не удалось загрузить общую категорию.",
+  "category_share_apply.applyError": "Не удалось применить общую категорию."
 }

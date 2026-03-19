@@ -1184,7 +1184,10 @@ func (ch *Channels) persistTransitionallyPrepackagedPlugins() {
 }
 
 // internalPluginIDs are plugin IDs that may be prepackaged without signature (internal fork use)
-var internalPluginIDs = []string{"com.company.safety-compliance"}
+var internalPluginIDs = []string{
+	"com.company.safety-compliance",
+	"com.company.category-share",
+}
 
 func isInternalPrepackagedPlugin(pluginID string) bool {
 	for _, id := range internalPluginIDs {

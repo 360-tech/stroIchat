@@ -1,0 +1,35 @@
+.ShareCategoryModal {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ShareCategoryModal__channels {
+    max-height: 220px;
+    overflow: auto;
+    padding: 8px;
+    border: 1px solid rgba(var(--center-channel-color-rgb), 0.16);
+    border-radius: 4px;
+}
+
+.ShareCategoryModal__label {
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.ShareCategoryModal__channel {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 6px 0;
+}
+
+.ShareCategoryModal__error {
+    color: var(--error-text);
+}
+
+.ShareCategoryModal__result {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
