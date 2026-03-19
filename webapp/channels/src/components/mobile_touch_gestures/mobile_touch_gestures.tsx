@@ -29,6 +29,16 @@ const getLhsSidebarWidthPx = () => {
 };
 const EDGE_SWIPE_ZONE_PX = 24;
 const OPEN_CLOSE_THRESHOLD_PX = 120;
+const DIRECTION_LOCK_THRESHOLD_PX = 10;
+type GestureType = 'open' | 'close' | 'closeRhs';
+type GestureDirection = 'horizontal' | 'vertical' | null;
+
+type GestureState = {
+    type: GestureType;
+    startX: number;
+    startY: number;
+    direction: GestureDirection;
+};
 
 /**
  * Listens for touch gestures on mobile/PWA: LHS open/close (with drag follow-through),
@@ -40,7 +50,7 @@ export const MobileTouchGestures = (): null => {
     const isLhsOpen = useSelector(getIsLhsOpen);
     const isRhsOpen = useSelector(getIsRhsOpen);
 
-    const gestureRef = useRef<{ type: 'open' | 'close' | 'closeRhs'; startX: number } | null>(null);
+    const gestureRef = useRef<GestureState | null>(null);
     const lastOffsetRef = useRef(0);
 
     useEffect(() => {
@@ -56,15 +66,16 @@ export const MobileTouchGestures = (): null => {
             }
             const touch = e.touches[0];
             const x = touch.clientX;
+            const y = touch.clientY;
 
             if (isRhsOpen) {
-                gestureRef.current = {type: 'closeRhs', startX: x};
+                gestureRef.current = {type: 'closeRhs', startX: x, startY: y, direction: null};
                 lastOffsetRef.current = 0;
             } else if (!isLhsOpen && x < EDGE_SWIPE_ZONE_PX) {
-                gestureRef.current = {type: 'open', startX: x};
+                gestureRef.current = {type: 'open', startX: x, startY: y, direction: null};
                 lastOffsetRef.current = 0;
             } else if (isLhsOpen) {
-                gestureRef.current = {type: 'close', startX: x};
+                gestureRef.current = {type: 'close', startX: x, startY: y, direction: null};
                 lastOffsetRef.current = LHS_SIDEBAR_WIDTH_PX;
             }
         };
@@ -74,9 +85,26 @@ export const MobileTouchGestures = (): null => {
             if (!g || e.touches.length !== 1) {
                 return;
             }
-            e.preventDefault();
             const touch = e.touches[0];
             const deltaX = touch.clientX - g.startX;
+            const deltaY = touch.clientY - g.startY;
+
+            if (!g.direction) {
+                const absX = Math.abs(deltaX);
+                const absY = Math.abs(deltaY);
+
+                if (absX < DIRECTION_LOCK_THRESHOLD_PX && absY < DIRECTION_LOCK_THRESHOLD_PX) {
+                    return;
+                }
+
+                g.direction = absX > absY ? 'horizontal' : 'vertical';
+            }
+
+            if (g.direction !== 'horizontal') {
+                return;
+            }
+
+            e.preventDefault();
 
             if (g.type === 'open') {
                 const offset = Math.max(0, Math.min(deltaX, LHS_SIDEBAR_WIDTH_PX));
@@ -108,7 +136,7 @@ export const MobileTouchGestures = (): null => {
                     dispatch(closeLhs());
                 }
                 dispatch(setDragOffset(0));
-            } else if (offset >= OPEN_CLOSE_THRESHOLD_PX) {
+            } else if (g.direction === 'horizontal' && offset >= OPEN_CLOSE_THRESHOLD_PX) {
                 dispatch(closeRightHandSide());
             }
             gestureRef.current = null;
