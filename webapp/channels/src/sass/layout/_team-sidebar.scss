@@ -31,6 +31,10 @@
         padding-top: 4px;
         -webkit-overflow-scrolling: touch;
 
+        @media screen and (max-width: 768px) {
+            padding-top: 6rem;
+        }
+
         .draggable-team-container {
             position: relative;
             display: inline-block;
