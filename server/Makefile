@@ -300,7 +300,7 @@ endif
 plugin-checker:
 	$(GO) run $(GOFLAGS) ./public/plugin/checker
 
-prepackaged-plugins: build-safety-compliance-plugin ## Populate the prepackaged-plugins directory.
+prepackaged-plugins: build-safety-compliance-plugin build-category-share-plugin ## Populate the prepackaged-plugins directory.
 	@echo Downloading prepackaged plugins: $(PLUGIN_PACKAGES)
 	mkdir -p prepackaged_plugins
 	@cd prepackaged_plugins && for plugin_package in $(PLUGIN_PACKAGES) ; do \
@@ -341,6 +341,41 @@ build-safety-compliance-plugin: ## Build Safety and Compliance plugin and copy t
 		fi; \
 	else \
 		echo "Safety Compliance plugin source not found at plugins/safety-compliance, skipping"; \
+	fi
+
+build-category-share-plugin: ## Build Category Share plugin and copy to prepackaged_plugins
+	@echo "Building Category Share plugin (incremental)"
+	@if [ -d "$(ROOT)../plugins/category-share" ]; then \
+		mkdir -p prepackaged_plugins; \
+		HASH_FILE="prepackaged_plugins/.category-share.git-hash"; \
+		OLD_HASH=""; \
+		if [ -f "$$HASH_FILE" ]; then OLD_HASH="$$(cat "$$HASH_FILE")"; fi; \
+		NEW_HASH="$$(cd "$(ROOT)../plugins/category-share" && { \
+			git ls-files -z | xargs -0 git hash-object 2>/dev/null | { command -v sha256sum >/dev/null 2>&1 && sha256sum || shasum -a 256; } | awk '{print $$1}'; \
+		})"; \
+		if [ -z "$$NEW_HASH" ]; then \
+			echo "Category Share plugin hash could not be computed, building anyway"; \
+		fi; \
+		if [ -n "$$NEW_HASH" ] && [ "$$NEW_HASH" = "$$OLD_HASH" ]; then \
+			echo "Category Share plugin unchanged, skipping build"; \
+		else \
+			$(MAKE) -C "$(ROOT)../plugins/category-share" dist; \
+			SRC="$$(ls -t "$(ROOT)../plugins/category-share/dist"/com.company.category-share*.tar.gz 2>/dev/null | head -n 1)"; \
+			if [ -f "$$SRC" ]; then \
+				DEST="prepackaged_plugins/$$(basename "$$SRC")"; \
+				if [ -f "$$DEST" ] && cmp -s "$$SRC" "$$DEST"; then \
+					echo "Category Share plugin bundle unchanged, not copying"; \
+				else \
+					cp "$$SRC" prepackaged_plugins/; \
+					echo "Category Share plugin copied to prepackaged_plugins"; \
+				fi; \
+			else \
+				echo "Category Share plugin bundle not found, skipping copy"; \
+			fi; \
+			if [ -n "$$NEW_HASH" ]; then echo "$$NEW_HASH" > "$$HASH_FILE"; fi; \
+		fi; \
+	else \
+		echo "Category Share plugin source not found at plugins/category-share, skipping"; \
 	fi
 
 prepackaged-binaries: ## Populate the prepackaged-binaries to the bin directory
@@ -622,7 +657,7 @@ validate-go-version: ## Validates the installed version of go against Mattermost
 build-templates: ## Compile all mjml email templates
 	cd $(TEMPLATES_DIR) && $(MAKE) build
 
-run-server: setup-go-work prepackaged-binaries build-safety-compliance-plugin validate-go-version start-docker client ## Starts the server.
+run-server: setup-go-work prepackaged-binaries build-safety-compliance-plugin build-category-share-plugin validate-go-version start-docker client ## Starts the server.
 	@echo Running mattermost for development
 ifeq ($(MM_USE_PGVECTOR),true)
 	@echo With pgvector PostgreSQL support enabled

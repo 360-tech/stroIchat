@@ -14,6 +14,7 @@ import {
     ClockOutlineIcon,
     ChevronRightIcon,
     CheckIcon,
+    LinkVariantIcon,
 } from '@mattermost/compass-icons/components';
 import type {ChannelCategory} from '@mattermost/types/channel_categories';
 import {CategorySorting} from '@mattermost/types/channel_categories';
@@ -21,13 +22,16 @@ import {CategorySorting} from '@mattermost/types/channel_categories';
 import {setCategoryMuted, setCategorySorting} from 'mattermost-redux/actions/channel_categories';
 import {readMultipleChannels} from 'mattermost-redux/actions/channels';
 import {CategoryTypes} from 'mattermost-redux/constants/channel_categories';
+import {getChannel} from 'mattermost-redux/selectors/entities/channels';
 import {shouldShowUnreadsCategory} from 'mattermost-redux/selectors/entities/preferences';
 
 import {openModal} from 'actions/views/modals';
-import {makeGetUnreadIdsForCategory} from 'selectors/views/channel_sidebar';
+import {makeGetFilteredChannelIdsForCategory, makeGetUnreadIdsForCategory} from 'selectors/views/channel_sidebar';
+import {getPluginStatus} from 'mattermost-redux/selectors/entities/admin';
 
 import DeleteCategoryModal from 'components/delete_category_modal';
 import EditCategoryModal from 'components/edit_category_modal';
+import ShareCategoryModal from 'components/share_category_modal/share_category_modal';
 import * as Menu from 'components/menu';
 
 import {ModalIdentifiers} from 'utils/constants';
@@ -48,8 +52,17 @@ const SidebarCategoryMenu = ({
     const dispatch = useDispatch();
     const showUnreadsCategory = useSelector(shouldShowUnreadsCategory);
     const getUnreadsIdsForCategory = useMemo(makeGetUnreadIdsForCategory, [category]);
+    const getFilteredChannelIdsForCategory = useMemo(makeGetFilteredChannelIdsForCategory, []);
     const unreadsIds = useSelector((state: GlobalState) => getUnreadsIdsForCategory(state, category));
+    const categoryChannelIds = useSelector((state: GlobalState) => getFilteredChannelIdsForCategory(state, category));
+    const publicCategoryChannelIds = useSelector((state: GlobalState) => {
+        return categoryChannelIds.filter((channelId) => getChannel(state, channelId)?.type === 'O');
+    });
     const {formatMessage} = useIntl();
+    const isCategorySharePluginActive = useSelector((state: GlobalState) => {
+        const status = getPluginStatus(state, 'com.company.category-share');
+        return status?.active === true;
+    });
 
     let muteUnmuteCategoryMenuItem: JSX.Element | null = null;
     if (category.type !== CategoryTypes.DIRECT_MESSAGES) {
@@ -81,7 +94,8 @@ const SidebarCategoryMenu = ({
 
     let deleteCategoryMenuItem: JSX.Element | null = null;
     let renameCategoryMenuItem: JSX.Element | null = null;
-    if (category.type === CategoryTypes.CUSTOM) {
+    let shareCategoryMenuItem: JSX.Element | null = null;
+    if (category.type === CategoryTypes.CUSTOM && isCategorySharePluginActive) {
         function handleDeleteCategory() {
             dispatch(openModal({
                 modalId: ModalIdentifiers.DELETE_CATEGORY,
@@ -129,6 +143,32 @@ const SidebarCategoryMenu = ({
                     <FormattedMessage
                         id='sidebar_left.sidebar_category_menu.renameCategory'
                         defaultMessage='Rename Category'
+                    />
+                )}
+            />
+        );
+
+        function handleShareCategory() {
+            dispatch(openModal({
+                modalId: ModalIdentifiers.SHARE_CATEGORY,
+                dialogType: ShareCategoryModal,
+                dialogProps: {
+                    category,
+                    channelIds: publicCategoryChannelIds,
+                },
+            }));
+        }
+
+        shareCategoryMenuItem = (
+            <Menu.Item
+                id={`share-${category.id}`}
+                aria-haspopup={true}
+                onClick={handleShareCategory}
+                leadingElement={<LinkVariantIcon size={18}/>}
+                labels={(
+                    <FormattedMessage
+                        id='sidebar_left.sidebar_category_menu.shareCategory'
+                        defaultMessage='Share Category'
                     />
                 )}
             />
@@ -240,6 +280,7 @@ const SidebarCategoryMenu = ({
             {markAsReadMenuItem && <Menu.Separator/>}
             {muteUnmuteCategoryMenuItem}
             {renameCategoryMenuItem}
+            {shareCategoryMenuItem}
             {deleteCategoryMenuItem}
             <Menu.Separator/>
             {sortChannelsMenuItem}
