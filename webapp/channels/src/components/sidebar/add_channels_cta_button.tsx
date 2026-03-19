@@ -153,6 +153,8 @@ const AddChannelsCtaButton = (): JSX.Element | null => {
             className='AddChannelsCtaDropdown'
             onToggle={trackOpen}
             open={isAddChannelCtaOpen}
+            renderInPortal={true}
+            portalRootId='add-channels-cta-dropdown-portal'
         >
             {addChannelsButton()}
             <Menu

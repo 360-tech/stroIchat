@@ -4,6 +4,7 @@
 import React from 'react';
 
 import Constants from 'utils/constants';
+import RootPortal from 'components/root_portal';
 
 import MenuWrapperAnimation from './menu_wrapper_animation';
 
@@ -29,11 +30,18 @@ type Props = {
     stopPropagationOnToggle?: boolean;
     open?: boolean;
     portalRootId?: string;
+    renderInPortal?: boolean;
 }
 
 type State = {
     open: boolean;
+    menuPosition: MenuPosition | null;
 }
+
+type MenuPosition = {
+    readonly top: number;
+    readonly left: number;
+};
 
 /**
  * @deprecated Use the "webapp/channels/src/components/menu" instead.
@@ -53,6 +61,7 @@ export default class MenuWrapper extends React.PureComponent<Props, State> {
         }
         this.state = {
             open: false,
+            menuPosition: null,
         };
         this.node = React.createRef();
     }
@@ -89,12 +98,47 @@ export default class MenuWrapper extends React.PureComponent<Props, State> {
     private addEventListeners() {
         document.addEventListener('click', this.closeOnBlur, true);
         document.addEventListener('keyup', this.keyboardClose, true);
+
+        if (this.props.renderInPortal) {
+            this.updatePortalPosition();
+            window.addEventListener('resize', this.updatePortalPosition);
+            window.addEventListener('scroll', this.updatePortalPosition, true);
+        }
     }
 
     private removeEventListeners() {
         document.removeEventListener('click', this.closeOnBlur, true);
         document.removeEventListener('keyup', this.keyboardClose, true);
+
+        if (this.props.renderInPortal) {
+            window.removeEventListener('resize', this.updatePortalPosition);
+            window.removeEventListener('scroll', this.updatePortalPosition, true);
+        }
     }
+
+    private updatePortalPosition = () => {
+        if (!this.node.current) {
+            return;
+        }
+
+        const rect = this.node.current.getBoundingClientRect();
+        const nextPosition = {
+            top: rect.bottom + window.scrollY,
+            left: rect.left + window.scrollX,
+        };
+
+        this.setState((prevState) => {
+            if (
+                prevState.menuPosition &&
+                prevState.menuPosition.top === nextPosition.top &&
+                prevState.menuPosition.left === nextPosition.left
+            ) {
+                return null;
+            }
+
+            return {menuPosition: nextPosition};
+        });
+    };
 
     private keyboardClose = (e: KeyboardEvent) => {
         if (e.key === Constants.KeyCodes.ESCAPE[0]) {
@@ -129,7 +173,7 @@ export default class MenuWrapper extends React.PureComponent<Props, State> {
 
     public close = () => {
         if (this.state.open) {
-            this.setState({open: false});
+            this.setState({open: false, menuPosition: null});
             if (this.props.onToggle) {
                 this.props.onToggle(false);
             }
@@ -149,16 +193,39 @@ export default class MenuWrapper extends React.PureComponent<Props, State> {
         }
         const newState = !this.state.open;
         this.setState({open: newState}, () => {
+            if (newState && this.props.renderInPortal) {
+                this.updatePortalPosition();
+            }
+
             if (this.props.onToggle) {
                 this.props.onToggle(newState);
             }
         });
     };
 
+    private handlePortalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        const target = e.target as HTMLElement | null;
+        if (!target) {
+            return;
+        }
+
+        if (target.classList.contains('Menu__content')) {
+            return;
+        }
+
+        this.close();
+    };
+
     public render() {
         const {children} = this.props;
 
         const Animation = this.props.animationComponent;
+        const menuContent = (
+            <Animation show={this.state.open}>
+                {children ? Object.values(children)[1] : {}}
+            </Animation>
+        );
+        const shouldRenderInPortal = this.props.renderInPortal && this.props.portalRootId;
 
         return (
             <div
@@ -169,9 +236,24 @@ export default class MenuWrapper extends React.PureComponent<Props, State> {
                 disabled={this.props.isDisabled}
             >
                 {children ? Object.values(children)[0] : {}}
-                <Animation show={this.state.open}>
-                    {children ? Object.values(children)[1] : {}}
-                </Animation>
+                {shouldRenderInPortal ? (
+                    <RootPortal>
+                        <div
+                            id={this.props.portalRootId}
+                            style={{
+                                position: 'absolute',
+                                top: this.state.menuPosition?.top,
+                                left: this.state.menuPosition?.left,
+                                zIndex: 10000,
+                            }}
+                            onClick={this.handlePortalClick}
+                        >
+                            {menuContent}
+                        </div>
+                    </RootPortal>
+                ) : (
+                    menuContent
+                )}
             </div>
         );
     }
