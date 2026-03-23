@@ -21,6 +21,7 @@ import {
     closeRightHandSide as closeRhs,
     closeMenu as closeRhsMenu,
 } from 'actions/views/rhs';
+import {getIsLhsOpen} from 'selectors/lhs';
 import {getIsMobileView} from 'selectors/views/browser';
 
 import type {GlobalState} from 'types/store';
@@ -43,6 +44,7 @@ const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
         user: getCurrentUser(state),
         channel: getCurrentChannel(state),
         isMobileView: getIsMobileView(state),
+        isLhsOpen: getIsLhsOpen(state),
         isMuted: isCurrentChannelMuted(state),
         isDefaulTheme: theme.type === 'Denim',
         inGlobalThreads: Boolean(matchPath(ownProps.location.pathname, {path: '/:team/threads/:threadIdentifier?'})),
