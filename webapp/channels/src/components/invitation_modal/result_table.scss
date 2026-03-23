@@ -97,6 +97,17 @@
 }
 
 .invitation-modal-confirm {
+    overflow-y: auto;
+    max-height: 50vh;
+
+    @media screen and (max-width: 768px) and (min-height: 640px) {
+        max-height: 62vh;
+    }
+
+    @media screen and (max-width: 768px) and (min-height: 800px) {
+        max-height: 75vh;
+    }
+
     h2 {
         margin-bottom: 13px;
         color: rgba(var(--center-channel-color-rgb), 0.75);
