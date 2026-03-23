@@ -23,6 +23,7 @@ type Props = {
     inGlobalThreads?: boolean;
     inDrafts?: boolean;
     isMobileView: boolean;
+    isLhsOpen: boolean;
     isDefaulTheme: boolean;
     isMuted?: boolean;
     isRHSOpen?: boolean;
@@ -35,8 +36,20 @@ type Props = {
 }
 
 export default class MobileChannelHeader extends React.PureComponent<Props> {
+    innerWrapEl: HTMLElement | null = null;
+
+    isLhsVisibleInDom = () => {
+        const el = document.getElementById('SidebarContainer');
+        if (!el) {
+            return false;
+        }
+
+        return el.classList.contains('move--right') || el.classList.contains('dragging');
+    };
+
     componentDidMount() {
-        document.querySelector('.inner-wrap')?.addEventListener('click', this.hideSidebars);
+        this.innerWrapEl = document.querySelector('.inner-wrap');
+        this.innerWrapEl?.addEventListener('click', this.hideSidebars, true);
 
         if (this.props.isDefaulTheme) {
             const property = document.documentElement.style.getPropertyValue('--sidebar-bg');
@@ -45,20 +58,36 @@ export default class MobileChannelHeader extends React.PureComponent<Props> {
     }
 
     componentWillUnmount() {
-        document.querySelector('.inner-wrap')?.removeEventListener('click', this.hideSidebars);
+        this.innerWrapEl?.removeEventListener('click', this.hideSidebars, true);
     }
 
-    hideSidebars = (e: Event) => {
+    hideSidebars = (e: MouseEvent) => {
         if (this.props.isMobileView) {
             if (this.props.isRHSOpen) {
                 this.props.actions.closeRhs();
             }
 
-            const target = e.target as HTMLElement | undefined;
+            const target = e.target as HTMLElement | null | undefined;
+            const clickedOnNavbarToggle = Boolean(target?.closest?.('.navbar-toggle'));
+            const clickedOnIconBar = Boolean(target?.closest?.('.icon-bar'));
 
-            if (target && target.className !== 'navbar-toggle' && target.className !== 'icon-bar') {
-                this.props.actions.closeLhs();
+            if (!clickedOnNavbarToggle && !clickedOnIconBar) {
+                const shouldConsumeEvent = this.props.isLhsOpen || this.isLhsVisibleInDom();
+
+                if (shouldConsumeEvent) {
+                    // Important: stop propagation/default BEFORE dispatch, чтобы клик
+                    // по элементам под сайдбаром не считался их активацией.
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                }
+
+                if (shouldConsumeEvent) {
+                    this.props.actions.closeLhs();
+                }
                 this.props.actions.closeRhsMenu();
+
+                // The event is already consumed above when LHS is actually open.
             }
         }
     };
