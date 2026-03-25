@@ -7,6 +7,25 @@ import styled from 'styled-components';
 
 import {searchHintOptions, searchFilesHintOptions} from 'utils/constants';
 
+const getShortFilterLabel = (searchTerm: string, formatMessage: (descriptor: {id: string; defaultMessage: string}) => string) => {
+    switch (searchTerm) {
+    case 'From:':
+        return formatMessage({id: 'search_hint.short.from', defaultMessage: 'From:'});
+    case 'In:':
+        return formatMessage({id: 'search_hint.short.in', defaultMessage: 'In:'});
+    case 'On:':
+        return formatMessage({id: 'search_hint.short.on', defaultMessage: 'On:'});
+    case 'Before:':
+        return formatMessage({id: 'search_hint.short.before', defaultMessage: 'Before:'});
+    case 'After:':
+        return formatMessage({id: 'search_hint.short.after', defaultMessage: 'After:'});
+    case 'Ext:':
+        return formatMessage({id: 'search_hint.short.ext', defaultMessage: 'Ext:'});
+    default:
+        return searchTerm;
+    }
+};
+
 type Props = {
     onSelectFilter: (filter: string) => void;
     searchType: string;
@@ -106,7 +125,10 @@ const SearchHints = ({onSelectFilter, searchType, searchTerms, searchTeam, hasSe
                     onClick={() => onSelectFilter(filter.searchTerm)}
                 >
                     <span title={intl.formatMessage(filter.message)}>
+                        {getShortFilterLabel(filter.searchTerm, intl.formatMessage)}
+                        {' ('}
                         {filter.searchTerm}
+                        {')'}
                     </span>
                 </SearchFilter>
             ))}
