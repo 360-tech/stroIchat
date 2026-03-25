@@ -22,17 +22,17 @@ import {CategorySorting} from '@mattermost/types/channel_categories';
 import {setCategoryMuted, setCategorySorting} from 'mattermost-redux/actions/channel_categories';
 import {readMultipleChannels} from 'mattermost-redux/actions/channels';
 import {CategoryTypes} from 'mattermost-redux/constants/channel_categories';
-import {getChannel} from 'mattermost-redux/selectors/entities/channels';
+import {getPluginStatus} from 'mattermost-redux/selectors/entities/admin';
+import {getAllChannels} from 'mattermost-redux/selectors/entities/channels';
 import {shouldShowUnreadsCategory} from 'mattermost-redux/selectors/entities/preferences';
 
 import {openModal} from 'actions/views/modals';
 import {makeGetFilteredChannelIdsForCategory, makeGetUnreadIdsForCategory} from 'selectors/views/channel_sidebar';
-import {getPluginStatus} from 'mattermost-redux/selectors/entities/admin';
 
 import DeleteCategoryModal from 'components/delete_category_modal';
 import EditCategoryModal from 'components/edit_category_modal';
-import ShareCategoryModal from 'components/share_category_modal/share_category_modal';
 import * as Menu from 'components/menu';
+import ShareCategoryModal from 'components/share_category_modal/share_category_modal';
 
 import {ModalIdentifiers} from 'utils/constants';
 
@@ -55,9 +55,10 @@ const SidebarCategoryMenu = ({
     const getFilteredChannelIdsForCategory = useMemo(makeGetFilteredChannelIdsForCategory, []);
     const unreadsIds = useSelector((state: GlobalState) => getUnreadsIdsForCategory(state, category));
     const categoryChannelIds = useSelector((state: GlobalState) => getFilteredChannelIdsForCategory(state, category));
-    const publicCategoryChannelIds = useSelector((state: GlobalState) => {
-        return categoryChannelIds.filter((channelId) => getChannel(state, channelId)?.type === 'O');
-    });
+    const allChannels = useSelector(getAllChannels);
+    const publicCategoryChannelIds = useMemo(() => {
+        return categoryChannelIds.filter((channelId) => allChannels[channelId]?.type === 'O');
+    }, [allChannels, categoryChannelIds]);
     const {formatMessage} = useIntl();
     const isCategorySharePluginActive = useSelector((state: GlobalState) => {
         const status = getPluginStatus(state, 'com.company.category-share');
