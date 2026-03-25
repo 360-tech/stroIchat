@@ -469,6 +469,24 @@ build-docker:
         -f server/build/Dockerfile.tmp \
         server/build
 
+      # Push to public Docker Hub registry (only from master)
+      if [ "${CI_COMMIT_BRANCH}" = "master" ] && [ -n "${DOCKERHUB_USERNAME}" ] && [ -n "${DOCKERHUB_TOKEN}" ]; then
+        echo "Pushing to Docker Hub..."
+        echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
+
+        dockerhub_tag="docker.io/${DOCKERHUB_USERNAME}/stroichat:${CI_COMMIT_SHORT_SHA}"
+        dockerhub_latest="docker.io/${DOCKERHUB_USERNAME}/stroichat:latest"
+
+        # Pull already built image from primary registry, retag and push to Docker Hub
+        docker pull "${tag}"
+        docker tag "${tag}" "${dockerhub_tag}"
+        docker tag "${tag}" "${dockerhub_latest}"
+        docker push "${dockerhub_tag}"
+        docker push "${dockerhub_latest}"
+
+        echo "Successfully pushed to Docker Hub: ${dockerhub_tag} and ${dockerhub_latest}"
+      fi
+
       # Clean up temporary files
       rm -f server/build/Dockerfile.tmp server/build/package.tar.gz
 
