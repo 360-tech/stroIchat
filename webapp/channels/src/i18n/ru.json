@@ -4732,7 +4732,7 @@
   "scheduled_posts.row_title_thread.placeholder": "Тема: {icon} Нет места назначения",
   "scheduled_posts.row_title_thread.placeholder_tooltip": "Канал либо не существует, либо у вас нет к нему доступа.",
   "scheduledPosts.title": "{prefix}Запланировано — {displayName} {siteName}",
-  "search_bar.clear": "Прозрачный",
+  "search_bar.clear": "Очистить",
   "search_bar.close": "Закрывать",
   "search_bar.file_types": "Типы файлов",
   "search_bar.files_tab": "Файлы",
