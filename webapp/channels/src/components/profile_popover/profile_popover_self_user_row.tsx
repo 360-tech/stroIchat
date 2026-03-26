@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback} from 'react';
+import React from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {useDispatch} from 'react-redux';
 
@@ -34,7 +34,7 @@ const ProfilePopoverSelfUserRow = ({
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
 
-    const handleEditAccountSettings = useCallback(() => {
+    const handleEditAccountSettings = () => {
         hide?.();
         dispatch(openModal({
             modalId: ModalIdentifiers.USER_SETTINGS,
@@ -42,7 +42,7 @@ const ProfilePopoverSelfUserRow = ({
             dialogProps: {isContentProductSettings: false, onExited: returnFocus},
         }));
         handleCloseModals();
-    }, [hide, returnFocus, handleCloseModals]);
+    };
 
     if (userId !== currentUserId || haveOverrideProp) {
         return null;
