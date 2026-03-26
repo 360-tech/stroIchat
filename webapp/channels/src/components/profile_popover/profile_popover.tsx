@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {getCurrentChannelId, getCurrentUserId} from 'mattermost-redux/selectors/entities/common';
@@ -14,7 +14,8 @@ import {openDirectChannelToUserId} from 'actions/channel_actions';
 import * as GlobalActions from 'actions/global_actions';
 import {closeModal} from 'actions/views/modals';
 import {getMembershipForEntities} from 'actions/views/profile_popover';
-import {getSelectedPost} from 'selectors/rhs';
+import {closeMenu} from 'actions/views/rhs';
+import {getIsRhsMenuOpen, getSelectedPost} from 'selectors/rhs';
 import {getIsMobileView} from 'selectors/views/browser';
 
 import {usePluginVisibilityInSharedChannel} from 'components/common/hooks/usePluginVisibilityInSharedChannel';
@@ -77,6 +78,7 @@ const ProfilePopover = ({
     const channelId = useSelector((state: GlobalState) => (channelIdProp || getDefaultChannelId(state)));
     const pluginItemsVisible = usePluginVisibilityInSharedChannel(channelId);
     const isMobileView = useSelector(getIsMobileView);
+    const isRhsMenuOpen = useSelector(getIsRhsMenuOpen);
     const teamUrl = useSelector(getCurrentRelativeTeamUrl);
     const modals = useSelector((state: GlobalState) => state.views.modals);
     const status = useSelector((state: GlobalState) => getStatusForUserId(state, userId) || UserStatuses.OFFLINE);
@@ -105,18 +107,20 @@ const ProfilePopover = ({
         };
     }, [returnFocus]);
 
-    const handleCloseModals = useCallback(() => {
-        for (const modal in modals?.modalState) {
-            if (!Object.hasOwn(modals, modal)) {
+    const handleCloseModals = () => {
+        const {modalState} = modals ?? {modalState: {}};
+        for (const modalId in modalState) {
+            if (!Object.hasOwn(modalState, modalId)) {
                 continue;
             }
-            if (modals?.modalState[modal].open) {
-                dispatch(closeModal(modal));
+
+            if (modalState[modalId]?.open) {
+                dispatch(closeModal(modalId));
             }
         }
-    }, [modals, dispatch]);
+    };
 
-    const handleShowDirectChannel = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleShowDirectChannel = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (!user) {
             return;
@@ -128,16 +132,22 @@ const ProfilePopover = ({
         setLoadingDMChannel(user.id);
 
         handleCloseModals();
-        const result = await dispatch(openDirectChannelToUserId(user.id));
-        if (!result.error) {
-            if (isMobileView) {
-                GlobalActions.emitCloseRightHandSide();
-            }
-            setLoadingDMChannel(undefined);
-            hide?.();
-            getHistory().push(`${teamUrl}/messages/@${user.username}`);
+        if (isRhsMenuOpen) {
+            dispatch(closeMenu());
         }
-    }, [user, loadingDMChannel, handleCloseModals, isMobileView, hide, teamUrl, dispatch]);
+        try {
+            const result = await dispatch(openDirectChannelToUserId(user.id));
+            if (!result.error) {
+                if (isMobileView) {
+                    GlobalActions.emitCloseRightHandSide();
+                }
+                hide?.();
+                getHistory().push(`${teamUrl}/messages/@${user.username}`);
+            }
+        } finally {
+            setLoadingDMChannel(undefined);
+        }
+    };
 
     useEffect(() => {
         if (currentTeamId && userId) {
