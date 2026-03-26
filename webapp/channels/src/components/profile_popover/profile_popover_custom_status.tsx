@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -50,7 +50,7 @@ const ProfilePopoverCustomStatus = ({
     const isCustomStatusExpired = useSelector((state: GlobalState) => getIsCustomStatusExpired(state, customStatus));
     const isCustomStatusEnabled = useSelector((state: GlobalState) => getIsCustomStatusEnabled(state));
 
-    const showCustomStatusModal = useCallback(() => {
+    const showCustomStatusModal = () => {
         hide?.();
         const customStatusInputModalData = {
             modalId: ModalIdentifiers.CUSTOM_STATUS,
@@ -58,7 +58,7 @@ const ProfilePopoverCustomStatus = ({
             dialogProps: {onExited: returnFocus},
         };
         dispatch(openModal(customStatusInputModalData));
-    }, [hide, returnFocus]);
+    };
 
     const customStatusSet = (customStatus?.text || customStatus?.emoji) && !isCustomStatusExpired;
     const showExpiryTime = customStatusSet && customStatus.expires_at && customStatus.duration !== CustomStatusDuration.DONT_CLEAR;
