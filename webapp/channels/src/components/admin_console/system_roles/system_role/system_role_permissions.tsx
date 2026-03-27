@@ -65,7 +65,6 @@ const sectionsList: SystemSection[] = [
         subsections: [
             {name: 'environment_web_server'},
             {name: 'environment_database'},
-            {name: 'environment_elasticsearch'},
             {name: 'environment_file_storage'},
             {name: 'environment_image_proxy'},
             {name: 'environment_smtp'},

@@ -12,7 +12,7 @@ import {emitUserLoggedOutEvent} from 'actions/global_actions';
 import {getOnNavigationConfirmed} from 'selectors/views/admin';
 import store from 'stores/redux_store';
 
-import {ActionTypes, JobTypes} from 'utils/constants';
+import {ActionTypes} from 'utils/constants';
 
 const dispatch = store.dispatch;
 
@@ -352,26 +352,8 @@ export async function getUsersPerDayAnalytics(teamId) {
     await dispatch(AdminActions.getUsersPerDayAnalytics(teamId));
 }
 
-export async function elasticsearchTest(config, success, error) {
-    const {data, error: err} = await dispatch(AdminActions.testElasticsearch(config));
-    if (data && success) {
-        success(data);
-    } else if (err && error) {
-        error({id: err.server_error_id, ...err});
-    }
-}
-
 export async function testS3Connection(success, error) {
     const {data, error: err} = await dispatch(AdminActions.testS3Connection());
-    if (data && success) {
-        success(data);
-    } else if (err && error) {
-        error({id: err.server_error_id, ...err});
-    }
-}
-
-export async function elasticsearchPurgeIndexes(success, error, indexes) {
-    const {data, error: err} = await dispatch(AdminActions.purgeElasticsearchIndexes(indexes));
     if (data && success) {
         success(data);
     } else if (err && error) {
@@ -386,22 +368,6 @@ export async function jobCreate(success, error, job) {
     } else if (err && error) {
         error({id: err.server_error_id, ...err});
     }
-}
-
-export async function rebuildChannelsIndex(success, error) {
-    await elasticsearchPurgeIndexes(undefined, error, ['channels']);
-    const job = {
-        type: JobTypes.ELASTICSEARCH_POST_INDEXING,
-        data: {
-            index_posts: 'false',
-            index_users: 'false',
-            index_files: 'false',
-            index_channels: 'true',
-            sub_type: 'channels_index_rebuild',
-        },
-    };
-    await jobCreate(undefined, error, job);
-    success();
 }
 
 export function setNavigationBlocked(blocked) {

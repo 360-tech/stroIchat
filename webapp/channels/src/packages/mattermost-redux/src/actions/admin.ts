@@ -400,24 +400,6 @@ export function removeIdpSamlCertificate() {
     });
 }
 
-export function testElasticsearch(config?: AdminConfig) {
-    return bindClientFunc({
-        clientFunc: Client4.testElasticsearch,
-        params: [
-            config,
-        ],
-    });
-}
-
-export function purgeElasticsearchIndexes(indexes?: string[]) {
-    return bindClientFunc({
-        clientFunc: Client4.purgeElasticsearchIndexes,
-        params: [
-            indexes,
-        ],
-    });
-}
-
 export function uploadLicense(fileData: File) {
     return bindClientFunc({
         clientFunc: Client4.uploadLicense,

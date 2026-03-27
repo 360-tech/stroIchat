@@ -87,9 +87,7 @@ const getAccessData = async (
 });
 
 const getPerformanceData = async (
-    config: Partial<AdminConfig>,
     formatMessage: ReturnType<typeof useIntl>['formatMessage'],
-    options: Options,
 ) => ({
     title: formatMessage({
         id: 'admin.reporting.workspace_optimization.performance.title',
@@ -112,7 +110,7 @@ const getPerformanceData = async (
             />
         </div>
     ),
-    items: await runPerformanceChecks(config, formatMessage, options),
+    items: await runPerformanceChecks(),
 });
 
 const getEaseOfManagementData = async (
@@ -170,7 +168,7 @@ const useMetricsData = (
             const data = {
                 configuration: await getConfigurationData(config, formatMessage, options),
                 access: await getAccessData(config, formatMessage),
-                performance: await getPerformanceData(config, formatMessage, options),
+                performance: await getPerformanceData(formatMessage),
                 easyManagement: await getEaseOfManagementData(config, formatMessage, options),
             };
 

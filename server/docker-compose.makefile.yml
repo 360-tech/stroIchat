@@ -37,15 +37,6 @@ services:
     extends:
         file: build/docker-compose.common.yml
         service: openldap
-  elasticsearch:
-    restart: 'no'
-    container_name: mattermost-elasticsearch
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    extends:
-        file: build/docker-compose.common.yml
-        service: elasticsearch
   opensearch:
     container_name: mattermost-opensearch
     ports:

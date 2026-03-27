@@ -5,12 +5,12 @@
 # Enable services to be run in docker.
 #
 # Possible options: postgres, minio, inbucket, openldap, dejavu,
-# keycloak, elasticsearch, opensearch, redis, prometheus,
+# keycloak, opensearch, redis, prometheus,
 # grafana, loki and promtail.
 #
 # Must be space separated names.
 #
-# Example: postgres elasticsearch
+# Example: postgres opensearch
 ENABLED_DOCKER_SERVICES ?= postgres inbucket redis prometheus grafana loki promtail
 
 # Disable entirely the use of docker
