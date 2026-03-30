@@ -216,11 +216,6 @@ ifneq ("$(wildcard ./docker-compose.override.yaml)","")
   DOCKER_COMPOSE_OVERRIDE=-f docker-compose.override.yaml
 endif
 
-ifeq ($(ARM_BASED_MAC),true)
-  $(info Apple Silicon detected, applying elasticsearch override)
-  DOCKER_COMPOSE_OVERRIDE := -f docker-compose.makefile.m1.yml $(DOCKER_COMPOSE_OVERRIDE)
-endif
-
 # Support for pgvector postgres image
 MM_USE_PGVECTOR ?= false
 ifeq ($(MM_USE_PGVECTOR),true)

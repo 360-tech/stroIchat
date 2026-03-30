@@ -124,12 +124,6 @@ export const sectionStrings: Record<string, Record<string, MessageDescriptor>> =
             defaultMessage: 'Database',
         },
     }),
-    environment_elasticsearch: defineMessages({
-        name: {
-            id: 'admin.permissions.sysconsole_section_environment_elasticsearch.name',
-            defaultMessage: 'Elasticsearch',
-        },
-    }),
     environment_file_storage: defineMessages({
         name: {
             id: 'admin.permissions.sysconsole_section_environment_file_storage.name',

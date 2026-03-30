@@ -781,36 +781,6 @@ export type CacheSettings = {
     DisableClientCache: boolean;
 };
 
-export type ElasticsearchSettings = {
-    ConnectionURL: string;
-    Backend: string;
-    Username: string;
-    Password: string;
-    EnableIndexing: boolean;
-    EnableSearching: boolean;
-    EnableAutocomplete: boolean;
-    Sniff: boolean;
-    PostIndexReplicas: number;
-    PostIndexShards: number;
-    ChannelIndexReplicas: number;
-    ChannelIndexShards: number;
-    UserIndexReplicas: number;
-    UserIndexShards: number;
-    AggregatePostsAfterDays: number;
-    PostsAggregatorJobStartTime: string;
-    IndexPrefix: string;
-    GlobalSearchPrefix: string;
-    LiveIndexingBatchSize: number;
-    BatchSize: number;
-    RequestTimeoutSeconds: number;
-    SkipTLSVerification: boolean;
-    CA: string;
-    ClientCert: string;
-    ClientKey: string;
-    Trace: string;
-    IgnoredPurgeIndexes: string;
-};
-
 export type DataRetentionSettings = {
     EnableMessageDeletion: boolean;
     EnableFileDeletion: boolean;
@@ -972,7 +942,6 @@ export type AdminConfig = {
     ExperimentalSettings: ExperimentalSettings;
     AnalyticsSettings: AnalyticsSettings;
     CacheSettings: CacheSettings;
-    ElasticsearchSettings: ElasticsearchSettings;
     DataRetentionSettings: DataRetentionSettings;
     MessageExportSettings: MessageExportSettings;
     JobSettings: JobSettings;

@@ -37,20 +37,16 @@ import TeamAnalytics from 'components/analytics/team_analytics';
 import {searchableStrings as teamAnalyticsSearchableStrings} from 'components/analytics/team_analytics/team_analytics';
 import ExternalLink from 'components/external_link';
 
-import {AboutLinks, CacheTypes, Constants, DeveloperLinks, DocLinks, LicenseSkus} from 'utils/constants';
+import {CacheTypes, Constants, DeveloperLinks, DocLinks, LicenseSkus} from 'utils/constants';
 import {ID_PATH_PATTERN} from 'utils/path';
 import {getSiteURL} from 'utils/url';
 
-import PolicyList from './access_control';
-import AccessControlPolicyJobs from './access_control/jobs';
-import PolicyDetails from './access_control/policy_details';
 import * as DefinitionConstants from './admin_definition_constants';
 import {getRestrictedIndicator, it, validators} from './admin_definition_helpers';
 import BrandImageSetting from './brand_image_setting/brand_image_setting';
 import ClientSideUserIdsSetting from './client_side_userids_setting';
 import CustomURLSchemesSetting from './custom_url_schemes_setting';
 import DatabaseSettings, {searchableStrings as databaseSearchableStrings} from './database_settings';
-import ElasticSearchSettings, {searchableStrings as elasticSearchSearchableStrings} from './elasticsearch_settings';
 import FeatureFlags, {messages as featureFlagsMessages} from './feature_flags';
 import GroupDetails from './group_settings/group_details';
 import GroupSettings from './group_settings/group_settings';
@@ -71,7 +67,6 @@ import SecureConnectionDetail from './secure_connections/secure_connection_detai
 import ServerLogs from './server_logs';
 import {searchableStrings as serverLogsSearchableStrings} from './server_logs/logs';
 import SessionLengthSettings, {searchableStrings as sessionLengthSearchableStrings} from './session_length_settings';
-import SystemProperties, {searchableStrings as systemPropertiesSearchableStrings} from './system_properties';
 import SystemRoles from './system_roles';
 import SystemRole from './system_roles/system_role';
 import SystemUserDetail from './system_user_detail';
@@ -84,6 +79,7 @@ import TeamDetails from './team_channel_settings/team/details';
 import type {AdminDefinition as AdminDefinitionType} from './types';
 import ValidationResult from './validation';
 import WorkspaceOptimizationDashboard from './workspace-optimization/dashboard';
+
 // Re-export for backward compatibility
 export {it};
 
@@ -442,150 +438,6 @@ const AdminDefinition: AdminDefinitionType = {
         },
     },
 
-    // system_attributes: {
-    //     icon: (
-    //         <TableLargeIcon
-    //             size={16}
-    //             color={'currentColor'}
-    //         />
-    //     ),
-    //     sectionTitle: defineMessage({id: 'admin.sidebar.systemAttributes', defaultMessage: 'System Attributes'}),
-    //     isHidden: it.not(it.userHasReadPermissionOnSomeResources(RESOURCE_KEYS.USER_MANAGEMENT)),
-    //     subsections: {
-    //         system_properties: {
-    //             url: 'system_attributes/user_attributes',
-    //             title: defineMessage({id: 'admin.sidebar.user_attributes', defaultMessage: 'User Attributes'}),
-    //             searchableStrings: systemPropertiesSearchableStrings,
-    //             isHidden: it.not(it.all(
-    //                 it.minLicenseTier(LicenseSkus.Enterprise),
-    //                 it.configIsTrue('FeatureFlags', 'CustomProfileAttributes'),
-    //             )),
-    //             schema: {
-    //                 id: 'SystemProperties',
-    //                 component: SystemProperties,
-    //             },
-    //         },
-    //         access_control_policy_details_edit: {
-    //             url: `system_attributes/attribute_based_access_control/edit_policy/:policy_id(${ID_PATH_PATTERN})`,
-    //             isHidden: it.any(
-    //                 it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-    //                 it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
-    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-    //             ),
-    //             isDisabled: it.any(
-    //                 it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-    //                 it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
-    //             ),
-    //             schema: {
-    //                 id: 'AccessControlPolicy',
-    //                 component: PolicyDetails,
-    //             },
-    //         },
-    //         access_control_policy_details: {
-    //             url: 'system_attributes/attribute_based_access_control/edit_policy',
-    //             isHidden: it.any(
-    //                 it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-    //                 it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
-    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-    //                 it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
-    //             ),
-    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-    //             schema: {
-    //                 id: 'AccessControlPolicy',
-    //                 component: PolicyDetails,
-    //             },
-    //         },
-    //         attribute_based_access_control: {
-    //             url: 'system_attributes/attribute_based_access_control',
-    //             title: defineMessage({id: 'admin.sidebar.attributeBasedAccessControl', defaultMessage: 'Attribute-Based Access'}),
-    //             isHidden: it.any(
-    //                 it.not(it.minLicenseTier(LicenseSkus.EnterpriseAdvanced)),
-    //                 it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-    //                 it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
-    //             ),
-    //             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.USER_MANAGEMENT.SYSTEM_ROLES)),
-    //             schema: {
-    //                 id: 'AttributeBasedAccessControl',
-    //                 isBeta: true,
-    //                 name: defineMessage({id: 'admin.accesscontrol.title', defaultMessage: 'Attribute-Based Access'}),
-    //                 sections: [
-    //                     {
-    //                         key: 'admin.accesscontrol.settings',
-    //                         settings: [
-    //                             {
-    //                                 type: 'bool',
-    //                                 key: 'AccessControlSettings.EnableAttributeBasedAccessControl',
-    //                                 label: defineMessage({id: 'admin.accesscontrol.enableTitle', defaultMessage: 'Allow attribute based access controls on this server'}),
-    //                                 help_text: defineMessage({id: 'admin.accesscontrol.enableDesc', defaultMessage: 'Allow access restrictions based on user attributes using custom access policies. To effectively use this feature, you must define user attributes in the {userAttributes} section.'}),
-    //                                 help_text_values: {
-    //                                     userAttributes: (
-    //                                         <a href='../system_attributes/user_attributes'>
-    //                                             <FormattedMessage
-    //                                                 id='admin.system_properties.user_properties.title'
-    //                                                 defaultMessage='User Attributes'
-    //                                             />
-    //                                         </a>
-    //                                     ),
-    //                                 },
-    //                             },
-    //                         ],
-    //                     },
-    //                     {
-    //                         key: 'admin.accesscontrol.policies',
-    //                         isHidden: it.any(
-    //                             it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-    //                             it.stateIsFalse('AccessControlSettings.EnableAttributeBasedAccessControl'),
-    //                         ),
-    //                         settings: [
-    //                             {
-    //                                 type: 'custom',
-    //                                 component: PolicyList,
-    //                                 key: 'PolicyListPanel',
-    //                             },
-    //                         ],
-    //                     },
-    //                     {
-    //                         key: 'admin.accesscontrol.policyjobs',
-    //                         isHidden: it.any(
-    //                             it.configIsFalse('AccessControlSettings', 'EnableAttributeBasedAccessControl'),
-    //                             it.stateIsFalse('AccessControlSettings.EnableAttributeBasedAccessControl'),
-    //                         ),
-    //                         settings: [
-    //                             {
-    //                                 type: 'custom',
-    //                                 component: AccessControlPolicyJobs,
-    //                                 key: 'AcessControlPolicyJobs',
-    //                             },
-    //                         ],
-    //                     },
-    //                 ],
-    //             },
-    //             restrictedIndicator: getRestrictedIndicator(false, LicenseSkus.EnterpriseAdvanced),
-    //         },
-    //         attribute_based_access_control_feature_discovery: {
-    //             url: 'system_attributes/attribute_based_access_control',
-    //             isDiscovery: true,
-    //             title: defineMessage({id: 'admin.sidebar.attributeBasedAccessControl', defaultMessage: 'Attribute-Based Access'}),
-    //             isHidden: it.any(
-    //                 it.minLicenseTier(LicenseSkus.EnterpriseAdvanced),
-    //                 it.configIsFalse('FeatureFlags', 'AttributeBasedAccessControl'),
-    //             ),
-    //             schema: {
-    //                 id: 'AttributeBasedAccessControl',
-    //                 name: defineMessage({id: 'admin.accesscontrol.title', defaultMessage: 'Attribute-Based Access (Beta)'}),
-    //                 settings: [
-    //                     {
-    //                         type: 'custom',
-    //                         component: AttributeBasedAccessControlFeatureDiscovery,
-    //                         key: 'AttributeBasedAccessControlFeatureDiscovery',
-    //                         isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ABOUT.EDITION_AND_LICENSE)),
-    //                     },
-    //                 ],
-    //             },
-    //             restrictedIndicator: getRestrictedIndicator(true, LicenseSkus.EnterpriseAdvanced),
-    //         },
-    //     },
-    // },
     environment: {
         icon: (
             <ServerVariantIcon
@@ -820,21 +672,6 @@ const AdminDefinition: AdminDefinitionType = {
                 schema: {
                     id: 'DatabaseSettings',
                     component: DatabaseSettings,
-                },
-            },
-            elasticsearch: {
-                url: 'environment/elasticsearch',
-                title: defineMessage({id: 'admin.sidebar.elasticsearch', defaultMessage: 'Elasticsearch'}),
-                isHidden: it.any(
-                    it.not(it.licensedForFeature('Elasticsearch')),
-                    it.configIsTrue('ExperimentalSettings', 'RestrictSystemAdmin'),
-                    it.not(it.userHasReadPermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.ELASTICSEARCH)),
-                ),
-                searchableStrings: elasticSearchSearchableStrings,
-                isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.ENVIRONMENT.ELASTICSEARCH)),
-                schema: {
-                    id: 'ElasticSearchSettings',
-                    component: ElasticSearchSettings,
                 },
             },
             storage: {

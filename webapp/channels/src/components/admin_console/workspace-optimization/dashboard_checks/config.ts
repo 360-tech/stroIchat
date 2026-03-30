@@ -9,7 +9,7 @@ import type {AdminConfig} from '@mattermost/types/config';
 
 import {Client4} from 'mattermost-redux/client';
 
-import {ConsolePages, DocLinks} from 'utils/constants';
+import {ConsolePages} from 'utils/constants';
 
 import {impactModifiers} from '../dashboard.data';
 import {ItemStatus} from '../dashboard.type';
@@ -36,8 +36,6 @@ const ssl = (
             id: 'admin.reporting.workspace_optimization.configuration.ssl.description',
             defaultMessage: 'We strongly recommend securing your Mattermost workspace by configuring SSL in production environments.',
         }),
-        infoUrl: DocLinks.SSL_CERTIFICATE,
-        infoText: formatMessage({id: 'admin.reporting.workspace_optimization.cta.learnMore', defaultMessage: 'Learn more'}),
         telemetryAction: 'ssl',
         status,
         scoreImpact: 25,
@@ -67,8 +65,6 @@ const sessionLength = (
         }),
         configUrl: ConsolePages.SESSION_LENGTHS,
         configText: formatMessage({id: 'admin.reporting.workspace_optimization.configuration.session_length.cta', defaultMessage: 'Configure session length'}),
-        infoUrl: DocLinks.SESSION_LENGTHS,
-        infoText: formatMessage({id: 'admin.reporting.workspace_optimization.cta.learnMore', defaultMessage: 'Learn more'}),
         telemetryAction: 'session-length',
         status,
         scoreImpact: 8,
@@ -134,8 +130,6 @@ const fileStorage = async (
         }),
         configUrl: ConsolePages.FILE_STORAGE,
         configText: formatMessage({id: 'admin.reporting.workspace_optimization.configuration.file_storage.cta', defaultMessage: 'Config file storage'}),
-        infoUrl: DocLinks.FILE_STORAGE,
-        infoText: formatMessage({id: 'admin.reporting.workspace_optimization.cta.learnMore', defaultMessage: 'Learn more'}),
         telemetryAction: 'file_storage',
         status,
         scoreImpact: 50,

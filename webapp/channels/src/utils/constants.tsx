@@ -792,7 +792,6 @@ export const ErrorPageTypes = {
 
 export const JobTypes = {
     DATA_RETENTION: 'data_retention',
-    ELASTICSEARCH_POST_INDEXING: 'elasticsearch_post_indexing',
     BLEVE_POST_INDEXING: 'bleve_post_indexing',
     LDAP_SYNC: 'ldap_sync',
     MESSAGE_EXPORT: 'message_export',
@@ -960,7 +959,6 @@ export const DocLinks = {
     CONFIGURE_DOCUMENT_CONTENT_SEARCH: 'https://mattermost.com/pl/configure-document-content-search',
     COMPILANCE_EXPORT: 'https://mattermost.com/pl/compliance-export',
     DEFAULT_LDAP_GROUP_SYNC: 'https://mattermost.com/pl/default-ldap-group-sync',
-    ELASTICSEARCH: 'https://mattermost.com/pl/setup-elasticsearch',
     FILE_STORAGE: 'https://mattermost.com/pl/configure-file-storage',
     MULTI_FACTOR_AUTH: 'https://mattermost.com/pl/multi-factor-authentication',
     ONBOARD_ADVANCED_PERMISSIONS: 'https://mattermost.com/pl/advanced-permissions',
@@ -1915,7 +1913,6 @@ export const ConsolePages = {
     AD_LDAP: '/admin_console/authentication/ldap',
     CUSTOM_TERMS: '/admin_console/compliance/custom_terms_of_service',
     DATA_RETENTION: '/admin_console/compliance/data_retention_settings',
-    ELASTICSEARCH: '/admin_console/environment/elasticsearch',
     LICENSE: '/admin_console/about/license',
     SAML: '/admin_console/authentication/saml',
     FILE_STORAGE: '/admin_console/environment/file_storage',

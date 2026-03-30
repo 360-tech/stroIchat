@@ -32,7 +32,7 @@ export function cleanUrlForLogging(baseUrl: string, apiUrl: string): string {
         'delete', 'logs', 'ping', 'config', 'client', 'license', 'websocket', 'webrtc', 'token', 'regen_token',
         'autocomplete', 'execute', 'regen_secret', 'policy', 'type', 'cancel', 'reload', 'environment', 's3_test', 'file',
         'caches', 'invalidate', 'database', 'recycle', 'compliance', 'reports', 'cluster', 'ldap', 'test', 'sync', 'saml',
-        'certificate', 'public', 'private', 'idp', 'elasticsearch', 'purge_indexes', 'analytics', 'old', 'webapp', 'fake',
+        'certificate', 'public', 'private', 'idp', 'purge_indexes', 'analytics', 'old', 'webapp', 'fake',
     ];
 
     url = url.split('/').map((part) => {

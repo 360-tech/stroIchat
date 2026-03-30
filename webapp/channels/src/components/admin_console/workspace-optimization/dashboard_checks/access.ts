@@ -7,7 +7,7 @@ import type {AdminConfig} from '@mattermost/types/config';
 
 import {testSiteURL} from 'actions/admin_actions';
 
-import {ConsolePages, DocLinks} from 'utils/constants';
+import {ConsolePages} from 'utils/constants';
 
 import {impactModifiers} from '../dashboard.data';
 import {ItemStatus} from '../dashboard.type';
@@ -48,8 +48,6 @@ const siteURLCheck = async (config: Partial<AdminConfig>, formatMessage: ReturnT
         }),
         configUrl: ConsolePages.WEB_SERVER,
         configText: formatMessage({id: 'admin.reporting.workspace_optimization.access.site_url.cta', defaultMessage: 'Configure web server'}),
-        infoUrl: DocLinks.SITE_URL,
-        infoText: formatMessage({id: 'admin.reporting.workspace_optimization.cta.learnMore', defaultMessage: 'Learn more'}),
         telemetryAction: 'site-url',
         status,
         scoreImpact: 12,
