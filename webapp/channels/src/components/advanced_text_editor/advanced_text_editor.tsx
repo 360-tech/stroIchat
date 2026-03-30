@@ -325,7 +325,8 @@ const AdvancedTextEditor = ({
 
     const {
 
-        // emojiPicker,
+        emojiPicker,
+
         // enableEmojiPicker,
         toggleEmojiPicker,
     } = useEditorEmojiPicker(
@@ -836,7 +837,7 @@ const AdvancedTextEditor = ({
                                 )}
                                 <Separator/>
                                 {fileUploadJSX}
-                                {/* {emojiPicker} */}
+                                {emojiPicker}
                                 {sendButton}
                             </TexteditorActions>
                         )}
