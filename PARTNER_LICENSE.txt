@@ -1,0 +1,44 @@
+PARTNER FUNCTIONALITY LICENSE AGREEMENT
+
+Copyright (c) 2026 360tech.
+
+1. DEFINITIONS
+
+"Software" means the partner-related functionality and associated code added by the author to this project.
+
+2. GRANT OF LICENSE
+
+You are granted a limited, non-exclusive, non-transferable, revocable license to use the Software for internal and personal purposes.
+
+3. PERMITTED USE
+
+You may:
+
+* Use the Software for internal business purposes
+* Deploy the Software within your own infrastructure
+* Use the Software without modification
+
+4. RESTRICTIONS
+
+You may NOT:
+
+* Modify, adapt, translate, or create derivative works of the Software
+* Distribute, sublicense, rent, lease, or lend the Software
+* Sell, resell, or commercially exploit the Software, including as part of a product or service
+* Offer the Software as part of a SaaS or hosted solution to third parties
+
+5. OWNERSHIP
+
+The Software is licensed, not sold. All rights, title, and interest remain with the author.
+
+6. TERMINATION
+
+This license is automatically terminated if you violate any of its terms.
+
+7. DISCLAIMER
+
+The Software is provided "AS IS", without warranty of any kind.
+
+8. GOVERNING LAW
+
+This Agreement shall be governed by applicable laws in the jurisdiction of the author.
